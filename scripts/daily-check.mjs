@@ -6,6 +6,8 @@
 
 import admin from "firebase-admin";
 import nodemailer from "nodemailer";
+import { jsPDF } from "jspdf";
+import { buildReportPdf, reportFileName } from "../report-pdf.js";
 
 const MODE = (process.argv[2] || "seven").toLowerCase();
 const TZ = "Africa/Johannesburg";
@@ -133,9 +135,23 @@ function alertHtml(lead) {
   ${done ? `<p><b>Already signed:</b></p><ul>${done}</ul>` : "<p>Nothing has been signed yet.</p>"}
   <p style="color:#7a7268">The cash up must be completed and signed by Wholesale, Retail and the Manager by 7 pm every trading day (Monday to Saturday).</p></div>`;
 }
-async function send(to, subject, html) {
-  await mailer.sendMail({ from: FROM, to, subject, html });
-  console.log(`Sent "${subject}" to ${to}`);
+// ---------- PDF attachment (same layout as the app's "Download PDF") ----------
+async function reportPdf(status) {
+  const iso = doc => doc ? Object.assign({}, doc, { signedAt: signedTime(doc)?.toISOString() || "" }) : null;
+  let photos = [];
+  try {
+    const ps = await db.collection(`${base}/photos`).where("date", "==", DATE).get();
+    photos = ps.docs.map(x => x.data()).filter(p => p.removed !== true)
+      .sort((a, b) => String(a.dept).localeCompare(String(b.dept)) || String(a.takenAt || "").localeCompare(String(b.takenAt || "")));
+  } catch (e) { console.error("Photos could not be read:", e.message); }
+  const pdf = buildReportPdf(jsPDF, { date: DATE, niceDate, W: iso(W), Rt: iso(Rt), M: iso(Mg), status, photos });
+  return { filename: reportFileName(DATE), content: Buffer.from(pdf.output("arraybuffer")), contentType: "application/pdf" };
+}
+async function send(to, subject, html, pdfStatus) {
+  const attachments = [];
+  if (pdfStatus) { try { attachments.push(await reportPdf(pdfStatus)); } catch (e) { console.error("PDF could not be made:", e.message); } }
+  await mailer.sendMail({ from: FROM, to, subject, html, attachments });
+  console.log(`Sent "${subject}" to ${to}${attachments.length ? " with PDF" : ""}`);
 }
 
 // ---------- run ----------
@@ -148,7 +164,8 @@ if (MODE === "seven") {
     await send(REPORT_TO, `INCOMPLETE – Factory Shop Cash Up – ${niceDate}`, `<div style="font-family:Arial,Helvetica,sans-serif"><p>No cash up was captured for <b>${esc(niceDate)}</b> by 7 pm.</p><p>A final report will follow if it is completed tonight.</p></div>`);
   } else {
     await send(REPORT_TO, `${complete ? "" : "INCOMPLETE – "}Factory Shop Cash Up – ${niceDate}`,
-      reportHtml("Factory Shop Cash Up", complete ? "" : `Incomplete at 7 pm: missing ${missing.join(", ")}. A final report follows once it is complete.`));
+      reportHtml("Factory Shop Cash Up", complete ? "" : `Incomplete at 7 pm: missing ${missing.join(", ")}. A final report follows once it is complete.`),
+      complete ? "Completed on time" : `INCOMPLETE at 7 pm - missing ${missing.join(", ")}`);
   }
   await logRef.set({ date: DATE, sentAt: now, complete, missing, ullaAlerted: !complete, martieFinalSent: complete }, { merge: true });
 } else if (MODE === "nine") {
@@ -162,13 +179,15 @@ if (MODE === "seven") {
       : (late ? `Signed late: the last signature was at ${lastStr}, after the 7 pm deadline.` : "");
     let html = reportHtml(log.sentAt ? "Factory Shop Cash Up – final" : "Factory Shop Cash Up", note);
     html = html.replace("background:#f8e4e0;color:#b03a2a", "background:#f7edd6;color:#9a6a12");
-    await send(REPORT_TO, `${log.sentAt ? "FINAL – " : ""}Factory Shop Cash Up – ${niceDate}`, html);
+    await send(REPORT_TO, `${log.sentAt ? "FINAL – " : ""}Factory Shop Cash Up – ${niceDate}`, html,
+      late ? `Completed late - last signature at ${lastStr}` : "Completed on time");
     await logRef.set({ date: DATE, complete: true, martieFinalSent: true, finalSentAt: now }, { merge: true });
   } else {
     if (!log.sentAt) {  // the 7 pm run never happened: send what there is so Martie is not left without a report
       await send(REPORT_TO, `INCOMPLETE – Factory Shop Cash Up – ${niceDate}`, nothing
         ? `<div style="font-family:Arial,Helvetica,sans-serif"><p>No cash up was captured for <b>${esc(niceDate)}</b>.</p></div>`
-        : reportHtml("Factory Shop Cash Up", `Incomplete: missing ${missing.join(", ")}.`));
+        : reportHtml("Factory Shop Cash Up", `Incomplete: missing ${missing.join(", ")}.`),
+        nothing ? undefined : `INCOMPLETE - missing ${missing.join(", ")}`);
     }
     await send(ALERT_TO, `Still missing at 9 pm – cash up ${niceDate}`, alertHtml(`The factory shop cash up for <b>${esc(niceDate)}</b> is still not fully signed at 9 pm.`));
     await logRef.set({ date: DATE, missingAt9pm: missing, checkedAt9pm: now }, { merge: true });

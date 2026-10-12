@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-12p";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13a";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -185,7 +185,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12p";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13a";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -451,7 +451,7 @@ function renderCombined(){
         <div class="field"><label>Retail report photos</label><div data-photos="retail">${photoStrip("retail")}</div></div>
       </div>
       <div class="sigs">${sig(W,"wholesale")}${sig(Rt,"retail")}</div>
-      <div class="actions"><button class="btn" id="csv">Download day as CSV</button><span class="msg" id="csv-msg"></span></div>
+      <div class="actions"><button class="btn primary" id="pdf-mail" type="button">Email PDF report</button><button class="btn" id="pdf-dl" type="button">Download PDF</button><button class="btn" id="csv">Download day as CSV</button><span class="msg" id="csv-msg"></span></div>
     </div>
   </section>
   <section class="sheet">
@@ -459,6 +459,8 @@ function renderCombined(){
     <div class="sheet-body">${mgrBlock}</div>
   </section>`;
   local.manager=M;bindDept("manager");
+  $("#pdf-dl").addEventListener("click",()=>pdfAction("download"));
+  $("#pdf-mail").addEventListener("click",()=>pdfAction("email"));
   $("#csv").addEventListener("click",()=>{
     const f=x=>typeof x==="number"?x.toFixed(2):x;
     const lines=[["Date",state.date],[],["Payment type","Wholesale report","Wholesale deposited","Retail report","Retail deposited","Combined report","Combined deposited","Variance"]];
@@ -475,6 +477,33 @@ function renderCombined(){
 
 const safeJpg=s=>/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(String(s||""))?s:"";
 function canRemovePhoto(dept){return state.tab===dept&&canEditDept(dept)&&current(dept).status!=="signed";}
+/* ---------- PDF report ---------- */
+const REPORT_TO="martie@tastytreats.co.za";
+let jsPDFlib=null;
+function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
+  return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+    sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13a"),loadJsPDF()]);
+  const W=current("wholesale"),Rt=current("retail"),M=current("manager");const info=dayInfo(state.date,W,Rt,M);
+  const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
+  const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,status:info.label,photos});
+  return {blob:pdf.output("blob"),name:reportFileName(state.date),info};}
+async function pdfAction(kind){const msg=$("#csv-msg");const say=(t,err)=>{if(msg){msg.className="msg"+(err?" err":"");msg.textContent=t;}};
+  say("Preparing the PDF…");let r;
+  try{r=await makePdf();}catch(e){console.error("PDF:",e);say("The PDF could not be made: "+(e&&e.message||e),true);return;}
+  const download=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(r.blob);a.download=r.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),60000);};
+  if(kind==="download"){download();say("PDF downloaded.");return;}
+  const subject="Factory Shop Cash Up – "+shortDate(state.date);
+  const body="Hi Martie,\n\nPlease find attached the factory shop cash up report for "+longDate(state.date)+".\nStatus: "+r.info.label+"\n\nKind regards,\n"+(state.me?state.me.name:"");
+  // phones and tablets: share the PDF straight into Gmail, Outlook, WhatsApp…
+  try{const file=new File([r.blob],r.name,{type:"application/pdf"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:subject,text:body});say("Shared. Choose your email app and send it to "+REPORT_TO+" if it was not filled in.");return;}}
+  catch(e){if(e&&e.name==="AbortError"){say("Not sent.");return;}}
+  // computers: download the PDF and open a ready-made email; the PDF must be attached by hand
+  download();
+  location.href="mailto:"+REPORT_TO+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body+"\n\n(PDF attached)");
+  say("The PDF was downloaded and a new email opened. Attach the file "+r.name+" (in your Downloads) and press Send.");}
+
 function photoStrip(dept){const all=state.photos.filter(p=>p.dept===dept);const ps=all.filter(p=>p.removed!==true);const gone=all.filter(p=>p.removed===true);
   const rm=canRemovePhoto(dept);
   const goneNote=gone.length?`<div class="msg" style="margin-top:6px">${gone.map(p=>`Photo removed by ${esc(p.removedBy)}${p.removedAtIso?" · "+esc(timeStr(p.removedAtIso)):""}`).join("<br>")}</div>`:"";

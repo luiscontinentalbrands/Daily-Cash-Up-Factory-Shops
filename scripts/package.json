@@ -5,6 +5,7 @@
   "description": "Sends the 7 pm and 9 pm factory shop cash up emails.",
   "dependencies": {
     "firebase-admin": "12.1.0",
+    "jspdf": "2.5.1",
     "nodemailer": "6.9.13"
   }
 }
