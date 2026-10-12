@@ -180,7 +180,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12j";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12k";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -501,7 +501,8 @@ async function readWithAI(parts){
     try{const model=aiMod.getGenerativeModel(aiInst,{model:name,generationConfig:{responseMimeType:"application/json",temperature:0}});
       const r=await model.generateContent(parts);try{localStorage.setItem("cu_aimodel",name);}catch(e){}return r;}
     catch(e){last=e;const t=String(e&&(e.message||e.code)||"");
-      if(!/not.?found|404|not supported|is not available|unsupported model|invalid model/i.test(t))throw e;}
+      // a missing AI Logic setup ("genai config not found") is not a model problem: stop and report it
+      if(/genai|config/i.test(t)||!/not.?found|404|not supported|is not available|unsupported model|invalid model/i.test(t))throw e;}
   }
   throw last||new Error("No AI model available");}
 async function scanPhoto(file,dept,read){const msg=$("#scan-msg");const say=(t,err)=>{const m=$("#scan-msg");if(m){m.className="msg"+(err?" err":"");m.textContent=t;}};
@@ -534,7 +535,8 @@ Use null when a tender is not on the report. Give amounts as plain JSON numbers 
   try{const r=await readWithAI([prompt,{inlineData:{data:dataUrl.split(",")[1],mimeType:"image/jpeg"}}]);
     state.lastAI=r.response.text();let t=r.response.text().trim().replace(/^\`\`\`(json)?/i,"").replace(/\`\`\`$/,"");out=JSON.parse(t);}
   catch(e){const raw=String(e&&(e.message||e.code)||e||"");
-    const why=/not.?enabled|has not been used|SERVICE_DISABLED|firebasevertexai|AI Logic|enable the/i.test(raw)?"The AI reader is not switched on in Firebase yet."
+    const why=/genai|config not found/i.test(raw)?"Firebase AI Logic is not fully set up for this project (Gemini Developer API link missing)."
+      :/not.?enabled|has not been used|SERVICE_DISABLED|enable the/i.test(raw)?"The AI reader is not switched on in Firebase yet."
       :/not found|404|is not supported|model/i.test(raw)?"None of the AI models were accepted by your project. Check that AI Logic is set up with the Gemini Developer API."
       :/quota|429|RESOURCE_EXHAUSTED/i.test(raw)?"The free AI allowance for today is used up."
       :/API key|referer|referrer|blocked/i.test(raw)?"The Firebase web key is not allowed to use the AI reader."
