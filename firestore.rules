@@ -80,6 +80,18 @@ service cloud.firestore {
       }
     }
 
+    // People who use the app (managed by the administrator inside the app)
+    match /shops/{k}/users/{uid} {
+      function u() { return request.resource.data; }
+      allow read: if okKey(k);
+      allow create, update: if okKey(k)
+        && u().name is string && u().name.size() >= 3 && u().name.size() <= 60
+        && u().role in ['wholesale', 'retail', 'manager', 'admin']
+        && u().active is bool
+        && u().salt is string && u().pinHash is string && u().pinHash.size() == 64;
+      allow delete: if false;
+    }
+
     // Everything else (including the email job's log) is closed to the app.
   }
 }

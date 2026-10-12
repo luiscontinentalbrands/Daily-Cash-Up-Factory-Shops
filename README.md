@@ -10,7 +10,7 @@ A secure, live, shared daily cash up for the factory shop.
 
 ## How it is secured
 
-There are no logins. Instead, each device is set up once with the shop's **secret access code**.
+There are no email logins. Each device is set up once with the shop's **secret access code**, and each person picks their name and enters a PIN that the administrator gives them in the app.
 
 | Protection | What it does |
 |---|---|
@@ -45,13 +45,13 @@ There are no logins. Instead, each device is set up once with the shop's **secre
 3. **Switch on the website:** **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main` / `(root)` → Save**.
    - After a minute or two your app is live at `https://YOUR-GITHUB-NAME.github.io/cashup/`.
 
-### Part 3 — Set up each device
+### Part 3 — Set up devices and people
 
-1. Send the **setup link** (the app address followed by `#join-` and the access code) to each device privately, e.g. by WhatsApp to the manager, and open it once on the till PC, tablet or phone.
-2. The device remembers the code. From then on, staff just open the normal app address.
-3. On phones, add the app to the home screen: iPhone (Safari) **Share → Add to Home Screen**; Android (Chrome) **⋮ → Add to Home screen**.
-
-**Changing the access code** (lost device, staff member leaves): pick a new code of 24 letters and numbers, put it in the rules in place of the old one and click **Publish**, update the `SHOP_KEY` secret in GitHub, and send the new setup link to the devices you still use. Old devices stop working immediately. Note that data is stored under the code, so the cash ups saved under the old code stay in the database but are no longer shown in the app; ask for help before changing it if you need the history carried over.
+1. Open the **setup link** (the app address followed by `#join-` and the access code) once on each device: till PCs, tablets, phones. The device remembers the code.
+2. The first time, the app asks you to **create the administrator**: your name and a 4-digit PIN.
+3. As administrator, open the **Users** tab and add each person with their name, role (Wholesale cashier, Retail cashier, Manager) and a 4-digit PIN. Give each person their PIN privately.
+4. Staff open the app, tap their name and enter their PIN. Their name goes on their sheet and signature automatically. The app locks after 15 minutes without use; **Switch user** at the top changes person.
+5. When someone leaves, tap **Switch off** next to their name. Their past cash ups stay in History.
 
 ### Part 4 — Switch on the 7 pm and 9 pm emails
 

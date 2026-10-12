@@ -49,7 +49,7 @@ const configured=!String(firebaseConfig.apiKey||"").startsWith("PASTE");
 let app,db;
 if(configured){app=initializeApp(firebaseConfig);db=getFirestore(app);}
 
-const state={date:todayStr(),tab:"wholesale",docs:{wholesale:null,retail:null,manager:null},history:[],pending:{},key:null,ready:false};
+const state={date:todayStr(),tab:"wholesale",docs:{wholesale:null,retail:null,manager:null},history:[],pending:{},key:null,ready:false,users:[],me:null};
 const local={};let daySub=null,histSub=null,timers={};
 
 /* ---------- device access code ----------
@@ -63,6 +63,15 @@ function forgetKey(){try{localStorage.removeItem("cu_key");}catch(e){}}
   if(m){saveKey(m[1]);history.replaceState(null,"",location.pathname+location.search);}})();
 const shopCol=()=>collection(db,"shops",state.key,"cashups");
 const shopDoc=id=>fdoc(db,"shops",state.key,"cashups",id);
+const usersCol=()=>collection(db,"shops",state.key,"users");
+const ROLE_LABEL={wholesale:"Wholesale cashier",retail:"Retail cashier",manager:"Manager",admin:"Administrator"};
+async function pinHash(salt,pin){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(salt+":"+pin));
+  return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");}
+function newSalt(){const a=new Uint8Array(16);crypto.getRandomValues(a);return Array.from(a).map(x=>x.toString(16).padStart(2,"0")).join("");}
+const role=()=>state.me&&state.me.role;
+const canEditDept=d=>[d,"manager","admin"].includes(role());
+const canSignDept=d=>[d,"admin"].includes(role());
+const canSignManager=()=>["manager","admin"].includes(role());
 
 if(!configured){
   main.innerHTML=`<div class="login sheet" style="padding:22px"><h2>Setup needed</h2><div class="msg">Firebase is not connected yet. Fill in <b>firebase-config.js</b> with your Firebase project settings, as described in the README.</div></div>`;
@@ -87,22 +96,91 @@ function showSetup(msg){
 async function checkKey(k){
   state.key=k;main.innerHTML=`<div class="empty-state">Connecting…</div>`;
   try{await getDocs(query(collection(db,"shops",k,"cashups"),limit(1)));
-    saveKey(k);startApp();}
+    saveKey(k);loadUsersThenWho();}
   catch(e){state.key=null;
     if(e&&e.code==="permission-denied"){forgetKey();showSetup("This device's access code is not accepted. Ask your manager for the current setup link.");}
     else showSetup("Could not reach the database. Check the internet connection and try again.");}
 }
-function deviceBar(){const w=$("#who");w.hidden=false;
-  w.innerHTML=`<span>This device is set up</span><button id="forget" type="button">Remove from this device</button>`;
-  let armed=false;$("#forget").addEventListener("click",()=>{const b=$("#forget");
-    if(!armed){armed=true;b.textContent="Tap again to remove";setTimeout(()=>{armed=false;if(b.isConnected)b.textContent="Remove from this device";},4000);return;}
-    flushAll();forgetKey();stopSubs();state.key=null;showSetup("Access removed from this device.");});}
+let usersSub=null;
+function loadUsersThenWho(){
+  if(usersSub)usersSub();let first=true;
+  usersSub=onSnapshot(usersCol(),snap=>{
+    state.users=snap.docs.map(d=>Object.assign({id:d.id},d.data())).sort((x,y)=>String(x.name).localeCompare(String(y.name)));
+    if(state.me){const u=state.users.find(x=>x.id===state.me.id);
+      if(!u&&state.me.id===state.justCreated)return;
+      if(!u||u.active!==true){lockApp("Your user was switched off by the administrator.");return;}
+      state.me=u;whoBar();}
+    if(first){first=false;
+      let saved=null;try{saved=sessionStorage.getItem("cu_me");}catch(e){}
+      const u=saved&&state.users.find(x=>x.id===saved&&x.active===true);
+      if(u){state.me=u;startApp();}else showWho();}
+    else if(!state.me&&!$("#pinform"))showWho();
+    if(state.tab==="users"&&state.ready)render();
+  },()=>showSetup("Could not load the list of users. Check the connection and reload."));
+}
+function showWho(msg){
+  stopSubs();state.ready=false;state.me=null;try{sessionStorage.removeItem("cu_me");}catch(e){}
+  $("#tabs").hidden=true;$("#datebox").hidden=true;$("#who").hidden=true;$("#foot").textContent="";
+  const active=state.users.filter(u=>u.active===true);
+  if(!state.users.length){showFirstAdmin();return;}
+  main.innerHTML=`<div class="login sheet" style="padding:22px">
+    <div><div class="eyebrow">Who is using the app?</div><h2>Factory Shop Cash Up</h2></div>
+    <div class="msg ${msg?"err":""}">${esc(msg||"Tap your name, then enter your PIN.")}</div>
+    <div class="actions" style="flex-direction:column;align-items:stretch">${active.map(u=>`<button class="btn" data-u="${esc(u.id)}" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px"><span>${esc(u.name)}</span><span class="msg">${esc(ROLE_LABEL[u.role]||"")}</span></button>`).join("")||'<div class="msg">No active users. Ask the administrator.</div>'}</div>
+  </div>`;
+  main.querySelectorAll("button[data-u]").forEach(b=>b.addEventListener("click",()=>askPin(state.users.find(u=>u.id===b.dataset.u))));
+}
+function askPin(u){if(!u)return;
+  main.innerHTML=`<form class="login sheet" id="pinform" style="padding:22px" novalidate>
+    <div><div class="eyebrow">${esc(ROLE_LABEL[u.role]||"")}</div><h2>${esc(u.name)}</h2></div>
+    <div class="field"><label for="pin">PIN</label><input id="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="6" style="font-size:1.4rem;letter-spacing:.4em;text-align:center"></div>
+    <button class="btn primary" type="submit">Enter</button>
+    <button class="linkbtn" type="button" id="back">Not you? Go back</button>
+    <div class="msg" id="pinmsg"></div></form>`;
+  const p=$("#pin");p.focus();
+  $("#back").addEventListener("click",()=>showWho());
+  $("#pinform").addEventListener("submit",async e=>{e.preventDefault();const m=$("#pinmsg");
+    const now=Date.now();state.tries=(state.tries||[]).filter(t=>now-t<5*60000);
+    if(state.tries.length>=5){m.className="msg err";m.textContent="Too many wrong PINs. Wait 5 minutes and try again.";return;}
+    if(await pinHash(u.salt,p.value)===u.pinHash){state.me=u;state.tries=[];try{sessionStorage.setItem("cu_me",u.id);}catch(x){}startApp();}
+    else{state.tries.push(now);m.className="msg err";m.textContent="Wrong PIN. Try again.";p.value="";p.focus();}});
+}
+function showFirstAdmin(){
+  main.innerHTML=`<form class="login sheet" id="adminform" style="padding:22px" novalidate>
+    <div><div class="eyebrow">First-time setup</div><h2>Create the administrator</h2></div>
+    <div class="msg">This is you. As administrator you add the cashiers and managers in the app, under Users.</div>
+    <div class="field"><label for="an">Full name</label><input id="an" maxlength="60" autocomplete="name"></div>
+    <div class="field"><label for="ap">Choose a 4-digit PIN</label><input id="ap" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></div>
+    <div class="field"><label for="ap2">Type the PIN again</label><input id="ap2" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></div>
+    <button class="btn primary" type="submit" id="abtn">Create administrator</button>
+    <div class="msg" id="amsg"></div></form>`;
+  $("#adminform").addEventListener("submit",async e=>{e.preventDefault();const m=$("#amsg");m.className="msg err";
+    const n=$("#an").value.trim(),p=$("#ap").value,p2=$("#ap2").value;
+    if(n.length<3){m.textContent="Type your full name.";return;}
+    if(!/^\d{4}$/.test(p)){m.textContent="The PIN must be exactly 4 digits.";return;}
+    if(p!==p2){m.textContent="The two PINs do not match.";return;}
+    $("#abtn").disabled=true;
+    try{const salt=newSalt();const ref=fdoc(usersCol());const h=await pinHash(salt,p);
+      state.me={id:ref.id,name:n,role:"admin",active:true};state.justCreated=ref.id;
+      await setDoc(ref,{name:n,role:"admin",active:true,salt,pinHash:h,createdAt:serverTimestamp()});
+      try{sessionStorage.setItem("cu_me",ref.id);}catch(x){}startApp();}
+    catch(x){state.me=null;state.justCreated=null;$("#abtn").disabled=false;m.textContent="Could not save. Check the connection and try again.";}});
+}
+function whoBar(){const w=$("#who");w.hidden=false;
+  w.innerHTML=`<b>${esc(state.me.name)}</b><span class="roletag">${esc(ROLE_LABEL[role()]||"")}</span><button id="switchu" type="button">Switch user</button>`;
+  $("#switchu").addEventListener("click",()=>{flushAll();showWho();});
+  $("#tab-users").hidden=role()!=="admin";}
+function lockApp(msg){flushAll();showWho(msg);}
+let idleT=null;
+function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockApp("Locked after 15 minutes without use. Tap your name to continue."),15*60000);}
+["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev,resetIdle,{passive:true}));
 
 /* ---------- app start ---------- */
 function startApp(){
-  $("#tabs").hidden=false;$("#datebox").hidden=false;deviceBar();state.ready=true;
+  $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
   $("#foot").textContent="Live sync active · shared by all cashiers";
-  try{const t=localStorage.getItem("cu_tab");if(t)state.tab=t;}catch(e){}
+  const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
+  if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
   Object.keys(local).forEach(k=>delete local[k]);
   subscribeDay();subscribeHistory();setTab(state.tab);
@@ -110,12 +188,12 @@ function startApp(){
 $("#date").addEventListener("change",e=>{if(e.target.value)setDate(e.target.value);});
 $("#today").addEventListener("click",()=>{$("#date").value=todayStr();setDate(todayStr());});
 document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
-function setTab(t){state.tab=t;try{localStorage.setItem("cu_tab",t);}catch(e){}
-  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===t)));render();}
-function setDate(d){flushAll();state.date=d;state.docs={wholesale:null,retail:null,manager:null};delete local.wholesale;delete local.retail;delete local.manager;subscribeDay();render();}
+function setTab(t){if(t==="users"&&role()!=="admin")t="wholesale";state.tab=t;
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===t)));render(true);}
+function setDate(d){flushAll();state.date=d;state.docs={wholesale:null,retail:null,manager:null};delete local.wholesale;delete local.retail;delete local.manager;subscribeDay();render(true);}
 function stopSubs(){if(daySub){daySub();daySub=null;}if(histSub){histSub();histSub=null;}}
 
-function canReopen(dept){return dept==="manager"||current("manager").status!=="signed";}
+function canReopen(dept){if(dept==="manager")return canSignManager();if(["manager","admin"].includes(role()))return current("manager").status!=="signed";return current(dept).signedBy===state.me.name&&current("manager").status!=="signed";}
 function current(dept){if(!local[dept])local[dept]=normalize(state.docs[dept],state.date,dept);return local[dept];}
 function statusOf(doc){if(!doc)return "new";return doc.status==="signed"?"signed":(doc.status==="draft"?"draft":"new");}
 function chip(st){return st==="signed"?'<span class="chip signed">Signed off</span>':st==="draft"?'<span class="chip draft">In progress</span>':'<span class="chip">Not started</span>';}
@@ -124,6 +202,7 @@ function updateDots(){["wholesale","retail"].forEach(d=>{const st=statusOf(local
 /* ---------- persistence ---------- */
 function idOf(dept,date){return (date||state.date)+"_"+dept;}
 function scheduleSave(dept){const doc=local[dept];if(doc.status==="new")doc.status="draft";
+  if(dept!=="manager"&&!doc.cashier)doc.cashier=state.me.name;
   state.pending[dept]=true;clearTimeout(timers[dept]);setSaved(dept,"Saving…");
   timers[dept]=setTimeout(()=>save(dept),700);updateDots();}
 function flushAll(){Object.keys(timers).forEach(d=>{if(state.pending[d]){clearTimeout(timers[d]);save(d);}});}
@@ -170,7 +249,10 @@ function subscribeHistory(){if(histSub){histSub();histSub=null;}
     state.history=snap.docs.map(d=>d.data());if(state.tab==="history")render();},()=>{});}
 
 /* ---------- rendering ---------- */
-function render(){if(!state.ready)return;updateDots();
+function render(force){if(!state.ready)return;updateDots();
+  const pd=document.getElementById("pad");if(!force&&pd&&pd.dataset.inked==="1"){state.deferred=true;return;}
+  state.deferred=false;
+  if(state.tab==="users"){renderUsers();return;}
   if(state.tab==="wholesale"||state.tab==="retail")renderDept(state.tab);
   else if(state.tab==="combined")renderCombined();else renderHistory();}
 
@@ -178,7 +260,7 @@ function banner(di){if(di.kind==="sunday")return "";
   return `<div class="banner ${di.kind==="done"?"ok":di.kind==="overdue"?"bad":"wait"}" style="font-weight:500">${di.kind==="overdue"?"Past the 7 pm deadline. Missing: "+di.missing.join(", ")+".":di.kind==="open"?di.label+". Wholesale, Retail and the Manager must all sign.":di.label+"."}</div>`;}
 
 function renderDept(dept){
-  const doc=current(dept),signed=doc.status==="signed",editable=!signed,dis=editable?"":"disabled";
+  const doc=current(dept),signed=doc.status==="signed",editable=!signed&&canEditDept(dept),dis=editable?"":"disabled";
   const t=totals(doc);
   const rows=METHODS.map(m=>{const ln=doc.lines[m.k];const v=num(ln.deposited)-num(ln.report);
     return `<tr><td>${m.l}</td>
@@ -186,13 +268,13 @@ function renderDept(dept){
       <td class="inp"><input id="${dept}-${m.k}-deposited" data-m="${m.k}" data-f="deposited" inputmode="decimal" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="${m.l} deposited"></td>
       <td class="num ${vcls(v)}" id="v-${m.k}">${RV(v)}</td></tr>`;}).join("");
   const di=dayInfo(state.date,current("wholesale"),current("retail"),current("manager"));
-  main.innerHTML=`${banner(di)}
+  main.innerHTML=`${!canEditDept(dept)?`<div class="notice">You are signed in as ${esc(ROLE_LABEL[role()])}, so the ${DEPTS[dept]} sheet is view-only for you.</div>`:""}${banner(di)}
   <section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">${DEPTS[dept]} department</div><h2>${longDate(state.date)}</h2></div>${chip(statusOf(doc))}</div>
     <div class="sheet-body">
       <div class="fields">
         <div class="field"><label>Date</label><div class="static">${shortDate(state.date)}</div></div>
-        <div class="field"><label for="${dept}-cashier">Person cashing up</label><input id="${dept}-cashier" value="${esc(doc.cashier)}" placeholder="Full name" ${dis} maxlength="80" autocomplete="name"></div>
+        <div class="field"><label>Person cashing up</label><div class="static">${esc(doc.cashier)||(editable?esc(state.me.name):"—")}</div></div>
         <div class="field"><label>Department</label><div class="static">${DEPTS[dept]}</div></div>
       </div>
       <div class="tbl-wrap"><table>
@@ -210,7 +292,7 @@ function renderDept(dept){
   </section>
   <section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">Sign-off</div><h2>${DEPTS[dept]} signature</h2></div></div>
-    <div class="sheet-body">${signed?signedBlock(doc,dept):signBlock(doc,dept)}</div>
+    <div class="sheet-body">${signed?signedBlock(doc,dept):canSignDept(dept)?signBlock(doc,dept):`<div class="msg">Only the ${DEPTS[dept]} cashier can sign this sheet.</div>`}</div>
   </section>`;
   bindDept(dept);
 }
@@ -225,14 +307,14 @@ function signBlock(doc,dept){return `<div class="sign">
   <div class="pad"><canvas id="pad" width="900" height="300" aria-label="Signature pad"></canvas><div class="base"></div><div class="hint">Sign above the line with finger or mouse</div></div>
   <div style="display:flex;flex-direction:column;gap:10px">
     <div class="msg">${dept==="manager"?`By signing, I confirm I have checked the Wholesale and Retail cash ups for ${shortDate(state.date)} and the combined totals are correct.`:`By signing, I confirm the amounts deposited for ${DEPTS[dept]} on ${shortDate(state.date)} are correct.`}</div>
-    <div class="field"><label for="signer">Signed by (full name)</label><input id="signer" value="${esc(dept==="manager"?"":doc.cashier)}" placeholder="Full name" maxlength="80" autocomplete="name"></div>
+    <div><div class="eyebrow">Signing as</div><div class="signer-static">${esc(state.me.name)}</div></div>
     <div class="actions"><button class="btn" id="clear" type="button">Clear</button><button class="btn primary" id="signbtn" type="button">Sign &amp; submit</button></div>
     <div class="msg" id="sign-msg"></div>
   </div></div>`;}
 
 function patchInputs(dept){const doc=local[dept];
   METHODS.forEach(m=>["report","deposited"].forEach(f=>{const el=document.getElementById(dept+"-"+m.k+"-"+f);if(el&&el!==document.activeElement)el.value=doc.lines[m.k][f];}));
-  [["cashier","cashier"],["notes","notes"],["damaged","damaged"],["damagedNotes","damagedNotes"]].forEach(([id,k])=>{const el=document.getElementById(dept+"-"+id);if(el&&el!==document.activeElement)el.value=doc[k];});
+  [["notes","notes"],["damaged","damaged"],["damagedNotes","damagedNotes"]].forEach(([id,k])=>{const el=document.getElementById(dept+"-"+id);if(el&&el!==document.activeElement)el.value=doc[k];});
   recalc(dept);}
 function recalc(dept){const doc=local[dept];
   METHODS.forEach(m=>{const v=num(doc.lines[m.k].deposited)-num(doc.lines[m.k].report);const el=document.getElementById("v-"+m.k);if(el){el.textContent=RV(v);el.className="num "+vcls(v);}});
@@ -244,7 +326,6 @@ function bindDept(dept){const doc=local[dept];
   main.querySelectorAll("td.inp input").forEach(inp=>{
     inp.addEventListener("input",()=>{const c=money(inp.value);if(c!==inp.value)inp.value=c;doc.lines[inp.dataset.m][inp.dataset.f]=inp.value;recalc(dept);scheduleSave(dept);});
     inp.addEventListener("blur",()=>{if(inp.value!==""){const v=num(inp.value).toFixed(2);inp.value=v;doc.lines[inp.dataset.m][inp.dataset.f]=v;scheduleSave(dept);}});});
-  const cs=document.getElementById(dept+"-cashier");if(cs)cs.addEventListener("input",()=>{doc.cashier=cs.value;const sg=$("#signer");if(sg&&!sg.dataset.touched)sg.value=cs.value;scheduleSave(dept);});
   const n=document.getElementById(dept+"-notes");if(n)n.addEventListener("input",()=>{doc.notes=n.value;scheduleSave(dept);});
   const dm=document.getElementById(dept+"-damaged");if(dm){dm.addEventListener("input",()=>{const c=money(dm.value);if(c!==dm.value)dm.value=c;doc.damaged=dm.value;scheduleSave(dept);});
     dm.addEventListener("blur",()=>{if(dm.value!==""){dm.value=num(dm.value).toFixed(2);doc.damaged=dm.value;scheduleSave(dept);}});}
@@ -254,28 +335,27 @@ function bindDept(dept){const doc=local[dept];
     ro.disabled=true;
     const M=current("manager");
     if(dept!=="manager"&&M.status==="signed"){
+      if(!["manager","admin"].includes(role())){ro.disabled=false;$("#reopen-msg").textContent="The day is closed. Ask the manager to reopen it.";return;}
       Object.assign(M,{status:"draft",signature:"",signedBy:"",signedAt:""});state.pending.manager=true;
-      if(!await save("manager",{action:"reopened",by:"reopened from "+DEPTS[dept]+" sheet"})){ro.disabled=false;$("#reopen-msg").textContent="Could not reopen the day. Try again.";return;}}
+      if(!await save("manager",{action:"reopened",by:state.me.name})){ro.disabled=false;$("#reopen-msg").textContent="Could not reopen the day. Try again.";return;}}
     Object.assign(doc,{status:"draft",signature:"",signedBy:"",signedAt:""});clearTimeout(timers[dept]);state.pending[dept]=true;
-    await save(dept,{action:"reopened",by:doc.cashier||""});render();});}
+    await save(dept,{action:"reopened",by:state.me.name});render(true);});}
   const pad=$("#pad");if(pad)bindPad(pad,dept);
 }
 function bindPad(cv,dept){const ctx=cv.getContext("2d");let drawing=false,inked=false,last=null;
   ctx.lineWidth=3.2;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#1f2a44";ctx.fillStyle="#1f2a44";
   const pt=e=>{const r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*cv.width/r.width,y:(e.clientY-r.top)*cv.height/r.height};};
-  cv.addEventListener("pointerdown",e=>{drawing=true;last=pt(e);cv.setPointerCapture(e.pointerId);ctx.beginPath();ctx.arc(last.x,last.y,1.5,0,Math.PI*2);ctx.fill();inked=true;});
+  cv.addEventListener("pointerdown",e=>{cv.dataset.inked="1";drawing=true;last=pt(e);cv.setPointerCapture(e.pointerId);ctx.beginPath();ctx.arc(last.x,last.y,1.5,0,Math.PI*2);ctx.fill();inked=true;});
   cv.addEventListener("pointermove",e=>{if(!drawing)return;const p=pt(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;});
   const end=()=>{drawing=false;};cv.addEventListener("pointerup",end);cv.addEventListener("pointercancel",end);
-  const sg=$("#signer");if(sg)sg.addEventListener("input",()=>{sg.dataset.touched="1";});
-  $("#clear").addEventListener("click",()=>{ctx.clearRect(0,0,cv.width,cv.height);inked=false;$("#sign-msg").textContent="";});
+  $("#clear").addEventListener("click",()=>{ctx.clearRect(0,0,cv.width,cv.height);inked=false;delete cv.dataset.inked;$("#sign-msg").textContent="";if(state.deferred)render(true);});
   $("#signbtn").addEventListener("click",async()=>{const doc=local[dept];const msg=$("#sign-msg");msg.className="msg err";
     if(dept==="manager"){const W=current("wholesale"),Rt=current("retail");
       if(!(W.status==="signed"&&Rt.status==="signed")){msg.textContent="Wholesale and Retail must both sign first.";return;}
-      const nm=($("#signer").value||"").trim().toLowerCase();
+      const nm=state.me.name.trim().toLowerCase();
       if(nm&&(nm===String(W.signedBy).trim().toLowerCase()||nm===String(Rt.signedBy).trim().toLowerCase())){msg.textContent="The manager sign-off must be done by a different person from the cashiers who signed.";return;}}
     else{const t=totals(doc);if(t.report===0&&t.deposited===0){msg.textContent="Enter the report and deposited amounts before signing.";return;}}
-    const who=($("#signer").value||"").trim();
-    if(who.length<3){msg.textContent="Type the full name of the person signing.";$("#signer").focus();return;}
+    const who=state.me.name;
     if(!inked){msg.textContent="Draw the signature in the box first.";return;}
     const out=document.createElement("canvas");out.width=600;out.height=200;const o=out.getContext("2d");o.fillStyle="#fff";o.fillRect(0,0,600,200);o.drawImage(cv,0,0,600,200);
     const before=clone(doc);
@@ -283,15 +363,15 @@ function bindPad(cv,dept){const ctx=cv.getContext("2d");let drawing=false,inked=
     if(dept!=="manager"&&!doc.cashier)doc.cashier=who;
     clearTimeout(timers[dept]);state.pending[dept]=true;$("#signbtn").disabled=true;msg.className="msg";msg.textContent="Signing…";
     const ok=await save(dept,{signing:true,action:"signed",by:who});
-    if(!ok){local[dept]=before;render();const m2=$("#sign-msg");if(m2){m2.className="msg err";m2.textContent="Not signed. Check the connection and try again.";}return;}
-    render();});
+    if(!ok){local[dept]=before;render(true);const m2=$("#sign-msg");if(m2){m2.className="msg err";m2.textContent="Not signed. Check the connection and try again.";}return;}
+    render(true);});
 }
 
 function renderCombined(){
   const W=current("wholesale"),Rt=current("retail"),M=current("manager");const tw=totals(W),tr=totals(Rt);
   const both=W.status==="signed"&&Rt.status==="signed";const info=dayInfo(state.date,W,Rt,M);
   const dmgT=num(W.damaged)+num(Rt.damaged);
-  const mgrBlock=M.status==="signed"?signedBlock(M,"manager"):both?signBlock(M,"manager"):`<div class="msg">You can sign here once Wholesale and Retail have both signed. Still waiting for: ${[W.status!=="signed"?"Wholesale":"",Rt.status!=="signed"?"Retail":""].filter(Boolean).join(" and ")}.</div>`;
+  const mgrBlock=M.status==="signed"?signedBlock(M,"manager"):!canSignManager()?`<div class="msg">Only a manager can sign off the day. ${both?"Waiting for the manager.":"Wholesale and Retail must sign first."}</div>`:both?signBlock(M,"manager"):`<div class="msg">You can sign here once Wholesale and Retail have both signed. Still waiting for: ${[W.status!=="signed"?"Wholesale":"",Rt.status!=="signed"?"Retail":""].filter(Boolean).join(" and ")}.</div>`;
   const rows=METHODS.map(m=>{const wr=num(W.lines[m.k].report),wd=num(W.lines[m.k].deposited),rr=num(Rt.lines[m.k].report),rd=num(Rt.lines[m.k].deposited);const v=(wd+rd)-(wr+rr);
     return `<tr><td>${m.l}</td><td class="num grp">${R(wr)}</td><td class="num">${R(wd)}</td><td class="num grp">${R(rr)}</td><td class="num">${R(rd)}</td><td class="num grp"><b>${R(wr+rr)}</b></td><td class="num"><b>${R(wd+rd)}</b></td><td class="num ${vcls(v)}">${RV(v)}</td></tr>`;}).join("");
   const gv=(tw.deposited+tr.deposited)-(tw.report+tr.report);
@@ -343,6 +423,45 @@ function renderCombined(){
     $("#csv-msg").textContent="Downloaded.";});
 }
 
+function renderUsers(){
+  const rows=state.users.map(u=>`<div class="hrow" style="cursor:default;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto">
+      <div><div class="d">${esc(u.name)}</div><div class="msg">${esc(ROLE_LABEL[u.role]||u.role)}</div></div>
+      <div>${u.active===true?'<span class="chip signed">Active</span>':'<span class="chip">Switched off</span>'}</div>
+      <div class="actions">${u.id===state.me.id?'<span class="msg">You</span>':`<button class="btn" data-act="toggle" data-u="${esc(u.id)}" type="button">${u.active===true?"Switch off":"Switch on"}</button>`}<button class="btn" data-act="pin" data-u="${esc(u.id)}" type="button">New PIN</button></div></div>`).join("");
+  main.innerHTML=`<section class="sheet">
+    <div class="sheet-head"><div><div class="eyebrow">Administrator</div><h2>Users</h2></div></div>
+    <div class="sheet-body">
+      <form id="uform" class="fields" style="grid-template-columns:minmax(0,2fr) minmax(0,1.3fr) minmax(0,1fr) auto;align-items:end" novalidate>
+        <div class="field"><label for="un">Full name</label><input id="un" maxlength="60" autocomplete="off"></div>
+        <div class="field"><label for="ur">Role</label><select id="ur" style="font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)">
+          <option value="wholesale">Wholesale cashier</option><option value="retail">Retail cashier</option><option value="manager">Manager</option><option value="admin">Administrator</option></select></div>
+        <div class="field"><label for="up">4-digit PIN</label><input id="up" inputmode="numeric" maxlength="4" autocomplete="off"></div>
+        <button class="btn primary" type="submit" id="ubtn">Add user</button>
+      </form>
+      <div class="msg" id="umsg">Give each person their PIN privately. They tap their name and enter it to use the app.</div>
+    </div>
+    <div class="hist">${rows}</div></section>`;
+  $("#uform").addEventListener("submit",async e=>{e.preventDefault();const m=$("#umsg");m.className="msg err";
+    const n=$("#un").value.trim(),r=$("#ur").value,p=$("#up").value;
+    if(n.length<3){m.textContent="Type the person's full name.";return;}
+    if(state.users.some(u=>String(u.name).trim().toLowerCase()===n.toLowerCase())){m.textContent="There is already a user with that name. Use a different name, e.g. add a surname.";return;}
+    if(!/^\d{4}$/.test(p)){m.textContent="The PIN must be exactly 4 digits.";return;}
+    $("#ubtn").disabled=true;
+    try{const salt=newSalt();await setDoc(fdoc(usersCol()),{name:n,role:r,active:true,salt,pinHash:await pinHash(salt,p),createdAt:serverTimestamp()});
+      m.className="msg";m.textContent=n+" added. Give them their PIN privately.";$("#un").value="";$("#up").value="";}
+    catch(x){m.textContent="Could not save. Check the connection and try again.";}
+    $("#ubtn").disabled=false;});
+  main.querySelectorAll("button[data-act]").forEach(b=>b.addEventListener("click",async()=>{
+    const u=state.users.find(x=>x.id===b.dataset.u);if(!u)return;const m=$("#umsg");
+    if(b.dataset.act==="toggle"){try{await setDoc(fdoc(usersCol(),u.id),{active:u.active!==true},{merge:true});}catch(x){m.className="msg err";m.textContent="Could not save.";}return;}
+    const row=b.closest(".hrow");row.insertAdjacentHTML("afterend",`<form class="hrow" style="cursor:default" data-pinfor="${esc(u.id)}"><div class="msg">New PIN for ${esc(u.name)}</div><input inputmode="numeric" maxlength="4" style="font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)"><button class="btn primary" type="submit">Save PIN</button></form>`);
+    const f=row.nextElementSibling;f.querySelector("input").focus();
+    f.addEventListener("submit",async ev=>{ev.preventDefault();const v=f.querySelector("input").value;
+      if(!/^\d{4}$/.test(v)){m.className="msg err";m.textContent="The PIN must be exactly 4 digits.";return;}
+      const salt=newSalt();try{await setDoc(fdoc(usersCol(),u.id),{salt,pinHash:await pinHash(salt,v)},{merge:true});m.className="msg";m.textContent="New PIN saved for "+u.name+".";f.remove();}
+      catch(x){m.className="msg err";m.textContent="Could not save.";}});
+  }));
+}
 function renderHistory(){
   const by={};state.history.forEach(d=>{if(!d||!d.date)return;(by[d.date]=by[d.date]||{})[d.dept]=d;});
   const dates=Object.keys(by).sort().reverse();
@@ -359,4 +478,4 @@ function renderHistory(){
 
 window.addEventListener("pagehide",flushAll);
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")flushAll();});
-setInterval(()=>{if(state.ready&&!main.contains(document.activeElement)&&!document.getElementById("pad"))render();},60000); // keep the deadline countdown current
+setInterval(()=>{if(state.ready&&state.tab!=="users"&&!main.contains(document.activeElement)&&!document.getElementById("pad"))render();},60000); // keep the deadline countdown current
