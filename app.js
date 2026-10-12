@@ -483,7 +483,14 @@ Use null when a tender is not on the report. Numbers without currency symbols or
   try{const model=await getModel();
     const r=await model.generateContent([prompt,{inlineData:{data:forAi.split(",")[1],mimeType:"image/jpeg"}}]);
     let t=r.response.text().trim().replace(/^\`\`\`(json)?/i,"").replace(/\`\`\`$/,"");out=JSON.parse(t);}
-  catch(e){say("Photo saved, but the figures could not be read automatically"+(String(e&&e.message||"").match(/api|enable|permission|403|404/i)?" (the AI reader is not switched on in Firebase yet)":"")+". Type the report figures by hand.",true);return;}
+  catch(e){const raw=String(e&&(e.message||e.code)||e||"");
+    const why=/not.?enabled|has not been used|SERVICE_DISABLED|firebasevertexai|AI Logic|enable the/i.test(raw)?"The AI reader is not switched on in Firebase yet."
+      :/not found|404|is not supported|model/i.test(raw)?"The AI model name was not accepted."
+      :/quota|429|RESOURCE_EXHAUSTED/i.test(raw)?"The free AI allowance for today is used up."
+      :/API key|referer|referrer|blocked/i.test(raw)?"The Firebase web key is not allowed to use the AI reader."
+      :/Failed to fetch|network|import/i.test(raw)?"The AI reader could not be reached (connection)."
+      :"The AI reader refused the request.";
+    say("Photo saved, but the figures could not be read automatically. "+why+" Type the report figures by hand. Details: "+raw.slice(0,220),true);console.error("AI reader:",e);return;}
   if(!out||out.readable===false){say("Photo saved, but it was not readable. Retake it flat, in good light, with the whole page in view, or type the figures by hand.",true);return;}
   const doc=local[dept];const filled=[];
   METHODS.forEach(m=>{const v=out[m.k];if(typeof v==="number"&&isFinite(v)){doc.lines[m.k].report=v.toFixed(2);filled.push(m.l);
