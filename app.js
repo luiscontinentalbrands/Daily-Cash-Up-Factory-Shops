@@ -180,7 +180,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12k";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12l";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -492,19 +492,28 @@ function toJpeg(file,maxSide,quality){return new Promise((res,rej)=>{const img=n
   img.onerror=()=>{URL.revokeObjectURL(u);rej(new Error("image"));};img.src=u;});}
 // Model names change over time: try the configured one first, then current fallbacks, and remember what worked.
 const AI_MODELS=[...new Set([AI_MODEL,"gemini-3.5-flash","gemini-3.1-flash-lite","gemini-3.5-flash-lite","gemini-flash-latest","gemini-2.5-flash","gemini-2.0-flash"].filter(Boolean))];
-let aiMod=null,aiInst=null;
+// Two routes to Gemini: "Agent Platform" (Vertex AI, Blaze plan, no extra key) first, then the Gemini Developer API.
+const AI_ROUTES=[["vertex-global",m=>new m.VertexAIBackend("global")],["vertex-us",m=>new m.VertexAIBackend("us-central1")],["google",m=>new m.GoogleAIBackend()]];
+let aiMod=null;const aiInst={};
 async function readWithAI(parts){
-  if(!aiMod){aiMod=await import("https://www.gstatic.com/firebasejs/12.17.1/firebase-ai.js");aiInst=aiMod.getAI(app,{backend:new aiMod.GoogleAIBackend()});}
-  let good=null;try{good=localStorage.getItem("cu_aimodel");}catch(e){}
-  const order=good?[good,...AI_MODELS.filter(x=>x!==good)]:AI_MODELS;let last=null;
-  for(const name of order){
-    try{const model=aiMod.getGenerativeModel(aiInst,{model:name,generationConfig:{responseMimeType:"application/json",temperature:0}});
-      const r=await model.generateContent(parts);try{localStorage.setItem("cu_aimodel",name);}catch(e){}return r;}
+  if(!aiMod)aiMod=await import("https://www.gstatic.com/firebasejs/12.17.1/firebase-ai.js");
+  let good=null;try{good=JSON.parse(localStorage.getItem("cu_airoute")||"null");}catch(e){}
+  const combos=[];if(good&&good.r&&good.m)combos.push([good.r,good.m]);
+  for(const [r] of AI_ROUTES)for(const m of AI_MODELS)if(!(good&&good.r===r&&good.m===m))combos.push([r,m]);
+  let last=null,lastUseful=null;const deadRoutes=new Set();
+  for(const [route,name] of combos){
+    if(deadRoutes.has(route))continue;
+    try{if(!aiInst[route])aiInst[route]=aiMod.getAI(app,{backend:AI_ROUTES.find(x=>x[0]===route)[1](aiMod)});
+      const model=aiMod.getGenerativeModel(aiInst[route],{model:name,generationConfig:{responseMimeType:"application/json",temperature:0}});
+      const r=await model.generateContent(parts);try{localStorage.setItem("cu_airoute",JSON.stringify({r:route,m:name}));}catch(e){}return r;}
     catch(e){last=e;const t=String(e&&(e.message||e.code)||"");
-      // a missing AI Logic setup ("genai config not found") is not a model problem: stop and report it
-      if(/genai|config/i.test(t)||!/not.?found|404|not supported|is not available|unsupported model|invalid model/i.test(t))throw e;}
+      if(/Failed to fetch|NetworkError|network/i.test(t))throw e;                       // no connection: stop
+      if(/quota|429|RESOURCE_EXHAUSTED/i.test(t)){lastUseful=e;deadRoutes.add(route);continue;}
+      if(/not.?found|404|not supported|is not available|unsupported model|invalid model/i.test(t)&&!/genai|config/i.test(t))continue; // model unknown: try next model
+      // route not set up / not allowed: try the next route
+      lastUseful=lastUseful||e;deadRoutes.add(route);}
   }
-  throw last||new Error("No AI model available");}
+  throw lastUseful||last||new Error("No AI model available");}
 async function scanPhoto(file,dept,read){const msg=$("#scan-msg");const say=(t,err)=>{const m=$("#scan-msg");if(m){m.className="msg"+(err?" err":"");m.textContent=t;}};
   say("Saving the photo and reading the report…");
   let keep,forAi;
