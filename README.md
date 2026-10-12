@@ -10,22 +10,18 @@ A secure, live, shared daily cash up for the factory shop.
 
 ## How it is secured
 
+There are no logins. Instead, each device is set up once with the shop's **secret access code**.
+
 | Protection | What it does |
 |---|---|
-| Personal logins | Every staff member signs in with their own email and password. There are no shared passwords. |
-| Staff list | Only people on the `staff` list in Firebase can see anything. If someone creates an account on their own, they still see nothing. |
-| Roles | Wholesale cashiers sign only Wholesale, and Retail cashiers sign only Retail. Only a manager signs off the day. |
-| Separation of duties | The manager who signs off the day must be a different person from the cashiers who signed the sheets. |
-| Locked after signing | A signed sheet can't be changed. Reopening it removes the signature, so it must be signed again. Once the manager has closed the day, only the manager can reopen it. |
+| Secret access code | The database refuses to read or change anything unless the request carries the shop's code. The code is 24 random characters, so it can't be guessed. It lives only in the Firebase rules and on set-up devices, never in this repository. |
+| Locked after signing | A signed sheet can't be changed. Reopening removes the signature, is recorded in the audit trail, and the sheet must be signed again. Once the manager closes the day, a sheet can only be reopened by first reopening the day. |
+| Independent manager sign-off | The manager's name must be different from the cashiers who signed. |
 | Server time | Signature times come from Google's clock, not the phone's, so they can't be back-dated. |
-| Audit trail | Every signature and reopen is logged with who did it and when. Nobody, not even an admin, can edit or delete the log. |
-| Auto sign-out | Staff are signed out after 15 minutes without using the app, and when the browser is closed. |
-| Rules on the server | The protections are enforced by Firebase's security rules in `firestore.rules`, not just by the website. Someone tampering with the website code still can't get past them. |
-| No secrets in the code | The email password and Firebase server key live only in GitHub's encrypted *Secrets*. |
+| Audit trail | Every signature and reopen is logged. Nobody can edit or delete the log. |
+| No deletes | Nothing can be deleted from the app. |
 
-The values in `firebase-config.js` are **not** passwords. They only tell the app which Firebase project to connect to, and Google publishes them openly. Your data is protected by the logins and the rules.
-
----
+**Keep the setup link private, like a till key.** Anyone holding a set-up device can use the cash up. If a device is lost or someone leaves, change the code (see *Changing the access code* below).
 
 ## One-time setup (about 45 minutes)
 
@@ -33,11 +29,10 @@ The values in `firebase-config.js` are **not** passwords. They only tell the app
 
 1. Go to **https://console.firebase.google.com** and sign in with the company Google account.
 2. Click **Create a project** and name it `cbm-cashup`. You can switch Google Analytics off.
-3. **Turn on logins:** left menu **Build → Authentication → Get started → Email/Password → Enable → Save**.
 4. **Create the database:** **Build → Firestore Database → Create database**.
    - Location: **africa-south1 (Johannesburg)**. This can't be changed later.
    - Choose **Start in production mode**.
-5. **Add the security rules:** in Firestore, open the **Rules** tab, delete everything in it, paste in the whole of `firestore.rules`, and click **Publish**.
+5. **Add the security rules:** in Firestore, open the **Rules** tab, delete everything in it, paste in the whole of `firestore.rules`, replace `PASTE_SHOP_ACCESS_CODE` with your access code, and click **Publish**. Don't put the real code back into GitHub.
 6. **Register the website:** click the gear icon **⚙ → Project settings → General → Your apps → `</>` (Web)**. Name it `Cash Up` and click **Register app**. You'll see a block of settings like `apiKey: "..."`. Copy each value into `firebase-config.js`.
 
 ### Part 2 — Put the website on GitHub
@@ -49,35 +44,14 @@ The values in `firebase-config.js` are **not** passwords. They only tell the app
    - If the `.github` folder doesn't upload by dragging, create it by hand: **Add file → Create new file**, type `.github/workflows/cashup-daily-check.yml` as the name, and paste in the file's contents.
 3. **Switch on the website:** **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main` / `(root)` → Save**.
    - After a minute or two your app is live at `https://YOUR-GITHUB-NAME.github.io/cashup/`.
-4. **Let Firebase accept logins from that address:** in Firebase, go to **Authentication → Settings → Authorized domains → Add domain** and enter `YOUR-GITHUB-NAME.github.io`.
 
-### Part 3 — Add your staff
+### Part 3 — Set up each device
 
-Do this for each person: cashiers, managers, and yourself as admin.
+1. Send the **setup link** (the app address followed by `#join-` and the access code) to each device privately, e.g. by WhatsApp to the manager, and open it once on the till PC, tablet or phone.
+2. The device remembers the code. From then on, staff just open the normal app address.
+3. On phones, add the app to the home screen: iPhone (Safari) **Share → Add to Home Screen**; Android (Chrome) **⋮ → Add to Home screen**.
 
-1. Firebase → **Authentication → Users → Add user**. Enter their email and a temporary password.
-2. Copy their **User UID**, the long code in the user list.
-3. Firebase → **Firestore Database → Data → Start collection** (only the first time). Name the collection `staff`.
-4. Add a document:
-   - **Document ID:** paste the User UID.
-   - Add three fields:
-
-| Field | Type | Value |
-|---|---|---|
-| `name` | string | Their full name as it should appear on signatures, e.g. `Zandile Mokoena` |
-| `role` | string | One of `wholesale`, `retail`, `manager`, `admin` |
-| `active` | boolean | `true` |
-
-5. Send them the app link and their temporary password. They can choose their own password with **Forgot password?** on the sign-in screen.
-
-**When someone leaves:** set `active` to `false` in their staff record. Their access stops at once, and their past cash ups and signatures stay in History. You can also disable the login under Authentication → Users.
-
-**Roles explained**
-
-- `wholesale`: fills in and signs the Wholesale sheet.
-- `retail`: fills in and signs the Retail sheet.
-- `manager`: can fill in either sheet, can reopen sheets, and signs off the day.
-- `admin`: everything, plus deleting a day. Give this to as few people as possible.
+**Changing the access code** (lost device, staff member leaves): pick a new code of 24 letters and numbers, put it in the rules in place of the old one and click **Publish**, update the `SHOP_KEY` secret in GitHub, and send the new setup link to the devices you still use. Old devices stop working immediately. Note that data is stored under the code, so the cash ups saved under the old code stay in the database but are no longer shown in the app; ask for help before changing it if you need the history carried over.
 
 ### Part 4 — Switch on the 7 pm and 9 pm emails
 
@@ -96,9 +70,10 @@ The emails are sent from a Gmail account by GitHub. They need two secrets.
 1. Use the Gmail account the emails should come from, for example luiscontinentalbrands@gmail.com.
 2. Google Account → **Security**. Turn on **2-Step Verification** if it isn't on already.
 3. Search for **App passwords**, create one called `Cash Up`, and copy the 16-character password.
-4. In GitHub, add two more secrets:
+4. In GitHub, add three more secrets:
    - `SMTP_USER` = the Gmail address
    - `SMTP_PASS` = the 16-character app password
+   - `SHOP_KEY` = the shop access code
 
 **C. Test it**
 
@@ -111,8 +86,6 @@ After that it runs by itself at **19:05** and **21:00**, Monday to Saturday. Git
 ### Part 5 — Extra lock-down (recommended)
 
 - **Restrict the web key to your site:** open **https://console.cloud.google.com/apis/credentials** and select the Firebase project. Click the **Browser key** and under **Application restrictions** choose **Websites**. Add `https://YOUR-GITHUB-NAME.github.io/*` and Save.
-- **Stop self-sign-ups:** Firebase → Authentication → **Settings → User actions** → untick **Enable create (sign-up)**. Self-created accounts already see nothing, but this stops them existing at all.
-- **Two-step login for managers and admins:** available after upgrading Authentication to *Identity Platform* (Authentication → Settings).
 
 ---
 

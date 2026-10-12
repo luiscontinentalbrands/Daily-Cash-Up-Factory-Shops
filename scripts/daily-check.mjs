@@ -25,6 +25,9 @@ function need(name) {
 
 admin.initializeApp({ credential: admin.credential.cert(JSON.parse(need("FIREBASE_SERVICE_ACCOUNT"))) });
 const db = admin.firestore();
+const SHOP_KEY = need("SHOP_KEY");
+if (!/^[A-Za-z0-9]{16,64}$/.test(SHOP_KEY)) { console.error("SHOP_KEY is not valid."); process.exit(1); }
+const base = `shops/${SHOP_KEY}`;
 
 const mailer = nodemailer.createTransport({
   host: process.env.SMTP_HOST || "smtp.gmail.com",
@@ -62,7 +65,7 @@ const signedTime = doc => doc?.signedAtServer?.toDate ? doc.signedAtServer.toDat
 
 // ---------- read the day ----------
 const ids = ["wholesale", "retail", "manager"];
-const snaps = await Promise.all(ids.map(d => db.doc(`cashups/${DATE}_${d}`).get()));
+const snaps = await Promise.all(ids.map(d => db.doc(`${base}/cashups/${DATE}_${d}`).get()));
 const [W, Rt, Mg] = snaps.map(s => (s.exists ? s.data() : null));
 const signedNow = d => !!d && d.status === "signed";
 // The 7 pm check judges the day as it stood at 19:00, even if GitHub starts the job late.
@@ -75,7 +78,7 @@ if (!signed(Mg)) missing.push("Manager");
 const complete = missing.length === 0;
 const nothing = !W && !Rt && !Mg;
 
-const logRef = db.doc(`emaillog/${DATE}`);
+const logRef = db.doc(`${base}/emaillog/${DATE}`);
 const logSnap = await logRef.get();
 const log = logSnap.exists ? logSnap.data() : {};
 

@@ -39,6 +39,7 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SHOP_KEY: ${{ secrets.SHOP_KEY }}
           ALERT_TO: ulla@tastytreats.co.za
           REPORT_TO: martie@tastytreats.co.za
           CASHUP_DATE: ${{ github.event.inputs.date }}

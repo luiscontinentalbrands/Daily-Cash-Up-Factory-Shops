@@ -1,123 +1,85 @@
 rules_version = '2';
 
-// Security rules for the Factory Shop Cash Up.
-// Paste this whole file into Firebase console → Firestore Database → Rules → Publish.
+// Security rules for the Factory Shop Cash Up (no logins, secret shop access code).
 //
-// Who can do what:
-//   - Only people with an ACTIVE record in the "staff" collection can read or write anything.
-//     Creating an account alone gives no access. Staff records can only be changed in the Firebase console.
-//   - Roles: "wholesale", "retail", "manager", "admin".
-//   - Wholesale/Retail sheet: edited by that department, a manager or admin; SIGNED only by that department (or admin).
-//   - Signed sheets are locked. Reopen: the person who signed it (while the day is not closed), a manager or admin.
-//   - Manager sign-off: only after both departments have signed, by a manager who did NOT sign either sheet.
+// IMPORTANT: replace PASTE_SHOP_ACCESS_CODE below with the real code before publishing.
+// Never commit the real code to GitHub: it lives only in the Firebase console.
+//
+//   - Nothing can be read or written without the secret access code.
+//   - Signed sheets are locked. Reopening removes the signature and is recorded.
+//   - Once the manager closes the day, a sheet can only be reopened by first reopening the day.
+//   - The manager's name must differ from the names of the cashiers who signed.
 //   - Signature times come from Google's server clock, not the phone.
-//   - Every signature and reopen is written to an audit trail that nobody can edit or delete.
-//   - Only an admin can delete a day.
+//   - The audit trail can only be added to, never changed or deleted.
+//   - Nothing can be deleted from the app.
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function signedIn() { return request.auth != null; }
-    function staffPath() { return /databases/$(database)/documents/staff/$(request.auth.uid); }
-    function isStaff() {
-      return signedIn() && exists(staffPath()) && get(staffPath()).data.active == true;
-    }
-    function role() { return get(staffPath()).data.role; }
-    function isAdmin() { return isStaff() && role() == 'admin'; }
+    function okKey(k) { return k == 'PASTE_SHOP_ACCESS_CODE'; }
 
-    match /staff/{uid} {
-      allow read: if signedIn() && request.auth.uid == uid;
-      allow read: if isStaff() && role() in ['manager', 'admin'];
-      allow write: if false;            // manage staff in the Firebase console only
-    }
-
-    match /cashups/{id} {
+    match /shops/{k}/cashups/{id} {
       function d() { return request.resource.data; }
       function dept() { return d().dept; }
       function isDeptDoc() { return dept() in ['wholesale', 'retail']; }
       function wasSigned() { return resource != null && resource.data.status == 'signed'; }
       function nowSigned() { return d().status == 'signed'; }
-      function otherDoc(dp) {
-        return get(/databases/$(database)/documents/cashups/$(d().date + '_' + dp)).data;
-      }
-      function managerSigned() {
-        return exists(/databases/$(database)/documents/cashups/$(d().date + '_manager'))
-          && otherDoc('manager').status == 'signed';
-      }
-      function signingOk() {
-        return d().signedByUid == request.auth.uid
-          && d().signedBy == get(staffPath()).data.name
-          && d().signedAtServer == request.time;
-      }
+      function otherPath(dp) { return /databases/$(database)/documents/shops/$(k)/cashups/$(d().date + '_' + dp); }
+      function otherDoc(dp) { return get(otherPath(dp)).data; }
+      function managerSigned() { return exists(otherPath('manager')) && otherDoc('manager').status == 'signed'; }
       function reopening() { return d().reopenedAt == request.time; }
-      function signatureUnchanged() {
-        return d().signedByUid == resource.data.signedByUid
-          && d().signedBy == resource.data.signedBy
-          && d().signature == resource.data.signature
-          && d().signedAtServer == resource.data.signedAtServer;
+      function signingOk() {
+        return d().signedAtServer == request.time
+          && d().signedBy is string && d().signedBy.trim().size() >= 3 && d().signedBy.size() <= 80
+          && d().signature is string && d().signature.matches('^data:image/png;base64,.*');
       }
       function validShape() {
         return d().date is string
           && d().date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
           && dept() in ['wholesale', 'retail', 'manager']
           && id == d().date + '_' + dept()
-          && d().updatedBy == request.auth.uid
           && d().status in ['new', 'draft', 'signed']
           && (resource == null || (resource.data.date == d().date && resource.data.dept == dept()));
       }
 
-      allow read: if isStaff();
-      allow delete: if isAdmin();
+      allow read: if okKey(k);
+      allow delete: if false;
 
-      allow create, update: if isStaff() && validShape() && (
+      allow create, update: if okKey(k) && validShape() && (
         (isDeptDoc() && (
           // editing a draft
-          (!wasSigned() && !nowSigned() && role() in [dept(), 'manager', 'admin'])
-          // signing (department cashier only)
-          || (!wasSigned() && nowSigned() && role() in [dept(), 'admin'] && signingOk())
-          // reopening a signed sheet: only while the day is not closed by the manager,
-          // and only as a deliberate reopen (a stale autosave cannot wipe a signature)
-          || (wasSigned() && !nowSigned() && !managerSigned() && reopening() && (
-                role() in ['manager', 'admin']
-                || resource.data.signedByUid == request.auth.uid))
-          // correcting figures on a signed sheet without reopening: admin only, signature untouched
-          || (wasSigned() && nowSigned() && role() == 'admin' && signatureUnchanged())
+          (!wasSigned() && !nowSigned())
+          // signing
+          || (!wasSigned() && nowSigned() && signingOk())
+          // deliberate reopen, only while the day is not closed by the manager
+          || (wasSigned() && !nowSigned() && reopening() && !managerSigned())
         ))
         || (dept() == 'manager' && (
-          // manager signs off the day
-          (!wasSigned() && nowSigned() && role() in ['manager', 'admin'] && signingOk()
+          // manager signs off the day: both sheets signed, by someone else
+          (!wasSigned() && nowSigned() && signingOk()
             && otherDoc('wholesale').status == 'signed'
             && otherDoc('retail').status == 'signed'
-            && otherDoc('wholesale').signedByUid != request.auth.uid
-            && otherDoc('retail').signedByUid != request.auth.uid)
+            && d().signedBy.trim().lower() != otherDoc('wholesale').signedBy.trim().lower()
+            && d().signedBy.trim().lower() != otherDoc('retail').signedBy.trim().lower())
           // manager reopens the day
-          || (wasSigned() && !nowSigned() && reopening() && role() in ['manager', 'admin'])
-          || (!wasSigned() && !nowSigned() && role() in ['manager', 'admin'])
+          || (wasSigned() && !nowSigned() && reopening())
+          || (!wasSigned() && !nowSigned())
         ))
       );
 
       // Audit trail: append-only
       match /history/{entry} {
-        function parent() { return get(/databases/$(database)/documents/cashups/$(id)).data; }
-        allow read: if isStaff();
-        allow create: if isStaff()
-          && request.resource.data.uid == request.auth.uid
-          && request.resource.data.name == get(staffPath()).data.name
+        function parent() { return get(/databases/$(database)/documents/shops/$(k)/cashups/$(id)).data; }
+        allow read: if okKey(k);
+        allow create: if okKey(k)
           && request.resource.data.at == request.time
           && request.resource.data.action in ['signed', 'reopened']
-          && (request.resource.data.action == 'signed'
-                ? (parent().status == 'signed' && parent().signedByUid == request.auth.uid)
-                : parent().status != 'signed');
+          && request.resource.data.name is string && request.resource.data.name.size() <= 80
+          && (request.resource.data.action == 'signed' ? parent().status == 'signed' : parent().status != 'signed');
         allow update, delete: if false;
       }
     }
 
-    // Written only by the daily email job (server key); staff cannot see or change it.
-    match /emaillog/{id} {
-      allow read: if isAdmin();
-      allow write: if false;
-    }
-
-    // Anything not listed above is closed by default.
+    // Everything else (including the email job's log) is closed to the app.
   }
 }
