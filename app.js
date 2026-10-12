@@ -180,7 +180,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12e";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12f";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -356,11 +356,12 @@ const money=v=>{let t=String(v).replace(/,/g,".").replace(/[^0-9.]/g,"");
 
 function bindDept(dept){const doc=local[dept];
   main.querySelectorAll("td.inp input").forEach(inp=>{
-    inp.addEventListener("input",()=>{const c=money(inp.value);if(c!==inp.value)inp.value=c;doc.lines[inp.dataset.m][inp.dataset.f]=inp.value;recalc(dept);scheduleSave(dept);});
-    inp.addEventListener("blur",()=>{if(inp.value!==""){const v=num(inp.value).toFixed(2);inp.value=v;doc.lines[inp.dataset.m][inp.dataset.f]=v;scheduleSave(dept);}});});
+    // leave what the person types alone (comma or point); only strip letters. Tidy to 2 decimals on leaving the box.
+    inp.addEventListener("input",()=>{if(/[^0-9.,]/.test(inp.value))inp.value=inp.value.replace(/[^0-9.,]/g,"");doc.lines[inp.dataset.m][inp.dataset.f]=money(inp.value);recalc(dept);scheduleSave(dept);});
+    inp.addEventListener("blur",()=>{if(inp.value!==""){const v=num(money(inp.value)).toFixed(2);inp.value=v;doc.lines[inp.dataset.m][inp.dataset.f]=v;scheduleSave(dept);}});});
   const n=document.getElementById(dept+"-notes");if(n)n.addEventListener("input",()=>{doc.notes=n.value;scheduleSave(dept);});
-  const dm=document.getElementById(dept+"-damaged");if(dm){dm.addEventListener("input",()=>{const c=money(dm.value);if(c!==dm.value)dm.value=c;doc.damaged=dm.value;scheduleSave(dept);});
-    dm.addEventListener("blur",()=>{if(dm.value!==""){dm.value=num(dm.value).toFixed(2);doc.damaged=dm.value;scheduleSave(dept);}});}
+  const dm=document.getElementById(dept+"-damaged");if(dm){dm.addEventListener("input",()=>{if(/[^0-9.,]/.test(dm.value))dm.value=dm.value.replace(/[^0-9.,]/g,"");doc.damaged=money(dm.value);scheduleSave(dept);});
+    dm.addEventListener("blur",()=>{if(dm.value!==""){dm.value=num(money(dm.value)).toFixed(2);doc.damaged=dm.value;scheduleSave(dept);}});}
   const dn=document.getElementById(dept+"-damagedNotes");if(dn)dn.addEventListener("input",()=>{doc.damagedNotes=dn.value;scheduleSave(dept);});
   const ro=$("#reopen");if(ro){let armed=false;ro.addEventListener("click",async()=>{
     if(!armed){armed=true;ro.textContent="Tap again to reopen";$("#reopen-msg").textContent="The signature will be removed.";setTimeout(()=>{armed=false;if(ro.isConnected){ro.textContent="Reopen to correct";$("#reopen-msg").textContent="";}},4000);return;}
