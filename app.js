@@ -1,6 +1,6 @@
 import { firebaseConfig, AI_MODEL } from "./firebase-config.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-import { getFirestore, doc as fdoc, getDocs, setDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 /* ---------- constants & helpers ---------- */
 const METHODS=[
@@ -285,8 +285,12 @@ function renderDept(dept){
       </div>
       ${editable?`<div class="scan">
         <div style="min-width:0"><div class="eyebrow">Fill from photo</div><div class="msg">Take a photo of the last page of the cash up report. The report figures are filled in for you to check, and the photo is kept with this cash up.</div></div>
-        <label class="btn primary" for="${dept}-photo" style="display:inline-flex;align-items:center;gap:8px">Scan report photo</label>
+        <div class="actions">
+          <label class="btn primary" for="${dept}-photo" style="display:inline-flex;align-items:center;gap:8px">Scan report photo</label>
+          <label class="btn" for="${dept}-photo2" style="display:inline-flex;align-items:center;gap:8px">Add another photo</label>
+        </div>
         <input type="file" id="${dept}-photo" accept="image/*" capture="environment" hidden>
+        <input type="file" id="${dept}-photo2" accept="image/*" capture="environment" hidden>
         <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
       </div>`:""}
       <div class="field"><label>Report photos</label><div data-photos="${dept}">${photoStrip(dept)}</div></div>
@@ -354,7 +358,8 @@ function bindDept(dept){const doc=local[dept];
     Object.assign(doc,{status:"draft",signature:"",signedBy:"",signedAt:""});clearTimeout(timers[dept]);state.pending[dept]=true;
     await save(dept,{action:"reopened",by:state.me.name});render(true);});}
   const pad=$("#pad");if(pad)bindPad(pad,dept);
-  const ph=document.getElementById(dept+"-photo");if(ph)ph.addEventListener("change",()=>{const f=ph.files&&ph.files[0];ph.value="";if(f)scanPhoto(f,dept);});
+  const ph=document.getElementById(dept+"-photo");if(ph)ph.addEventListener("change",()=>{const f=ph.files&&ph.files[0];ph.value="";if(f)scanPhoto(f,dept,true);});
+  const ph2=document.getElementById(dept+"-photo2");if(ph2)ph2.addEventListener("change",()=>{const f=ph2.files&&ph2.files[0];ph2.value="";if(f)scanPhoto(f,dept,false);});
   document.querySelectorAll("[data-photos]").forEach(bindThumbs);
 }
 function bindPad(cv,dept){const ctx=cv.getContext("2d");let drawing=false,inked=false,last=null;
@@ -443,10 +448,19 @@ function renderCombined(){
 }
 
 const safeJpg=s=>/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(String(s||""))?s:"";
-function photoStrip(dept){const ps=state.photos.filter(p=>p.dept===dept);
-  if(!ps.length)return '<div class="msg">No photo yet.</div>';
-  return `<div class="actions">${ps.map(p=>{const src=safeJpg(p.data);return src?`<button class="thumb" type="button" data-pid="${esc(p.id)}" title="${esc(p.by)} · ${esc(timeStr(p.takenAt))}" style="padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;cursor:zoom-in"><img src="${src}" alt="Report photo taken by ${esc(p.by)}" style="display:block;height:72px;width:auto"></button>`:"";}).join("")}</div>`;}
-function bindThumbs(el){el.querySelectorAll("button[data-pid]").forEach(b=>b.addEventListener("click",()=>{const p=state.photos.find(x=>x.id===b.dataset.pid);if(!p)return;
+function canRemovePhoto(dept){return state.tab===dept&&canEditDept(dept)&&current(dept).status!=="signed";}
+function photoStrip(dept){const all=state.photos.filter(p=>p.dept===dept);const ps=all.filter(p=>p.removed!==true);const gone=all.filter(p=>p.removed===true);
+  const rm=canRemovePhoto(dept);
+  const goneNote=gone.length?`<div class="msg" style="margin-top:6px">${gone.map(p=>`Photo removed by ${esc(p.removedBy)}${p.removedAtIso?" · "+esc(timeStr(p.removedAtIso)):""}`).join("<br>")}</div>`:"";
+  if(!ps.length)return '<div class="msg">No photo yet.</div>'+goneNote;
+  return `<div class="actions" style="align-items:flex-start">${ps.map(p=>{const src=safeJpg(p.data);return src?`<div style="display:flex;flex-direction:column;gap:4px;align-items:center"><button class="thumb" type="button" data-pid="${esc(p.id)}" title="${esc(p.by)} · ${esc(timeStr(p.takenAt))}" style="padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;cursor:zoom-in"><img src="${src}" alt="Report photo taken by ${esc(p.by)}" style="display:block;height:72px;width:auto"></button>${rm?`<button class="linkbtn" type="button" data-rm="${esc(p.id)}" style="color:var(--bad);font-size:.78rem">Remove</button>`:""}</div>`:"";}).join("")}</div>`+goneNote;}
+function bindThumbs(el){
+  el.querySelectorAll("button[data-rm]").forEach(b=>{let armed=false;b.addEventListener("click",async()=>{
+    if(!armed){armed=true;b.textContent="Tap again to remove";setTimeout(()=>{armed=false;if(b.isConnected)b.textContent="Remove";},4000);return;}
+    b.disabled=true;
+    try{await updateDoc(fdoc(photosCol(),b.dataset.rm),{removed:true,removedBy:state.me.name,removedAt:serverTimestamp(),removedAtIso:new Date().toISOString()});}
+    catch(e){b.disabled=false;b.textContent="Could not remove";}});});
+  el.querySelectorAll("button[data-pid]").forEach(b=>b.addEventListener("click",()=>{const p=state.photos.find(x=>x.id===b.dataset.pid);if(!p)return;
   const ov=document.createElement("div");ov.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:10px;cursor:zoom-out";
   ov.innerHTML=`<img src="${safeJpg(p.data)}" alt="Report photo" style="max-width:100%;max-height:85vh;border-radius:8px;background:#fff"><div style="color:#fff;font-size:.85rem">${esc(DEPTS[p.dept]||"")} · ${esc(p.by)} · ${esc(timeStr(p.takenAt))} · tap to close</div>`;
   ov.addEventListener("click",()=>ov.remove());document.body.appendChild(ov);}));}
@@ -459,7 +473,7 @@ async function getModel(){if(aiModel)return aiModel;
   const m=await import("https://www.gstatic.com/firebasejs/12.17.1/firebase-ai.js");
   const ai=m.getAI(app,{backend:new m.GoogleAIBackend()});
   aiModel=m.getGenerativeModel(ai,{model:AI_MODEL||"gemini-3.5-flash",generationConfig:{responseMimeType:"application/json",temperature:0}});return aiModel;}
-async function scanPhoto(file,dept){const msg=$("#scan-msg");const say=(t,err)=>{const m=$("#scan-msg");if(m){m.className="msg"+(err?" err":"");m.textContent=t;}};
+async function scanPhoto(file,dept,read){const msg=$("#scan-msg");const say=(t,err)=>{const m=$("#scan-msg");if(m){m.className="msg"+(err?" err":"");m.textContent=t;}};
   say("Saving the photo and reading the report…");
   let keep,forAi;
   try{forAi=await toJpeg(file,1800,0.85);keep=await toJpeg(file,1400,0.6);if(keep.length>850000)keep=await toJpeg(file,1100,0.5);if(keep.length>850000)keep=await toJpeg(file,900,0.45);}
@@ -468,6 +482,7 @@ async function scanPhoto(file,dept){const msg=$("#scan-msg");const say=(t,err)=>
   let saved=false;
   try{await setDoc(fdoc(photosCol()),{date:state.date,dept,data:keep,by:state.me.name,at:serverTimestamp(),takenAt:new Date().toISOString()});saved=true;}
   catch(e){say("The photo could not be saved. Check the connection and try again.",true);return;}
+  if(!read){say("Photo added. The figures were not changed.");return;}
   // 2. read the figures
   const prompt=`This is a photo of the last page of a South African retail till cash-up / Z-report (amounts in Rand) for the ${DEPTS[dept]} department of a factory shop.
 Read the TOTAL amount per payment/tender type as printed on the report. Map tenders to these keys:

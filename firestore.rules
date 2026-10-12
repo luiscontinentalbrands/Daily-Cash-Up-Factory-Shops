@@ -83,6 +83,7 @@ service cloud.firestore {
     // Photos of the till report, kept with each cash up (can be added, never changed or deleted)
     match /shops/{k}/photos/{pid} {
       function p() { return request.resource.data; }
+      function sheetPath() { return /databases/$(database)/documents/shops/$(k)/cashups/$(resource.data.date + '_' + resource.data.dept); }
       allow read: if okKey(k);
       allow create: if okKey(k)
         && p().date is string && p().date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
@@ -91,7 +92,14 @@ service cloud.firestore {
         && p().at == request.time
         && p().data is string && p().data.size() < 900000
         && p().data.matches('^data:image/jpeg;base64,.*');
-      allow update, delete: if false;
+      // A photo can be removed (hidden, never erased) only while its sheet is not signed
+      allow update: if okKey(k)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['removed', 'removedBy', 'removedAt', 'removedAtIso'])
+        && request.resource.data.removed == true
+        && request.resource.data.removedAt == request.time
+        && request.resource.data.removedBy is string && request.resource.data.removedBy.size() <= 80
+        && (!exists(sheetPath()) || get(sheetPath()).data.status != 'signed');
+      allow delete: if false;
     }
 
     // People who use the app (managed by the administrator inside the app)
