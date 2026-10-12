@@ -180,7 +180,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12f";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12g";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -282,8 +282,8 @@ function renderDept(dept){
   const t=totals(doc);
   const rows=METHODS.map(m=>{const ln=doc.lines[m.k];const v=num(ln.deposited)-num(ln.report);
     return `<tr><td>${m.l}</td>
-      <td class="inp"><input id="${dept}-${m.k}-report" data-m="${m.k}" data-f="report" inputmode="decimal" placeholder="0.00" value="${esc(ln.report)}" ${dis} aria-label="${m.l} per report"></td>
-      <td class="inp"><input id="${dept}-${m.k}-deposited" data-m="${m.k}" data-f="deposited" inputmode="decimal" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="${m.l} deposited"></td>
+      <td class="inp"><input id="${dept}-${m.k}-report" data-m="${m.k}" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.report)}" ${dis} aria-label="${m.l} per report"></td>
+      <td class="inp"><input id="${dept}-${m.k}-deposited" data-m="${m.k}" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="${m.l} deposited"></td>
       <td class="num ${vcls(v)}" id="v-${m.k}">${RV(v)}</td></tr>`;}).join("");
   const di=dayInfo(state.date,current("wholesale"),current("retail"),current("manager"));
   main.innerHTML=`${!canEditDept(dept)?`<div class="notice">You are signed in as ${esc(ROLE_LABEL[role()])}, so the ${DEPTS[dept]} sheet is view-only for you.</div>`:""}${banner(di)}
@@ -312,8 +312,8 @@ function renderDept(dept){
         <tfoot><tr><td>Total</td><td class="num" id="t-report">${R(t.report)}</td><td class="num" id="t-dep">${R(t.deposited)}</td><td class="num ${vcls(t.variance)}" id="t-var">${RV(t.variance)}</td></tr></tfoot>
       </table></div>
       <div class="dmg">
-        <div class="field"><label for="${dept}-damaged">Damaged bank notes &amp; coins (R)</label><input id="${dept}-damaged" class="num" inputmode="decimal" placeholder="0.00" value="${esc(doc.damaged)}" ${dis} style="text-align:right"></div>
-        <div class="field"><label for="${dept}-damagedNotes">Damaged details</label><input id="${dept}-damagedNotes" value="${esc(doc.damagedNotes)}" placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" ${dis} maxlength="300"></div>
+        <div class="field"><label for="${dept}-damaged">Damaged bank notes &amp; coins (R)</label><input id="${dept}-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(doc.damaged)}" ${dis} style="text-align:right"></div>
+        <div class="field"><label for="${dept}-damagedNotes">Damaged details</label><input id="${dept}-damagedNotes" value="${esc(doc.damagedNotes)}" placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" ${dis} maxlength="300"></div>
       </div>
       <div class="field"><label for="${dept}-notes">Notes (explain any variance)</label><textarea id="${dept}-notes" ${dis} maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice">${esc(doc.notes)}</textarea></div>
       <div class="saved" id="saved-${dept}">${doc.updatedAt?"Last saved "+timeStr(doc.updatedAt):(editable?"Saves automatically as you type":"")}</div>
