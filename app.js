@@ -180,7 +180,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12h";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12i";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -190,7 +190,7 @@ function startApp(){
 $("#date").addEventListener("change",e=>{if(e.target.value)setDate(e.target.value);});
 $("#today").addEventListener("click",()=>{$("#date").value=todayStr();setDate(todayStr());});
 document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
-function setTab(t){if(t==="users"&&role()!=="admin")t="wholesale";state.tab=t;
+function setTab(t){if(t==="users"&&role()!=="admin")t="wholesale";state.tab=t;document.querySelector("header.bar").classList.toggle("dept-wholesale",t==="wholesale");document.querySelector("header.bar").classList.toggle("dept-retail",t==="retail");
   document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===t)));render(true);}
 function setDate(d){flushAll();state.date=d;state.docs={wholesale:null,retail:null,manager:null};delete local.wholesale;delete local.retail;delete local.manager;subscribeDay();render(true);}
 function stopSubs(){if(photoSub){photoSub();photoSub=null;}if(daySub){daySub();daySub=null;}if(histSub){histSub();histSub=null;}}
@@ -287,7 +287,8 @@ function renderDept(dept){
       <td class="num ${vcls(v)}" id="v-${m.k}">${RV(v)}</td></tr>`;}).join("");
   const di=dayInfo(state.date,current("wholesale"),current("retail"),current("manager"));
   main.innerHTML=`${!canEditDept(dept)?`<div class="notice">You are signed in as ${esc(ROLE_LABEL[role()])}, so the ${DEPTS[dept]} sheet is view-only for you.</div>`:""}${banner(di)}
-  <section class="sheet">
+  <div class="deptband ${dept}" role="heading" aria-level="2"><div><div class="big">${DEPTS[dept]} cash up</div><div class="small">${longDate(state.date)}</div></div><div class="small">You are filling in the <b>${DEPTS[dept]}</b> sheet</div></div>
+  <section class="sheet ${dept}">
     <div class="sheet-head"><div><div class="eyebrow">${DEPTS[dept]} department</div><h2>${longDate(state.date)}</h2></div>${chip(statusOf(doc))}</div>
     <div class="sheet-body">
       <div class="fields">

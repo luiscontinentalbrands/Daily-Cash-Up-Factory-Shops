@@ -130,3 +130,21 @@ footer{max-width:980px;margin:0 auto;padding:0 16px 30px;font-size:.75rem;color:
 .who-bar button{background:transparent;border:1px solid #4a443c;color:var(--bar-fg);border-radius:999px;padding:5px 11px;font:inherit;font-size:.78rem;cursor:pointer}
 .roletag{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid #4a443c;border-radius:999px;padding:2px 8px}
 .signer-static{font-family:var(--display);font-size:1.05rem}
+
+/* Department identity: Wholesale = copper, Retail = blue. The selected tab fills with its colour. */
+:root{--ws:#b8692e;--rt:#2f6a9a;--ws-soft:#f6e9dd;--rt-soft:#e3edf6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ws:#d98a4c;--rt:#6fa3d6;--ws-soft:#3a2a1d;--rt-soft:#1d2a38}}
+:root[data-theme="dark"]{--ws:#d98a4c;--rt:#6fa3d6;--ws-soft:#3a2a1d;--rt-soft:#1d2a38}
+nav.tabs button{border-radius:10px 10px 0 0}
+nav.tabs button[aria-selected="true"]{color:#fff;background:var(--bar-2);border-bottom-color:var(--accent)}
+nav.tabs button[data-tab="wholesale"][aria-selected="true"]{background:var(--ws);border-bottom-color:var(--ws)}
+nav.tabs button[data-tab="retail"][aria-selected="true"]{background:var(--rt);border-bottom-color:var(--rt)}
+header.bar.dept-wholesale{border-bottom-color:var(--ws)}
+header.bar.dept-retail{border-bottom-color:var(--rt)}
+.deptband{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-radius:14px;padding:14px 18px;color:#fff}
+.deptband.wholesale{background:var(--ws)}
+.deptband.retail{background:var(--rt)}
+.deptband .big{font-family:var(--display);font-size:1.5rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.deptband .small{font-size:.85rem;opacity:.92}
+.sheet.wholesale{border-top:6px solid var(--ws)}
+.sheet.retail{border-top:6px solid var(--rt)}
