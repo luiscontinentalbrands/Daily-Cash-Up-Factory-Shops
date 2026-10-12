@@ -180,7 +180,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12g";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12h";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -356,11 +356,15 @@ const money=v=>{let t=String(v).replace(/,/g,".").replace(/[^0-9.]/g,"");
 
 function bindDept(dept){const doc=local[dept];
   main.querySelectorAll("td.inp input").forEach(inp=>{
+    // clicking into a box selects the amount, so typing simply replaces it
+    inp.addEventListener("focus",()=>{try{inp.select();}catch(e){}});
+    inp.addEventListener("mouseup",e=>{if(inp.dataset.sel!=="1"){e.preventDefault();inp.dataset.sel="1";}});
+    inp.addEventListener("blur",()=>{inp.dataset.sel="";});
     // leave what the person types alone (comma or point); only strip letters. Tidy to 2 decimals on leaving the box.
     inp.addEventListener("input",()=>{if(/[^0-9.,]/.test(inp.value))inp.value=inp.value.replace(/[^0-9.,]/g,"");doc.lines[inp.dataset.m][inp.dataset.f]=money(inp.value);recalc(dept);scheduleSave(dept);});
     inp.addEventListener("blur",()=>{if(inp.value!==""){const v=num(money(inp.value)).toFixed(2);inp.value=v;doc.lines[inp.dataset.m][inp.dataset.f]=v;scheduleSave(dept);}});});
   const n=document.getElementById(dept+"-notes");if(n)n.addEventListener("input",()=>{doc.notes=n.value;scheduleSave(dept);});
-  const dm=document.getElementById(dept+"-damaged");if(dm){dm.addEventListener("input",()=>{if(/[^0-9.,]/.test(dm.value))dm.value=dm.value.replace(/[^0-9.,]/g,"");doc.damaged=money(dm.value);scheduleSave(dept);});
+  const dm=document.getElementById(dept+"-damaged");if(dm){dm.addEventListener("focus",()=>{try{dm.select();}catch(e){}});dm.addEventListener("mouseup",e=>{if(dm.dataset.sel!=="1"){e.preventDefault();dm.dataset.sel="1";}});dm.addEventListener("blur",()=>{dm.dataset.sel="";});dm.addEventListener("input",()=>{if(/[^0-9.,]/.test(dm.value))dm.value=dm.value.replace(/[^0-9.,]/g,"");doc.damaged=money(dm.value);scheduleSave(dept);});
     dm.addEventListener("blur",()=>{if(dm.value!==""){dm.value=num(money(dm.value)).toFixed(2);doc.damaged=dm.value;scheduleSave(dept);}});}
   const dn=document.getElementById(dept+"-damagedNotes");if(dn)dn.addEventListener("input",()=>{doc.damagedNotes=dn.value;scheduleSave(dept);});
   const ro=$("#reopen");if(ro){let armed=false;ro.addEventListener("click",async()=>{
