@@ -1,5 +1,6 @@
-import { firebaseConfig, AI_MODEL } from "./firebase-config.js";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 /* ---------- constants & helpers ---------- */
@@ -47,7 +48,10 @@ const $=s=>document.querySelector(s);
 const main=$("#main");
 const configured=!String(firebaseConfig.apiKey||"").startsWith("PASTE");
 let app,db;
-if(configured){app=initializeApp(firebaseConfig);db=getFirestore(app);}
+if(configured){app=initializeApp(firebaseConfig);
+  // App Check proves requests come from this app (Google requires it for the photo reader)
+  if(APP_CHECK_SITE_KEY&&!String(APP_CHECK_SITE_KEY).startsWith("PASTE")){try{initializeAppCheck(app,{provider:new ReCaptchaEnterpriseProvider(APP_CHECK_SITE_KEY),isTokenAutoRefreshEnabled:true});}catch(e){console.error("App Check:",e);}}
+  db=getFirestore(app);}
 
 const state={date:todayStr(),tab:"wholesale",docs:{wholesale:null,retail:null,manager:null},history:[],pending:{},key:null,ready:false,users:[],me:null};
 const local={};let daySub=null,histSub=null,photoSub=null,timers={};
@@ -180,7 +184,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12l";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12m";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -544,7 +548,8 @@ Use null when a tender is not on the report. Give amounts as plain JSON numbers 
   try{const r=await readWithAI([prompt,{inlineData:{data:dataUrl.split(",")[1],mimeType:"image/jpeg"}}]);
     state.lastAI=r.response.text();let t=r.response.text().trim().replace(/^\`\`\`(json)?/i,"").replace(/\`\`\`$/,"");out=JSON.parse(t);}
   catch(e){const raw=String(e&&(e.message||e.code)||e||"");
-    const why=/genai|config not found/i.test(raw)?"Firebase AI Logic is not fully set up for this project (Gemini Developer API link missing)."
+    const why=/App Check/i.test(raw)?"Google's App Check protection is not set up for this app yet."
+      :/genai|config not found/i.test(raw)?"Firebase AI Logic is not fully set up for this project (Gemini Developer API link missing)."
       :/not.?enabled|has not been used|SERVICE_DISABLED|enable the/i.test(raw)?"The AI reader is not switched on in Firebase yet."
       :/not found|404|is not supported|model/i.test(raw)?"None of the AI models were accepted by your project. Check that AI Logic is set up with the Gemini Developer API."
       :/quota|429|RESOURCE_EXHAUSTED/i.test(raw)?"The free AI allowance for today is used up."

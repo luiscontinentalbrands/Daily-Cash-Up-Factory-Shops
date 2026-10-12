@@ -13,3 +13,6 @@ export const firebaseConfig = {
 
 // AI model that reads the photo of the till report (Firebase AI Logic, Gemini Developer API).
 export const AI_MODEL = "gemini-3.5-flash";
+
+// App Check (reCAPTCHA Enterprise site key). Google requires this for the photo reader.
+export const APP_CHECK_SITE_KEY = "PASTE_RECAPTCHA_SITE_KEY";
