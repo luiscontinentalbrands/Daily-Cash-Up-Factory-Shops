@@ -453,8 +453,9 @@ function photoStrip(dept){const all=state.photos.filter(p=>p.dept===dept);const 
   const rm=canRemovePhoto(dept);
   const goneNote=gone.length?`<div class="msg" style="margin-top:6px">${gone.map(p=>`Photo removed by ${esc(p.removedBy)}${p.removedAtIso?" · "+esc(timeStr(p.removedAtIso)):""}`).join("<br>")}</div>`:"";
   if(!ps.length)return '<div class="msg">No photo yet.</div>'+goneNote;
-  return `<div class="actions" style="align-items:flex-start">${ps.map(p=>{const src=safeJpg(p.data);return src?`<div style="display:flex;flex-direction:column;gap:4px;align-items:center"><button class="thumb" type="button" data-pid="${esc(p.id)}" title="${esc(p.by)} · ${esc(timeStr(p.takenAt))}" style="padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;cursor:zoom-in"><img src="${src}" alt="Report photo taken by ${esc(p.by)}" style="display:block;height:72px;width:auto"></button>${rm?`<button class="linkbtn" type="button" data-rm="${esc(p.id)}" style="color:var(--bad);font-size:.78rem">Remove</button>`:""}</div>`:"";}).join("")}</div>`+goneNote;}
+  return `<div class="actions" style="align-items:flex-start">${ps.map(p=>{const src=safeJpg(p.data);return src?`<div style="display:flex;flex-direction:column;gap:4px;align-items:center"><button class="thumb" type="button" data-pid="${esc(p.id)}" title="${esc(p.by)} · ${esc(timeStr(p.takenAt))}" style="padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;cursor:zoom-in"><img src="${src}" alt="Report photo taken by ${esc(p.by)}" style="display:block;height:72px;width:auto"></button>${rm?`<button class="linkbtn" type="button" data-read="${esc(p.id)}" style="font-size:.78rem">Read figures</button><button class="linkbtn" type="button" data-rm="${esc(p.id)}" style="color:var(--bad);font-size:.78rem">Remove</button>`:""}</div>`:"";}).join("")}</div>`+goneNote;}
 function bindThumbs(el){
+  el.querySelectorAll("button[data-read]").forEach(b=>b.addEventListener("click",()=>{const p=state.photos.find(x=>x.id===b.dataset.read);if(p&&safeJpg(p.data))readFigures(p.data,p.dept,"");}));
   el.querySelectorAll("button[data-rm]").forEach(b=>{let armed=false;b.addEventListener("click",async()=>{
     if(!armed){armed=true;b.textContent="Tap again to remove";setTimeout(()=>{armed=false;if(b.isConnected)b.textContent="Remove";},4000);return;}
     b.disabled=true;
@@ -492,7 +493,10 @@ async function scanPhoto(file,dept,read){const msg=$("#scan-msg");const say=(t,e
   try{await setDoc(fdoc(photosCol()),{date:state.date,dept,data:keep,by:state.me.name,at:serverTimestamp(),takenAt:new Date().toISOString()});saved=true;}
   catch(e){say("The photo could not be saved. Check the connection and try again.",true);return;}
   if(!read){say("Photo added. The figures were not changed.");return;}
-  // 2. read the figures
+  await readFigures(forAi,dept,"Photo saved. ");
+}
+async function readFigures(dataUrl,dept,lead){lead=lead||"";const say=(t,err)=>{const m=$("#scan-msg");if(m){m.className="msg"+(err?" err":"");m.textContent=t;}};
+  say(lead+"Reading the report figures…");
   const prompt=`This is a photo of the last page of a South African retail till cash-up / Z-report (amounts in Rand) for the ${DEPTS[dept]} department of a factory shop.
 Read the TOTAL amount per payment/tender type as printed on the report. Map tenders to these keys:
 - cash: Cash (notes and coins tender)
@@ -502,9 +506,9 @@ Read the TOTAL amount per payment/tender type as printed on the report. Map tend
 - shop2shop: Shop2Shop
 - snapscan: SnapScan
 Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
-Use null when a tender is not on the report. Numbers without currency symbols or thousands separators. Set readable false if the photo is not a cash-up report or too blurry to read.`;
+Use null when a tender is not on the report. Give amounts as plain JSON numbers with a dot for decimals (e.g. 1234.56), without currency symbols, spaces or thousands separators, even if the slip prints them as "R 1 234,56". Set readable false if the photo is not a cash-up report or too blurry to read.`;
   let out=null;
-  try{const r=await readWithAI([prompt,{inlineData:{data:forAi.split(",")[1],mimeType:"image/jpeg"}}]);
+  try{const r=await readWithAI([prompt,{inlineData:{data:dataUrl.split(",")[1],mimeType:"image/jpeg"}}]);
     let t=r.response.text().trim().replace(/^\`\`\`(json)?/i,"").replace(/\`\`\`$/,"");out=JSON.parse(t);}
   catch(e){const raw=String(e&&(e.message||e.code)||e||"");
     const why=/not.?enabled|has not been used|SERVICE_DISABLED|firebasevertexai|AI Logic|enable the/i.test(raw)?"The AI reader is not switched on in Firebase yet."
@@ -513,16 +517,24 @@ Use null when a tender is not on the report. Numbers without currency symbols or
       :/API key|referer|referrer|blocked/i.test(raw)?"The Firebase web key is not allowed to use the AI reader."
       :/Failed to fetch|network|import/i.test(raw)?"The AI reader could not be reached (connection)."
       :"The AI reader refused the request.";
-    say("Photo saved, but the figures could not be read automatically. "+why+" Type the report figures by hand. Details: "+raw.slice(0,220),true);console.error("AI reader:",e);return;}
-  if(!out||out.readable===false){say("Photo saved, but it was not readable. Retake it flat, in good light, with the whole page in view, or type the figures by hand.",true);return;}
+    say(lead+"The figures could not be read automatically. "+why+" Type the report figures by hand. Details: "+raw.slice(0,220),true);console.error("AI reader:",e);return;}
+  if(!out||out.readable===false){say(lead+"The photo was not readable. Retake it flat, in good light, with the whole page in view, or type the figures by hand.",true);return;}
   const doc=local[dept];const filled=[];
-  METHODS.forEach(m=>{const v=out[m.k];if(typeof v==="number"&&isFinite(v)){doc.lines[m.k].report=v.toFixed(2);filled.push(m.l);
+  // accept numbers or text like "R 1 234,56" / "1,234.56", and keys in any case
+  const toNum=v=>{if(typeof v==="number")return isFinite(v)?v:null;if(typeof v!=="string")return null;
+    let t=v.replace(/[R\s\u00a0]/gi,"");if(!t)return null;
+    if(t.includes(",")&&!t.includes("."))t=t.replace(/,(?=\d{1,2}$)/,".").replace(/,/g,"");else t=t.replace(/,/g,"");
+    const n=parseFloat(t);return isFinite(n)?n:null;};
+  const low={};Object.keys(out||{}).forEach(k=>low[k.toLowerCase().replace(/[^a-z0-9]/g,"")]=out[k]);
+  const alias={cash:["cash"],cashguard:["cashguard"],card:["card","creditcard","cards"],eft:["eft"],shop2shop:["shop2shop","shoptoshop"],snapscan:["snapscan"]};
+  out.total=toNum(low.total);
+  METHODS.forEach(m=>{let v=null;for(const k of alias[m.k]){if(low[k]!=null){v=toNum(low[k]);break;}}if(v!=null){doc.lines[m.k].report=v.toFixed(2);filled.push(m.l);
     const el=document.getElementById(dept+"-"+m.k+"-report");if(el){el.value=v.toFixed(2);el.style.background="var(--accent-soft)";}}});
   recalc(dept);if(filled.length)scheduleSave(dept);
   const t=totals(doc);let extra="";
   if(typeof out.total==="number"&&Math.abs(out.total-t.report)>0.009)extra+=` The report total reads ${R(out.total)} but the lines add to ${R(t.report)}; check for a missed payment type.`;
   if(out.date&&out.date!==state.date)extra+=` The report appears to be dated ${shortDate(out.date)}, not ${shortDate(state.date)}.`;
-  say(filled.length?`Photo saved. Filled ${filled.join(", ")} from the report. Check each figure against the slip before signing.${extra}`:"Photo saved, but no payment totals were found on it. Type the figures by hand.",!!extra||!filled.length);
+  say(filled.length?`${lead}Filled ${filled.join(", ")} from the report. Check each figure against the slip before signing.${extra}`:lead+"No payment totals were found on the photo. Type the figures by hand.",!!extra||!filled.length);
 }
 function renderUsers(){
   const rows=state.users.map(u=>`<div class="hrow" style="cursor:default;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto">
