@@ -98,8 +98,8 @@ service cloud.firestore {
 
       // Audit trail: append-only
       match /history/{entry} {
-        allow read: if isStaff();
         function parent() { return get(/databases/$(database)/documents/cashups/$(id)).data; }
+        allow read: if isStaff();
         allow create: if isStaff()
           && request.resource.data.uid == request.auth.uid
           && request.resource.data.name == get(staffPath()).data.name
