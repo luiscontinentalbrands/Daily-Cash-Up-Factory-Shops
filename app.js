@@ -468,11 +468,20 @@ function toJpeg(file,maxSide,quality){return new Promise((res,rej)=>{const img=n
   img.onload=()=>{const k=Math.min(1,maxSide/Math.max(img.width,img.height));const c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
     const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",quality));};
   img.onerror=()=>{URL.revokeObjectURL(u);rej(new Error("image"));};img.src=u;});}
-let aiModel=null;
-async function getModel(){if(aiModel)return aiModel;
-  const m=await import("https://www.gstatic.com/firebasejs/12.17.1/firebase-ai.js");
-  const ai=m.getAI(app,{backend:new m.GoogleAIBackend()});
-  aiModel=m.getGenerativeModel(ai,{model:AI_MODEL||"gemini-3.5-flash",generationConfig:{responseMimeType:"application/json",temperature:0}});return aiModel;}
+// Model names change over time: try the configured one first, then current fallbacks, and remember what worked.
+const AI_MODELS=[...new Set([AI_MODEL,"gemini-3.5-flash","gemini-3.1-flash-lite","gemini-3.5-flash-lite","gemini-flash-latest","gemini-2.5-flash","gemini-2.0-flash"].filter(Boolean))];
+let aiMod=null,aiInst=null;
+async function readWithAI(parts){
+  if(!aiMod){aiMod=await import("https://www.gstatic.com/firebasejs/12.17.1/firebase-ai.js");aiInst=aiMod.getAI(app,{backend:new aiMod.GoogleAIBackend()});}
+  let good=null;try{good=localStorage.getItem("cu_aimodel");}catch(e){}
+  const order=good?[good,...AI_MODELS.filter(x=>x!==good)]:AI_MODELS;let last=null;
+  for(const name of order){
+    try{const model=aiMod.getGenerativeModel(aiInst,{model:name,generationConfig:{responseMimeType:"application/json",temperature:0}});
+      const r=await model.generateContent(parts);try{localStorage.setItem("cu_aimodel",name);}catch(e){}return r;}
+    catch(e){last=e;const t=String(e&&(e.message||e.code)||"");
+      if(!/not.?found|404|not supported|is not available|unsupported model|invalid model/i.test(t))throw e;}
+  }
+  throw last||new Error("No AI model available");}
 async function scanPhoto(file,dept,read){const msg=$("#scan-msg");const say=(t,err)=>{const m=$("#scan-msg");if(m){m.className="msg"+(err?" err":"");m.textContent=t;}};
   say("Saving the photo and reading the report…");
   let keep,forAi;
@@ -495,12 +504,11 @@ Read the TOTAL amount per payment/tender type as printed on the report. Map tend
 Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
 Use null when a tender is not on the report. Numbers without currency symbols or thousands separators. Set readable false if the photo is not a cash-up report or too blurry to read.`;
   let out=null;
-  try{const model=await getModel();
-    const r=await model.generateContent([prompt,{inlineData:{data:forAi.split(",")[1],mimeType:"image/jpeg"}}]);
+  try{const r=await readWithAI([prompt,{inlineData:{data:forAi.split(",")[1],mimeType:"image/jpeg"}}]);
     let t=r.response.text().trim().replace(/^\`\`\`(json)?/i,"").replace(/\`\`\`$/,"");out=JSON.parse(t);}
   catch(e){const raw=String(e&&(e.message||e.code)||e||"");
     const why=/not.?enabled|has not been used|SERVICE_DISABLED|firebasevertexai|AI Logic|enable the/i.test(raw)?"The AI reader is not switched on in Firebase yet."
-      :/not found|404|is not supported|model/i.test(raw)?"The AI model name was not accepted."
+      :/not found|404|is not supported|model/i.test(raw)?"None of the AI models were accepted by your project. Check that AI Logic is set up with the Gemini Developer API."
       :/quota|429|RESOURCE_EXHAUSTED/i.test(raw)?"The free AI allowance for today is used up."
       :/API key|referer|referrer|blocked/i.test(raw)?"The Firebase web key is not allowed to use the AI reader."
       :/Failed to fetch|network|import/i.test(raw)?"The AI reader could not be reached (connection)."
