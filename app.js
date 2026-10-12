@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-12n";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-12p";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -104,8 +104,9 @@ async function checkKey(k){
   try{await getDocs(query(collection(db,"shops",k,"cashups"),limit(1)));
     saveKey(k);loadUsersThenWho();}
   catch(e){state.key=null;
-    if(e&&e.code==="permission-denied"){forgetKey();showSetup("This device's access code is not accepted. Ask your manager for the current setup link.");}
-    else showSetup("Could not reach the database. Check the internet connection and try again.");}
+    console.error("checkKey:",e);const det=" ("+String(e&&(e.code||e.message)||e).slice(0,120)+")";
+    if(e&&e.code==="permission-denied")showSetup("This access code was not accepted. Type the shop access code again, or ask your manager for the setup link."+det);
+    else showSetup("Could not reach the database. Check the internet connection and try again."+det);}
 }
 let usersSub=null;
 function loadUsersThenWho(){
@@ -184,7 +185,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12n";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12p";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
