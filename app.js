@@ -1,6 +1,6 @@
-import { firebaseConfig } from "./firebase-config.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc as fdoc, getDocs, setDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { firebaseConfig, AI_MODEL } from "./firebase-config.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+import { getFirestore, doc as fdoc, getDocs, setDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 /* ---------- constants & helpers ---------- */
 const METHODS=[
@@ -50,7 +50,8 @@ let app,db;
 if(configured){app=initializeApp(firebaseConfig);db=getFirestore(app);}
 
 const state={date:todayStr(),tab:"wholesale",docs:{wholesale:null,retail:null,manager:null},history:[],pending:{},key:null,ready:false,users:[],me:null};
-const local={};let daySub=null,histSub=null,timers={};
+const local={};let daySub=null,histSub=null,photoSub=null,timers={};
+state.photos=[];
 
 /* ---------- device access code ----------
    The shop's secret code is given once per device through a setup link (…/#join-CODE).
@@ -64,6 +65,7 @@ function forgetKey(){try{localStorage.removeItem("cu_key");}catch(e){}}
 const shopCol=()=>collection(db,"shops",state.key,"cashups");
 const shopDoc=id=>fdoc(db,"shops",state.key,"cashups",id);
 const usersCol=()=>collection(db,"shops",state.key,"users");
+const photosCol=()=>collection(db,"shops",state.key,"photos");
 const ROLE_LABEL={wholesale:"Wholesale cashier",retail:"Retail cashier",manager:"Manager",admin:"Administrator"};
 async function pinHash(salt,pin){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(salt+":"+pin));
   return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");}
@@ -191,7 +193,7 @@ document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("clic
 function setTab(t){if(t==="users"&&role()!=="admin")t="wholesale";state.tab=t;
   document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===t)));render(true);}
 function setDate(d){flushAll();state.date=d;state.docs={wholesale:null,retail:null,manager:null};delete local.wholesale;delete local.retail;delete local.manager;subscribeDay();render(true);}
-function stopSubs(){if(daySub){daySub();daySub=null;}if(histSub){histSub();histSub=null;}}
+function stopSubs(){if(photoSub){photoSub();photoSub=null;}if(daySub){daySub();daySub=null;}if(histSub){histSub();histSub=null;}}
 
 function canReopen(dept){if(dept==="manager")return canSignManager();if(["manager","admin"].includes(role()))return current("manager").status!=="signed";return current(dept).signedBy===state.me.name&&current("manager").status!=="signed";}
 function current(dept){if(!local[dept])local[dept]=normalize(state.docs[dept],state.date,dept);return local[dept];}
@@ -224,6 +226,10 @@ function setSaved(dept,t,err){const el=document.getElementById("saved-"+dept)||d
 
 function subscribeDay(){if(daySub){daySub();daySub=null;}
   const date=state.date;
+  if(photoSub){photoSub();photoSub=null;}state.photos=[];
+  photoSub=onSnapshot(query(photosCol(),where("date","==",date)),snap=>{if(date!==state.date)return;
+    state.photos=snap.docs.map(d=>Object.assign({id:d.id},d.data())).sort((a,b)=>String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
+    document.querySelectorAll("[data-photos]").forEach(el=>{el.innerHTML=photoStrip(el.dataset.photos);bindThumbs(el);});},()=>{});
   daySub=onSnapshot(query(shopCol(),where("date","==",date)),snap=>{
     if(date!==state.date)return;
     const got={wholesale:null,retail:null,manager:null};
@@ -277,6 +283,13 @@ function renderDept(dept){
         <div class="field"><label>Person cashing up</label><div class="static">${esc(doc.cashier)||(editable?esc(state.me.name):"—")}</div></div>
         <div class="field"><label>Department</label><div class="static">${DEPTS[dept]}</div></div>
       </div>
+      ${editable?`<div class="scan">
+        <div style="min-width:0"><div class="eyebrow">Fill from photo</div><div class="msg">Take a photo of the last page of the cash up report. The report figures are filled in for you to check, and the photo is kept with this cash up.</div></div>
+        <label class="btn primary" for="${dept}-photo" style="display:inline-flex;align-items:center;gap:8px">Scan report photo</label>
+        <input type="file" id="${dept}-photo" accept="image/*" capture="environment" hidden>
+        <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
+      </div>`:""}
+      <div class="field"><label>Report photos</label><div data-photos="${dept}">${photoStrip(dept)}</div></div>
       <div class="tbl-wrap"><table>
         <thead><tr><th>Payment type</th><th>Per report<small>Till / Z-report</small></th><th>Deposited<small>Actual counted</small></th><th>Variance<small>Deposited − report</small></th></tr></thead>
         <tbody>${rows}</tbody>
@@ -341,6 +354,8 @@ function bindDept(dept){const doc=local[dept];
     Object.assign(doc,{status:"draft",signature:"",signedBy:"",signedAt:""});clearTimeout(timers[dept]);state.pending[dept]=true;
     await save(dept,{action:"reopened",by:state.me.name});render(true);});}
   const pad=$("#pad");if(pad)bindPad(pad,dept);
+  const ph=document.getElementById(dept+"-photo");if(ph)ph.addEventListener("change",()=>{const f=ph.files&&ph.files[0];ph.value="";if(f)scanPhoto(f,dept);});
+  document.querySelectorAll("[data-photos]").forEach(bindThumbs);
 }
 function bindPad(cv,dept){const ctx=cv.getContext("2d");let drawing=false,inked=false,last=null;
   ctx.lineWidth=3.2;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#1f2a44";ctx.fillStyle="#1f2a44";
@@ -400,6 +415,10 @@ function renderCombined(){
       </div>
       ${(W.notes||Rt.notes)?`<div class="field"><label>Notes</label><div class="static" style="font-weight:400;white-space:pre-wrap">${W.notes?"<b>Wholesale:</b> "+esc(W.notes):""}${W.notes&&Rt.notes?"\n":""}${Rt.notes?"<b>Retail:</b> "+esc(Rt.notes):""}</div></div>`:""}
       <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">Wholesale ${R(num(W.damaged))}${W.damagedNotes?" ("+esc(W.damagedNotes)+")":""} · Retail ${R(num(Rt.damaged))}${Rt.damagedNotes?" ("+esc(Rt.damagedNotes)+")":""} · <b>Total ${R(dmgT)}</b></div></div>
+      <div class="fields" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+        <div class="field"><label>Wholesale report photos</label><div data-photos="wholesale">${photoStrip("wholesale")}</div></div>
+        <div class="field"><label>Retail report photos</label><div data-photos="retail">${photoStrip("retail")}</div></div>
+      </div>
       <div class="sigs">${sig(W,"wholesale")}${sig(Rt,"retail")}</div>
       <div class="actions"><button class="btn" id="csv">Download day as CSV</button><span class="msg" id="csv-msg"></span></div>
     </div>
@@ -423,6 +442,58 @@ function renderCombined(){
     $("#csv-msg").textContent="Downloaded.";});
 }
 
+const safeJpg=s=>/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(String(s||""))?s:"";
+function photoStrip(dept){const ps=state.photos.filter(p=>p.dept===dept);
+  if(!ps.length)return '<div class="msg">No photo yet.</div>';
+  return `<div class="actions">${ps.map(p=>{const src=safeJpg(p.data);return src?`<button class="thumb" type="button" data-pid="${esc(p.id)}" title="${esc(p.by)} · ${esc(timeStr(p.takenAt))}" style="padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;cursor:zoom-in"><img src="${src}" alt="Report photo taken by ${esc(p.by)}" style="display:block;height:72px;width:auto"></button>`:"";}).join("")}</div>`;}
+function bindThumbs(el){el.querySelectorAll("button[data-pid]").forEach(b=>b.addEventListener("click",()=>{const p=state.photos.find(x=>x.id===b.dataset.pid);if(!p)return;
+  const ov=document.createElement("div");ov.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:10px;cursor:zoom-out";
+  ov.innerHTML=`<img src="${safeJpg(p.data)}" alt="Report photo" style="max-width:100%;max-height:85vh;border-radius:8px;background:#fff"><div style="color:#fff;font-size:.85rem">${esc(DEPTS[p.dept]||"")} · ${esc(p.by)} · ${esc(timeStr(p.takenAt))} · tap to close</div>`;
+  ov.addEventListener("click",()=>ov.remove());document.body.appendChild(ov);}));}
+function toJpeg(file,maxSide,quality){return new Promise((res,rej)=>{const img=new Image();const u=URL.createObjectURL(file);
+  img.onload=()=>{const k=Math.min(1,maxSide/Math.max(img.width,img.height));const c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+    const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",quality));};
+  img.onerror=()=>{URL.revokeObjectURL(u);rej(new Error("image"));};img.src=u;});}
+let aiModel=null;
+async function getModel(){if(aiModel)return aiModel;
+  const m=await import("https://www.gstatic.com/firebasejs/12.17.1/firebase-ai.js");
+  const ai=m.getAI(app,{backend:new m.GoogleAIBackend()});
+  aiModel=m.getGenerativeModel(ai,{model:AI_MODEL||"gemini-3.5-flash",generationConfig:{responseMimeType:"application/json",temperature:0}});return aiModel;}
+async function scanPhoto(file,dept){const msg=$("#scan-msg");const say=(t,err)=>{const m=$("#scan-msg");if(m){m.className="msg"+(err?" err":"");m.textContent=t;}};
+  say("Saving the photo and reading the report…");
+  let keep,forAi;
+  try{forAi=await toJpeg(file,1800,0.85);keep=await toJpeg(file,1400,0.6);if(keep.length>850000)keep=await toJpeg(file,1100,0.5);if(keep.length>850000)keep=await toJpeg(file,900,0.45);}
+  catch(e){say("That file could not be opened as a photo. Try again.",true);return;}
+  // 1. keep a copy of the photo with this cash up
+  let saved=false;
+  try{await setDoc(fdoc(photosCol()),{date:state.date,dept,data:keep,by:state.me.name,at:serverTimestamp(),takenAt:new Date().toISOString()});saved=true;}
+  catch(e){say("The photo could not be saved. Check the connection and try again.",true);return;}
+  // 2. read the figures
+  const prompt=`This is a photo of the last page of a South African retail till cash-up / Z-report (amounts in Rand) for the ${DEPTS[dept]} department of a factory shop.
+Read the TOTAL amount per payment/tender type as printed on the report. Map tenders to these keys:
+- cash: Cash (notes and coins tender)
+- cashguard: CashGuard (cash recycler / CashGuard tender)
+- card: Credit card / debit card / speedpoint / card machine totals combined
+- eft: EFT / bank transfer
+- shop2shop: Shop2Shop
+- snapscan: SnapScan
+Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
+Use null when a tender is not on the report. Numbers without currency symbols or thousands separators. Set readable false if the photo is not a cash-up report or too blurry to read.`;
+  let out=null;
+  try{const model=await getModel();
+    const r=await model.generateContent([prompt,{inlineData:{data:forAi.split(",")[1],mimeType:"image/jpeg"}}]);
+    let t=r.response.text().trim().replace(/^\`\`\`(json)?/i,"").replace(/\`\`\`$/,"");out=JSON.parse(t);}
+  catch(e){say("Photo saved, but the figures could not be read automatically"+(String(e&&e.message||"").match(/api|enable|permission|403|404/i)?" (the AI reader is not switched on in Firebase yet)":"")+". Type the report figures by hand.",true);return;}
+  if(!out||out.readable===false){say("Photo saved, but it was not readable. Retake it flat, in good light, with the whole page in view, or type the figures by hand.",true);return;}
+  const doc=local[dept];const filled=[];
+  METHODS.forEach(m=>{const v=out[m.k];if(typeof v==="number"&&isFinite(v)){doc.lines[m.k].report=v.toFixed(2);filled.push(m.l);
+    const el=document.getElementById(dept+"-"+m.k+"-report");if(el){el.value=v.toFixed(2);el.style.background="var(--accent-soft)";}}});
+  recalc(dept);if(filled.length)scheduleSave(dept);
+  const t=totals(doc);let extra="";
+  if(typeof out.total==="number"&&Math.abs(out.total-t.report)>0.009)extra+=` The report total reads ${R(out.total)} but the lines add to ${R(t.report)}; check for a missed payment type.`;
+  if(out.date&&out.date!==state.date)extra+=` The report appears to be dated ${shortDate(out.date)}, not ${shortDate(state.date)}.`;
+  say(filled.length?`Photo saved. Filled ${filled.join(", ")} from the report. Check each figure against the slip before signing.${extra}`:"Photo saved, but no payment totals were found on it. Type the figures by hand.",!!extra||!filled.length);
+}
 function renderUsers(){
   const rows=state.users.map(u=>`<div class="hrow" style="cursor:default;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto">
       <div><div class="d">${esc(u.name)}</div><div class="msg">${esc(ROLE_LABEL[u.role]||u.role)}</div></div>

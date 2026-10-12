@@ -53,6 +53,10 @@ There are no email logins. Each device is set up once with the shop's **secret a
 4. Staff open the app, tap their name and enter their PIN. Their name goes on their sheet and signature automatically. The app locks after 15 minutes without use; **Switch user** at the top changes person.
 5. When someone leaves, tap **Switch off** next to their name. Their past cash ups stay in History.
 
+### Part 3b — Switch on the photo reader
+
+In Firebase, open **AI Logic** (search for it at the top of the console) → **Get started** → choose **Gemini Developer API** → **Enable**. That's all. The app then reads the figures from the photo of the last page of the till report and keeps the photo with the day's cash up. Without this step photos are still kept, and the figures are typed by hand.
+
 ### Part 4 — Switch on the 7 pm and 9 pm emails
 
 The emails are sent from a Gmail account by GitHub. They need two secrets.

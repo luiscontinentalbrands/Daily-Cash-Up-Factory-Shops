@@ -10,5 +10,6 @@ export const firebaseConfig = {
   appId: "1:353261531547:web:a3414fd87e7d386875b13e"
 };
 
-// Staff are signed out automatically after this many minutes without touching the app.
-export const IDLE_MINUTES = 15;
+
+// AI model that reads the photo of the till report (Firebase AI Logic, Gemini Developer API).
+export const AI_MODEL = "gemini-3.5-flash";

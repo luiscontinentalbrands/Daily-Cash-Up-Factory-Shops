@@ -80,6 +80,20 @@ service cloud.firestore {
       }
     }
 
+    // Photos of the till report, kept with each cash up (can be added, never changed or deleted)
+    match /shops/{k}/photos/{pid} {
+      function p() { return request.resource.data; }
+      allow read: if okKey(k);
+      allow create: if okKey(k)
+        && p().date is string && p().date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+        && p().dept in ['wholesale', 'retail']
+        && p().by is string && p().by.size() <= 80
+        && p().at == request.time
+        && p().data is string && p().data.size() < 900000
+        && p().data.matches('^data:image/jpeg;base64,.*');
+      allow update, delete: if false;
+    }
+
     // People who use the app (managed by the administrator inside the app)
     match /shops/{k}/users/{uid} {
       function u() { return request.resource.data; }
