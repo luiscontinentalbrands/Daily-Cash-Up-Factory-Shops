@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com; frame-src https://*.firebaseapp.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex,nofollow">
+<title>Factory Shop Cash Up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<header class="bar">
+  <div class="bar-in">
+    <div class="brand-row">
+      <div class="brand">
+        <h1>Continental Brands</h1>
+        <div class="sub">Daily Factory Shop Cash Up</div>
+        <div class="tag">“Taste &amp; Quality — Soulfully Baked”</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+        <div class="who-bar" id="who" hidden></div>
+        <div class="date-pick" id="datebox" hidden>
+          <label for="date">Trading date</label>
+          <input type="date" id="date">
+          <button id="today" type="button">Today</button>
+        </div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" id="tabs" hidden>
+      <button role="tab" data-tab="wholesale" aria-selected="true"><span class="dot" id="dot-wholesale"></span>Wholesale</button>
+      <button role="tab" data-tab="retail" aria-selected="false"><span class="dot" id="dot-retail"></span>Retail</button>
+      <button role="tab" data-tab="combined" aria-selected="false">End of Day</button>
+      <button role="tab" data-tab="history" aria-selected="false">History</button>
+    </nav>
+  </div>
+</header>
+<main id="main"><div class="empty-state">Loading…</div></main>
+<footer id="foot"></footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>

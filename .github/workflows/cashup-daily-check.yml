@@ -1,0 +1,53 @@
+name: Cash up daily check
+
+# Times are UTC. South Africa is UTC+2 all year.
+#   17:05 UTC = 19:05 SAST  → 7 pm check (alert Ulla, report to Martie)
+#   19:00 UTC = 21:00 SAST  → 9 pm follow-up (final report to Martie if the day was signed late)
+# Monday to Saturday only. GitHub can start scheduled runs a few minutes late.
+on:
+  schedule:
+    - cron: "5 17 * * 1-6"
+    - cron: "0 19 * * 1-6"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "seven (7 pm check) or nine (9 pm follow-up)"
+        required: true
+        default: "seven"
+      date:
+        description: "Date to check, YYYY-MM-DD (leave empty for today)"
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: scripts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-audit --no-fund
+      - name: Run check
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          ALERT_TO: ulla@tastytreats.co.za
+          REPORT_TO: martie@tastytreats.co.za
+          CASHUP_DATE: ${{ github.event.inputs.date }}
+          INPUT_MODE: ${{ github.event.inputs.mode }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          MODE="$INPUT_MODE"
+          if [ -z "$MODE" ]; then
+            if [ "$SCHEDULE" = "5 17 * * 1-6" ]; then MODE=seven; else MODE=nine; fi
+          fi
+          case "$MODE" in seven|nine) ;; *) echo "Mode must be seven or nine"; exit 1;; esac
+          node daily-check.mjs "$MODE"
