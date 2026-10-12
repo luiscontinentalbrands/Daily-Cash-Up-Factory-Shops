@@ -74,9 +74,12 @@ if(!configured){
     stopSubs();state.user=user;state.profile=null;
     if(!user){showLogin();return;}
     try{const snap=await getDoc(fdoc(db,"staff",user.uid));
-      if(!snap.exists()||snap.data().active!==true){showNoAccess();return;}
+      if(!snap.exists()){showNoAccess("No staff record found for this account.");return;}
+      if(snap.data().active!==true){showNoAccess("The staff record exists but 'active' is not set to true (boolean).");return;}
       state.profile=snap.data();}
-    catch(e){showNoAccess();return;}
+    catch(e){showNoAccess(e&&e.code==="permission-denied"
+      ?"Firebase refused to read the staff list (permission-denied). The security rules are probably not published yet."
+      :"Could not reach the database ("+(e&&e.code||"unknown error")+").");return;}
     startApp();
   });
 }
@@ -103,10 +106,11 @@ function showLogin(msg){
     try{await sendPasswordResetEmail(auth,em);}catch(e){}
     m.className="msg";m.textContent="If that email has an account, a reset link is on its way. Check your inbox.";});
 }
-function showNoAccess(){
+function showNoAccess(reason){
   $("#tabs").hidden=true;$("#datebox").hidden=true;
   whoBar(true);
-  main.innerHTML=`<div class="login sheet" style="padding:22px"><h2>No access yet</h2><div class="msg">You are signed in, but your account has not been given access to the cash up. Ask the administrator to add you, then sign in again.</div></div>`;
+  main.innerHTML=`<div class="login sheet" style="padding:22px"><h2>No access yet</h2><div class="msg">You are signed in, but your account has not been given access to the cash up. Ask the administrator to add you, then sign in again.</div>
+    <div class="field"><label>For the administrator</label><div class="static" style="font-weight:400;font-size:.85rem;overflow-wrap:anywhere">${esc(reason||"")}<br>Account UID: <b>${esc(state.user&&state.user.uid)}</b></div></div></div>`;
 }
 function whoBar(minimal){const w=$("#who");w.hidden=false;
   w.innerHTML=minimal?`<span>${esc(state.user&&state.user.email)}</span><button id="signout" type="button">Sign out</button>`
