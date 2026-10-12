@@ -180,7 +180,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12d";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12e";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -349,7 +349,10 @@ function recalc(dept){const doc=local[dept];
   METHODS.forEach(m=>{const v=num(doc.lines[m.k].deposited)-num(doc.lines[m.k].report);const el=document.getElementById("v-"+m.k);if(el){el.textContent=RV(v);el.className="num "+vcls(v);}});
   const t=totals(doc),a=$("#t-report"),b=$("#t-dep"),c=$("#t-var");
   if(a){a.textContent=R(t.report);b.textContent=R(t.deposited);c.textContent=RV(t.variance);c.className="num "+vcls(t.variance);}}
-const money=v=>v.replace(/[^0-9.]/g,"").replace(/(\..*)\./g,"$1").slice(0,12);
+// Amounts: accept a comma or a point as the decimal mark, keep at most 2 decimals
+const money=v=>{let t=String(v).replace(/,/g,".").replace(/[^0-9.]/g,"");
+  const i=t.indexOf(".");if(i>=0)t=t.slice(0,i+1)+t.slice(i+1).replace(/\./g,"").slice(0,2);
+  return t.slice(0,12);};
 
 function bindDept(dept){const doc=local[dept];
   main.querySelectorAll("td.inp input").forEach(inp=>{
