@@ -180,7 +180,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12i";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-12j";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -516,7 +516,9 @@ async function scanPhoto(file,dept,read){const msg=$("#scan-msg");const say=(t,e
   if(!read){say("Photo added. The figures were not changed.");return;}
   await readFigures(forAi,dept,"Photo saved. ");
 }
-async function readFigures(dataUrl,dept,lead){lead=lead||"";const say=(t,err)=>{const m=$("#scan-msg");if(m){m.className="msg"+(err?" err":"");m.textContent=t;}};
+async function readFigures(dataUrl,dept,lead){lead=lead||"";state.lastAI="";
+  const say=(t,err)=>{const m=$("#scan-msg");if(!m)return;m.className="msg"+(err?" err":"");m.textContent=t;
+    if(state.lastAI){const d=document.createElement("details");d.style.marginTop="6px";d.innerHTML='<summary style="cursor:pointer">Show what the reader saw</summary><pre style="white-space:pre-wrap;font-size:.78rem;max-height:240px;overflow:auto;background:var(--bg);padding:8px;border-radius:8px"></pre>';d.querySelector("pre").textContent=String(state.lastAI).slice(0,3000);m.appendChild(d);}};
   say(lead+"Reading the report figures…");
   const prompt=`This is a photo of the last page of a South African retail till cash-up / Z-report (amounts in Rand) for the ${DEPTS[dept]} department of a factory shop.
 Read the TOTAL amount per payment/tender type as printed on the report. Map tenders to these keys:
@@ -530,7 +532,7 @@ Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null
 Use null when a tender is not on the report. Give amounts as plain JSON numbers with a dot for decimals (e.g. 1234.56), without currency symbols, spaces or thousands separators, even if the slip prints them as "R 1 234,56". Set readable false if the photo is not a cash-up report or too blurry to read.`;
   let out=null;
   try{const r=await readWithAI([prompt,{inlineData:{data:dataUrl.split(",")[1],mimeType:"image/jpeg"}}]);
-    let t=r.response.text().trim().replace(/^\`\`\`(json)?/i,"").replace(/\`\`\`$/,"");out=JSON.parse(t);}
+    state.lastAI=r.response.text();let t=r.response.text().trim().replace(/^\`\`\`(json)?/i,"").replace(/\`\`\`$/,"");out=JSON.parse(t);}
   catch(e){const raw=String(e&&(e.message||e.code)||e||"");
     const why=/not.?enabled|has not been used|SERVICE_DISABLED|firebasevertexai|AI Logic|enable the/i.test(raw)?"The AI reader is not switched on in Firebase yet."
       :/not found|404|is not supported|model/i.test(raw)?"None of the AI models were accepted by your project. Check that AI Logic is set up with the Gemini Developer API."
@@ -538,7 +540,7 @@ Use null when a tender is not on the report. Give amounts as plain JSON numbers 
       :/API key|referer|referrer|blocked/i.test(raw)?"The Firebase web key is not allowed to use the AI reader."
       :/Failed to fetch|network|import/i.test(raw)?"The AI reader could not be reached (connection)."
       :"The AI reader refused the request.";
-    say(lead+"The figures could not be read automatically. "+why+" Type the report figures by hand. Details: "+raw.slice(0,220),true);console.error("AI reader:",e);return;}
+    state.lastAI="ERROR: "+raw;say(lead+"The figures could not be read automatically. "+why+" Type the report figures by hand. Details: "+raw.slice(0,220),true);console.error("AI reader:",e);return;}
   if(!out||out.readable===false){say(lead+"The photo was not readable. Retake it flat, in good light, with the whole page in view, or type the figures by hand.",true);return;}
   const doc=local[dept];const filled=[];
   // accept numbers or text like "R 1 234,56" / "1,234.56", and keys in any case
