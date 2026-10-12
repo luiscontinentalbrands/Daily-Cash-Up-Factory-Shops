@@ -205,6 +205,7 @@ function updateDots(){["wholesale","retail"].forEach(d=>{const st=statusOf(local
 function idOf(dept,date){return (date||state.date)+"_"+dept;}
 function scheduleSave(dept){const doc=local[dept];if(doc.status==="new")doc.status="draft";
   if(dept!=="manager"&&!doc.cashier)doc.cashier=state.me.name;
+  state.ver=state.ver||{};state.ver[dept]=(state.ver[dept]||0)+1;
   state.pending[dept]=true;clearTimeout(timers[dept]);setSaved(dept,"Saving…");
   timers[dept]=setTimeout(()=>save(dept),700);updateDots();}
 function flushAll(){Object.keys(timers).forEach(d=>{if(state.pending[d]){clearTimeout(timers[d]);save(d);}});}
@@ -215,13 +216,24 @@ function payload(doc,signing,reopening){const p=clone(doc);
   else if(p.status!=="signed")p.signedAtServer=null;
   return p;}
 async function save(dept,opts){opts=opts||{};const doc=local[dept];if(!doc)return false;
+  state.ver=state.ver||{};const v=state.ver[dept]||0;state.inflight=state.inflight||{};state.inflight[dept]=(state.inflight[dept]||0)+1;
   try{await setDoc(shopDoc(idOf(dept,doc.date)),payload(doc,!!opts.signing,opts.action==="reopened"));
-    state.pending[dept]=false;setSaved(dept,"Saved for everyone · "+timeStr(new Date().toISOString()));
+    state.inflight[dept]--;
+    // only release the lock if nothing newer was typed while this save was on its way
+    if((state.ver[dept]||0)===v&&!state.inflight[dept])state.pending[dept]=false;
+    setSaved(dept,(state.pending[dept]?"Saving…":"Saved for everyone · "+timeStr(new Date().toISOString())));
+    {const b=document.getElementById("savealert");if(b)b.hidden=true;}
     if(opts.action){try{await addDoc(collection(db,"shops",state.key,"cashups",idOf(dept,doc.date),"history"),{name:String(opts.by||doc.signedBy||"").slice(0,80),action:opts.action,at:serverTimestamp(),totals:dept==="manager"?null:totals(doc)});}catch(e){}}
     return true;}
-  catch(e){state.pending[dept]=false;
-    setSaved(dept,e&&e.code==="permission-denied"?"Not saved: this change is not allowed (for example, the sheet was signed or the day was closed).":"Could not save. Check your connection and try again.",true);
+  catch(e){state.inflight[dept]--;state.pending[dept]=false;console.error("Save failed:",e);
+    const why=e&&e.code==="permission-denied"?"The database refused to save it (permission-denied). The Firebase rules may be out of date.":"Could not reach the database ("+(e&&(e.code||e.message)||"unknown")+"). Check the connection.";
+    setSaved(dept,"NOT SAVED. "+why,true);saveAlert("Your last change was NOT saved. "+why);
     return false;}}
+function saveAlert(t){let b=document.getElementById("savealert");
+  if(!b){b=document.createElement("div");b.id="savealert";b.setAttribute("role","alert");
+    b.style.cssText="position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;background:var(--bad);color:#fff;padding:12px 16px;border-radius:12px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.25)";
+    document.body.appendChild(b);}
+  b.textContent=t;b.hidden=false;clearTimeout(b._t);b._t=setTimeout(()=>{b.hidden=true;},20000);}
 function setSaved(dept,t,err){const el=document.getElementById("saved-"+dept)||document.getElementById("sign-msg");if(el){el.textContent=t;el.className=(el.id==="sign-msg"?"msg":"saved")+(err?" msg err":"");}}
 
 function subscribeDay(){if(daySub){daySub();daySub=null;}
