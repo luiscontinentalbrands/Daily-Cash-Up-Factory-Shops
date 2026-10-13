@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13c";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13d";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -90,13 +90,13 @@ function showSetup(msg){
   $("#tabs").hidden=true;$("#datebox").hidden=true;$("#who").hidden=true;$("#foot").textContent="";
   main.innerHTML=`<form class="login sheet" id="keyform" style="padding:22px" novalidate>
     <div><div class="eyebrow">Set up this device</div><h2>Factory Shop Cash Up</h2></div>
-    <div class="msg">Open the setup link your manager sent you on this device, or type the shop access code below. You only do this once per device.</div>
+    <div class="msg">Open the setup link your manager sent you on this device, or type the shop access code below (a long code of letters and numbers, not your PIN). You only do this once per device. Your PIN comes on the next screen.</div>
     <div class="field"><label for="keyin">Shop access code</label><input id="keyin" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
     <button class="btn primary" type="submit" id="keybtn">Set up this device</button>
     <div class="msg ${msg?"err":""}" id="keymsg">${esc(msg||"")}</div>
   </form>`;
   $("#keyform").addEventListener("submit",e=>{e.preventDefault();const v=$("#keyin").value.trim();
-    if(!KEY_RE.test(v)){const m=$("#keymsg");m.className="msg err";m.textContent="That code is not valid. Check it and try again.";return;}
+    if(!KEY_RE.test(v)){const m=$("#keymsg");m.className="msg err";m.textContent=/^\d{3,8}$/.test(v)?"This box needs the shop access code (a long code of letters and numbers), not your PIN. You enter your PIN on the next screen.":"That code is not valid. Check it and try again.";return;}
     $("#keybtn").disabled=true;checkKey(v);});
 }
 async function checkKey(k){
@@ -218,7 +218,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13c";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13d";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -516,7 +516,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13c"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13d"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager");const info=dayInfo(state.date,W,Rt,M);
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
   const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,status:info.label,photos});
