@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13a";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13b";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -112,7 +112,7 @@ let usersSub=null;
 function loadUsersThenWho(){
   if(usersSub)usersSub();let first=true;
   usersSub=onSnapshot(usersCol(),snap=>{
-    state.users=snap.docs.map(d=>Object.assign({id:d.id},d.data())).sort((x,y)=>String(x.name).localeCompare(String(y.name)));
+    state.users=snap.docs.map(d=>Object.assign({id:d.id},d.data())).filter(u=>u.deleted!==true).sort((x,y)=>String(x.name).localeCompare(String(y.name)));
     if(state.me){const u=state.users.find(x=>x.id===state.me.id);
       if(!u&&state.me.id===state.justCreated)return;
       if(!u||u.active!==true){lockApp("Your user was switched off by the administrator.");return;}
@@ -185,7 +185,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13a";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13b";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -483,7 +483,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13a"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13b"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager");const info=dayInfo(state.date,W,Rt,M);
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
   const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,status:info.label,photos});
@@ -609,7 +609,7 @@ function renderUsers(){
   const rows=state.users.map(u=>`<div class="hrow" style="cursor:default;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto">
       <div><div class="d">${esc(u.name)}</div><div class="msg">${esc(ROLE_LABEL[u.role]||u.role)}</div></div>
       <div>${u.active===true?'<span class="chip signed">Active</span>':'<span class="chip">Switched off</span>'}</div>
-      <div class="actions">${u.id===state.me.id?'<span class="msg">You</span>':`<button class="btn" data-act="toggle" data-u="${esc(u.id)}" type="button">${u.active===true?"Switch off":"Switch on"}</button>`}<button class="btn" data-act="pin" data-u="${esc(u.id)}" type="button">New PIN</button></div></div>`).join("");
+      <div class="actions">${u.id===state.me.id?'<span class="msg">You</span>':`<button class="btn" data-act="toggle" data-u="${esc(u.id)}" type="button">${u.active===true?"Switch off":"Switch on"}</button>`}<button class="btn" data-act="pin" data-u="${esc(u.id)}" type="button">New PIN</button>${u.id===state.me.id?"":`<button class="btn" data-act="del" data-u="${esc(u.id)}" type="button" style="color:var(--bad)">Delete</button>`}</div></div>`).join("");
   main.innerHTML=`<section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">Administrator</div><h2>Users</h2></div></div>
     <div class="sheet-body">
@@ -635,6 +635,12 @@ function renderUsers(){
     $("#ubtn").disabled=false;});
   main.querySelectorAll("button[data-act]").forEach(b=>b.addEventListener("click",async()=>{
     const u=state.users.find(x=>x.id===b.dataset.u);if(!u)return;const m=$("#umsg");
+    if(b.dataset.act==="del"){
+      if(u.role==="admin"&&state.users.filter(x=>x.role==="admin"&&x.active===true&&x.id!==u.id).length===0){m.className="msg err";m.textContent="You cannot delete the last administrator.";return;}
+      if(!confirm("Delete "+u.name+"?\n\nThey will no longer be able to use the app. Cash ups they already signed keep their name and signature."))return;
+      // the record is hidden and locked, not erased, so the history stays complete
+      try{await setDoc(fdoc(usersCol(),u.id),{active:false,deleted:true,deletedBy:state.me.name,deletedAt:serverTimestamp()},{merge:true});m.className="msg";m.textContent=u.name+" deleted.";}
+      catch(x){m.className="msg err";m.textContent="Could not delete. Check the connection and try again.";}return;}
     if(b.dataset.act==="toggle"){try{await setDoc(fdoc(usersCol(),u.id),{active:u.active!==true},{merge:true});}catch(x){m.className="msg err";m.textContent="Could not save.";}return;}
     const row=b.closest(".hrow");row.insertAdjacentHTML("afterend",`<form class="hrow" style="cursor:default" data-pinfor="${esc(u.id)}"><div class="msg">New PIN for ${esc(u.name)}</div><input inputmode="numeric" maxlength="4" style="font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)"><button class="btn primary" type="submit">Save PIN</button></form>`);
     const f=row.nextElementSibling;f.querySelector("input").focus();
