@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13d";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13e";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -218,7 +218,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13d";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13e";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -516,7 +516,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13d"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13e"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager");const info=dayInfo(state.date,W,Rt,M);
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
   const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,status:info.label,photos});
@@ -537,18 +537,32 @@ async function pdfAction(kind){const msg=$("#csv-msg");const say=(t,err)=>{if(ms
   location.href="mailto:"+REPORT_TO+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body+"\n\n(PDF attached)");
   say("The PDF was downloaded and a new email opened. Attach the file "+r.name+" (in your Downloads) and press Send.");}
 
+// Removing a photo also clears the "Per report" figures that were read from it.
+function clearPhotoFigures(ph){const dept=ph.dept;if(!DEPTS[dept]||dept==="manager")return;
+  const doc=current(dept);if(!doc||doc.status==="signed")return;
+  const rec=doc.aiFill&&doc.aiFill[ph.id];let keys=[];
+  if(rec)keys=Object.keys(rec);
+  else if(!state.photos.some(x=>x.dept===dept&&x.id!==ph.id&&x.removed!==true))keys=METHODS.map(m=>m.k); // older photo, nothing recorded: clear the report column when no photo is left
+  keys.forEach(k=>{if(!doc.lines[k])return;doc.lines[k].report="";
+    const el=document.getElementById(dept+"-"+k+"-report");if(el){el.value="";el.style.background="";}});
+  if(doc.aiFill){delete doc.aiFill[ph.id];}
+  if(state.tab===dept)recalc(dept);
+  if(keys.length||rec)scheduleSave(dept);
+  const m=$("#scan-msg");if(m&&keys.length){m.className="msg";m.textContent="Photo removed. The report figures read from it were cleared.";}}
 function photoStrip(dept){const all=state.photos.filter(p=>p.dept===dept);const ps=all.filter(p=>p.removed!==true);const gone=all.filter(p=>p.removed===true);
   const rm=canRemovePhoto(dept);
   const goneNote=gone.length?`<div class="msg" style="margin-top:6px">${gone.map(p=>`Photo removed by ${esc(p.removedBy)}${p.removedAtIso?" · "+esc(timeStr(p.removedAtIso)):""}`).join("<br>")}</div>`:"";
   if(!ps.length)return '<div class="msg">No photo yet.</div>'+goneNote;
   return `<div class="actions" style="align-items:flex-start">${ps.map(p=>{const src=safeJpg(p.data);return src?`<div style="display:flex;flex-direction:column;gap:4px;align-items:center"><button class="thumb" type="button" data-pid="${esc(p.id)}" title="${esc(p.by)} · ${esc(timeStr(p.takenAt))}" style="padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;cursor:zoom-in"><img src="${src}" alt="Report photo taken by ${esc(p.by)}" style="display:block;height:72px;width:auto"></button>${rm?`<button class="linkbtn" type="button" data-read="${esc(p.id)}" style="font-size:.78rem">Read figures</button><button class="linkbtn" type="button" data-rm="${esc(p.id)}" style="color:var(--bad);font-size:.78rem">Remove</button>`:""}</div>`:"";}).join("")}</div>`+goneNote;}
 function bindThumbs(el){
-  el.querySelectorAll("button[data-read]").forEach(b=>b.addEventListener("click",()=>{const p=state.photos.find(x=>x.id===b.dataset.read);if(p&&safeJpg(p.data))readFigures(p.data,p.dept,"");}));
+  el.querySelectorAll("button[data-read]").forEach(b=>b.addEventListener("click",()=>{const p=state.photos.find(x=>x.id===b.dataset.read);if(p&&safeJpg(p.data))readFigures(p.data,p.dept,"",p.id);}));
   el.querySelectorAll("button[data-rm]").forEach(b=>{let armed=false;b.addEventListener("click",async()=>{
-    if(!armed){armed=true;b.textContent="Tap again to remove";setTimeout(()=>{armed=false;if(b.isConnected)b.textContent="Remove";},4000);return;}
+    if(!armed){armed=true;b.textContent="Tap again: removes photo and its figures";setTimeout(()=>{armed=false;if(b.isConnected)b.textContent="Remove";},4000);return;}
     b.disabled=true;
-    try{await updateDoc(fdoc(photosCol(),b.dataset.rm),{removed:true,removedBy:state.me.name,removedAt:serverTimestamp(),removedAtIso:new Date().toISOString()});}
-    catch(e){b.disabled=false;b.textContent="Could not remove";}});});
+    const pid=b.dataset.rm,ph=state.photos.find(x=>x.id===pid);
+    try{await updateDoc(fdoc(photosCol(),pid),{removed:true,removedBy:state.me.name,removedAt:serverTimestamp(),removedAtIso:new Date().toISOString()});}
+    catch(e){b.disabled=false;b.textContent="Could not remove";return;}
+    if(ph)clearPhotoFigures(ph);});});
   el.querySelectorAll("button[data-pid]").forEach(b=>b.addEventListener("click",()=>{const p=state.photos.find(x=>x.id===b.dataset.pid);if(!p)return;
   const ov=document.createElement("div");ov.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:10px;cursor:zoom-out";
   ov.innerHTML=`<img src="${safeJpg(p.data)}" alt="Report photo" style="max-width:100%;max-height:85vh;border-radius:8px;background:#fff"><div style="color:#fff;font-size:.85rem">${esc(DEPTS[p.dept]||"")} · ${esc(p.by)} · ${esc(timeStr(p.takenAt))} · tap to close</div>`;
@@ -588,12 +602,13 @@ async function scanPhoto(file,dept,read){const msg=$("#scan-msg");const say=(t,e
   catch(e){say("That file could not be opened as a photo. Try again.",true);return;}
   // 1. keep a copy of the photo with this cash up
   let saved=false;
-  try{await setDoc(fdoc(photosCol()),{date:state.date,dept,data:keep,by:state.me.name,at:serverTimestamp(),takenAt:new Date().toISOString()});saved=true;}
+  const ref=fdoc(photosCol());
+  try{await setDoc(ref,{date:state.date,dept,data:keep,by:state.me.name,at:serverTimestamp(),takenAt:new Date().toISOString()});saved=true;}
   catch(e){say("The photo could not be saved. Check the connection and try again.",true);return;}
   if(!read){say("Photo added. The figures were not changed.");return;}
-  await readFigures(forAi,dept,"Photo saved. ");
+  await readFigures(forAi,dept,"Photo saved. ",ref.id);
 }
-async function readFigures(dataUrl,dept,lead){lead=lead||"";state.lastAI="";
+async function readFigures(dataUrl,dept,lead,photoId){lead=lead||"";state.lastAI="";
   const say=(t,err)=>{const m=$("#scan-msg");if(!m)return;m.className="msg"+(err?" err":"");m.textContent=t;
     if(state.lastAI){const d=document.createElement("details");d.style.marginTop="6px";d.innerHTML='<summary style="cursor:pointer">Show what the reader saw</summary><pre style="white-space:pre-wrap;font-size:.78rem;max-height:240px;overflow:auto;background:var(--bg);padding:8px;border-radius:8px"></pre>';d.querySelector("pre").textContent=String(state.lastAI).slice(0,3000);m.appendChild(d);}};
   say(lead+"Reading the report figures…");
@@ -632,6 +647,8 @@ Use null when a tender is not on the report. Give amounts as plain JSON numbers 
   out.total=toNum(low.total);
   METHODS.forEach(m=>{let v=null;for(const k of alias[m.k]){if(low[k]!=null){v=toNum(low[k]);break;}}if(v!=null){doc.lines[m.k].report=v.toFixed(2);filled.push(m.l);
     const el=document.getElementById(dept+"-"+m.k+"-report");if(el){el.value=v.toFixed(2);el.style.background="var(--accent-soft)";}}});
+  // remember which figures came from which photo, so removing the photo removes them too
+  if(photoId&&filled.length){doc.aiFill=doc.aiFill||{};const f={};METHODS.forEach(m=>{if(filled.includes(m.l))f[m.k]=doc.lines[m.k].report;});doc.aiFill[photoId]=f;}
   recalc(dept);if(filled.length)scheduleSave(dept);
   const t=totals(doc);let extra="";
   if(typeof out.total==="number"&&Math.abs(out.total-t.report)>0.009)extra+=` The report total reads ${R(out.total)} but the lines add to ${R(t.report)}; check for a missed payment type.`;
