@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13e";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13f";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -218,7 +218,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13e";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13f";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -389,23 +389,30 @@ function recalc(dept){const doc=local[dept];
   const t=totals(doc),a=$("#t-report"),b=$("#t-dep"),c=$("#t-var");
   if(a){a.textContent=R(t.report);b.textContent=R(t.deposited);c.textContent=RV(t.variance);c.className="num "+vcls(t.variance);}}
 // Amounts: accept a comma or a point as the decimal mark, keep at most 2 decimals
-const money=v=>{let t=String(v).replace(/,/g,".").replace(/[^0-9.]/g,"");
-  const i=t.indexOf(".");if(i>=0)t=t.slice(0,i+1)+t.slice(i+1).replace(/\./g,"").slice(0,2);
-  return t.slice(0,12);};
+// Amounts may be typed with a comma or a point for the cents: 1480,55 / 1480.55 / 1 480,55 / 1.480,55 / 1,480.55
+// The last comma or point is the decimal mark (1 or 2 digits after it); 3 digits after it means a thousands separator.
+const money=v=>{const t=String(v==null?"":v).replace(/[^0-9.,]/g,"");
+  const last=Math.max(t.lastIndexOf("."),t.lastIndexOf(","));
+  if(last<0)return t.slice(0,12);
+  const whole=t.slice(0,last).replace(/[.,]/g,""),dec=t.slice(last+1).replace(/[.,]/g,"");
+  if(dec.length>=3)return (whole+dec).slice(0,12);
+  return (whole||"0")+"."+dec;};
 
-function bindDept(dept){const doc=local[dept];
+function bindDept(dept){
+  // always write into the CURRENT copy of the sheet: it is replaced whenever the database sends an update
+  const D=()=>local[dept];
   main.querySelectorAll("td.inp input").forEach(inp=>{
     // clicking into a box selects the amount, so typing simply replaces it
     inp.addEventListener("focus",()=>{try{inp.select();}catch(e){}});
     inp.addEventListener("mouseup",e=>{if(inp.dataset.sel!=="1"){e.preventDefault();inp.dataset.sel="1";}});
     inp.addEventListener("blur",()=>{inp.dataset.sel="";});
     // leave what the person types alone (comma or point); only strip letters. Tidy to 2 decimals on leaving the box.
-    inp.addEventListener("input",()=>{if(/[^0-9.,]/.test(inp.value))inp.value=inp.value.replace(/[^0-9.,]/g,"");doc.lines[inp.dataset.m][inp.dataset.f]=money(inp.value);recalc(dept);scheduleSave(dept);});
-    inp.addEventListener("blur",()=>{if(inp.value!==""){const v=num(money(inp.value)).toFixed(2);inp.value=v;doc.lines[inp.dataset.m][inp.dataset.f]=v;scheduleSave(dept);}});});
-  const n=document.getElementById(dept+"-notes");if(n)n.addEventListener("input",()=>{doc.notes=n.value;scheduleSave(dept);});
-  const dm=document.getElementById(dept+"-damaged");if(dm){dm.addEventListener("focus",()=>{try{dm.select();}catch(e){}});dm.addEventListener("mouseup",e=>{if(dm.dataset.sel!=="1"){e.preventDefault();dm.dataset.sel="1";}});dm.addEventListener("blur",()=>{dm.dataset.sel="";});dm.addEventListener("input",()=>{if(/[^0-9.,]/.test(dm.value))dm.value=dm.value.replace(/[^0-9.,]/g,"");doc.damaged=money(dm.value);scheduleSave(dept);});
-    dm.addEventListener("blur",()=>{if(dm.value!==""){dm.value=num(money(dm.value)).toFixed(2);doc.damaged=dm.value;scheduleSave(dept);}});}
-  const dn=document.getElementById(dept+"-damagedNotes");if(dn)dn.addEventListener("input",()=>{doc.damagedNotes=dn.value;scheduleSave(dept);});
+    inp.addEventListener("input",()=>{if(/[^0-9.,]/.test(inp.value))inp.value=inp.value.replace(/[^0-9.,]/g,"");D().lines[inp.dataset.m][inp.dataset.f]=money(inp.value);recalc(dept);scheduleSave(dept);});
+    inp.addEventListener("blur",()=>{if(inp.value!==""){const v=num(money(inp.value)).toFixed(2);inp.value=v;D().lines[inp.dataset.m][inp.dataset.f]=v;scheduleSave(dept);}});});
+  const n=document.getElementById(dept+"-notes");if(n)n.addEventListener("input",()=>{D().notes=n.value;scheduleSave(dept);});
+  const dm=document.getElementById(dept+"-damaged");if(dm){dm.addEventListener("focus",()=>{try{dm.select();}catch(e){}});dm.addEventListener("mouseup",e=>{if(dm.dataset.sel!=="1"){e.preventDefault();dm.dataset.sel="1";}});dm.addEventListener("blur",()=>{dm.dataset.sel="";});dm.addEventListener("input",()=>{if(/[^0-9.,]/.test(dm.value))dm.value=dm.value.replace(/[^0-9.,]/g,"");D().damaged=money(dm.value);scheduleSave(dept);});
+    dm.addEventListener("blur",()=>{if(dm.value!==""){dm.value=num(money(dm.value)).toFixed(2);D().damaged=dm.value;scheduleSave(dept);}});}
+  const dn=document.getElementById(dept+"-damagedNotes");if(dn)dn.addEventListener("input",()=>{D().damagedNotes=dn.value;scheduleSave(dept);});
   const ro=$("#reopen");if(ro){let armed=false;ro.addEventListener("click",async()=>{
     if(!armed){armed=true;ro.textContent="Tap again to reopen";$("#reopen-msg").textContent="The signature will be removed.";setTimeout(()=>{armed=false;if(ro.isConnected){ro.textContent="Reopen to correct";$("#reopen-msg").textContent="";}},4000);return;}
     ro.disabled=true;
@@ -414,7 +421,7 @@ function bindDept(dept){const doc=local[dept];
       if(!["manager","admin"].includes(role())){ro.disabled=false;$("#reopen-msg").textContent="The day is closed. Ask the manager to reopen it.";return;}
       Object.assign(M,{status:"draft",signature:"",signedBy:"",signedAt:""});state.pending.manager=true;
       if(!await save("manager",{action:"reopened",by:state.me.name})){ro.disabled=false;$("#reopen-msg").textContent="Could not reopen the day. Try again.";return;}}
-    Object.assign(doc,{status:"draft",signature:"",signedBy:"",signedAt:""});clearTimeout(timers[dept]);state.pending[dept]=true;
+    Object.assign(D(),{status:"draft",signature:"",signedBy:"",signedAt:""});clearTimeout(timers[dept]);state.pending[dept]=true;
     await save(dept,{action:"reopened",by:state.me.name});render(true);});}
   const pad=$("#pad");if(pad)bindPad(pad,dept);
   const ph=document.getElementById(dept+"-photo");if(ph)ph.addEventListener("change",()=>{const f=ph.files&&ph.files[0];ph.value="";if(f)scanPhoto(f,dept,true);});
@@ -516,7 +523,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13e"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13f"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager");const info=dayInfo(state.date,W,Rt,M);
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
   const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,status:info.label,photos});
