@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13f";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13g";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -218,7 +218,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13f";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13g";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -335,13 +335,15 @@ function renderDept(dept){
         <div class="field"><label>Department</label><div class="static">${DEPTS[dept]}</div></div>
       </div>
       ${editable?`<div class="scan">
-        <div style="min-width:0"><div class="eyebrow">Fill from photo</div><div class="msg">Take a photo of the last page of the cash up report. The report figures are filled in for you to check, and the photo is kept with this cash up.</div></div>
+        <div style="min-width:0"><div class="eyebrow">Fill from photo</div><div class="msg">Take a photo of the last page of the cash up report, or attach a saved photo or PDF. The report figures are filled in for you to check, and a copy is kept with this cash up.</div></div>
         <div class="actions">
           <label class="btn primary" for="${dept}-photo" style="display:inline-flex;align-items:center;gap:8px">Scan report photo</label>
           <label class="btn" for="${dept}-photo2" style="display:inline-flex;align-items:center;gap:8px">Add another photo</label>
+          <label class="btn" for="${dept}-file" style="display:inline-flex;align-items:center;gap:8px">Attach file</label>
         </div>
         <input type="file" id="${dept}-photo" accept="image/*" capture="environment" hidden>
         <input type="file" id="${dept}-photo2" accept="image/*" capture="environment" hidden>
+        <input type="file" id="${dept}-file" accept="image/*,application/pdf,.pdf" multiple hidden>
         <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
       </div>`:""}
       <div class="field"><label>Report photos</label><div data-photos="${dept}">${photoStrip(dept)}</div></div>
@@ -425,6 +427,7 @@ function bindDept(dept){
     await save(dept,{action:"reopened",by:state.me.name});render(true);});}
   const pad=$("#pad");if(pad)bindPad(pad,dept);
   const ph=document.getElementById(dept+"-photo");if(ph)ph.addEventListener("change",()=>{const f=ph.files&&ph.files[0];ph.value="";if(f)scanPhoto(f,dept,true);});
+  const fl=document.getElementById(dept+"-file");if(fl)fl.addEventListener("change",()=>{const fs=Array.from(fl.files||[]);fl.value="";if(fs.length)attachFiles(fs,dept);});
   const ph2=document.getElementById(dept+"-photo2");if(ph2)ph2.addEventListener("change",()=>{const f=ph2.files&&ph2.files[0];ph2.value="";if(f)scanPhoto(f,dept,false);});
   document.querySelectorAll("[data-photos]").forEach(bindThumbs);
 }
@@ -523,7 +526,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13f"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13g"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager");const info=dayInfo(state.date,W,Rt,M);
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
   const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,status:info.label,photos});
@@ -602,6 +605,37 @@ async function readWithAI(parts){
       lastUseful=lastUseful||e;deadRoutes.add(route);}
   }
   throw lastUseful||last||new Error("No AI model available");}
+/* ---------- attached files (photos or PDFs) ---------- */
+let pdfjsLib=null;
+function loadPdfJs(){if(pdfjsLib)return Promise.resolve(pdfjsLib);
+  return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+    sc.onload=()=>{pdfjsLib=window.pdfjsLib;if(!pdfjsLib)return rej(new Error("PDF reader did not load"));
+      pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";res(pdfjsLib);};
+    sc.onerror=()=>rej(new Error("PDF reader could not be downloaded"));document.head.appendChild(sc);});}
+// Turn each PDF page into a JPEG picture (max 6 pages) so it is kept and read exactly like a photo.
+async function pdfToImages(file){const lib=await loadPdfJs();const pdf=await lib.getDocument({data:await file.arrayBuffer()}).promise;
+  const out=[];const n=Math.min(pdf.numPages,6);
+  for(let i=1;i<=n;i++){const page=await pdf.getPage(i);const vp0=page.getViewport({scale:1});const vp=page.getViewport({scale:Math.min(3,2000/Math.max(vp0.width,vp0.height))});
+    const c=document.createElement("canvas");c.width=Math.round(vp.width);c.height=Math.round(vp.height);const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);
+    await page.render({canvasContext:x,viewport:vp}).promise;
+    out.push(await new Promise(r=>c.toBlob(b=>r(new File([b],file.name.replace(/\.pdf$/i,"")+"-p"+i+".jpg",{type:"image/jpeg"})),"image/jpeg",0.92)));}
+  return {images:out,total:pdf.numPages};}
+async function attachFiles(files,dept){const say=(t,err)=>{const m=$("#scan-msg");if(m){m.className="msg"+(err?" err":"");m.textContent=t;}};
+  const imgs=[];let readIdx=0,note="";
+  for(const f of files){
+    const isPdf=f.type==="application/pdf"||/\.pdf$/i.test(f.name);
+    if(isPdf){say("Opening "+f.name+"…");
+      try{const r=await pdfToImages(f);if(!r.images.length)continue;
+        if(!imgs.length)readIdx=r.images.length-1; // the totals are on the last page
+        imgs.push(...r.images);if(r.total>r.images.length)note=" Only the first "+r.images.length+" pages of "+f.name+" were kept.";}
+      catch(e){console.error("PDF:",e);say("The PDF "+f.name+" could not be opened: "+(e&&e.message||e),true);return;}}
+    else if(/^image\//.test(f.type)||/\.(jpe?g|png|heic|webp|gif|bmp)$/i.test(f.name))imgs.push(f);
+    else{say(f.name+" is not a photo or PDF. Attach a photo (JPG, PNG) or a PDF.",true);return;}}
+  if(!imgs.length){say("Nothing to attach.",true);return;}
+  // save every page/photo; read the figures from one of them (the PDF's last page, or the first photo)
+  for(let i=0;i<imgs.length;i++){if(i!==readIdx)await scanPhoto(imgs[i],dept,false);}
+  await scanPhoto(imgs[readIdx],dept,true);
+  if(note){const m=$("#scan-msg");if(m)m.textContent+=note;}}
 async function scanPhoto(file,dept,read){const msg=$("#scan-msg");const say=(t,err)=>{const m=$("#scan-msg");if(m){m.className="msg"+(err?" err":"");m.textContent=t;}};
   say("Saving the photo and reading the report…");
   let keep,forAi;
