@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13b";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-13c";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -121,7 +121,7 @@ function loadUsersThenWho(){
       let saved=null;try{saved=sessionStorage.getItem("cu_me");}catch(e){}
       const u=saved&&state.users.find(x=>x.id===saved&&x.active===true);
       if(u){state.me=u;startApp();}else showWho();}
-    else if(!state.me&&!$("#pinform"))showWho();
+    else if(!state.me&&!$("#pinform")&&!$("#pinchange"))showWho();
     if(state.tab==="users"&&state.ready)render();
   },()=>showSetup("Could not load the list of users. Check the connection and reload."));
 }
@@ -149,8 +149,40 @@ function askPin(u){if(!u)return;
   $("#pinform").addEventListener("submit",async e=>{e.preventDefault();const m=$("#pinmsg");
     const now=Date.now();state.tries=(state.tries||[]).filter(t=>now-t<5*60000);
     if(state.tries.length>=5){m.className="msg err";m.textContent="Too many wrong PINs. Wait 5 minutes and try again.";return;}
-    if(await pinHash(u.salt,p.value)===u.pinHash){state.me=u;state.tries=[];try{sessionStorage.setItem("cu_me",u.id);}catch(x){}startApp();}
+    if(await pinHash(u.salt,p.value)===u.pinHash){state.tries=[];
+      if(u.mustChange===true){showChangePin(u,true);return;}
+      state.me=u;try{sessionStorage.setItem("cu_me",u.id);}catch(x){}startApp();}
     else{state.tries.push(now);m.className="msg err";m.textContent="Wrong PIN. Try again.";p.value="";p.focus();}});
+}
+// Change PIN: forced after the administrator sets a PIN, or by choice from the top bar
+function showChangePin(u,forced){
+  main.innerHTML=`<form class="login sheet" id="pinchange" style="padding:22px" novalidate>
+    <div><div class="eyebrow">${esc(u.name)}</div><h2>${forced?"Choose your own PIN":"Change my PIN"}</h2></div>
+    ${forced?'<div class="msg">Your PIN was set by the administrator. Choose a new 4-digit PIN that only you know.</div>':'<div class="field"><label for="cp0">Current PIN</label><input id="cp0" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></div>'}
+    <div class="field"><label for="cp1">New 4-digit PIN</label><input id="cp1" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></div>
+    <div class="field"><label for="cp2">Type the new PIN again</label><input id="cp2" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></div>
+    <button class="btn primary" type="submit" id="cpbtn">Save new PIN</button>
+    <button class="linkbtn" type="button" id="cpback">${forced?"Not now, go back":"Cancel"}</button>
+    <div class="msg" id="cpmsg"></div></form>`;
+  const first=forced?$("#cp1"):$("#cp0");first.focus();
+  $("#cpback").addEventListener("click",()=>{if(forced)showWho();else render();});
+  $("#pinchange").addEventListener("submit",async e=>{e.preventDefault();const m=$("#cpmsg");m.className="msg err";
+    const a=$("#cp1").value,b=$("#cp2").value;
+    if(!forced){const now=Date.now();state.tries=(state.tries||[]).filter(t=>now-t<5*60000);
+      if(state.tries.length>=5){m.textContent="Too many wrong PINs. Wait 5 minutes and try again.";return;}
+      if(await pinHash(u.salt,$("#cp0").value)!==u.pinHash){state.tries.push(now);m.textContent="The current PIN is wrong.";return;}}
+    if(!/^\d{4}$/.test(a)){m.textContent="The new PIN must be exactly 4 digits.";return;}
+    if(a!==b){m.textContent="The two new PINs are not the same.";return;}
+    if(/^(\d)\1{3}$/.test(a)||a==="1234"){m.textContent="That PIN is too easy to guess. Choose another.";return;}
+    if(await pinHash(u.salt,a)===u.pinHash){m.textContent="Choose a PIN different from the old one.";return;}
+    $("#cpbtn").disabled=true;
+    try{const salt=newSalt(),pinHashV=await pinHash(salt,a);
+      await setDoc(fdoc(usersCol(),u.id),{salt,pinHash:pinHashV,mustChange:false,pinChangedAt:serverTimestamp()},{merge:true});
+      const me=Object.assign({},u,{salt,pinHash:pinHashV,mustChange:false});
+      if(forced){state.me=me;try{sessionStorage.setItem("cu_me",me.id);}catch(x){}startApp();}
+      else{state.me=me;render();}
+}
+    catch(x){$("#cpbtn").disabled=false;m.textContent="Could not save. Check the connection and try again.";}});
 }
 function showFirstAdmin(){
   main.innerHTML=`<form class="login sheet" id="adminform" style="padding:22px" novalidate>
@@ -174,8 +206,9 @@ function showFirstAdmin(){
     catch(x){state.me=null;state.justCreated=null;$("#abtn").disabled=false;m.textContent="Could not save. Check the connection and try again.";}});
 }
 function whoBar(){const w=$("#who");w.hidden=false;
-  w.innerHTML=`<b>${esc(state.me.name)}</b><span class="roletag">${esc(ROLE_LABEL[role()]||"")}</span><button id="switchu" type="button">Switch user</button>`;
+  w.innerHTML=`<b>${esc(state.me.name)}</b><span class="roletag">${esc(ROLE_LABEL[role()]||"")}</span><button id="mypin" type="button">Change PIN</button><button id="switchu" type="button">Switch user</button>`;
   $("#switchu").addEventListener("click",()=>{flushAll();showWho();});
+  $("#mypin").addEventListener("click",()=>{flushAll();showChangePin(state.me,false);});
   $("#tab-users").hidden=role()!=="admin";}
 function lockApp(msg){flushAll();showWho(msg);}
 let idleT=null;
@@ -185,7 +218,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13b";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-13c";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -483,7 +516,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13b"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-13c"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager");const info=dayInfo(state.date,W,Rt,M);
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
   const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,status:info.label,photos});
@@ -620,7 +653,7 @@ function renderUsers(){
         <div class="field"><label for="up">4-digit PIN</label><input id="up" inputmode="numeric" maxlength="4" autocomplete="off"></div>
         <button class="btn primary" type="submit" id="ubtn">Add user</button>
       </form>
-      <div class="msg" id="umsg">Give each person their PIN privately. They tap their name and enter it to use the app.</div>
+      <div class="msg" id="umsg">Give each person their starting PIN privately. The first time they sign in, the app asks them to choose their own PIN.</div>
     </div>
     <div class="hist">${rows}</div></section>`;
   $("#uform").addEventListener("submit",async e=>{e.preventDefault();const m=$("#umsg");m.className="msg err";
@@ -629,7 +662,7 @@ function renderUsers(){
     if(state.users.some(u=>String(u.name).trim().toLowerCase()===n.toLowerCase())){m.textContent="There is already a user with that name. Use a different name, e.g. add a surname.";return;}
     if(!/^\d{4}$/.test(p)){m.textContent="The PIN must be exactly 4 digits.";return;}
     $("#ubtn").disabled=true;
-    try{const salt=newSalt();await setDoc(fdoc(usersCol()),{name:n,role:r,active:true,salt,pinHash:await pinHash(salt,p),createdAt:serverTimestamp()});
+    try{const salt=newSalt();await setDoc(fdoc(usersCol()),{name:n,role:r,active:true,salt,pinHash:await pinHash(salt,p),mustChange:true,createdAt:serverTimestamp()});
       m.className="msg";m.textContent=n+" added. Give them their PIN privately.";$("#un").value="";$("#up").value="";}
     catch(x){m.textContent="Could not save. Check the connection and try again.";}
     $("#ubtn").disabled=false;});
@@ -646,7 +679,7 @@ function renderUsers(){
     const f=row.nextElementSibling;f.querySelector("input").focus();
     f.addEventListener("submit",async ev=>{ev.preventDefault();const v=f.querySelector("input").value;
       if(!/^\d{4}$/.test(v)){m.className="msg err";m.textContent="The PIN must be exactly 4 digits.";return;}
-      const salt=newSalt();try{await setDoc(fdoc(usersCol(),u.id),{salt,pinHash:await pinHash(salt,v)},{merge:true});m.className="msg";m.textContent="New PIN saved for "+u.name+".";f.remove();}
+      const salt=newSalt();try{await setDoc(fdoc(usersCol(),u.id),{salt,pinHash:await pinHash(salt,v),mustChange:true},{merge:true});m.className="msg";m.textContent="New PIN saved for "+u.name+". They will be asked to choose their own PIN when they next sign in.";f.remove();}
       catch(x){m.className="msg err";m.textContent="Could not save.";}});
   }));
 }
