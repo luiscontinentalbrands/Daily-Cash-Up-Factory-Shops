@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-15a";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-15b";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -30,7 +30,9 @@ function normalize(raw,date,dept){const b=blank(date,dept);if(!raw)return b;cons
   // trust the server clock for signature times, not the phone's
   if(raw.signedAtServer&&typeof raw.signedAtServer.toDate==="function")r.signedAt=raw.signedAtServer.toDate().toISOString();
   delete r.signedAtServer;delete r.updatedAtServer;delete r.reopenedAt;
-  const o=Object.assign(b,clone(r));METHODS.forEach(m=>{o.lines[m.k]=Object.assign(m.k==="cashguard"?{report:"",deposited:"",retained:""}:{report:"",deposited:""},(raw.lines||{})[m.k]||{});});return o;}
+  const o=Object.assign(b,clone(r));METHODS.forEach(m=>{o.lines[m.k]=Object.assign(m.k==="cashguard"?{report:"",deposited:"",retained:""}:{report:"",deposited:""},(raw.lines||{})[m.k]||{});});
+  if(dept!=="retail")o.lines.cashguard.retained=""; // the "retained, not banked" amount is a Retail-only line
+  return o;}
 function totals(doc){let r=0,d=0;METHODS.forEach(m=>{r+=num(doc.lines[m.k].report);d+=dep(doc.lines[m.k]);});const ret=num(doc.lines.cashguard&&doc.lines.cashguard.retained);return {report:r,deposited:d,variance:d-r,retained:ret,banked:d-ret};}
 
 /* Deadline: every trading day Mon–Sat, all three signatures by 19:00 */
@@ -220,7 +222,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-15a";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-15b";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -323,7 +325,7 @@ function renderDept(dept){
   const t=totals(doc);
   const inA=`inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" ${dis}`;
   const rows=METHODS.map(m=>{const ln=doc.lines[m.k];const v=dep(ln)-num(ln.report);
-    if(m.k==="cashguard")return `<tr class="cg"><td>${m.l}</td>
+    if(m.k==="cashguard"&&dept==="retail")return `<tr class="cg"><td>${m.l}</td>
       <td class="inp"><input id="${dept}-cashguard-report" data-m="cashguard" data-f="report" ${inA} value="${esc(ln.report)}" aria-label="CashGuard per report"></td>
       <td class="inp"><label class="sub" for="${dept}-cashguard-deposited">Deposited in Nedbank</label><input id="${dept}-cashguard-deposited" data-m="cashguard" data-f="deposited" ${inA} value="${esc(ln.deposited)}" aria-label="CashGuard deposited in Nedbank">
         <label class="sub" for="${dept}-cashguard-retained">Counted &amp; retained, not banked</label><input id="${dept}-cashguard-retained" data-m="cashguard" data-f="retained" ${inA} value="${esc(ln.retained)}" aria-label="CashGuard counted and retained, not banked"></td>
@@ -360,7 +362,7 @@ function renderDept(dept){
         <thead><tr><th>Payment type</th><th>Per report<small>Till / Z-report</small></th><th>Deposited<small>Actual counted</small></th><th>Variance<small>Deposited − report</small></th></tr></thead>
         <tbody>${rows}</tbody>
         <tfoot><tr><td>Total</td><td class="num" id="t-report">${R(t.report)}</td><td class="num" id="t-dep">${R(t.deposited)}</td><td class="num ${vcls(t.variance)}" id="t-var">${RV(t.variance)}</td></tr>
-        <tr class="cgnote"><td colspan="4" id="t-cg">${cgNote(t)}</td></tr></tfoot>
+        ${dept==="retail"?`<tr class="cgnote"><td colspan="4" id="t-cg">${cgNote(t)}</td></tr>`:""}</tfoot>
       </table></div>
       <div class="dmg">
         <div class="field"><label for="${dept}-damaged">Damaged bank notes &amp; coins (R)</label><input id="${dept}-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(doc.damaged)}" ${dis} style="text-align:right"></div>
@@ -483,7 +485,7 @@ function renderCombined(){
     <div class="stat"><div class="k">Per reports</div><div class="v num">${R(tw.report+tr.report)}</div></div>
     <div class="stat"><div class="k">Deposited</div><div class="v num">${R(tw.deposited+tr.deposited)}</div></div>
     <div class="stat"><div class="k">Variance</div><div class="v num ${vcls(gv)}">${RV(gv)}</div></div>
-    <div class="stat"><div class="k">CashGuard retained, not banked</div><div class="v num">${R(tw.retained+tr.retained)}</div></div>
+    <div class="stat"><div class="k">Retail CashGuard retained, not banked</div><div class="v num">${R(tr.retained)}</div></div>
     <div class="stat"><div class="k">Cash + CashGuard banked</div><div class="v num">${R(["cash","cashguard"].reduce((s,k)=>s+num(W.lines[k].deposited)+num(Rt.lines[k].deposited),0))}</div></div>
   </div>
   <section class="sheet">
@@ -500,7 +502,7 @@ function renderCombined(){
         <div class="field"><label>Retail cashed up by</label><div class="static">${esc(Rt.cashier)||"—"}</div></div>
       </div>
       ${(W.notes||Rt.notes)?`<div class="field"><label>Notes</label><div class="static" style="font-weight:400;white-space:pre-wrap">${W.notes?"<b>Wholesale:</b> "+esc(W.notes):""}${W.notes&&Rt.notes?"\n":""}${Rt.notes?"<b>Retail:</b> "+esc(Rt.notes):""}</div></div>`:""}
-      <div class="field"><label>CashGuard</label><div class="static num" style="font-weight:400">Deposited in Nedbank: Wholesale ${R(num(W.lines.cashguard.deposited))} · Retail ${R(num(Rt.lines.cashguard.deposited))} · <b>Total ${R(num(W.lines.cashguard.deposited)+num(Rt.lines.cashguard.deposited))}</b><br>Counted &amp; retained, not banked: Wholesale ${R(tw.retained)} · Retail ${R(tr.retained)} · <b>Total ${R(tw.retained+tr.retained)}</b></div></div>
+      <div class="field"><label>Retail CashGuard</label><div class="static num" style="font-weight:400">Deposited in Nedbank ${R(num(Rt.lines.cashguard.deposited))} · Counted &amp; retained, not banked <b>${R(tr.retained)}</b></div></div>
       <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">Wholesale ${R(num(W.damaged))}${W.damagedNotes?" ("+esc(W.damagedNotes)+")":""} · Retail ${R(num(Rt.damaged))}${Rt.damagedNotes?" ("+esc(Rt.damagedNotes)+")":""} · <b>Total ${R(dmgT)}</b></div></div>
       <div class="fields" style="grid-template-columns:repeat(2,minmax(0,1fr))">
         <div class="field"><label>Wholesale report photos</label><div data-photos="wholesale">${photoStrip("wholesale")}</div></div>
@@ -523,8 +525,7 @@ function renderCombined(){
     METHODS.forEach(m=>{const wr=num(W.lines[m.k].report),wd=dep(W.lines[m.k]),rr=num(Rt.lines[m.k].report),rd=dep(Rt.lines[m.k]);lines.push([m.l,wr,wd,rr,rd,wr+rr,wd+rd,(wd+rd)-(wr+rr)].map(f));});
     lines.push(["Total",tw.report,tw.deposited,tr.report,tr.deposited,tw.report+tr.report,tw.deposited+tr.deposited,gv].map(f));
     lines.push([],["Wholesale cashed up by",W.cashier,"Signed by",W.signedBy,W.signedAt],["Retail cashed up by",Rt.cashier,"Signed by",Rt.signedBy,Rt.signedAt],["Wholesale notes",W.notes],["Retail notes",Rt.notes],
-      ["CashGuard deposited in Nedbank - Wholesale",num(W.lines.cashguard.deposited).toFixed(2)],["CashGuard deposited in Nedbank - Retail",num(Rt.lines.cashguard.deposited).toFixed(2)],
-      ["CashGuard counted & retained, not banked - Wholesale",tw.retained.toFixed(2)],["CashGuard counted & retained, not banked - Retail",tr.retained.toFixed(2)],
+      ["Retail CashGuard deposited in Nedbank",num(Rt.lines.cashguard.deposited).toFixed(2)],["Retail CashGuard counted & retained, not banked",tr.retained.toFixed(2)],
       ["Damaged notes & coins - Wholesale",num(W.damaged).toFixed(2),W.damagedNotes],["Damaged notes & coins - Retail",num(Rt.damaged).toFixed(2),Rt.damagedNotes],["Manager signed by",M.signedBy,M.signedAt],["Day status",info.label]);
     // Prefix cells that start with = + - @ so spreadsheets do not run them as formulas
     const cell=c=>{c=String(c==null?"":c);if(/^[=+\-@]/.test(c)&&!/^-?\d+(\.\d+)?$/.test(c))c="'"+c;return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;};
@@ -541,7 +542,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-15a"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-15b"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager");const info=dayInfo(state.date,W,Rt,M);
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
   const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,status:info.label,photos});

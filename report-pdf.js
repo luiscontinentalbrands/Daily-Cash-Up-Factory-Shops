@@ -60,7 +60,7 @@ export function buildReportPdf(jsPDF, d) {
   let tWr = 0, tWd = 0, tRr = 0, tRd = 0;
   pdf.setFont("helvetica", "normal"); pdf.setFontSize(10);
   METHODS.forEach(([k, l]) => {
-    const wr = line(W, k, "report"), wd = line(W, k, "deposited") + line(W, k, "retained"), rr = line(Rt, k, "report"), rd = line(Rt, k, "deposited") + line(Rt, k, "retained");
+    const wr = line(W, k, "report"), wd = line(W, k, "deposited"), rr = line(Rt, k, "report"), rd = line(Rt, k, "deposited") + line(Rt, k, "retained");
     tWr += wr; tWd += wd; tRr += rr; tRd += rd; const v = (wd + rd) - (wr + rr);
     y += 6.5; ink(); pdf.setFont("helvetica", "normal");
     text(l, X + 2, y);
@@ -83,9 +83,7 @@ export function buildReportPdf(jsPDF, d) {
   };
   row("Cashed up by", `Wholesale: ${W?.cashier || "-"}    Retail: ${Rt?.cashier || "-"}`);
   const dmg = num(W?.damaged) + num(Rt?.damaged);
-  { const wb = line(W, "cashguard", "deposited"), rb = line(Rt, "cashguard", "deposited"), wk = line(W, "cashguard", "retained"), rk = line(Rt, "cashguard", "retained");
-    row("CashGuard in Nedbank", `Wholesale ${R(wb)}    Retail ${R(rb)}    Total ${R(wb + rb)}`);
-    row("CashGuard not banked", `Counted & retained: Wholesale ${R(wk)}    Retail ${R(rk)}    Total ${R(wk + rk)}`); }
+  row("Retail CashGuard", `Deposited in Nedbank ${R(line(Rt, "cashguard", "deposited"))}    Counted & retained, not banked ${R(line(Rt, "cashguard", "retained"))}`);
   row("Damaged notes & coins", `Wholesale ${R(num(W?.damaged))}${W?.damagedNotes ? " (" + W.damagedNotes + ")" : ""}    Retail ${R(num(Rt?.damaged))}${Rt?.damagedNotes ? " (" + Rt.damagedNotes + ")" : ""}    Total ${R(dmg)}`);
   if (W?.notes) row("Wholesale notes", W.notes);
   if (Rt?.notes) row("Retail notes", Rt.notes);
