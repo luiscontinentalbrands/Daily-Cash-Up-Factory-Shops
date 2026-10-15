@@ -95,7 +95,7 @@ td.inp input{width:100%;min-width:110px;text-align:right;font:inherit;font-varia
 .msg.err{color:var(--bad)}
 .saved{font-size:.78rem;color:var(--muted)}
 
-.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.summary{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
 @media (max-width:720px){.summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
 .stat .k{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
@@ -148,3 +148,8 @@ header.bar.dept-retail{border-bottom-color:var(--rt)}
 .deptband .small{font-size:.85rem;opacity:.92}
 .sheet.wholesale{border-top:6px solid var(--ws)}
 .sheet.retail{border-top:6px solid var(--rt)}
+
+/* CashGuard: deposited in Nedbank + counted & retained, not banked */
+td.inp label.sub{display:block;font-size:.68rem;color:var(--muted);text-align:right;margin:2px 2px 2px;font-weight:600;letter-spacing:.01em}
+td.inp label.sub + input{margin-bottom:4px}
+tr.cgnote td{font-size:.8rem;color:var(--muted);font-weight:400;padding-top:4px;border-top:0}

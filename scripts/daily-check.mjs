@@ -89,7 +89,7 @@ function line(doc, k, f) { return num(doc?.lines?.[k]?.[f]); }
 function reportHtml(title, note) {
   let tWr = 0, tWd = 0, tRr = 0, tRd = 0;
   const rows = METHODS.map(([k, l]) => {
-    const wr = line(W, k, "report"), wd = line(W, k, "deposited"), rr = line(Rt, k, "report"), rd = line(Rt, k, "deposited");
+    const wr = line(W, k, "report"), wd = line(W, k, "deposited") + line(W, k, "retained"), rr = line(Rt, k, "report"), rd = line(Rt, k, "deposited") + line(Rt, k, "retained");
     tWr += wr; tWd += wd; tRr += rr; tRd += rd;
     const v = (wd + rd) - (wr + rr);
     return `<tr><td style="padding:6px 10px;border-bottom:1px solid #eee">${l}</td>
@@ -119,7 +119,9 @@ function reportHtml(title, note) {
       <td style="padding:8px 10px;text-align:right"><b>${R(tWr + tRr)}</b></td><td style="padding:8px 10px;text-align:right"><b>${R(tWd + tRd)}</b></td>
       <td style="padding:8px 10px;text-align:right;color:${vcolor(gv)}"><b>${RV(gv)}</b></td></tr></tfoot>
   </table>
-  <p style="margin:14px 0 4px"><b>Damaged bank notes &amp; coins:</b> Wholesale ${R(num(W?.damaged))}${W?.damagedNotes ? " (" + esc(W.damagedNotes) + ")" : ""} · Retail ${R(num(Rt?.damaged))}${Rt?.damagedNotes ? " (" + esc(Rt.damagedNotes) + ")" : ""} · <b>Total ${R(dmg)}</b></p>
+  <p style="margin:14px 0 4px"><b>CashGuard deposited in Nedbank:</b> Wholesale ${R(line(W, "cashguard", "deposited"))} · Retail ${R(line(Rt, "cashguard", "deposited"))} · <b>Total ${R(line(W, "cashguard", "deposited") + line(Rt, "cashguard", "deposited"))}</b><br>
+  <b>CashGuard counted &amp; retained, not banked:</b> Wholesale ${R(line(W, "cashguard", "retained"))} · Retail ${R(line(Rt, "cashguard", "retained"))} · <b>Total ${R(line(W, "cashguard", "retained") + line(Rt, "cashguard", "retained"))}</b></p>
+  <p style="margin:4px 0"><b>Damaged bank notes &amp; coins:</b> Wholesale ${R(num(W?.damaged))}${W?.damagedNotes ? " (" + esc(W.damagedNotes) + ")" : ""} · Retail ${R(num(Rt?.damaged))}${Rt?.damagedNotes ? " (" + esc(Rt.damagedNotes) + ")" : ""} · <b>Total ${R(dmg)}</b></p>
   <p style="margin:4px 0"><b>Cashed up by:</b> Wholesale ${esc(W?.cashier || "—")} · Retail ${esc(Rt?.cashier || "—")}</p>
   ${W?.notes ? `<p style="margin:4px 0"><b>Wholesale notes:</b> ${esc(W.notes)}</p>` : ""}
   ${Rt?.notes ? `<p style="margin:4px 0"><b>Retail notes:</b> ${esc(Rt.notes)}</p>` : ""}
