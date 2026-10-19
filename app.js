@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-15b";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-19a";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -9,6 +9,9 @@ const METHODS=[
   {k:"eft",l:"EFT"},{k:"shop2shop",l:"Shop2Shop"},{k:"snapscan",l:"SnapScan"}
 ];
 const DEPTS={wholesale:"Wholesale",retail:"Retail",manager:"Manager"};
+// Retail: the cash line is coins, and there is no EFT line (EFT slips are credit card payments)
+const methodsFor=dept=>dept==="retail"?METHODS.filter(m=>m.k!=="eft"):METHODS;
+const lbl=(m,dept)=>m.k==="cash"?(dept==="retail"?"Coins":dept==="wholesale"?"Cash":"Cash / Coins (Retail)"):m.l;
 const fmt=new Intl.NumberFormat("en-ZA",{minimumFractionDigits:2,maximumFractionDigits:2});
 const R=v=>"R "+fmt.format(v||0);
 const RV=v=>{const a=Math.round(v*100)/100;if(a===0)return "R 0.00";return (a>0?"+":"−")+"R "+fmt.format(Math.abs(a));};
@@ -32,6 +35,7 @@ function normalize(raw,date,dept){const b=blank(date,dept);if(!raw)return b;cons
   delete r.signedAtServer;delete r.updatedAtServer;delete r.reopenedAt;
   const o=Object.assign(b,clone(r));METHODS.forEach(m=>{o.lines[m.k]=Object.assign(m.k==="cashguard"?{report:"",deposited:"",retained:""}:{report:"",deposited:""},(raw.lines||{})[m.k]||{});});
   if(dept!=="retail")o.lines.cashguard.retained=""; // the "retained, not banked" amount is a Retail-only line
+  if(dept==="retail"){const e=o.lines.eft,c=o.lines.card;["report","deposited"].forEach(f=>{if(e[f]!==""&&e[f]!=null){c[f]=(num(c[f])+num(e[f])).toFixed(2);e[f]="";}});}
   return o;}
 function totals(doc){let r=0,d=0;METHODS.forEach(m=>{r+=num(doc.lines[m.k].report);d+=dep(doc.lines[m.k]);});const ret=num(doc.lines.cashguard&&doc.lines.cashguard.retained);return {report:r,deposited:d,variance:d-r,retained:ret,banked:d-ret};}
 
@@ -222,7 +226,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-15b";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-19a";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -324,15 +328,15 @@ function renderDept(dept){
   const doc=current(dept),signed=doc.status==="signed",editable=!signed&&canEditDept(dept),dis=editable?"":"disabled";
   const t=totals(doc);
   const inA=`inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" ${dis}`;
-  const rows=METHODS.map(m=>{const ln=doc.lines[m.k];const v=dep(ln)-num(ln.report);
+  const rows=methodsFor(dept).map(m=>{const ln=doc.lines[m.k];const v=dep(ln)-num(ln.report);
     if(m.k==="cashguard"&&dept==="retail")return `<tr class="cg"><td>${m.l}</td>
       <td class="inp"><input id="${dept}-cashguard-report" data-m="cashguard" data-f="report" ${inA} value="${esc(ln.report)}" aria-label="CashGuard per report"></td>
       <td class="inp"><label class="sub" for="${dept}-cashguard-deposited">Deposited in Nedbank</label><input id="${dept}-cashguard-deposited" data-m="cashguard" data-f="deposited" ${inA} value="${esc(ln.deposited)}" aria-label="CashGuard deposited in Nedbank">
         <label class="sub" for="${dept}-cashguard-retained">Counted &amp; retained, not banked</label><input id="${dept}-cashguard-retained" data-m="cashguard" data-f="retained" ${inA} value="${esc(ln.retained)}" aria-label="CashGuard counted and retained, not banked"></td>
       <td class="num ${vcls(v)}" id="v-cashguard">${RV(v)}</td></tr>`;
-    return `<tr><td>${m.l}</td>
-      <td class="inp"><input id="${dept}-${m.k}-report" data-m="${m.k}" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.report)}" ${dis} aria-label="${m.l} per report"></td>
-      <td class="inp"><input id="${dept}-${m.k}-deposited" data-m="${m.k}" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="${m.l} deposited"></td>
+    return `<tr><td>${lbl(m,dept)}</td>
+      <td class="inp"><input id="${dept}-${m.k}-report" data-m="${m.k}" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.report)}" ${dis} aria-label="${lbl(m,dept)} per report"></td>
+      <td class="inp"><input id="${dept}-${m.k}-deposited" data-m="${m.k}" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="${lbl(m,dept)} deposited"></td>
       <td class="num ${vcls(v)}" id="v-${m.k}">${RV(v)}</td></tr>`;}).join("");
   const di=dayInfo(state.date,current("wholesale"),current("retail"),current("manager"));
   main.innerHTML=`${!canEditDept(dept)?`<div class="notice">You are signed in as ${esc(ROLE_LABEL[role()])}, so the ${DEPTS[dept]} sheet is view-only for you.</div>`:""}${banner(di)}
@@ -475,7 +479,7 @@ function renderCombined(){
   const dmgT=num(W.damaged)+num(Rt.damaged);
   const mgrBlock=M.status==="signed"?signedBlock(M,"manager"):!canSignManager()?`<div class="msg">Only a manager can sign off the day. ${both?"Waiting for the manager.":"Wholesale and Retail must sign first."}</div>`:both?signBlock(M,"manager"):`<div class="msg">You can sign here once Wholesale and Retail have both signed. Still waiting for: ${[W.status!=="signed"?"Wholesale":"",Rt.status!=="signed"?"Retail":""].filter(Boolean).join(" and ")}.</div>`;
   const rows=METHODS.map(m=>{const wr=num(W.lines[m.k].report),wd=dep(W.lines[m.k]),rr=num(Rt.lines[m.k].report),rd=dep(Rt.lines[m.k]);const v=(wd+rd)-(wr+rr);
-    return `<tr><td>${m.l}</td><td class="num grp">${R(wr)}</td><td class="num">${R(wd)}</td><td class="num grp">${R(rr)}</td><td class="num">${R(rd)}</td><td class="num grp"><b>${R(wr+rr)}</b></td><td class="num"><b>${R(wd+rd)}</b></td><td class="num ${vcls(v)}">${RV(v)}</td></tr>`;}).join("");
+    return `<tr><td>${lbl(m,"combined")}</td><td class="num grp">${R(wr)}</td><td class="num">${R(wd)}</td><td class="num grp">${R(rr)}</td><td class="num">${R(rd)}</td><td class="num grp"><b>${R(wr+rr)}</b></td><td class="num"><b>${R(wd+rd)}</b></td><td class="num ${vcls(v)}">${RV(v)}</td></tr>`;}).join("");
   const gv=(tw.deposited+tr.deposited)-(tw.report+tr.report);
   const sig=(doc,dept)=>{const img=safeImg(doc.signature);return `<div class="sigbox"><div class="eyebrow">${DEPTS[dept]}</div>${doc.status==="signed"?`<div class="sig-img">${img?`<img src="${img}" alt="${DEPTS[dept]} signature">`:""}</div><div class="who">${esc(doc.signedBy)} · ${timeStr(doc.signedAt)}</div>`:`<div class="empty">Awaiting signature</div><div class="who">${doc.cashier?esc(doc.cashier)+" · ":""}${statusOf(doc)==="draft"?"in progress":"not started"}</div>`}</div>`;};
   const stat=(d,l)=>chip(statusOf(d)).replace("Signed off",l+" signed").replace("In progress",l+" in progress").replace("Not started",l+" not started");
@@ -522,7 +526,7 @@ function renderCombined(){
   $("#csv").addEventListener("click",()=>{
     const f=x=>typeof x==="number"?x.toFixed(2):x;
     const lines=[["Date",state.date],[],["Payment type","Wholesale report","Wholesale deposited","Retail report","Retail deposited","Combined report","Combined deposited","Variance"]];
-    METHODS.forEach(m=>{const wr=num(W.lines[m.k].report),wd=dep(W.lines[m.k]),rr=num(Rt.lines[m.k].report),rd=dep(Rt.lines[m.k]);lines.push([m.l,wr,wd,rr,rd,wr+rr,wd+rd,(wd+rd)-(wr+rr)].map(f));});
+    METHODS.forEach(m=>{const wr=num(W.lines[m.k].report),wd=dep(W.lines[m.k]),rr=num(Rt.lines[m.k].report),rd=dep(Rt.lines[m.k]);lines.push([lbl(m,"combined"),wr,wd,rr,rd,wr+rr,wd+rd,(wd+rd)-(wr+rr)].map(f));});
     lines.push(["Total",tw.report,tw.deposited,tr.report,tr.deposited,tw.report+tr.report,tw.deposited+tr.deposited,gv].map(f));
     lines.push([],["Wholesale cashed up by",W.cashier,"Signed by",W.signedBy,W.signedAt],["Retail cashed up by",Rt.cashier,"Signed by",Rt.signedBy,Rt.signedAt],["Wholesale notes",W.notes],["Retail notes",Rt.notes],
       ["Retail CashGuard deposited in Nedbank",num(Rt.lines.cashguard.deposited).toFixed(2)],["Retail CashGuard counted & retained, not banked",tr.retained.toFixed(2)],
@@ -542,7 +546,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-15b"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-19a"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager");const info=dayInfo(state.date,W,Rt,M);
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
   const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,status:info.label,photos});
@@ -673,8 +677,8 @@ async function readFigures(dataUrl,dept,lead,photoId){lead=lead||"";state.lastAI
 Read the TOTAL amount per payment/tender type as printed on the report. Map tenders to these keys:
 - cash: Cash (notes and coins tender)
 - cashguard: CashGuard (cash recycler / CashGuard tender)
-- card: Credit card / debit card / speedpoint / card machine totals combined
-- eft: EFT / bank transfer
+- card: Credit card / debit card / speedpoint / card machine totals combined${dept==="retail"?" (in this shop, amounts printed as EFT are card-machine payments: include them here)":""}
+- eft: EFT / bank transfer${dept==="retail"?" (always null for this shop: put EFT amounts under card)":""}
 - shop2shop: Shop2Shop
 - snapscan: SnapScan
 Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
@@ -702,10 +706,14 @@ Use null when a tender is not on the report. Give amounts as plain JSON numbers 
   const low={};Object.keys(out||{}).forEach(k=>low[k.toLowerCase().replace(/[^a-z0-9]/g,"")]=out[k]);
   const alias={cash:["cash"],cashguard:["cashguard"],card:["card","creditcard","cards"],eft:["eft"],shop2shop:["shop2shop","shoptoshop"],snapscan:["snapscan"]};
   out.total=toNum(low.total);
-  METHODS.forEach(m=>{let v=null;for(const k of alias[m.k]){if(low[k]!=null){v=toNum(low[k]);break;}}if(v!=null){doc.lines[m.k].report=v.toFixed(2);filled.push(m.l);
+  const vals={};METHODS.forEach(m=>{let v=null;for(const k of alias[m.k]){if(low[k]!=null){v=toNum(low[k]);break;}}vals[m.k]=v;});
+  // Retail: slips marked EFT are credit card payments, so they are added to Credit card
+  if(dept==="retail"&&vals.eft!=null){vals.card=(vals.card||0)+vals.eft;vals.eft=null;}
+  const filledKeys=[];
+  methodsFor(dept).forEach(m=>{const v=vals[m.k];if(v!=null){doc.lines[m.k].report=v.toFixed(2);filled.push(lbl(m,dept));filledKeys.push(m.k);
     const el=document.getElementById(dept+"-"+m.k+"-report");if(el){el.value=v.toFixed(2);el.style.background="var(--accent-soft)";}}});
   // remember which figures came from which photo, so removing the photo removes them too
-  if(photoId&&filled.length){doc.aiFill=doc.aiFill||{};const f={};METHODS.forEach(m=>{if(filled.includes(m.l))f[m.k]=doc.lines[m.k].report;});doc.aiFill[photoId]=f;}
+  if(photoId&&filledKeys.length){doc.aiFill=doc.aiFill||{};const f={};filledKeys.forEach(k=>{f[k]=doc.lines[k].report;});doc.aiFill[photoId]=f;}
   recalc(dept);if(filled.length)scheduleSave(dept);
   const t=totals(doc);let extra="";
   if(typeof out.total==="number"&&Math.abs(out.total-t.report)>0.009)extra+=` The report total reads ${R(out.total)} but the lines add to ${R(t.report)}; check for a missed payment type.`;

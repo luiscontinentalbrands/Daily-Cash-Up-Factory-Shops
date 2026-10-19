@@ -15,7 +15,7 @@ const ALERT_TO = process.env.ALERT_TO || "ulla@tastytreats.co.za";
 const REPORT_TO = process.env.REPORT_TO || "martie@tastytreats.co.za";
 
 const METHODS = [
-  ["cash", "Cash"], ["cashguard", "CashGuard"], ["card", "Credit card"],
+  ["cash", "Cash / Coins (Retail)"], ["cashguard", "CashGuard"], ["card", "Credit card"],
   ["eft", "EFT"], ["shop2shop", "Shop2Shop"], ["snapscan", "SnapScan"],
 ];
 

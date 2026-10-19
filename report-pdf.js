@@ -5,7 +5,7 @@
 //   photos: [{dept, data (jpeg data URL), by, takenAt}] (optional, removed photos already filtered out)
 
 const METHODS = [
-  ["cash", "Cash"], ["cashguard", "CashGuard"], ["card", "Credit card"],
+  ["cash", "Cash / Coins (Retail)"], ["cashguard", "CashGuard"], ["card", "Credit card"],
   ["eft", "EFT"], ["shop2shop", "Shop2Shop"], ["snapscan", "SnapScan"],
 ];
 const num = s => { if (s === "" || s == null) return 0; const n = parseFloat(String(s).replace(/[^0-9.\-]/g, "")); return isFinite(n) ? n : 0; };
