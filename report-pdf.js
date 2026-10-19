@@ -5,7 +5,7 @@
 //   photos: [{dept, data (jpeg data URL), by, takenAt}] (optional, removed photos already filtered out)
 
 const METHODS = [
-  ["cash", "Cash / Coins (Retail)"], ["cashguard", "CashGuard"], ["card", "Credit card"],
+  ["cash", "Cash / Coins (Retail shops)"], ["cashguard", "CashGuard"], ["card", "Credit card"],
   ["eft", "EFT"], ["shop2shop", "Shop2Shop"], ["snapscan", "SnapScan"],
 ];
 const num = s => { if (s === "" || s == null) return 0; const n = parseFloat(String(s).replace(/[^0-9.\-]/g, "")); return isFinite(n) ? n : 0; };
@@ -21,15 +21,15 @@ const isPng = s => /^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(String(s || "
 const isJpg = s => /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(String(s || ""));
 
 // Which lines each shop uses: Retail has no EFT or Shop2Shop; Retail and City Deep split CashGuard (Nedbank + not banked)
-const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: null };
+const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: ["cash", "cashguard", "card", "snapscan"] };
 const hasLine = (shop, k) => !SHOP_LINES[shop] || SHOP_LINES[shop].includes(k);
 const splitShop = shop => shop === "retail" || shop === "citydeep";
 const depOf = (doc, shop, k) => line(doc, k, "deposited") + (splitShop(shop) ? line(doc, k, "retained") : 0);
 
 export function buildReportPdf(jsPDF, d) {
   const { W, Rt, M, C, CM } = d;
-  const shops = [["Wholesale", W, "wholesale"], ["Retail", Rt, "retail"]];
-  if (C) shops.push(["City Deep", C, "citydeep"]);
+  const shops = [["Wholesale", W, "wholesale"], ["Aeroton Retail", Rt, "retail"]];
+  if (C) shops.push(["City Deep Retail", C, "citydeep"]);
   const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
   const PW = pdf.internal.pageSize.getWidth(), PH = pdf.internal.pageSize.getHeight(), X = 14;
   let y = 16;
@@ -42,7 +42,7 @@ export function buildReportPdf(jsPDF, d) {
   pdf.setFont("helvetica", "bold"); pdf.setFontSize(17); ink();
   text(C ? "Daily Shops Cash Up" : "Daily Factory Shop Cash Up", X, y);
   pdf.setFont("helvetica", "normal"); pdf.setFontSize(10); grey();
-  text(C ? "Continental Brands  -  Factory shop and City Deep" : "Continental Brands", PW - X, y - 4, { align: "right" });
+  text(C ? "Continental Brands  -  Aeroton and City Deep" : "Continental Brands", PW - X, y - 4, { align: "right" });
   text(d.niceDate || d.date, PW - X, y + 1, { align: "right" });
   y += 7;
   if (d.status) {
@@ -96,7 +96,7 @@ export function buildReportPdf(jsPDF, d) {
     pdf.setFont("helvetica", "normal"); const ls = wrap(value || "-", PW - 2 * X - 58); pdf.text(ls, X + 58, y); y += 5 * ls.length + 1;
   };
   if (C) { const fv = (tot[0][1] + tot[1][1]) - (tot[0][0] + tot[1][0]), cv = tot[2][1] - tot[2][0];
-    row("Variance by shop", `Factory shop ${RV(fv)}    City Deep ${RV(cv)}    All shops ${RV(gv)}`); }
+    row("Variance by shop", `Aeroton ${RV(fv)}    City Deep Retail ${RV(cv)}    All shops ${RV(gv)}`); }
   row("Cashed up by", shops.map(([l, doc]) => `${l}: ${doc?.cashier || "-"}`).join("    "));
   shops.filter(([, , s]) => splitShop(s)).forEach(([l, doc]) =>
     row(l + " CashGuard", `Deposited in Nedbank ${R(line(doc, "cashguard", "deposited"))}    Counted & retained, not banked ${R(line(doc, "cashguard", "retained"))}`));
@@ -105,8 +105,8 @@ export function buildReportPdf(jsPDF, d) {
 
   // signatures
   y += 3; if (y > PH - 48) { pdf.addPage(); y = 18; }
-  const boxes = [["Wholesale", W], ["Retail", Rt], [C ? "Factory manager" : "Manager", M]];
-  if (C) boxes.push(["City Deep", C], ["City Deep manager", CM]);
+  const boxes = [["Wholesale", W], ["Aeroton Retail", Rt], [C ? "Aeroton manager" : "Manager", M]];
+  if (C) boxes.push(["City Deep Retail", C], ["City Deep manager", CM]);
   const bw = (PW - 2 * X - 6 * (boxes.length - 1)) / boxes.length;
   boxes.forEach(([l, doc], i) => {
     const bx = X + i * (bw + 6);
@@ -130,7 +130,7 @@ export function buildReportPdf(jsPDF, d) {
     pdf.addPage("a4", "portrait");
     const pw = pdf.internal.pageSize.getWidth(), ph = pdf.internal.pageSize.getHeight();
     pdf.setFont("helvetica", "bold"); pdf.setFontSize(12); ink();
-    text(`${p.dept === "retail" ? "Retail" : p.dept === "citydeep" ? "City Deep" : "Wholesale"} till report photo`, 14, 16);
+    text(`${p.dept === "retail" ? "Aeroton Retail" : p.dept === "citydeep" ? "City Deep Retail" : "Wholesale"} till report photo`, 14, 16);
     pdf.setFont("helvetica", "normal"); pdf.setFontSize(9); grey();
     text(`${d.niceDate || d.date}  -  added by ${p.by || "-"}${p.takenAt ? "  -  " + when(p.takenAt) : ""}`, 14, 21);
     try {

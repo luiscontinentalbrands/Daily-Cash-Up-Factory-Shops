@@ -15,7 +15,7 @@ const ALERT_TO = process.env.ALERT_TO || "ulla@tastytreats.co.za";
 const REPORT_TO = process.env.REPORT_TO || "martie@tastytreats.co.za";
 
 const METHODS = [
-  ["cash", "Cash / Coins (Retail)"], ["cashguard", "CashGuard"], ["card", "Credit card"],
+  ["cash", "Cash / Coins (Retail shops)"], ["cashguard", "CashGuard"], ["card", "Credit card"],
   ["eft", "EFT"], ["shop2shop", "Shop2Shop"], ["snapscan", "SnapScan"],
 ];
 
@@ -79,9 +79,9 @@ const signedByDeadline = d => signedNow(d) && (signedTime(d)?.getTime() ?? Infin
 const signed = MODE === "seven" ? signedByDeadline : signedNow;
 const missing = [];
 if (!signed(W)) missing.push("Wholesale");
-if (!signed(Rt)) missing.push("Retail");
-if (!signed(Mg)) missing.push("Manager");
-if (withCD && !signed(Cd)) missing.push("City Deep");
+if (!signed(Rt)) missing.push("Aeroton Retail");
+if (!signed(Mg)) missing.push("Aeroton manager");
+if (withCD && !signed(Cd)) missing.push("City Deep Retail");
 if (withCD && !signed(Cm)) missing.push("City Deep manager");
 const complete = missing.length === 0;
 const nothing = !W && !Rt && !Mg && !Cd && !Cm;
@@ -93,12 +93,12 @@ const log = logSnap.exists ? logSnap.data() : {};
 // ---------- build report ----------
 function line(doc, k, f) { return num(doc?.lines?.[k]?.[f]); }
 // Lines per shop: Retail has no EFT or Shop2Shop; Retail and City Deep split CashGuard (Nedbank + counted & retained, not banked)
-const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: null };
+const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: ["cash", "cashguard", "card", "snapscan"] };
 const hasLine = (shop, k) => !SHOP_LINES[shop] || SHOP_LINES[shop].includes(k);
 const splitShop = shop => shop === "retail" || shop === "citydeep";
 function reportHtml(title, note) {
-  const shops = [["Wholesale", W, "wholesale"], ["Retail", Rt, "retail"]];
-  if (withCD) shops.push(["City Deep", Cd, "citydeep"]);
+  const shops = [["Wholesale", W, "wholesale"], ["Aeroton Retail", Rt, "retail"]];
+  if (withCD) shops.push(["City Deep Retail", Cd, "citydeep"]);
   const td = 'style="padding:6px 8px;text-align:right;border-bottom:1px solid #eee"';
   const tot = shops.map(() => [0, 0]);
   const rows = METHODS.map(([k, l]) => {
@@ -118,7 +118,7 @@ function reportHtml(title, note) {
   const each = f => shops.map(([l, doc]) => `${l} ${f(doc)}`).join(" · ");
   return `<div style="font-family:Arial,Helvetica,sans-serif;color:#1f1c18;max-width:1000px">
   <h2 style="margin:0 0 4px">${esc(title)}</h2>
-  <div style="color:#7a7268;margin-bottom:14px">Continental Brands · ${withCD ? "Factory shop and City Deep" : "Daily Factory Shop Cash Up"} · ${esc(niceDate)}</div>
+  <div style="color:#7a7268;margin-bottom:14px">Continental Brands · ${withCD ? "Aeroton and City Deep" : "Daily Factory Shop Cash Up"} · ${esc(niceDate)}</div>
   ${note ? `<div style="background:#f8e4e0;color:#b03a2a;padding:10px 14px;border-radius:8px;margin-bottom:14px"><b>${note}</b></div>` : ""}
   <table style="border-collapse:collapse;font-size:13px;width:100%">
     <thead><tr style="background:#f7f4ef"><th style="padding:6px 8px;text-align:left">Payment type</th>
@@ -129,22 +129,22 @@ function reportHtml(title, note) {
       ${tot.map(t => `<td ${tf}><b>${R(t[0])}</b></td><td ${tf}><b>${R(t[1])}</b></td>`).join("")}
       <td ${tf}><b>${R(gr)}</b></td><td ${tf}><b>${R(gd)}</b></td><td style="padding:8px;text-align:right;color:${vcolor(gv)}"><b>${RV(gv)}</b></td></tr></tfoot>
   </table>
-  ${withCD ? `<p style="margin:14px 0 4px"><b>Variance by shop:</b> Factory shop ${RV((tot[0][1] + tot[1][1]) - (tot[0][0] + tot[1][0]))} · City Deep ${RV(tot[2][1] - tot[2][0])} · <b>All shops ${RV(gv)}</b></p>` : ""}
+  ${withCD ? `<p style="margin:14px 0 4px"><b>Variance by shop:</b> Aeroton ${RV((tot[0][1] + tot[1][1]) - (tot[0][0] + tot[1][0]))} · City Deep Retail ${RV(tot[2][1] - tot[2][0])} · <b>All shops ${RV(gv)}</b></p>` : ""}
   ${shops.filter(([, , sh]) => splitShop(sh)).map(([l, doc]) => `<p style="margin:4px 0"><b>${l} CashGuard:</b> deposited in Nedbank ${R(line(doc, "cashguard", "deposited"))} · counted &amp; retained, not banked <b>${R(line(doc, "cashguard", "retained"))}</b></p>`).join("")}
   <p style="margin:4px 0"><b>Damaged bank notes &amp; coins:</b> ${each(d => R(num(d?.damaged)) + (d?.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(shops.reduce((a, [, d]) => a + num(d?.damaged), 0))}</b></p>
   <p style="margin:4px 0"><b>Cashed up by:</b> ${each(d => esc(d?.cashier || "—"))}</p>
   ${shops.map(([l, d]) => d?.notes ? `<p style="margin:4px 0"><b>${l} notes:</b> ${esc(d.notes)}</p>` : "").join("")}
-  <table style="margin-top:10px;font-size:14px"><tbody>${sigRow("Wholesale signature", W)}${sigRow("Retail signature", Rt)}${sigRow(withCD ? "Factory shop manager signature" : "Manager signature", Mg)}${withCD ? sigRow("City Deep signature", Cd) + sigRow("City Deep manager signature", Cm) : ""}</tbody></table>
+  <table style="margin-top:10px;font-size:14px"><tbody>${sigRow("Wholesale signature", W)}${sigRow("Aeroton Retail signature", Rt)}${sigRow(withCD ? "Aeroton manager signature" : "Manager signature", Mg)}${withCD ? sigRow("City Deep Retail signature", Cd) + sigRow("City Deep manager signature", Cm) : ""}</tbody></table>
   <p style="color:#7a7268;font-size:12px;margin-top:18px">Variance = deposited − report. Negative (red) means short; positive (amber) means over. Signature times are taken from the server clock (SAST).</p>
   </div>`;
 }
 function alertHtml(lead) {
-  const done = [["Wholesale", W], ["Retail", Rt], ["Manager", Mg], ...(withCD ? [["City Deep", Cd], ["City Deep manager", Cm]] : [])].filter(([, d]) => signed(d)).map(([l, d]) => `<li>${l}: ${esc(d.signedBy)} · ${when(d)}</li>`).join("");
+  const done = [["Wholesale", W], ["Aeroton Retail", Rt], ["Aeroton manager", Mg], ...(withCD ? [["City Deep Retail", Cd], ["City Deep manager", Cm]] : [])].filter(([, d]) => signed(d)).map(([l, d]) => `<li>${l}: ${esc(d.signedBy)} · ${when(d)}</li>`).join("");
   return `<div style="font-family:Arial,Helvetica,sans-serif;color:#1f1c18">
   <p>${lead}</p>
   <p><b>Missing signature${missing.length > 1 ? "s" : ""}:</b> ${missing.join(", ")}</p>
   ${done ? `<p><b>Already signed:</b></p><ul>${done}</ul>` : "<p>Nothing has been signed yet.</p>"}
-  <p style="color:#7a7268">The cash up must be completed and signed by Wholesale, Retail and the Manager${withCD ? ", and by City Deep and its manager," : ""} by 7 pm every trading day (Monday to Saturday).</p></div>`;
+  <p style="color:#7a7268">The cash up must be completed and signed by Wholesale, Aeroton Retail and the Aeroton manager${withCD ? ", and by City Deep Retail and its manager," : ""} by 7 pm every trading day (Monday to Saturday).</p></div>`;
 }
 // ---------- PDF attachment (same layout as the app's "Download PDF") ----------
 async function reportPdf(status) {

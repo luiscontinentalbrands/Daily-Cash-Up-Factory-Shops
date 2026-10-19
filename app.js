@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-19d";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-19e";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -8,7 +8,7 @@ const METHODS=[
   {k:"cash",l:"Cash"},{k:"cashguard",l:"CashGuard"},{k:"card",l:"Credit card"},
   {k:"eft",l:"EFT"},{k:"shop2shop",l:"Shop2Shop"},{k:"snapscan",l:"SnapScan"}
 ];
-const DEPTS={wholesale:"Wholesale",retail:"Retail",citydeep:"City Deep",manager:"Manager",cdmanager:"City Deep manager"};
+const DEPTS={wholesale:"Wholesale",retail:"Aeroton Retail",citydeep:"City Deep Retail",manager:"Aeroton manager",cdmanager:"City Deep manager"};
 // City Deep is a separate shop with its own cash up and its own manager sign-off; it is required from this date
 const CD_START="2026-10-20";
 const cdOn=date=>String(date||"")>=CD_START;
@@ -17,9 +17,10 @@ const isMgr=d=>d==="manager"||d==="cdmanager";
 const mgrOf=d=>d==="citydeep"||d==="cdmanager"?"cdmanager":"manager";       // which sign-off closes this sheet
 const sheetsOf=m=>m==="cdmanager"?["citydeep"]:["wholesale","retail"];        // which sheets a sign-off covers
 const hasSplit=d=>d==="retail"||d==="citydeep";                               // CashGuard: Nedbank + counted & retained, not banked
-// Retail: the cash line is coins, there is no EFT line (EFT slips are credit card payments) and no Shop2Shop
-const methodsFor=dept=>dept==="retail"?METHODS.filter(m=>m.k!=="eft"&&m.k!=="shop2shop"):METHODS;
-const lbl=(m,dept)=>m.k==="cash"?(dept==="retail"?"Coins":(dept==="wholesale"||dept==="citydeep")?"Cash":"Cash / Coins (Retail)"):m.l;
+// The two retail shops (Aeroton Retail, City Deep Retail): cash is coins, no EFT line (EFT slips are credit card payments), no Shop2Shop
+const isRetail=d=>d==="retail"||d==="citydeep";
+const methodsFor=dept=>isRetail(dept)?METHODS.filter(m=>m.k!=="eft"&&m.k!=="shop2shop"):METHODS;
+const lbl=(m,dept)=>m.k==="cash"?(isRetail(dept)?"Coins":dept==="wholesale"?"Cash":"Cash / Coins (Retail shops)"):m.l;
 const fmt=new Intl.NumberFormat("en-ZA",{minimumFractionDigits:2,maximumFractionDigits:2});
 const R=v=>"R "+fmt.format(v||0);
 const RV=v=>{const a=Math.round(v*100)/100;if(a===0)return "R 0.00";return (a>0?"+":"−")+"R "+fmt.format(Math.abs(a));};
@@ -43,8 +44,8 @@ function normalize(raw,date,dept){const b=blank(date,dept);if(!raw)return b;cons
   delete r.signedAtServer;delete r.updatedAtServer;delete r.reopenedAt;
   const o=Object.assign(b,clone(r));METHODS.forEach(m=>{o.lines[m.k]=Object.assign(m.k==="cashguard"?{report:"",deposited:"",retained:""}:{report:"",deposited:""},(raw.lines||{})[m.k]||{});});
   if(!hasSplit(dept))o.lines.cashguard.retained=""; // the "retained, not banked" amount is only on Retail and City Deep
-  if(dept==="retail"){o.lines.shop2shop={report:"",deposited:""};}
-  if(dept==="retail"){const e=o.lines.eft,c=o.lines.card;["report","deposited"].forEach(f=>{if(e[f]!==""&&e[f]!=null){c[f]=(num(c[f])+num(e[f])).toFixed(2);e[f]="";}});}
+  if(isRetail(dept)){o.lines.shop2shop={report:"",deposited:""};}
+  if(isRetail(dept)){const e=o.lines.eft,c=o.lines.card;["report","deposited"].forEach(f=>{if(e[f]!==""&&e[f]!=null){c[f]=(num(c[f])+num(e[f])).toFixed(2);e[f]="";}});}
   return o;}
 function totals(doc){let r=0,d=0;methodsFor(doc.dept).forEach(m=>{r+=num(doc.lines[m.k].report);d+=dep(doc.lines[m.k]);});const ret=num(doc.lines.cashguard&&doc.lines.cashguard.retained);return {report:r,deposited:d,variance:d-r,retained:ret,banked:d-ret};}
 
@@ -52,8 +53,8 @@ function totals(doc){let r=0,d=0;methodsFor(doc.dept).forEach(m=>{r+=num(doc.lin
 function dayInfo(date,W,Rt,M,C,CM){const [y,m,d]=date.split("-").map(Number);const dt=new Date(y,m-1,d);
   if(dt.getDay()===0)return {kind:"sunday",label:"Sunday · not a trading day",cls:"",missing:[]};
   const dl=new Date(y,m-1,d,19,0,0);const missing=[];const all=[W,Rt,M];
-  if(!(W&&W.status==="signed"))missing.push("Wholesale");if(!(Rt&&Rt.status==="signed"))missing.push("Retail");if(!(M&&M.status==="signed"))missing.push("Manager");
-  if(cdOn(date)){all.push(C,CM);if(!(C&&C.status==="signed"))missing.push("City Deep");if(!(CM&&CM.status==="signed"))missing.push("City Deep manager");}
+  if(!(W&&W.status==="signed"))missing.push("Wholesale");if(!(Rt&&Rt.status==="signed"))missing.push("Aeroton Retail");if(!(M&&M.status==="signed"))missing.push("Aeroton manager");
+  if(cdOn(date)){all.push(C,CM);if(!(C&&C.status==="signed"))missing.push("City Deep Retail");if(!(CM&&CM.status==="signed"))missing.push("City Deep manager");}
   if(!missing.length){const last=Math.max(...all.map(x=>Date.parse(x.signedAt)||0));
     return last>dl.getTime()?{kind:"late",label:"Completed late · "+timeStr(new Date(last).toISOString()),cls:"draft",missing}:{kind:"done",label:"Completed on time",cls:"signed",missing};}
   const now=Date.now();
@@ -88,7 +89,7 @@ const shopCol=()=>collection(db,"shops",state.key,"cashups");
 const shopDoc=id=>fdoc(db,"shops",state.key,"cashups",id);
 const usersCol=()=>collection(db,"shops",state.key,"users");
 const photosCol=()=>collection(db,"shops",state.key,"photos");
-const ROLE_LABEL={wholesale:"Wholesale cashier",retail:"Retail cashier",citydeep:"City Deep cashier",manager:"Manager",admin:"Administrator"};
+const ROLE_LABEL={wholesale:"Wholesale cashier",retail:"Aeroton Retail cashier",citydeep:"City Deep Retail cashier",manager:"Manager",admin:"Administrator"};
 async function pinHash(salt,pin){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(salt+":"+pin));
   return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");}
 function newSalt(){const a=new Uint8Array(16);crypto.getRandomValues(a);return Array.from(a).map(x=>x.toString(16).padStart(2,"0")).join("");}
@@ -237,7 +238,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-19d";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-19e";
   const r=role();state.tab=r==="retail"?"retail":r==="citydeep"?"citydeep":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -333,7 +334,7 @@ function render(force){if(!state.ready)return;updateDots();
   else if(state.tab==="combined")renderCombined();else if(state.tab==="notbanked")renderNotBanked();else renderHistory();}
 
 function banner(di){if(di.kind==="sunday")return "";
-  return `<div class="banner ${di.kind==="done"?"ok":di.kind==="overdue"?"bad":"wait"}" style="font-weight:500">${di.kind==="overdue"?"Past the 7 pm deadline. Missing: "+di.missing.join(", ")+".":di.kind==="open"?di.label+". Wholesale, Retail and the Manager must all sign.":di.label+"."}</div>`;}
+  return `<div class="banner ${di.kind==="done"?"ok":di.kind==="overdue"?"bad":"wait"}" style="font-weight:500">${di.kind==="overdue"?"Past the 7 pm deadline. Missing: "+di.missing.join(", ")+".":di.kind==="open"?di.label+". "+(cdOn(state.date)?"Wholesale, Aeroton Retail, City Deep Retail and both managers":"Wholesale, Aeroton Retail and the manager")+" must all sign.":di.label+"."}</div>`;}
 
 function cgNote(t){return t.retained?`Includes CashGuard counted &amp; retained, not banked: <b>${R(t.retained)}</b>. Banked total: ${R(t.banked)}.`:"CashGuard counted &amp; retained, not banked: R 0.00";}
 function renderDept(dept){
@@ -396,9 +397,9 @@ function renderDept(dept){
 }
 // City Deep has its own manager sign-off, shown under its sheet (one signature pad on screen at a time)
 function cdManagerSection(C){const CM=current("cdmanager");
-  const body=CM.status==="signed"?signedBlock(CM,"cdmanager"):!canSignManager()?`<div class="msg">Only a manager can sign off City Deep. ${C.status==="signed"?"Waiting for the manager.":"The City Deep cashier must sign first."}</div>`
-    :C.status==="signed"?signBlock(CM,"cdmanager"):`<div class="msg">You can sign here once the City Deep cashier has signed.</div>`;
-  return `<section class="sheet"><div class="sheet-head"><div><div class="eyebrow">City Deep end-of-day sign-off · due by 7 pm</div><h2>City Deep manager signature</h2></div>${CM.status==="signed"?'<span class="chip signed">Signed off</span>':'<span class="chip">Not signed</span>'}</div>
+  const body=CM.status==="signed"?signedBlock(CM,"cdmanager"):!canSignManager()?`<div class="msg">Only a manager can sign off City Deep Retail. ${C.status==="signed"?"Waiting for the manager.":"The City Deep Retail cashier must sign first."}</div>`
+    :C.status==="signed"?signBlock(CM,"cdmanager"):`<div class="msg">You can sign here once the City Deep Retail cashier has signed.</div>`;
+  return `<section class="sheet"><div class="sheet-head"><div><div class="eyebrow">City Deep Retail sign-off · due by 7 pm</div><h2>City Deep manager signature</h2></div>${CM.status==="signed"?'<span class="chip signed">Signed off</span>':'<span class="chip">Not signed</span>'}</div>
     <div class="sheet-body">${body}</div></section>`;}
 function signedBlock(doc,dept){const img=safeImg(doc.signature);return `<div class="sign">
   <div class="sig-img">${img?`<img src="${img}" alt="Signature of ${esc(doc.signedBy)}">`:""}</div>
@@ -410,7 +411,7 @@ function signedBlock(doc,dept){const img=safeImg(doc.signature);return `<div cla
 function signBlock(doc,dept){return `<div class="sign">
   <div class="pad"><canvas id="pad" data-dept="${dept}" width="900" height="300" aria-label="Signature pad"></canvas><div class="base"></div><div class="hint">Sign above the line with finger or mouse</div></div>
   <div style="display:flex;flex-direction:column;gap:10px">
-    <div class="msg">${dept==="manager"?`By signing, I confirm I have checked the Wholesale and Retail cash ups for ${shortDate(state.date)} and the combined totals are correct.`:dept==="cdmanager"?`By signing, I confirm I have checked the City Deep cash up for ${shortDate(state.date)} and the totals are correct.`:`By signing, I confirm the amounts deposited for ${DEPTS[dept]} on ${shortDate(state.date)} are correct.`}</div>
+    <div class="msg">${dept==="manager"?`By signing, I confirm I have checked the Wholesale and Aeroton Retail cash ups for ${shortDate(state.date)} and the combined totals are correct.`:dept==="cdmanager"?`By signing, I confirm I have checked the City Deep Retail cash up for ${shortDate(state.date)} and the totals are correct.`:`By signing, I confirm the amounts deposited for ${DEPTS[dept]} on ${shortDate(state.date)} are correct.`}</div>
     <div><div class="eyebrow">Signing as</div><div class="signer-static">${esc(state.me.name)}</div></div>
     <div class="actions"><button class="btn" id="clear" type="button">Clear</button><button class="btn primary" id="signbtn" type="button">Sign &amp; submit</button></div>
     <div class="msg" id="sign-msg"></div>
@@ -475,7 +476,7 @@ function bindPad(cv,dept){const ctx=cv.getContext("2d");let drawing=false,inked=
   $("#clear").addEventListener("click",()=>{ctx.clearRect(0,0,cv.width,cv.height);inked=false;delete cv.dataset.inked;$("#sign-msg").textContent="";if(state.deferred)render(true);});
   $("#signbtn").addEventListener("click",async()=>{const doc=local[dept];const msg=$("#sign-msg");msg.className="msg err";
     if(isMgr(dept)){const sh=sheetsOf(dept).map(current);
-      if(!sh.every(x=>x.status==="signed")){msg.textContent=dept==="cdmanager"?"The City Deep cashier must sign first.":"Wholesale and Retail must both sign first.";return;}
+      if(!sh.every(x=>x.status==="signed")){msg.textContent=dept==="cdmanager"?"The City Deep Retail cashier must sign first.":"Wholesale and Aeroton Retail must both sign first.";return;}
       const nm=state.me.name.trim().toLowerCase();
       if(nm&&sh.some(x=>nm===String(x.signedBy).trim().toLowerCase())){msg.textContent="The manager sign-off must be done by a different person from the cashier who signed.";return;}}
     else{const t=totals(doc);if(t.report===0&&t.deposited===0){msg.textContent="Enter the report and deposited amounts before signing.";return;}}
@@ -500,7 +501,7 @@ function renderCombined(){
   const sum=f=>S.reduce((a,[, ,t])=>a+t[f],0);
   const gr=sum("report"),gd=sum("deposited"),gv=gd-gr,gret=sum("retained");
   const banked=S.reduce((a,[,d])=>a+["cash","cashguard"].reduce((x,k)=>x+num(d.lines[k].deposited),0),0);
-  const mgrBlock=M.status==="signed"?signedBlock(M,"manager"):!canSignManager()?`<div class="msg">Only a manager can sign off the factory shop. ${both?"Waiting for the manager.":"Wholesale and Retail must sign first."}</div>`:both?signBlock(M,"manager"):`<div class="msg">You can sign here once Wholesale and Retail have both signed. Still waiting for: ${[W.status!=="signed"?"Wholesale":"",Rt.status!=="signed"?"Retail":""].filter(Boolean).join(" and ")}.</div>`;
+  const mgrBlock=M.status==="signed"?signedBlock(M,"manager"):!canSignManager()?`<div class="msg">Only a manager can sign off Aeroton. ${both?"Waiting for the manager.":"Wholesale and Aeroton Retail must sign first."}</div>`:both?signBlock(M,"manager"):`<div class="msg">You can sign here once Wholesale and Aeroton Retail have both signed. Still waiting for: ${[W.status!=="signed"?"Wholesale":"",Rt.status!=="signed"?"Aeroton Retail":""].filter(Boolean).join(" and ")}.</div>`;
   const shopCols=S.map(([d])=>`<th colspan="2" class="grp" style="text-align:center">${DEPTS[d]}</th>`).join("");
   const shopSub=S.map(()=>`<th class="grp">Report</th><th>Deposited</th>`).join("");
   const rows=METHODS.map(m=>{let r=0,dd=0;const cells=S.map(([d,doc])=>{const on=methodsFor(d).some(x=>x.k===m.k);const a=on?num(doc.lines[m.k].report):0,b=on?dep(doc.lines[m.k]):0;r+=a;dd+=b;
@@ -514,7 +515,7 @@ function renderCombined(){
   const splitShops=S.filter(([d])=>hasSplit(d));
   main.innerHTML=`
   <div class="banner ${info.kind==="done"?"ok":info.kind==="overdue"?"bad":"wait"}">${info.kind==="done"?"Day closed on time. All cash ups and manager sign-offs are signed.":info.kind==="late"?"Day closed, but after the 7 pm deadline. "+info.label+".":info.kind==="overdue"?"Past the 7 pm deadline. Missing signature: "+info.missing.join(", ")+". Ulla is notified by email.":info.kind==="sunday"?"Sunday is not a trading day.":"Day still open. "+info.label+". Still to sign: "+info.missing.join(", ")+"."}</div>
-  <div class="eyebrow" style="margin:4px 0 8px">${showCD?"All shops together · Factory shop (Wholesale + Retail) and City Deep":"Factory shop · Wholesale + Retail"}</div>
+  <div class="eyebrow" style="margin:4px 0 8px">${showCD?"All shops together · Aeroton (Wholesale + Aeroton Retail) and City Deep Retail":"Aeroton · Wholesale + Aeroton Retail"}</div>
   <div class="summary">
     <div class="stat"><div class="k">Per reports</div><div class="v num">${R(gr)}</div></div>
     <div class="stat"><div class="k">Deposited</div><div class="v num">${R(gd)}</div></div>
@@ -532,8 +533,8 @@ function renderCombined(){
         <tfoot><tr><td>Total</td>${foot}<td class="num grp">${R(gr)}</td><td class="num">${R(gd)}</td><td class="num ${vcls(gv)}">${RV(gv)}</td></tr></tfoot>
       </table></div>
       ${showCD?`<div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
-        <div class="field"><label>Factory shop variance</label><div class="static num ${vcls(tw.variance+tr.variance)}">${RV(tw.variance+tr.variance)}</div></div>
-        <div class="field"><label>City Deep variance</label><div class="static num ${vcls(tc.variance)}">${RV(tc.variance)}</div></div>
+        <div class="field"><label>Aeroton variance</label><div class="static num ${vcls(tw.variance+tr.variance)}">${RV(tw.variance+tr.variance)}</div></div>
+        <div class="field"><label>City Deep Retail variance</label><div class="static num ${vcls(tc.variance)}">${RV(tc.variance)}</div></div>
         <div class="field"><label>All shops variance</label><div class="static num ${vcls(gv)}">${RV(gv)}</div></div></div>`:""}
       <div class="field"><label>Cashed up by</label><div class="static" style="font-weight:400">${each(d=>esc(d.cashier)||"—")}</div></div>
       ${notes?`<div class="field"><label>Notes</label><div class="static" style="font-weight:400;white-space:pre-wrap">${notes}</div></div>`:""}
@@ -547,10 +548,10 @@ function renderCombined(){
     </div>
   </section>
   <section class="sheet">
-    <div class="sheet-head"><div><div class="eyebrow">Factory shop sign-off · Wholesale + Retail · due by 7 pm</div><h2>Manager signature</h2></div>${M.status==="signed"?'<span class="chip signed">Signed off</span>':'<span class="chip">Not signed</span>'}</div>
+    <div class="sheet-head"><div><div class="eyebrow">Aeroton sign-off · Wholesale + Aeroton Retail · due by 7 pm</div><h2>Aeroton manager signature</h2></div>${M.status==="signed"?'<span class="chip signed">Signed off</span>':'<span class="chip">Not signed</span>'}</div>
     <div class="sheet-body">${mgrBlock}</div>
   </section>
-  ${showCD?`<div class="msg" style="margin-top:10px">City Deep is signed off by its own manager on the <b>City Deep</b> tab.</div>`:""}`;
+  ${showCD?`<div class="msg" style="margin-top:10px">City Deep Retail is signed off by its own manager on the <b>City Deep Retail</b> tab.</div>`:""}`;
   local.manager=M;bindDept("manager");
   $("#pdf-dl").addEventListener("click",()=>pdfAction("download"));
   $("#pdf-mail").addEventListener("click",()=>pdfAction("email"));
@@ -563,7 +564,7 @@ function renderCombined(){
     lines.push([]);
     S.forEach(([d,doc,t])=>{lines.push([DEPTS[d]+" cashed up by",doc.cashier,"Signed by",doc.signedBy,doc.signedAt],[DEPTS[d]+" notes",doc.notes],["Damaged notes & coins - "+DEPTS[d],num(doc.damaged).toFixed(2),doc.damagedNotes]);
       if(hasSplit(d))lines.push([DEPTS[d]+" CashGuard deposited in Nedbank",num(doc.lines.cashguard.deposited).toFixed(2)],[DEPTS[d]+" CashGuard counted & retained, not banked",t.retained.toFixed(2)]);});
-    lines.push(["Factory shop manager signed by",M.signedBy,M.signedAt]);if(showCD)lines.push(["City Deep manager signed by",CM.signedBy,CM.signedAt]);lines.push(["Day status",info.label]);
+    lines.push(["Aeroton manager signed by",M.signedBy,M.signedAt]);if(showCD)lines.push(["City Deep manager signed by",CM.signedBy,CM.signedAt]);lines.push(["Day status",info.label]);
     // Prefix cells that start with = + - @ so spreadsheets do not run them as formulas
     const cell=c=>{c=String(c==null?"":c);if(/^[=+\-@]/.test(c)&&!/^-?\d+(\.\d+)?$/.test(c))c="'"+c;return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;};
     const csv=lines.map(r=>r.map(cell).join(",")).join("\n");
@@ -579,7 +580,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-19d"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-19e"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager"),C=current("citydeep"),CM=current("cdmanager");const info=dayNow();
   const showCD=cdOn(state.date)||statusOf(C)!=="new";
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
@@ -711,8 +712,8 @@ async function readFigures(dataUrl,dept,lead,photoId){lead=lead||"";state.lastAI
 Read the TOTAL amount per payment/tender type as printed on the report. Map tenders to these keys:
 - cash: Cash (notes and coins tender)
 - cashguard: CashGuard (cash recycler / CashGuard tender)
-- card: Credit card / debit card / speedpoint / card machine totals combined${dept==="retail"?" (in this shop, amounts printed as EFT are card-machine payments: include them here)":""}
-- eft: EFT / bank transfer${dept==="retail"?" (always null for this shop: put EFT amounts under card)":""}
+- card: Credit card / debit card / speedpoint / card machine totals combined${isRetail(dept)?" (in this shop, amounts printed as EFT are card-machine payments: include them here)":""}
+- eft: EFT / bank transfer${isRetail(dept)?" (always null for this shop: put EFT amounts under card)":""}
 - shop2shop: Shop2Shop
 - snapscan: SnapScan
 Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
@@ -742,7 +743,7 @@ Use null when a tender is not on the report. Give amounts as plain JSON numbers 
   out.total=toNum(low.total);
   const vals={};METHODS.forEach(m=>{let v=null;for(const k of alias[m.k]){if(low[k]!=null){v=toNum(low[k]);break;}}vals[m.k]=v;});
   // Retail: slips marked EFT are credit card payments, so they are added to Credit card
-  if(dept==="retail"&&vals.eft!=null){vals.card=(vals.card||0)+vals.eft;vals.eft=null;}
+  if(isRetail(dept)&&vals.eft!=null){vals.card=(vals.card||0)+vals.eft;vals.eft=null;}
   const filledKeys=[];
   methodsFor(dept).forEach(m=>{const v=vals[m.k];if(v!=null){doc.lines[m.k].report=v.toFixed(2);filled.push(lbl(m,dept));filledKeys.push(m.k);
     const el=document.getElementById(dept+"-"+m.k+"-report");if(el){el.value=v.toFixed(2);el.style.background="var(--accent-soft)";}}});
@@ -765,7 +766,7 @@ function renderUsers(){
       <form id="uform" class="fields" style="grid-template-columns:minmax(0,2fr) minmax(0,1.3fr) minmax(0,1fr) auto;align-items:end" novalidate>
         <div class="field"><label for="un">Full name</label><input id="un" maxlength="60" autocomplete="off"></div>
         <div class="field"><label for="ur">Role</label><select id="ur" style="font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)">
-          <option value="wholesale">Wholesale cashier</option><option value="retail">Retail cashier</option><option value="citydeep">City Deep cashier</option><option value="manager">Manager</option><option value="admin">Administrator</option></select></div>
+          <option value="wholesale">Wholesale cashier</option><option value="retail">Aeroton Retail cashier</option><option value="citydeep">City Deep Retail cashier</option><option value="manager">Manager</option><option value="admin">Administrator</option></select></div>
         <div class="field"><label for="up">4-digit PIN</label><input id="up" inputmode="numeric" maxlength="4" autocomplete="off"></div>
         <button class="btn primary" type="submit" id="ubtn">Add user</button>
       </form>
@@ -811,9 +812,9 @@ function renderNotBanked(){
       <tr><td colspan="2">Total · ${rows.length} line${rows.length>1?"s":""}</td><td class="num">${R(rows.reduce((a,r)=>a+r.report,0))}</td><td class="num">${R(rows.reduce((a,r)=>a+r.banked,0))}</td><td class="num">${R(total)}</td><td></td></tr></tfoot></table></div>
     <div class="actions" style="margin-top:12px"><button class="btn primary" id="nb-pdf" type="button">Download PDF</button><button class="btn" id="nb-csv" type="button">Download CSV</button><span class="msg" id="nb-msg">Tap a day to open its End of Day.</span></div>`;
   main.innerHTML=`<section class="sheet">
-    <div class="sheet-head"><div><div class="eyebrow">CashGuard · Retail and City Deep</div><h2>Money not banked</h2></div>${nb.rows&&rows.length?`<span class="chip draft">Total ${R(total)}</span>`:""}</div>
+    <div class="sheet-head"><div><div class="eyebrow">CashGuard · Aeroton Retail and City Deep Retail</div><h2>Money not banked</h2></div>${nb.rows&&rows.length?`<span class="chip draft">Total ${R(total)}</span>`:""}</div>
     <div class="sheet-body">
-      <div class="msg">Cash counted from the CashGuard and kept back, not deposited in Nedbank, for each day and shop in the period (Retail and City Deep).</div>
+      <div class="msg">Cash counted from the CashGuard and kept back, not deposited in Nedbank, for each day and shop in the period (Aeroton Retail and City Deep Retail).</div>
       <form id="nbform" class="fields" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:end" novalidate>
         <div class="field"><label for="nbfrom">From</label><input type="date" id="nbfrom" value="${esc(nb.from)}" max="${t}"></div>
         <div class="field"><label for="nbto">To</label><input type="date" id="nbto" value="${esc(nb.to)}" max="${t}"></div>
@@ -864,7 +865,7 @@ function renderHistory(){
       const sh=[w,r,c].filter(Boolean);const tot=sh.reduce((a,x)=>a+totals(x).deposited,0),vr=sh.reduce((a,x)=>a+totals(x).variance,0);const di=dayInfo(d,w,r,mg,c,cm);
       const withCD=cdOn(d)||!!c;
       return `<button class="hrow${withCD?" cd":""}" data-d="${esc(d)}"><div><div class="d">${shortDate(d)}</div><span class="chip ${di.cls}" style="margin-top:4px">${di.kind==="done"?"Closed on time":di.kind==="late"?"Closed late":di.kind==="overdue"?"Overdue":di.kind==="sunday"?"Sunday":"Open"}</span></div>${cell(by[d].wholesale,"wholesale")}${cell(by[d].retail,"retail")}${withCD?cell(by[d].citydeep,"citydeep"):""}<div class="r"><div class="num"><b>${R(tot)}</b></div><div class="num msg ${vcls(vr)}">${RV(vr)}</div></div></button>`;}).join("")
-      :`<div class="empty-state">No cash ups yet. Open Wholesale or Retail for today and enter the report and deposited amounts. Each day will appear here.</div>`}</div></section>`;
+      :`<div class="empty-state">No cash ups yet. Open a shop's tab for today and enter the report and deposited amounts. Each day will appear here.</div>`}</div></section>`;
   main.querySelectorAll(".hrow").forEach(b=>b.addEventListener("click",()=>{$("#date").value=b.dataset.d;setDate(b.dataset.d);setTab("combined");}));
 }
 
