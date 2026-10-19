@@ -8,6 +8,7 @@ rules_version = '2';
 //   - Nothing can be read or written without the secret access code.
 //   - Signed sheets are locked. Reopening removes the signature and is recorded.
 //   - Once the manager closes the day, a sheet can only be reopened by first reopening the day.
+//   - City Deep is a separate shop: its sheet is closed by its own manager sign-off (cdmanager).
 //   - The manager's name must differ from the names of the cashiers who signed.
 //   - Signature times come from Google's server clock, not the phone.
 //   - The audit trail can only be added to, never changed or deleted.
@@ -21,12 +22,14 @@ service cloud.firestore {
     match /shops/{k}/cashups/{id} {
       function d() { return request.resource.data; }
       function dept() { return d().dept; }
-      function isDeptDoc() { return dept() in ['wholesale', 'retail']; }
+      function isDeptDoc() { return dept() in ['wholesale', 'retail', 'citydeep']; }
+      // which sign-off closes a sheet: City Deep has its own manager
+      function mgrDept() { return dept() == 'citydeep' ? 'cdmanager' : 'manager'; }
       function wasSigned() { return resource != null && resource.data.status == 'signed'; }
       function nowSigned() { return d().status == 'signed'; }
       function otherPath(dp) { return /databases/$(database)/documents/shops/$(k)/cashups/$(d().date + '_' + dp); }
       function otherDoc(dp) { return get(otherPath(dp)).data; }
-      function managerSigned() { return exists(otherPath('manager')) && otherDoc('manager').status == 'signed'; }
+      function managerSigned() { return exists(otherPath(mgrDept())) && otherDoc(mgrDept()).status == 'signed'; }
       function reopening() { return d().reopenedAt == request.time; }
       function signingOk() {
         return d().signedAtServer == request.time
@@ -36,7 +39,7 @@ service cloud.firestore {
       function validShape() {
         return d().date is string
           && d().date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
-          && dept() in ['wholesale', 'retail', 'manager']
+          && dept() in ['wholesale', 'retail', 'manager', 'citydeep', 'cdmanager']
           && id == d().date + '_' + dept()
           && d().status in ['new', 'draft', 'signed']
           && (resource == null || (resource.data.date == d().date && resource.data.dept == dept()));
@@ -65,6 +68,14 @@ service cloud.firestore {
           || (wasSigned() && !nowSigned() && reopening())
           || (!wasSigned() && !nowSigned())
         ))
+        || (dept() == 'cdmanager' && (
+          // City Deep manager signs off City Deep: its sheet signed, by someone else
+          (!wasSigned() && nowSigned() && signingOk()
+            && otherDoc('citydeep').status == 'signed'
+            && d().signedBy.trim().lower() != otherDoc('citydeep').signedBy.trim().lower())
+          || (wasSigned() && !nowSigned() && reopening())
+          || (!wasSigned() && !nowSigned())
+        ))
       );
 
       // Audit trail: append-only
@@ -87,7 +98,7 @@ service cloud.firestore {
       allow read: if okKey(k);
       allow create: if okKey(k)
         && p().date is string && p().date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
-        && p().dept in ['wholesale', 'retail']
+        && p().dept in ['wholesale', 'retail', 'citydeep']
         && p().by is string && p().by.size() <= 80
         && p().at == request.time
         && p().data is string && p().data.size() < 900000
@@ -108,7 +119,7 @@ service cloud.firestore {
       allow read: if okKey(k);
       allow create, update: if okKey(k)
         && u().name is string && u().name.size() >= 3 && u().name.size() <= 60
-        && u().role in ['wholesale', 'retail', 'manager', 'admin']
+        && u().role in ['wholesale', 'retail', 'citydeep', 'manager', 'admin']
         && u().active is bool
         && u().salt is string && u().pinHash is string && u().pinHash.size() == 64;
       allow delete: if false;

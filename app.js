@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-19c";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-19d";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -8,10 +8,18 @@ const METHODS=[
   {k:"cash",l:"Cash"},{k:"cashguard",l:"CashGuard"},{k:"card",l:"Credit card"},
   {k:"eft",l:"EFT"},{k:"shop2shop",l:"Shop2Shop"},{k:"snapscan",l:"SnapScan"}
 ];
-const DEPTS={wholesale:"Wholesale",retail:"Retail",manager:"Manager"};
+const DEPTS={wholesale:"Wholesale",retail:"Retail",citydeep:"City Deep",manager:"Manager",cdmanager:"City Deep manager"};
+// City Deep is a separate shop with its own cash up and its own manager sign-off; it is required from this date
+const CD_START="2026-10-20";
+const cdOn=date=>String(date||"")>=CD_START;
+const SHEETS=["wholesale","retail","citydeep"];
+const isMgr=d=>d==="manager"||d==="cdmanager";
+const mgrOf=d=>d==="citydeep"||d==="cdmanager"?"cdmanager":"manager";       // which sign-off closes this sheet
+const sheetsOf=m=>m==="cdmanager"?["citydeep"]:["wholesale","retail"];        // which sheets a sign-off covers
+const hasSplit=d=>d==="retail"||d==="citydeep";                               // CashGuard: Nedbank + counted & retained, not banked
 // Retail: the cash line is coins, there is no EFT line (EFT slips are credit card payments) and no Shop2Shop
 const methodsFor=dept=>dept==="retail"?METHODS.filter(m=>m.k!=="eft"&&m.k!=="shop2shop"):METHODS;
-const lbl=(m,dept)=>m.k==="cash"?(dept==="retail"?"Coins":dept==="wholesale"?"Cash":"Cash / Coins (Retail)"):m.l;
+const lbl=(m,dept)=>m.k==="cash"?(dept==="retail"?"Coins":(dept==="wholesale"||dept==="citydeep")?"Cash":"Cash / Coins (Retail)"):m.l;
 const fmt=new Intl.NumberFormat("en-ZA",{minimumFractionDigits:2,maximumFractionDigits:2});
 const R=v=>"R "+fmt.format(v||0);
 const RV=v=>{const a=Math.round(v*100)/100;if(a===0)return "R 0.00";return (a>0?"+":"−")+"R "+fmt.format(Math.abs(a));};
@@ -34,18 +42,19 @@ function normalize(raw,date,dept){const b=blank(date,dept);if(!raw)return b;cons
   if(raw.signedAtServer&&typeof raw.signedAtServer.toDate==="function")r.signedAt=raw.signedAtServer.toDate().toISOString();
   delete r.signedAtServer;delete r.updatedAtServer;delete r.reopenedAt;
   const o=Object.assign(b,clone(r));METHODS.forEach(m=>{o.lines[m.k]=Object.assign(m.k==="cashguard"?{report:"",deposited:"",retained:""}:{report:"",deposited:""},(raw.lines||{})[m.k]||{});});
-  if(dept!=="retail")o.lines.cashguard.retained=""; // the "retained, not banked" amount is a Retail-only line
+  if(!hasSplit(dept))o.lines.cashguard.retained=""; // the "retained, not banked" amount is only on Retail and City Deep
   if(dept==="retail"){o.lines.shop2shop={report:"",deposited:""};}
   if(dept==="retail"){const e=o.lines.eft,c=o.lines.card;["report","deposited"].forEach(f=>{if(e[f]!==""&&e[f]!=null){c[f]=(num(c[f])+num(e[f])).toFixed(2);e[f]="";}});}
   return o;}
 function totals(doc){let r=0,d=0;methodsFor(doc.dept).forEach(m=>{r+=num(doc.lines[m.k].report);d+=dep(doc.lines[m.k]);});const ret=num(doc.lines.cashguard&&doc.lines.cashguard.retained);return {report:r,deposited:d,variance:d-r,retained:ret,banked:d-ret};}
 
 /* Deadline: every trading day Mon–Sat, all three signatures by 19:00 */
-function dayInfo(date,W,Rt,M){const [y,m,d]=date.split("-").map(Number);const dt=new Date(y,m-1,d);
+function dayInfo(date,W,Rt,M,C,CM){const [y,m,d]=date.split("-").map(Number);const dt=new Date(y,m-1,d);
   if(dt.getDay()===0)return {kind:"sunday",label:"Sunday · not a trading day",cls:"",missing:[]};
-  const dl=new Date(y,m-1,d,19,0,0);const missing=[];
+  const dl=new Date(y,m-1,d,19,0,0);const missing=[];const all=[W,Rt,M];
   if(!(W&&W.status==="signed"))missing.push("Wholesale");if(!(Rt&&Rt.status==="signed"))missing.push("Retail");if(!(M&&M.status==="signed"))missing.push("Manager");
-  if(!missing.length){const last=Math.max(...[W,Rt,M].map(x=>Date.parse(x.signedAt)||0));
+  if(cdOn(date)){all.push(C,CM);if(!(C&&C.status==="signed"))missing.push("City Deep");if(!(CM&&CM.status==="signed"))missing.push("City Deep manager");}
+  if(!missing.length){const last=Math.max(...all.map(x=>Date.parse(x.signedAt)||0));
     return last>dl.getTime()?{kind:"late",label:"Completed late · "+timeStr(new Date(last).toISOString()),cls:"draft",missing}:{kind:"done",label:"Completed on time",cls:"signed",missing};}
   const now=Date.now();
   if(now>dl.getTime())return {kind:"overdue",label:"Overdue · missing "+missing.join(", "),cls:"bad",missing};
@@ -62,7 +71,7 @@ if(configured){app=initializeApp(firebaseConfig);
   if(APP_CHECK_SITE_KEY&&!String(APP_CHECK_SITE_KEY).startsWith("PASTE")){try{initializeAppCheck(app,{provider:new ReCaptchaEnterpriseProvider(APP_CHECK_SITE_KEY),isTokenAutoRefreshEnabled:true});}catch(e){console.error("App Check:",e);}}
   db=getFirestore(app);}
 
-const state={date:todayStr(),tab:"wholesale",docs:{wholesale:null,retail:null,manager:null},history:[],pending:{},key:null,ready:false,users:[],me:null};
+const state={date:todayStr(),tab:"wholesale",docs:{wholesale:null,retail:null,manager:null,citydeep:null,cdmanager:null},history:[],pending:{},key:null,ready:false,users:[],me:null};
 const local={};let daySub=null,histSub=null,photoSub=null,timers={};
 state.photos=[];
 
@@ -79,7 +88,7 @@ const shopCol=()=>collection(db,"shops",state.key,"cashups");
 const shopDoc=id=>fdoc(db,"shops",state.key,"cashups",id);
 const usersCol=()=>collection(db,"shops",state.key,"users");
 const photosCol=()=>collection(db,"shops",state.key,"photos");
-const ROLE_LABEL={wholesale:"Wholesale cashier",retail:"Retail cashier",manager:"Manager",admin:"Administrator"};
+const ROLE_LABEL={wholesale:"Wholesale cashier",retail:"Retail cashier",citydeep:"City Deep cashier",manager:"Manager",admin:"Administrator"};
 async function pinHash(salt,pin){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(salt+":"+pin));
   return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");}
 function newSalt(){const a=new Uint8Array(16);crypto.getRandomValues(a);return Array.from(a).map(x=>x.toString(16).padStart(2,"0")).join("");}
@@ -228,8 +237,8 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-19c";
-  const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-19d";
+  const r=role();state.tab=r==="retail"?"retail":r==="citydeep"?"citydeep":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
   Object.keys(local).forEach(k=>delete local[k]);
@@ -238,21 +247,22 @@ function startApp(){
 $("#date").addEventListener("change",e=>{if(e.target.value)setDate(e.target.value);});
 $("#today").addEventListener("click",()=>{$("#date").value=todayStr();setDate(todayStr());});
 document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
-function setTab(t){if(t==="users"&&role()!=="admin")t="wholesale";state.tab=t;document.querySelector("header.bar").classList.toggle("dept-wholesale",t==="wholesale");document.querySelector("header.bar").classList.toggle("dept-retail",t==="retail");
+function setTab(t){if(t==="users"&&role()!=="admin")t="wholesale";state.tab=t;SHEETS.forEach(d=>document.querySelector("header.bar").classList.toggle("dept-"+d,t===d));
   document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===t)));render(true);}
-function setDate(d){flushAll();state.date=d;state.docs={wholesale:null,retail:null,manager:null};delete local.wholesale;delete local.retail;delete local.manager;subscribeDay();render(true);}
+function setDate(d){flushAll();state.date=d;state.docs={wholesale:null,retail:null,manager:null,citydeep:null,cdmanager:null};Object.keys(DEPTS).forEach(k=>delete local[k]);subscribeDay();render(true);}
 function stopSubs(){if(photoSub){photoSub();photoSub=null;}if(daySub){daySub();daySub=null;}if(histSub){histSub();histSub=null;}}
 
-function canReopen(dept){if(dept==="manager")return canSignManager();if(["manager","admin"].includes(role()))return current("manager").status!=="signed";return current(dept).signedBy===state.me.name&&current("manager").status!=="signed";}
+function canReopen(dept){if(isMgr(dept))return canSignManager();const M=current(mgrOf(dept));if(["manager","admin"].includes(role()))return M.status!=="signed";return current(dept).signedBy===state.me.name&&M.status!=="signed";}
+function dayNow(){return dayInfo(state.date,current("wholesale"),current("retail"),current("manager"),current("citydeep"),current("cdmanager"));}
 function current(dept){if(!local[dept])local[dept]=normalize(state.docs[dept],state.date,dept);return local[dept];}
 function statusOf(doc){if(!doc)return "new";return doc.status==="signed"?"signed":(doc.status==="draft"?"draft":"new");}
 function chip(st){return st==="signed"?'<span class="chip signed">Signed off</span>':st==="draft"?'<span class="chip draft">In progress</span>':'<span class="chip">Not started</span>';}
-function updateDots(){["wholesale","retail"].forEach(d=>{const st=statusOf(local[d]||state.docs[d]);$("#dot-"+d).className="dot "+(st==="new"?"":st);});}
+function updateDots(){SHEETS.forEach(d=>{const st=statusOf(local[d]||state.docs[d]);$("#dot-"+d).className="dot "+(st==="new"?"":st);});}
 
 /* ---------- persistence ---------- */
 function idOf(dept,date){return (date||state.date)+"_"+dept;}
 function scheduleSave(dept){const doc=local[dept];if(doc.status==="new")doc.status="draft";
-  if(dept!=="manager"&&!doc.cashier)doc.cashier=state.me.name;
+  if(!isMgr(dept)&&!doc.cashier)doc.cashier=state.me.name;
   state.ver=state.ver||{};state.ver[dept]=(state.ver[dept]||0)+1;
   state.pending[dept]=true;clearTimeout(timers[dept]);setSaved(dept,"Saving…");
   timers[dept]=setTimeout(()=>save(dept),700);updateDots();}
@@ -271,7 +281,7 @@ async function save(dept,opts){opts=opts||{};const doc=local[dept];if(!doc)retur
     if((state.ver[dept]||0)===v&&!state.inflight[dept])state.pending[dept]=false;
     setSaved(dept,(state.pending[dept]?"Saving…":"Saved for everyone · "+timeStr(new Date().toISOString())));
     {const b=document.getElementById("savealert");if(b)b.hidden=true;}
-    if(opts.action){try{await addDoc(collection(db,"shops",state.key,"cashups",idOf(dept,doc.date),"history"),{name:String(opts.by||doc.signedBy||"").slice(0,80),action:opts.action,at:serverTimestamp(),totals:dept==="manager"?null:totals(doc)});}catch(e){}}
+    if(opts.action){try{await addDoc(collection(db,"shops",state.key,"cashups",idOf(dept,doc.date),"history"),{name:String(opts.by||doc.signedBy||"").slice(0,80),action:opts.action,at:serverTimestamp(),totals:isMgr(dept)?null:totals(doc)});}catch(e){}}
     return true;}
   catch(e){state.inflight[dept]--;state.pending[dept]=false;console.error("Save failed:",e);
     const why=e&&e.code==="permission-denied"?"The database refused to save it (permission-denied). The Firebase rules may be out of date.":"Could not reach the database ("+(e&&(e.code||e.message)||"unknown")+"). Check the connection.";
@@ -292,10 +302,10 @@ function subscribeDay(){if(daySub){daySub();daySub=null;}
     document.querySelectorAll("[data-photos]").forEach(el=>{el.innerHTML=photoStrip(el.dataset.photos);bindThumbs(el);});},()=>{});
   daySub=onSnapshot(query(shopCol(),where("date","==",date)),snap=>{
     if(date!==state.date)return;
-    const got={wholesale:null,retail:null,manager:null};
+    const got={wholesale:null,retail:null,manager:null,citydeep:null,cdmanager:null};
     snap.docs.forEach(d=>{const v=d.data();if(v&&Object.prototype.hasOwnProperty.call(got,v.dept))got[v.dept]=v;});
     let needRender=false;
-    ["wholesale","retail","manager"].forEach(dept=>{
+    Object.keys(got).forEach(dept=>{
       state.docs[dept]=got[dept];
       if(state.pending[dept]){
         // someone signed this sheet while we had unsaved typing: drop our stale draft
@@ -305,7 +315,7 @@ function subscribeDay(){if(daySub){daySub();daySub=null;}
       if(!local[dept]||JSON.stringify(fresh)!==JSON.stringify(local[dept])){
         const statusChanged=!local[dept]||local[dept].status!==fresh.status;
         local[dept]=fresh;
-        if(state.tab===dept){if(statusChanged||!main.contains(document.activeElement))needRender=true;else patchInputs(dept);}
+        if(state.tab===dept||(dept==="cdmanager"&&state.tab==="citydeep")){if(dept==="cdmanager"||statusChanged||!main.contains(document.activeElement))needRender=true;else patchInputs(dept);}
         else needRender=true;
       }});
     updateDots();if(needRender)render();
@@ -319,7 +329,7 @@ function render(force){if(!state.ready)return;updateDots();
   const pd=document.getElementById("pad");if(!force&&pd&&pd.dataset.inked==="1"){state.deferred=true;return;}
   state.deferred=false;
   if(state.tab==="users"){renderUsers();return;}
-  if(state.tab==="wholesale"||state.tab==="retail")renderDept(state.tab);
+  if(SHEETS.includes(state.tab))renderDept(state.tab);
   else if(state.tab==="combined")renderCombined();else if(state.tab==="notbanked")renderNotBanked();else renderHistory();}
 
 function banner(di){if(di.kind==="sunday")return "";
@@ -331,7 +341,7 @@ function renderDept(dept){
   const t=totals(doc);
   const inA=`inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" ${dis}`;
   const rows=methodsFor(dept).map(m=>{const ln=doc.lines[m.k];const v=dep(ln)-num(ln.report);
-    if(m.k==="cashguard"&&dept==="retail")return `<tr class="cg"><td>${m.l}</td>
+    if(m.k==="cashguard"&&hasSplit(dept))return `<tr class="cg"><td>${m.l}</td>
       <td class="inp"><input id="${dept}-cashguard-report" data-m="cashguard" data-f="report" ${inA} value="${esc(ln.report)}" aria-label="CashGuard per report"></td>
       <td class="inp"><label class="sub" for="${dept}-cashguard-deposited">Deposited in Nedbank</label><input id="${dept}-cashguard-deposited" data-m="cashguard" data-f="deposited" ${inA} value="${esc(ln.deposited)}" aria-label="CashGuard deposited in Nedbank">
         <label class="sub" for="${dept}-cashguard-retained">Counted &amp; retained, not banked</label><input id="${dept}-cashguard-retained" data-m="cashguard" data-f="retained" ${inA} value="${esc(ln.retained)}" aria-label="CashGuard counted and retained, not banked"></td>
@@ -340,7 +350,7 @@ function renderDept(dept){
       <td class="inp"><input id="${dept}-${m.k}-report" data-m="${m.k}" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.report)}" ${dis} aria-label="${lbl(m,dept)} per report"></td>
       <td class="inp"><input id="${dept}-${m.k}-deposited" data-m="${m.k}" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="${lbl(m,dept)} deposited"></td>
       <td class="num ${vcls(v)}" id="v-${m.k}">${RV(v)}</td></tr>`;}).join("");
-  const di=dayInfo(state.date,current("wholesale"),current("retail"),current("manager"));
+  const di=dayNow();
   main.innerHTML=`${!canEditDept(dept)?`<div class="notice">You are signed in as ${esc(ROLE_LABEL[role()])}, so the ${DEPTS[dept]} sheet is view-only for you.</div>`:""}${banner(di)}
   <div class="deptband ${dept}" role="heading" aria-level="2"><div><div class="big">${DEPTS[dept]} cash up</div><div class="small">${longDate(state.date)}</div></div><div class="small">You are filling in the <b>${DEPTS[dept]}</b> sheet</div></div>
   <section class="sheet ${dept}">
@@ -368,7 +378,7 @@ function renderDept(dept){
         <thead><tr><th>Payment type</th><th>Per report<small>Till / Z-report</small></th><th>Deposited<small>Actual counted</small></th><th>Variance<small>Deposited − report</small></th></tr></thead>
         <tbody>${rows}</tbody>
         <tfoot><tr><td>Total</td><td class="num" id="t-report">${R(t.report)}</td><td class="num" id="t-dep">${R(t.deposited)}</td><td class="num ${vcls(t.variance)}" id="t-var">${RV(t.variance)}</td></tr>
-        ${dept==="retail"?`<tr class="cgnote"><td colspan="4" id="t-cg">${cgNote(t)}</td></tr>`:""}</tfoot>
+        ${hasSplit(dept)?`<tr class="cgnote"><td colspan="4" id="t-cg">${cgNote(t)}</td></tr>`:""}</tfoot>
       </table></div>
       <div class="dmg">
         <div class="field"><label for="${dept}-damaged">Damaged bank notes &amp; coins (R)</label><input id="${dept}-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(doc.damaged)}" ${dis} style="text-align:right"></div>
@@ -381,20 +391,26 @@ function renderDept(dept){
   <section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">Sign-off</div><h2>${DEPTS[dept]} signature</h2></div></div>
     <div class="sheet-body">${signed?signedBlock(doc,dept):canSignDept(dept)?signBlock(doc,dept):`<div class="msg">Only the ${DEPTS[dept]} cashier can sign this sheet.</div>`}</div>
-  </section>`;
+  </section>${dept==="citydeep"?cdManagerSection(doc):""}`;
   bindDept(dept);
 }
+// City Deep has its own manager sign-off, shown under its sheet (one signature pad on screen at a time)
+function cdManagerSection(C){const CM=current("cdmanager");
+  const body=CM.status==="signed"?signedBlock(CM,"cdmanager"):!canSignManager()?`<div class="msg">Only a manager can sign off City Deep. ${C.status==="signed"?"Waiting for the manager.":"The City Deep cashier must sign first."}</div>`
+    :C.status==="signed"?signBlock(CM,"cdmanager"):`<div class="msg">You can sign here once the City Deep cashier has signed.</div>`;
+  return `<section class="sheet"><div class="sheet-head"><div><div class="eyebrow">City Deep end-of-day sign-off · due by 7 pm</div><h2>City Deep manager signature</h2></div>${CM.status==="signed"?'<span class="chip signed">Signed off</span>':'<span class="chip">Not signed</span>'}</div>
+    <div class="sheet-body">${body}</div></section>`;}
 function signedBlock(doc,dept){const img=safeImg(doc.signature);return `<div class="sign">
   <div class="sig-img">${img?`<img src="${img}" alt="Signature of ${esc(doc.signedBy)}">`:""}</div>
   <div style="display:flex;flex-direction:column;gap:10px">
     <div><div class="eyebrow">Signed by</div><div class="signer-static">${esc(doc.signedBy)}</div><div class="msg">${timeStr(doc.signedAt)}</div></div>
-    <div class="msg">This ${dept==="manager"?"day":"cash up"} is locked.${canReopen(dept)?" Reopen it only to correct a mistake; the signature is removed, the reopen is recorded, and it must be signed again.":" The manager has closed the day, so only the manager can reopen it from End of Day."}</div>
-    ${canReopen(dept)?`<div class="actions"><button class="btn danger" id="reopen">Reopen to correct</button><span class="msg" id="reopen-msg"></span></div>`:""}
+    <div class="msg">This ${isMgr(dept)?"day":"cash up"} is locked.${canReopen(dept)?" Reopen it only to correct a mistake; the signature is removed, the reopen is recorded, and it must be signed again.":` The manager has closed the day, so only the manager can reopen it${dept==="citydeep"?" (below)":" from End of Day"}.`}</div>
+    ${canReopen(dept)?`<div class="actions"><button class="btn danger" id="reopen" data-dept="${dept}">Reopen to correct</button><span class="msg" id="reopen-msg"></span></div>`:""}
   </div></div>`;}
 function signBlock(doc,dept){return `<div class="sign">
-  <div class="pad"><canvas id="pad" width="900" height="300" aria-label="Signature pad"></canvas><div class="base"></div><div class="hint">Sign above the line with finger or mouse</div></div>
+  <div class="pad"><canvas id="pad" data-dept="${dept}" width="900" height="300" aria-label="Signature pad"></canvas><div class="base"></div><div class="hint">Sign above the line with finger or mouse</div></div>
   <div style="display:flex;flex-direction:column;gap:10px">
-    <div class="msg">${dept==="manager"?`By signing, I confirm I have checked the Wholesale and Retail cash ups for ${shortDate(state.date)} and the combined totals are correct.`:`By signing, I confirm the amounts deposited for ${DEPTS[dept]} on ${shortDate(state.date)} are correct.`}</div>
+    <div class="msg">${dept==="manager"?`By signing, I confirm I have checked the Wholesale and Retail cash ups for ${shortDate(state.date)} and the combined totals are correct.`:dept==="cdmanager"?`By signing, I confirm I have checked the City Deep cash up for ${shortDate(state.date)} and the totals are correct.`:`By signing, I confirm the amounts deposited for ${DEPTS[dept]} on ${shortDate(state.date)} are correct.`}</div>
     <div><div class="eyebrow">Signing as</div><div class="signer-static">${esc(state.me.name)}</div></div>
     <div class="actions"><button class="btn" id="clear" type="button">Clear</button><button class="btn primary" id="signbtn" type="button">Sign &amp; submit</button></div>
     <div class="msg" id="sign-msg"></div>
@@ -434,17 +450,17 @@ function bindDept(dept){
   const dm=document.getElementById(dept+"-damaged");if(dm){dm.addEventListener("focus",()=>{try{dm.select();}catch(e){}});dm.addEventListener("mouseup",e=>{if(dm.dataset.sel!=="1"){e.preventDefault();dm.dataset.sel="1";}});dm.addEventListener("blur",()=>{dm.dataset.sel="";});dm.addEventListener("input",()=>{if(/[^0-9.,]/.test(dm.value))dm.value=dm.value.replace(/[^0-9.,]/g,"");D().damaged=money(dm.value);scheduleSave(dept);});
     dm.addEventListener("blur",()=>{if(dm.value!==""){dm.value=num(money(dm.value)).toFixed(2);D().damaged=dm.value;scheduleSave(dept);}});}
   const dn=document.getElementById(dept+"-damagedNotes");if(dn)dn.addEventListener("input",()=>{D().damagedNotes=dn.value;scheduleSave(dept);});
-  const ro=$("#reopen");if(ro){let armed=false;ro.addEventListener("click",async()=>{
+  const ro=$("#reopen");if(ro){const rdept=ro.dataset.dept||dept;let armed=false;ro.addEventListener("click",async()=>{
     if(!armed){armed=true;ro.textContent="Tap again to reopen";$("#reopen-msg").textContent="The signature will be removed.";setTimeout(()=>{armed=false;if(ro.isConnected){ro.textContent="Reopen to correct";$("#reopen-msg").textContent="";}},4000);return;}
     ro.disabled=true;
-    const M=current("manager");
-    if(dept!=="manager"&&M.status==="signed"){
+    const mk=mgrOf(rdept),M=current(mk);
+    if(!isMgr(rdept)&&M.status==="signed"){
       if(!["manager","admin"].includes(role())){ro.disabled=false;$("#reopen-msg").textContent="The day is closed. Ask the manager to reopen it.";return;}
-      Object.assign(M,{status:"draft",signature:"",signedBy:"",signedAt:""});state.pending.manager=true;
-      if(!await save("manager",{action:"reopened",by:state.me.name})){ro.disabled=false;$("#reopen-msg").textContent="Could not reopen the day. Try again.";return;}}
-    Object.assign(D(),{status:"draft",signature:"",signedBy:"",signedAt:""});clearTimeout(timers[dept]);state.pending[dept]=true;
-    await save(dept,{action:"reopened",by:state.me.name});render(true);});}
-  const pad=$("#pad");if(pad)bindPad(pad,dept);
+      Object.assign(M,{status:"draft",signature:"",signedBy:"",signedAt:""});state.pending[mk]=true;
+      if(!await save(mk,{action:"reopened",by:state.me.name})){ro.disabled=false;$("#reopen-msg").textContent="Could not reopen the day. Try again.";return;}}
+    Object.assign(current(rdept),{status:"draft",signature:"",signedBy:"",signedAt:""});clearTimeout(timers[rdept]);state.pending[rdept]=true;
+    await save(rdept,{action:"reopened",by:state.me.name});render(true);});}
+  const pad=$("#pad");if(pad)bindPad(pad,pad.dataset.dept||dept);
   const ph=document.getElementById(dept+"-photo");if(ph)ph.addEventListener("change",()=>{const f=ph.files&&ph.files[0];ph.value="";if(f)scanPhoto(f,dept,true);});
   const fl=document.getElementById(dept+"-file");if(fl)fl.addEventListener("change",()=>{const fs=Array.from(fl.files||[]);fl.value="";if(fs.length)attachFiles(fs,dept);});
   const ph2=document.getElementById(dept+"-photo2");if(ph2)ph2.addEventListener("change",()=>{const f=ph2.files&&ph2.files[0];ph2.value="";if(f)scanPhoto(f,dept,false);});
@@ -458,17 +474,17 @@ function bindPad(cv,dept){const ctx=cv.getContext("2d");let drawing=false,inked=
   const end=()=>{drawing=false;};cv.addEventListener("pointerup",end);cv.addEventListener("pointercancel",end);
   $("#clear").addEventListener("click",()=>{ctx.clearRect(0,0,cv.width,cv.height);inked=false;delete cv.dataset.inked;$("#sign-msg").textContent="";if(state.deferred)render(true);});
   $("#signbtn").addEventListener("click",async()=>{const doc=local[dept];const msg=$("#sign-msg");msg.className="msg err";
-    if(dept==="manager"){const W=current("wholesale"),Rt=current("retail");
-      if(!(W.status==="signed"&&Rt.status==="signed")){msg.textContent="Wholesale and Retail must both sign first.";return;}
+    if(isMgr(dept)){const sh=sheetsOf(dept).map(current);
+      if(!sh.every(x=>x.status==="signed")){msg.textContent=dept==="cdmanager"?"The City Deep cashier must sign first.":"Wholesale and Retail must both sign first.";return;}
       const nm=state.me.name.trim().toLowerCase();
-      if(nm&&(nm===String(W.signedBy).trim().toLowerCase()||nm===String(Rt.signedBy).trim().toLowerCase())){msg.textContent="The manager sign-off must be done by a different person from the cashiers who signed.";return;}}
+      if(nm&&sh.some(x=>nm===String(x.signedBy).trim().toLowerCase())){msg.textContent="The manager sign-off must be done by a different person from the cashier who signed.";return;}}
     else{const t=totals(doc);if(t.report===0&&t.deposited===0){msg.textContent="Enter the report and deposited amounts before signing.";return;}}
     const who=state.me.name;
     if(!inked){msg.textContent="Draw the signature in the box first.";return;}
     const out=document.createElement("canvas");out.width=600;out.height=200;const o=out.getContext("2d");o.fillStyle="#fff";o.fillRect(0,0,600,200);o.drawImage(cv,0,0,600,200);
     const before=clone(doc);
     Object.assign(doc,{signature:out.toDataURL("image/png"),signedBy:who,signedAt:new Date().toISOString(),status:"signed"});
-    if(dept!=="manager"&&!doc.cashier)doc.cashier=who;
+    if(!isMgr(dept)&&!doc.cashier)doc.cashier=who;
     clearTimeout(timers[dept]);state.pending[dept]=true;$("#signbtn").disabled=true;msg.className="msg";msg.textContent="Signing…";
     const ok=await save(dept,{signing:true,action:"signed",by:who});
     if(!ok){local[dept]=before;render(true);const m2=$("#sign-msg");if(m2){m2.className="msg err";m2.textContent="Not signed. Check the connection and try again.";}return;}
@@ -476,63 +492,78 @@ function bindPad(cv,dept){const ctx=cv.getContext("2d");let drawing=false,inked=
 }
 
 function renderCombined(){
-  const W=current("wholesale"),Rt=current("retail"),M=current("manager");const tw=totals(W),tr=totals(Rt);
-  const both=W.status==="signed"&&Rt.status==="signed";const info=dayInfo(state.date,W,Rt,M);
-  const dmgT=num(W.damaged)+num(Rt.damaged);
-  const mgrBlock=M.status==="signed"?signedBlock(M,"manager"):!canSignManager()?`<div class="msg">Only a manager can sign off the day. ${both?"Waiting for the manager.":"Wholesale and Retail must sign first."}</div>`:both?signBlock(M,"manager"):`<div class="msg">You can sign here once Wholesale and Retail have both signed. Still waiting for: ${[W.status!=="signed"?"Wholesale":"",Rt.status!=="signed"?"Retail":""].filter(Boolean).join(" and ")}.</div>`;
-  const rows=METHODS.map(m=>{const wr=num(W.lines[m.k].report),wd=dep(W.lines[m.k]),rr=num(Rt.lines[m.k].report),rd=dep(Rt.lines[m.k]);const v=(wd+rd)-(wr+rr);
-    return `<tr><td>${lbl(m,"combined")}</td><td class="num grp">${R(wr)}</td><td class="num">${R(wd)}</td><td class="num grp">${R(rr)}</td><td class="num">${R(rd)}</td><td class="num grp"><b>${R(wr+rr)}</b></td><td class="num"><b>${R(wd+rd)}</b></td><td class="num ${vcls(v)}">${RV(v)}</td></tr>`;}).join("");
-  const gv=(tw.deposited+tr.deposited)-(tw.report+tr.report);
-  const sig=(doc,dept)=>{const img=safeImg(doc.signature);return `<div class="sigbox"><div class="eyebrow">${DEPTS[dept]}</div>${doc.status==="signed"?`<div class="sig-img">${img?`<img src="${img}" alt="${DEPTS[dept]} signature">`:""}</div><div class="who">${esc(doc.signedBy)} · ${timeStr(doc.signedAt)}</div>`:`<div class="empty">Awaiting signature</div><div class="who">${doc.cashier?esc(doc.cashier)+" · ":""}${statusOf(doc)==="draft"?"in progress":"not started"}</div>`}</div>`;};
+  const W=current("wholesale"),Rt=current("retail"),M=current("manager"),C=current("citydeep"),CM=current("cdmanager");
+  const tw=totals(W),tr=totals(Rt),tc=totals(C);
+  const showCD=cdOn(state.date)||statusOf(C)!=="new";
+  const info=dayNow();const both=W.status==="signed"&&Rt.status==="signed";
+  const S=showCD?[["wholesale",W,tw],["retail",Rt,tr],["citydeep",C,tc]]:[["wholesale",W,tw],["retail",Rt,tr]];
+  const sum=f=>S.reduce((a,[, ,t])=>a+t[f],0);
+  const gr=sum("report"),gd=sum("deposited"),gv=gd-gr,gret=sum("retained");
+  const banked=S.reduce((a,[,d])=>a+["cash","cashguard"].reduce((x,k)=>x+num(d.lines[k].deposited),0),0);
+  const mgrBlock=M.status==="signed"?signedBlock(M,"manager"):!canSignManager()?`<div class="msg">Only a manager can sign off the factory shop. ${both?"Waiting for the manager.":"Wholesale and Retail must sign first."}</div>`:both?signBlock(M,"manager"):`<div class="msg">You can sign here once Wholesale and Retail have both signed. Still waiting for: ${[W.status!=="signed"?"Wholesale":"",Rt.status!=="signed"?"Retail":""].filter(Boolean).join(" and ")}.</div>`;
+  const shopCols=S.map(([d])=>`<th colspan="2" class="grp" style="text-align:center">${DEPTS[d]}</th>`).join("");
+  const shopSub=S.map(()=>`<th class="grp">Report</th><th>Deposited</th>`).join("");
+  const rows=METHODS.map(m=>{let r=0,dd=0;const cells=S.map(([d,doc])=>{const on=methodsFor(d).some(x=>x.k===m.k);const a=on?num(doc.lines[m.k].report):0,b=on?dep(doc.lines[m.k]):0;r+=a;dd+=b;
+      return on?`<td class="num grp">${R(a)}</td><td class="num">${R(b)}</td>`:`<td class="num grp muted">—</td><td class="num muted">—</td>`;}).join("");const v=dd-r;
+    return `<tr><td>${lbl(m,"combined")}</td>${cells}<td class="num grp"><b>${R(r)}</b></td><td class="num"><b>${R(dd)}</b></td><td class="num ${vcls(v)}">${RV(v)}</td></tr>`;}).join("");
+  const foot=S.map(([, ,t])=>`<td class="num grp">${R(t.report)}</td><td class="num">${R(t.deposited)}</td>`).join("");
+  const sig=(doc,dept)=>{const img=safeImg(doc.signature);return `<div class="sigbox"><div class="eyebrow">${DEPTS[dept]}</div>${doc.status==="signed"?`<div class="sig-img">${img?`<img src="${img}" alt="${DEPTS[dept]} signature">`:""}</div><div class="who">${esc(doc.signedBy)} · ${timeStr(doc.signedAt)}</div>`:`<div class="empty">Awaiting signature</div><div class="who">${isMgr(dept)?(dept==="cdmanager"?"signed on the City Deep tab":"signed below"):(doc.cashier?esc(doc.cashier)+" · ":"")+(statusOf(doc)==="draft"?"in progress":"not started")}</div>`}</div>`;};
   const stat=(d,l)=>chip(statusOf(d)).replace("Signed off",l+" signed").replace("In progress",l+" in progress").replace("Not started",l+" not started");
+  const each=(f,label)=>S.map(([d,doc])=>`<b>${DEPTS[d]}:</b> ${f(doc,d)}`).join(" · ");
+  const notes=S.filter(([,d])=>d.notes).map(([d,doc])=>`<b>${DEPTS[d]}:</b> ${esc(doc.notes)}`).join("\n");
+  const splitShops=S.filter(([d])=>hasSplit(d));
   main.innerHTML=`
-  <div class="banner ${info.kind==="done"?"ok":info.kind==="overdue"?"bad":"wait"}">${info.kind==="done"?"Day closed on time. Wholesale, Retail and Manager have all signed.":info.kind==="late"?"Day closed, but after the 7 pm deadline. "+info.label+".":info.kind==="overdue"?"Past the 7 pm deadline. Missing signature: "+info.missing.join(", ")+". Ulla is notified by email.":info.kind==="sunday"?"Sunday is not a trading day.":"Day still open. "+info.label+". Still to sign: "+info.missing.join(", ")+"."}</div>
+  <div class="banner ${info.kind==="done"?"ok":info.kind==="overdue"?"bad":"wait"}">${info.kind==="done"?"Day closed on time. All cash ups and manager sign-offs are signed.":info.kind==="late"?"Day closed, but after the 7 pm deadline. "+info.label+".":info.kind==="overdue"?"Past the 7 pm deadline. Missing signature: "+info.missing.join(", ")+". Ulla is notified by email.":info.kind==="sunday"?"Sunday is not a trading day.":"Day still open. "+info.label+". Still to sign: "+info.missing.join(", ")+"."}</div>
+  <div class="eyebrow" style="margin:4px 0 8px">${showCD?"All shops together · Factory shop (Wholesale + Retail) and City Deep":"Factory shop · Wholesale + Retail"}</div>
   <div class="summary">
-    <div class="stat"><div class="k">Per reports</div><div class="v num">${R(tw.report+tr.report)}</div></div>
-    <div class="stat"><div class="k">Deposited</div><div class="v num">${R(tw.deposited+tr.deposited)}</div></div>
+    <div class="stat"><div class="k">Per reports</div><div class="v num">${R(gr)}</div></div>
+    <div class="stat"><div class="k">Deposited</div><div class="v num">${R(gd)}</div></div>
     <div class="stat"><div class="k">Variance</div><div class="v num ${vcls(gv)}">${RV(gv)}</div></div>
-    <div class="stat"><div class="k">Retail CashGuard retained, not banked</div><div class="v num">${R(tr.retained)}</div></div>
-    <div class="stat"><div class="k">Cash + CashGuard banked</div><div class="v num">${R(["cash","cashguard"].reduce((s,k)=>s+num(W.lines[k].deposited)+num(Rt.lines[k].deposited),0))}</div></div>
+    <div class="stat"><div class="k">CashGuard retained, not banked</div><div class="v num">${R(gret)}</div></div>
+    <div class="stat"><div class="k">Cash + CashGuard banked</div><div class="v num">${R(banked)}</div></div>
   </div>
   <section class="sheet">
-    <div class="sheet-head"><div><div class="eyebrow">Combined end-of-day cash up</div><h2>${longDate(state.date)}</h2></div><div class="actions">${stat(W,"Wholesale")}${stat(Rt,"Retail")}</div></div>
+    <div class="sheet-head"><div><div class="eyebrow">Combined end-of-day cash up</div><h2>${longDate(state.date)}</h2></div><div class="actions">${S.map(([d,doc])=>stat(doc,DEPTS[d])).join("")}</div></div>
     <div class="sheet-body">
-      <div class="tbl-wrap"><table style="min-width:820px">
-        <thead><tr><th rowspan="2">Payment type</th><th colspan="2" class="grp" style="text-align:center">Wholesale</th><th colspan="2" class="grp" style="text-align:center">Retail</th><th colspan="3" class="grp" style="text-align:center">Combined</th></tr>
-        <tr><th class="grp">Report</th><th>Deposited</th><th class="grp">Report</th><th>Deposited</th><th class="grp">Report</th><th>Deposited</th><th>Variance</th></tr></thead>
+      <div class="tbl-wrap"><table style="min-width:${showCD?1040:820}px">
+        <thead><tr><th rowspan="2">Payment type</th>${shopCols}<th colspan="3" class="grp" style="text-align:center">${showCD?"All shops":"Combined"}</th></tr>
+        <tr>${shopSub}<th class="grp">Report</th><th>Deposited</th><th>Variance</th></tr></thead>
         <tbody>${rows}</tbody>
-        <tfoot><tr><td>Total</td><td class="num grp">${R(tw.report)}</td><td class="num">${R(tw.deposited)}</td><td class="num grp">${R(tr.report)}</td><td class="num">${R(tr.deposited)}</td><td class="num grp">${R(tw.report+tr.report)}</td><td class="num">${R(tw.deposited+tr.deposited)}</td><td class="num ${vcls(gv)}">${RV(gv)}</td></tr></tfoot>
+        <tfoot><tr><td>Total</td>${foot}<td class="num grp">${R(gr)}</td><td class="num">${R(gd)}</td><td class="num ${vcls(gv)}">${RV(gv)}</td></tr></tfoot>
       </table></div>
-      <div class="fields" style="grid-template-columns:repeat(2,minmax(0,1fr))">
-        <div class="field"><label>Wholesale cashed up by</label><div class="static">${esc(W.cashier)||"—"}</div></div>
-        <div class="field"><label>Retail cashed up by</label><div class="static">${esc(Rt.cashier)||"—"}</div></div>
+      ${showCD?`<div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        <div class="field"><label>Factory shop variance</label><div class="static num ${vcls(tw.variance+tr.variance)}">${RV(tw.variance+tr.variance)}</div></div>
+        <div class="field"><label>City Deep variance</label><div class="static num ${vcls(tc.variance)}">${RV(tc.variance)}</div></div>
+        <div class="field"><label>All shops variance</label><div class="static num ${vcls(gv)}">${RV(gv)}</div></div></div>`:""}
+      <div class="field"><label>Cashed up by</label><div class="static" style="font-weight:400">${each(d=>esc(d.cashier)||"—")}</div></div>
+      ${notes?`<div class="field"><label>Notes</label><div class="static" style="font-weight:400;white-space:pre-wrap">${notes}</div></div>`:""}
+      <div class="field"><label>CashGuard</label><div class="static num" style="font-weight:400">${splitShops.map(([d,doc,t])=>`<b>${DEPTS[d]}:</b> deposited in Nedbank ${R(num(doc.lines.cashguard.deposited))} · counted &amp; retained, not banked <b>${R(t.retained)}</b>`).join("<br>")}</div></div>
+      <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">${each((d)=>R(num(d.damaged))+(d.damagedNotes?" ("+esc(d.damagedNotes)+")":""))} · <b>Total ${R(S.reduce((a,[,d])=>a+num(d.damaged),0))}</b></div></div>
+      <div class="fields" style="grid-template-columns:repeat(${S.length},minmax(0,1fr))">
+        ${S.map(([d])=>`<div class="field"><label>${DEPTS[d]} report photos</label><div data-photos="${d}">${photoStrip(d)}</div></div>`).join("")}
       </div>
-      ${(W.notes||Rt.notes)?`<div class="field"><label>Notes</label><div class="static" style="font-weight:400;white-space:pre-wrap">${W.notes?"<b>Wholesale:</b> "+esc(W.notes):""}${W.notes&&Rt.notes?"\n":""}${Rt.notes?"<b>Retail:</b> "+esc(Rt.notes):""}</div></div>`:""}
-      <div class="field"><label>Retail CashGuard</label><div class="static num" style="font-weight:400">Deposited in Nedbank ${R(num(Rt.lines.cashguard.deposited))} · Counted &amp; retained, not banked <b>${R(tr.retained)}</b></div></div>
-      <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">Wholesale ${R(num(W.damaged))}${W.damagedNotes?" ("+esc(W.damagedNotes)+")":""} · Retail ${R(num(Rt.damaged))}${Rt.damagedNotes?" ("+esc(Rt.damagedNotes)+")":""} · <b>Total ${R(dmgT)}</b></div></div>
-      <div class="fields" style="grid-template-columns:repeat(2,minmax(0,1fr))">
-        <div class="field"><label>Wholesale report photos</label><div data-photos="wholesale">${photoStrip("wholesale")}</div></div>
-        <div class="field"><label>Retail report photos</label><div data-photos="retail">${photoStrip("retail")}</div></div>
-      </div>
-      <div class="sigs">${sig(W,"wholesale")}${sig(Rt,"retail")}</div>
+      <div class="sigs">${sig(W,"wholesale")}${sig(Rt,"retail")}${sig(M,"manager")}${showCD?sig(C,"citydeep")+sig(CM,"cdmanager"):""}</div>
       <div class="actions"><button class="btn primary" id="pdf-mail" type="button">Email PDF report</button><button class="btn" id="pdf-dl" type="button">Download PDF</button><button class="btn" id="csv">Download day as CSV</button><span class="msg" id="csv-msg"></span></div>
     </div>
   </section>
   <section class="sheet">
-    <div class="sheet-head"><div><div class="eyebrow">End-of-day sign-off · due by 7 pm</div><h2>Manager signature</h2></div>${M.status==="signed"?'<span class="chip signed">Signed off</span>':'<span class="chip">Not signed</span>'}</div>
+    <div class="sheet-head"><div><div class="eyebrow">Factory shop sign-off · Wholesale + Retail · due by 7 pm</div><h2>Manager signature</h2></div>${M.status==="signed"?'<span class="chip signed">Signed off</span>':'<span class="chip">Not signed</span>'}</div>
     <div class="sheet-body">${mgrBlock}</div>
-  </section>`;
+  </section>
+  ${showCD?`<div class="msg" style="margin-top:10px">City Deep is signed off by its own manager on the <b>City Deep</b> tab.</div>`:""}`;
   local.manager=M;bindDept("manager");
   $("#pdf-dl").addEventListener("click",()=>pdfAction("download"));
   $("#pdf-mail").addEventListener("click",()=>pdfAction("email"));
   $("#csv").addEventListener("click",()=>{
     const f=x=>typeof x==="number"?x.toFixed(2):x;
-    const lines=[["Date",state.date],[],["Payment type","Wholesale report","Wholesale deposited","Retail report","Retail deposited","Combined report","Combined deposited","Variance"]];
-    METHODS.forEach(m=>{const wr=num(W.lines[m.k].report),wd=dep(W.lines[m.k]),rr=num(Rt.lines[m.k].report),rd=dep(Rt.lines[m.k]);lines.push([lbl(m,"combined"),wr,wd,rr,rd,wr+rr,wd+rd,(wd+rd)-(wr+rr)].map(f));});
-    lines.push(["Total",tw.report,tw.deposited,tr.report,tr.deposited,tw.report+tr.report,tw.deposited+tr.deposited,gv].map(f));
-    lines.push([],["Wholesale cashed up by",W.cashier,"Signed by",W.signedBy,W.signedAt],["Retail cashed up by",Rt.cashier,"Signed by",Rt.signedBy,Rt.signedAt],["Wholesale notes",W.notes],["Retail notes",Rt.notes],
-      ["Retail CashGuard deposited in Nedbank",num(Rt.lines.cashguard.deposited).toFixed(2)],["Retail CashGuard counted & retained, not banked",tr.retained.toFixed(2)],
-      ["Damaged notes & coins - Wholesale",num(W.damaged).toFixed(2),W.damagedNotes],["Damaged notes & coins - Retail",num(Rt.damaged).toFixed(2),Rt.damagedNotes],["Manager signed by",M.signedBy,M.signedAt],["Day status",info.label]);
+    const head=["Payment type"];S.forEach(([d])=>head.push(DEPTS[d]+" report",DEPTS[d]+" deposited"));head.push("All shops report","All shops deposited","Variance");
+    const lines=[["Date",state.date],[],head];
+    METHODS.forEach(m=>{let r=0,dd=0;const row=[lbl(m,"combined")];S.forEach(([d,doc])=>{const on=methodsFor(d).some(x=>x.k===m.k);const a=on?num(doc.lines[m.k].report):0,b=on?dep(doc.lines[m.k]):0;r+=a;dd+=b;row.push(a,b);});row.push(r,dd,dd-r);lines.push(row.map(f));});
+    const tot=["Total"];S.forEach(([, ,t])=>tot.push(t.report,t.deposited));tot.push(gr,gd,gv);lines.push(tot.map(f));
+    lines.push([]);
+    S.forEach(([d,doc,t])=>{lines.push([DEPTS[d]+" cashed up by",doc.cashier,"Signed by",doc.signedBy,doc.signedAt],[DEPTS[d]+" notes",doc.notes],["Damaged notes & coins - "+DEPTS[d],num(doc.damaged).toFixed(2),doc.damagedNotes]);
+      if(hasSplit(d))lines.push([DEPTS[d]+" CashGuard deposited in Nedbank",num(doc.lines.cashguard.deposited).toFixed(2)],[DEPTS[d]+" CashGuard counted & retained, not banked",t.retained.toFixed(2)]);});
+    lines.push(["Factory shop manager signed by",M.signedBy,M.signedAt]);if(showCD)lines.push(["City Deep manager signed by",CM.signedBy,CM.signedAt]);lines.push(["Day status",info.label]);
     // Prefix cells that start with = + - @ so spreadsheets do not run them as formulas
     const cell=c=>{c=String(c==null?"":c);if(/^[=+\-@]/.test(c)&&!/^-?\d+(\.\d+)?$/.test(c))c="'"+c;return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;};
     const csv=lines.map(r=>r.map(cell).join(",")).join("\n");
@@ -548,10 +579,11 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-19c"),loadJsPDF()]);
-  const W=current("wholesale"),Rt=current("retail"),M=current("manager");const info=dayInfo(state.date,W,Rt,M);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-19d"),loadJsPDF()]);
+  const W=current("wholesale"),Rt=current("retail"),M=current("manager"),C=current("citydeep"),CM=current("cdmanager");const info=dayNow();
+  const showCD=cdOn(state.date)||statusOf(C)!=="new";
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
-  const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,status:info.label,photos});
+  const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,C:showCD?C:null,CM:showCD?CM:null,status:info.label,photos});
   return {blob:pdf.output("blob"),name:reportFileName(state.date),info};}
 async function pdfAction(kind){const msg=$("#csv-msg");const say=(t,err)=>{if(msg){msg.className="msg"+(err?" err":"");msg.textContent=t;}};
   say("Preparing the PDF…");let r;
@@ -733,7 +765,7 @@ function renderUsers(){
       <form id="uform" class="fields" style="grid-template-columns:minmax(0,2fr) minmax(0,1.3fr) minmax(0,1fr) auto;align-items:end" novalidate>
         <div class="field"><label for="un">Full name</label><input id="un" maxlength="60" autocomplete="off"></div>
         <div class="field"><label for="ur">Role</label><select id="ur" style="font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)">
-          <option value="wholesale">Wholesale cashier</option><option value="retail">Retail cashier</option><option value="manager">Manager</option><option value="admin">Administrator</option></select></div>
+          <option value="wholesale">Wholesale cashier</option><option value="retail">Retail cashier</option><option value="citydeep">City Deep cashier</option><option value="manager">Manager</option><option value="admin">Administrator</option></select></div>
         <div class="field"><label for="up">4-digit PIN</label><input id="up" inputmode="numeric" maxlength="4" autocomplete="off"></div>
         <button class="btn primary" type="submit" id="ubtn">Add user</button>
       </form>
@@ -773,14 +805,15 @@ function renderNotBanked(){
   const t=todayStr();state.nb=state.nb||{from:t.slice(0,8)+"01",to:t,rows:null};const nb=state.nb;
   const rows=nb.rows||[];const total=rows.reduce((a,r)=>a+r.retained,0);
   const table=nb.loading?'<div class="empty-state">Loading…</div>':nb.err?`<div class="msg err">${esc(nb.err)}</div>`:nb.rows==null?'<div class="empty-state">Choose the dates and tap Show report.</div>':!rows.length?`<div class="empty-state">No money was recorded as counted &amp; retained, not banked between ${shortDate(nb.from)} and ${shortDate(nb.to)}.</div>`:
-    `<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Per report<small>CashGuard</small></th><th>In Nedbank<small>Deposited</small></th><th>Not banked<small>Counted &amp; retained</small></th><th>Retail sheet</th></tr></thead>
-      <tbody>${rows.map(r=>`<tr class="nbrow" data-d="${esc(r.date)}" style="cursor:pointer"><td>${shortDate(r.date)}</td><td class="num">${R(r.report)}</td><td class="num">${R(r.banked)}</td><td class="num"><b>${R(r.retained)}</b></td><td>${r.signed?`Signed · ${esc(r.signedBy)}`:'<span class="chip draft">Not signed</span>'}</td></tr>`).join("")}</tbody>
-      <tfoot><tr><td>Total · ${rows.length} day${rows.length>1?"s":""}</td><td class="num">${R(rows.reduce((a,r)=>a+r.report,0))}</td><td class="num">${R(rows.reduce((a,r)=>a+r.banked,0))}</td><td class="num">${R(total)}</td><td></td></tr></tfoot></table></div>
+    `<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Shop</th><th>Per report<small>CashGuard</small></th><th>In Nedbank<small>Deposited</small></th><th>Not banked<small>Counted &amp; retained</small></th><th>Sheet</th></tr></thead>
+      <tbody>${rows.map(r=>`<tr class="nbrow" data-d="${esc(r.date)}" data-shop="${esc(r.shop)}" style="cursor:pointer"><td>${shortDate(r.date)}</td><td>${DEPTS[r.shop]}</td><td class="num">${R(r.report)}</td><td class="num">${R(r.banked)}</td><td class="num"><b>${R(r.retained)}</b></td><td>${r.signed?`Signed · ${esc(r.signedBy)}`:'<span class="chip draft">Not signed</span>'}</td></tr>`).join("")}</tbody>
+      <tfoot>${["retail","citydeep"].filter(sh=>rows.some(r=>r.shop===sh)).map(sh=>`<tr><td colspan="4" style="font-weight:400">${DEPTS[sh]} subtotal</td><td class="num">${R(rows.filter(r=>r.shop===sh).reduce((a,r)=>a+r.retained,0))}</td><td></td></tr>`).join("")}
+      <tr><td colspan="2">Total · ${rows.length} line${rows.length>1?"s":""}</td><td class="num">${R(rows.reduce((a,r)=>a+r.report,0))}</td><td class="num">${R(rows.reduce((a,r)=>a+r.banked,0))}</td><td class="num">${R(total)}</td><td></td></tr></tfoot></table></div>
     <div class="actions" style="margin-top:12px"><button class="btn primary" id="nb-pdf" type="button">Download PDF</button><button class="btn" id="nb-csv" type="button">Download CSV</button><span class="msg" id="nb-msg">Tap a day to open its End of Day.</span></div>`;
   main.innerHTML=`<section class="sheet">
-    <div class="sheet-head"><div><div class="eyebrow">Retail CashGuard</div><h2>Money not banked</h2></div>${nb.rows&&rows.length?`<span class="chip draft">Total ${R(total)}</span>`:""}</div>
+    <div class="sheet-head"><div><div class="eyebrow">CashGuard · Retail and City Deep</div><h2>Money not banked</h2></div>${nb.rows&&rows.length?`<span class="chip draft">Total ${R(total)}</span>`:""}</div>
     <div class="sheet-body">
-      <div class="msg">Cash counted from the Retail CashGuard and kept back, not deposited in Nedbank, for each day in the period.</div>
+      <div class="msg">Cash counted from the CashGuard and kept back, not deposited in Nedbank, for each day and shop in the period (Retail and City Deep).</div>
       <form id="nbform" class="fields" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:end" novalidate>
         <div class="field"><label for="nbfrom">From</label><input type="date" id="nbfrom" value="${esc(nb.from)}" max="${t}"></div>
         <div class="field"><label for="nbto">To</label><input type="date" id="nbto" value="${esc(nb.to)}" max="${t}"></div>
@@ -791,32 +824,32 @@ function renderNotBanked(){
   $("#nbform").addEventListener("submit",e=>{e.preventDefault();let f=$("#nbfrom").value,to=$("#nbto").value;
     if(!/^\d{4}-\d{2}-\d{2}$/.test(f)||!/^\d{4}-\d{2}-\d{2}$/.test(to)){nb.err="Choose both dates.";nb.rows=null;render();return;}
     if(f>to){const x=f;f=to;to=x;}loadNotBanked(f,to);});
-  main.querySelectorAll(".nbrow").forEach(r=>r.addEventListener("click",()=>{$("#date").value=r.dataset.d;setDate(r.dataset.d);setTab("combined");}));
+  main.querySelectorAll(".nbrow").forEach(r=>r.addEventListener("click",()=>{$("#date").value=r.dataset.d;setDate(r.dataset.d);setTab(r.dataset.shop==="citydeep"?"citydeep":"combined");}));
   const pb=$("#nb-pdf");if(pb)pb.addEventListener("click",notBankedPdf);
   const cb=$("#nb-csv");if(cb)cb.addEventListener("click",()=>{
     const cell=c=>{c=String(c==null?"":c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;};
-    const lines=[["Money not banked - Retail CashGuard"],["From",nb.from,"To",nb.to],[],["Date","CashGuard per report","Deposited in Nedbank","Counted & retained, not banked","Retail signed by"]]
-      .concat(rows.map(r=>[r.date,r.report.toFixed(2),r.banked.toFixed(2),r.retained.toFixed(2),r.signed?r.signedBy:"NOT SIGNED"]),[["Total","","",total.toFixed(2),""]]);
+    const lines=[["Money not banked - CashGuard (Retail and City Deep)"],["From",nb.from,"To",nb.to],[],["Date","Shop","CashGuard per report","Deposited in Nedbank","Counted & retained, not banked","Signed by"]]
+      .concat(rows.map(r=>[r.date,DEPTS[r.shop],r.report.toFixed(2),r.banked.toFixed(2),r.retained.toFixed(2),r.signed?r.signedBy:"NOT SIGNED"]),[["Total","","","",total.toFixed(2),""]]);
     const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([lines.map(l=>l.map(cell).join(",")).join("\n")],{type:"text/csv"}));a.download=`Not-banked-${nb.from}-to-${nb.to}.csv`;document.body.appendChild(a);a.click();a.remove();});
 }
 async function loadNotBanked(from,to){const nb=state.nb;nb.from=from;nb.to=to;nb.loading=true;nb.err="";render();
   try{const snap=await getDocs(query(shopCol(),where("date",">=",from),where("date","<=",to)));
-    nb.rows=snap.docs.map(d=>d.data()).filter(d=>d&&d.dept==="retail"&&d.date>=from&&d.date<=to).map(d=>{const n=normalize(d,d.date,"retail");const cg=n.lines.cashguard;
-      return {date:n.date,report:num(cg.report),banked:num(cg.deposited),retained:num(cg.retained),signed:n.status==="signed",signedBy:n.signedBy||""};})
-      .filter(r=>r.retained!==0).sort((a,b)=>a.date.localeCompare(b.date));}
+    nb.rows=snap.docs.map(d=>d.data()).filter(d=>d&&hasSplit(d.dept)&&d.date>=from&&d.date<=to).map(d=>{const n=normalize(d,d.date,d.dept);const cg=n.lines.cashguard;
+      return {date:n.date,shop:d.dept,report:num(cg.report),banked:num(cg.deposited),retained:num(cg.retained),signed:n.status==="signed",signedBy:n.signedBy||""};})
+      .filter(r=>r.retained!==0).sort((a,b)=>a.date.localeCompare(b.date)||a.shop.localeCompare(b.shop));}
   catch(e){console.error("Not banked:",e);nb.rows=null;nb.err="The report could not be loaded ("+(e&&(e.code||e.message)||e)+"). Check the connection and try again.";}
   nb.loading=false;if(state.tab==="notbanked")render();}
 async function notBankedPdf(){const nb=state.nb,rows=nb.rows||[];const m=$("#nb-msg");if(m)m.textContent="Preparing the PDF…";
   try{const jsPDF=await loadJsPDF();const pdf=new jsPDF({unit:"mm",format:"a4"});const P=s=>String(s).replace(/[\u00a0\u202f\u2009]/g," ").replace(/\u2212/g,"-");
-    let y=18;pdf.setFont("helvetica","bold");pdf.setFontSize(16);pdf.text("Money not banked - Retail CashGuard",14,y);
+    let y=18;pdf.setFont("helvetica","bold");pdf.setFontSize(16);pdf.text("Money not banked - CashGuard",14,y);
     pdf.setFont("helvetica","normal");pdf.setFontSize(10);pdf.setTextColor(110);pdf.text(P(`Continental Brands  -  ${longDate(nb.from)} to ${longDate(nb.to)}`),14,y+6);pdf.setTextColor(0);
     y+=16;const X=[14,60,100,140,196];pdf.setFont("helvetica","bold");pdf.setFontSize(9);
-    pdf.text("Date",X[0],y);pdf.text("CashGuard report",X[2]-2,y,{align:"right"});pdf.text("In Nedbank",X[3]-2,y,{align:"right"});pdf.text("Not banked",X[4]-30,y,{align:"right"});pdf.text("Signed by",X[4]-28,y);
+    pdf.text("Date",X[0],y);pdf.text("Shop",X[0]+30,y);pdf.text("CashGuard report",X[2]-2,y,{align:"right"});pdf.text("In Nedbank",X[3]-2,y,{align:"right"});pdf.text("Not banked",X[4]-30,y,{align:"right"});pdf.text("Signed by",X[4]-28,y);
     pdf.setDrawColor(200);pdf.line(14,y+2,196,y+2);pdf.setFont("helvetica","normal");pdf.setFontSize(10);
-    rows.forEach(r=>{y+=7;if(y>280){pdf.addPage();y=20;}pdf.text(P(shortDate(r.date)),X[0],y);pdf.text(P(R(r.report)),X[2]-2,y,{align:"right"});pdf.text(P(R(r.banked)),X[3]-2,y,{align:"right"});
+    rows.forEach(r=>{y+=7;if(y>280){pdf.addPage();y=20;}pdf.text(P(shortDate(r.date)),X[0],y);pdf.text(DEPTS[r.shop],X[0]+30,y);pdf.text(P(R(r.report)),X[2]-2,y,{align:"right"});pdf.text(P(R(r.banked)),X[3]-2,y,{align:"right"});
       pdf.setFont("helvetica","bold");pdf.text(P(R(r.retained)),X[4]-30,y,{align:"right"});pdf.setFont("helvetica","normal");pdf.text(P(r.signed?r.signedBy:"NOT SIGNED").slice(0,22),X[4]-28,y);});
     y+=4;pdf.setDrawColor(0);pdf.setLineWidth(0.5);pdf.line(14,y,196,y);y+=6;pdf.setFont("helvetica","bold");
-    pdf.text(`Total (${rows.length} day${rows.length>1?"s":""})`,X[0],y);pdf.text(P(R(rows.reduce((a,r)=>a+r.retained,0))),X[4]-30,y,{align:"right"});
+    pdf.text(`Total (${rows.length} line${rows.length>1?"s":""})`,X[0],y);pdf.text(P(R(rows.reduce((a,r)=>a+r.retained,0))),X[4]-30,y,{align:"right"});
     const a=document.createElement("a");a.href=URL.createObjectURL(pdf.output("blob"));a.download=`Not-banked-${nb.from}-to-${nb.to}.pdf`;document.body.appendChild(a);a.click();a.remove();
     if(m)m.textContent="PDF downloaded.";}
   catch(e){console.error(e);if(m){m.className="msg err";m.textContent="The PDF could not be made: "+(e&&e.message||e);}}}
@@ -827,9 +860,10 @@ function renderHistory(){
     return `<div><div class="eyebrow">${DEPTS[dept]}</div>${chip(statusOf(n))} <span class="num msg">${R(totals(n).deposited)}</span></div>`;};
   main.innerHTML=`<section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">All cash ups</div><h2>History</h2></div></div>
-    <div class="hist">${dates.length?dates.map(d=>{const w=by[d].wholesale?normalize(by[d].wholesale,d,"wholesale"):null,r=by[d].retail?normalize(by[d].retail,d,"retail"):null,mg=by[d].manager?normalize(by[d].manager,d,"manager"):null;
-      const tot=(w?totals(w).deposited:0)+(r?totals(r).deposited:0),vr=(w?totals(w).variance:0)+(r?totals(r).variance:0);const di=dayInfo(d,w,r,mg);
-      return `<button class="hrow" data-d="${esc(d)}"><div><div class="d">${shortDate(d)}</div><span class="chip ${di.cls}" style="margin-top:4px">${di.kind==="done"?"Closed on time":di.kind==="late"?"Closed late":di.kind==="overdue"?"Overdue":di.kind==="sunday"?"Sunday":"Open"}</span></div>${cell(by[d].wholesale,"wholesale")}${cell(by[d].retail,"retail")}<div class="r"><div class="num"><b>${R(tot)}</b></div><div class="num msg ${vcls(vr)}">${RV(vr)}</div></div></button>`;}).join("")
+    <div class="hist">${dates.length?dates.map(d=>{const nz=k=>by[d][k]?normalize(by[d][k],d,k):null;const w=nz("wholesale"),r=nz("retail"),mg=nz("manager"),c=nz("citydeep"),cm=nz("cdmanager");
+      const sh=[w,r,c].filter(Boolean);const tot=sh.reduce((a,x)=>a+totals(x).deposited,0),vr=sh.reduce((a,x)=>a+totals(x).variance,0);const di=dayInfo(d,w,r,mg,c,cm);
+      const withCD=cdOn(d)||!!c;
+      return `<button class="hrow${withCD?" cd":""}" data-d="${esc(d)}"><div><div class="d">${shortDate(d)}</div><span class="chip ${di.cls}" style="margin-top:4px">${di.kind==="done"?"Closed on time":di.kind==="late"?"Closed late":di.kind==="overdue"?"Overdue":di.kind==="sunday"?"Sunday":"Open"}</span></div>${cell(by[d].wholesale,"wholesale")}${cell(by[d].retail,"retail")}${withCD?cell(by[d].citydeep,"citydeep"):""}<div class="r"><div class="num"><b>${R(tot)}</b></div><div class="num msg ${vcls(vr)}">${RV(vr)}</div></div></button>`;}).join("")
       :`<div class="empty-state">No cash ups yet. Open Wholesale or Retail for today and enter the report and deposited amounts. Each day will appear here.</div>`}</div></section>`;
   main.querySelectorAll(".hrow").forEach(b=>b.addEventListener("click",()=>{$("#date").value=b.dataset.d;setDate(b.dataset.d);setTab("combined");}));
 }

@@ -66,9 +66,13 @@ const when = doc => {
 const signedTime = doc => doc?.signedAtServer?.toDate ? doc.signedAtServer.toDate() : (doc?.signedAt ? new Date(doc.signedAt) : null);
 
 // ---------- read the day ----------
-const ids = ["wholesale", "retail", "manager"];
+// City Deep (a separate shop with its own manager sign-off) is required from this date; keep in step with CD_START in app.js
+const CD_START = "2026-10-20";
+const ids = ["wholesale", "retail", "manager", "citydeep", "cdmanager"];
 const snaps = await Promise.all(ids.map(d => db.doc(`${base}/cashups/${DATE}_${d}`).get()));
-const [W, Rt, Mg] = snaps.map(s => (s.exists ? s.data() : null));
+const [W, Rt, Mg, Cd0, Cm0] = snaps.map(s => (s.exists ? s.data() : null));
+const withCD = DATE >= CD_START || !!Cd0;
+const Cd = withCD ? Cd0 : null, Cm = withCD ? Cm0 : null;
 const signedNow = d => !!d && d.status === "signed";
 // The 7 pm check judges the day as it stood at 19:00, even if GitHub starts the job late.
 const signedByDeadline = d => signedNow(d) && (signedTime(d)?.getTime() ?? Infinity) <= DEADLINE.getTime();
@@ -77,8 +81,10 @@ const missing = [];
 if (!signed(W)) missing.push("Wholesale");
 if (!signed(Rt)) missing.push("Retail");
 if (!signed(Mg)) missing.push("Manager");
+if (withCD && !signed(Cd)) missing.push("City Deep");
+if (withCD && !signed(Cm)) missing.push("City Deep manager");
 const complete = missing.length === 0;
-const nothing = !W && !Rt && !Mg;
+const nothing = !W && !Rt && !Mg && !Cd && !Cm;
 
 const logRef = db.doc(`${base}/emaillog/${DATE}`);
 const logSnap = await logRef.get();
@@ -86,55 +92,59 @@ const log = logSnap.exists ? logSnap.data() : {};
 
 // ---------- build report ----------
 function line(doc, k, f) { return num(doc?.lines?.[k]?.[f]); }
+// Lines per shop: Retail has no EFT or Shop2Shop; Retail and City Deep split CashGuard (Nedbank + counted & retained, not banked)
+const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: null };
+const hasLine = (shop, k) => !SHOP_LINES[shop] || SHOP_LINES[shop].includes(k);
+const splitShop = shop => shop === "retail" || shop === "citydeep";
 function reportHtml(title, note) {
-  let tWr = 0, tWd = 0, tRr = 0, tRd = 0;
+  const shops = [["Wholesale", W, "wholesale"], ["Retail", Rt, "retail"]];
+  if (withCD) shops.push(["City Deep", Cd, "citydeep"]);
+  const td = 'style="padding:6px 8px;text-align:right;border-bottom:1px solid #eee"';
+  const tot = shops.map(() => [0, 0]);
   const rows = METHODS.map(([k, l]) => {
-    const wr = line(W, k, "report"), wd = line(W, k, "deposited"), rr = line(Rt, k, "report"), rd = line(Rt, k, "deposited") + line(Rt, k, "retained");
-    tWr += wr; tWd += wd; tRr += rr; tRd += rd;
-    const v = (wd + rd) - (wr + rr);
-    return `<tr><td style="padding:6px 10px;border-bottom:1px solid #eee">${l}</td>
-      <td style="padding:6px 10px;text-align:right;border-bottom:1px solid #eee">${R(wr)}</td><td style="padding:6px 10px;text-align:right;border-bottom:1px solid #eee">${R(wd)}</td>
-      <td style="padding:6px 10px;text-align:right;border-bottom:1px solid #eee">${R(rr)}</td><td style="padding:6px 10px;text-align:right;border-bottom:1px solid #eee">${R(rd)}</td>
-      <td style="padding:6px 10px;text-align:right;border-bottom:1px solid #eee"><b>${R(wr + rr)}</b></td><td style="padding:6px 10px;text-align:right;border-bottom:1px solid #eee"><b>${R(wd + rd)}</b></td>
-      <td style="padding:6px 10px;text-align:right;border-bottom:1px solid #eee;color:${vcolor(v)}"><b>${RV(v)}</b></td></tr>`;
+    let r = 0, dd = 0;
+    const cells = shops.map(([, doc, shop], i) => {
+      if (!hasLine(shop, k)) return `<td ${td}>—</td><td ${td}>—</td>`;
+      const a = line(doc, k, "report"), b = line(doc, k, "deposited") + (splitShop(shop) ? line(doc, k, "retained") : 0);
+      r += a; dd += b; tot[i][0] += a; tot[i][1] += b;
+      return `<td ${td}>${R(a)}</td><td ${td}>${R(b)}</td>`;
+    }).join("");
+    const v = dd - r;
+    return `<tr><td style="padding:6px 8px;border-bottom:1px solid #eee">${l}</td>${cells}<td ${td}><b>${R(r)}</b></td><td ${td}><b>${R(dd)}</b></td><td style="padding:6px 8px;text-align:right;border-bottom:1px solid #eee;color:${vcolor(v)}"><b>${RV(v)}</b></td></tr>`;
   }).join("");
-  const gv = (tWd + tRd) - (tWr + tRr);
+  const gr = tot.reduce((a, t) => a + t[0], 0), gd = tot.reduce((a, t) => a + t[1], 0), gv = gd - gr;
+  const th = 'style="padding:6px 8px;text-align:right"', tf = 'style="padding:8px;text-align:right"';
   const sigRow = (label, doc) => `<tr><td style="padding:4px 10px">${label}</td><td style="padding:4px 10px">${signed(doc) ? `${esc(doc.signedBy)} · ${when(doc)}` : `<span style="color:#b03a2a"><b>NOT SIGNED</b></span>`}</td></tr>`;
-  const dmg = (num(W?.damaged) + num(Rt?.damaged));
-  return `<div style="font-family:Arial,Helvetica,sans-serif;color:#1f1c18;max-width:900px">
+  const each = f => shops.map(([l, doc]) => `${l} ${f(doc)}`).join(" · ");
+  return `<div style="font-family:Arial,Helvetica,sans-serif;color:#1f1c18;max-width:1000px">
   <h2 style="margin:0 0 4px">${esc(title)}</h2>
-  <div style="color:#7a7268;margin-bottom:14px">Continental Brands · Daily Factory Shop Cash Up · ${esc(niceDate)}</div>
+  <div style="color:#7a7268;margin-bottom:14px">Continental Brands · ${withCD ? "Factory shop and City Deep" : "Daily Factory Shop Cash Up"} · ${esc(niceDate)}</div>
   ${note ? `<div style="background:#f8e4e0;color:#b03a2a;padding:10px 14px;border-radius:8px;margin-bottom:14px"><b>${note}</b></div>` : ""}
-  <table style="border-collapse:collapse;font-size:14px;width:100%">
-    <thead><tr style="background:#f7f4ef">
-      <th style="padding:6px 10px;text-align:left">Payment type</th>
-      <th style="padding:6px 10px;text-align:right">Wholesale report</th><th style="padding:6px 10px;text-align:right">Wholesale deposited</th>
-      <th style="padding:6px 10px;text-align:right">Retail report</th><th style="padding:6px 10px;text-align:right">Retail deposited</th>
-      <th style="padding:6px 10px;text-align:right">Combined report</th><th style="padding:6px 10px;text-align:right">Combined deposited</th><th style="padding:6px 10px;text-align:right">Variance</th>
-    </tr></thead>
+  <table style="border-collapse:collapse;font-size:13px;width:100%">
+    <thead><tr style="background:#f7f4ef"><th style="padding:6px 8px;text-align:left">Payment type</th>
+      ${shops.map(([l]) => `<th ${th}>${l} report</th><th ${th}>${l} deposited</th>`).join("")}
+      <th ${th}>${withCD ? "All shops" : "Combined"} report</th><th ${th}>${withCD ? "All shops" : "Combined"} deposited</th><th ${th}>Variance</th></tr></thead>
     <tbody>${rows}</tbody>
-    <tfoot><tr style="border-top:2px solid #1f1c18"><td style="padding:8px 10px"><b>Total</b></td>
-      <td style="padding:8px 10px;text-align:right"><b>${R(tWr)}</b></td><td style="padding:8px 10px;text-align:right"><b>${R(tWd)}</b></td>
-      <td style="padding:8px 10px;text-align:right"><b>${R(tRr)}</b></td><td style="padding:8px 10px;text-align:right"><b>${R(tRd)}</b></td>
-      <td style="padding:8px 10px;text-align:right"><b>${R(tWr + tRr)}</b></td><td style="padding:8px 10px;text-align:right"><b>${R(tWd + tRd)}</b></td>
-      <td style="padding:8px 10px;text-align:right;color:${vcolor(gv)}"><b>${RV(gv)}</b></td></tr></tfoot>
+    <tfoot><tr style="border-top:2px solid #1f1c18"><td style="padding:8px"><b>Total</b></td>
+      ${tot.map(t => `<td ${tf}><b>${R(t[0])}</b></td><td ${tf}><b>${R(t[1])}</b></td>`).join("")}
+      <td ${tf}><b>${R(gr)}</b></td><td ${tf}><b>${R(gd)}</b></td><td style="padding:8px;text-align:right;color:${vcolor(gv)}"><b>${RV(gv)}</b></td></tr></tfoot>
   </table>
-  <p style="margin:14px 0 4px"><b>Retail CashGuard:</b> deposited in Nedbank ${R(line(Rt, "cashguard", "deposited"))} · counted &amp; retained, not banked <b>${R(line(Rt, "cashguard", "retained"))}</b></p>
-  <p style="margin:4px 0"><b>Damaged bank notes &amp; coins:</b> Wholesale ${R(num(W?.damaged))}${W?.damagedNotes ? " (" + esc(W.damagedNotes) + ")" : ""} · Retail ${R(num(Rt?.damaged))}${Rt?.damagedNotes ? " (" + esc(Rt.damagedNotes) + ")" : ""} · <b>Total ${R(dmg)}</b></p>
-  <p style="margin:4px 0"><b>Cashed up by:</b> Wholesale ${esc(W?.cashier || "—")} · Retail ${esc(Rt?.cashier || "—")}</p>
-  ${W?.notes ? `<p style="margin:4px 0"><b>Wholesale notes:</b> ${esc(W.notes)}</p>` : ""}
-  ${Rt?.notes ? `<p style="margin:4px 0"><b>Retail notes:</b> ${esc(Rt.notes)}</p>` : ""}
-  <table style="margin-top:10px;font-size:14px"><tbody>${sigRow("Wholesale signature", W)}${sigRow("Retail signature", Rt)}${sigRow("Manager signature", Mg)}</tbody></table>
+  ${withCD ? `<p style="margin:14px 0 4px"><b>Variance by shop:</b> Factory shop ${RV((tot[0][1] + tot[1][1]) - (tot[0][0] + tot[1][0]))} · City Deep ${RV(tot[2][1] - tot[2][0])} · <b>All shops ${RV(gv)}</b></p>` : ""}
+  ${shops.filter(([, , sh]) => splitShop(sh)).map(([l, doc]) => `<p style="margin:4px 0"><b>${l} CashGuard:</b> deposited in Nedbank ${R(line(doc, "cashguard", "deposited"))} · counted &amp; retained, not banked <b>${R(line(doc, "cashguard", "retained"))}</b></p>`).join("")}
+  <p style="margin:4px 0"><b>Damaged bank notes &amp; coins:</b> ${each(d => R(num(d?.damaged)) + (d?.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(shops.reduce((a, [, d]) => a + num(d?.damaged), 0))}</b></p>
+  <p style="margin:4px 0"><b>Cashed up by:</b> ${each(d => esc(d?.cashier || "—"))}</p>
+  ${shops.map(([l, d]) => d?.notes ? `<p style="margin:4px 0"><b>${l} notes:</b> ${esc(d.notes)}</p>` : "").join("")}
+  <table style="margin-top:10px;font-size:14px"><tbody>${sigRow("Wholesale signature", W)}${sigRow("Retail signature", Rt)}${sigRow(withCD ? "Factory shop manager signature" : "Manager signature", Mg)}${withCD ? sigRow("City Deep signature", Cd) + sigRow("City Deep manager signature", Cm) : ""}</tbody></table>
   <p style="color:#7a7268;font-size:12px;margin-top:18px">Variance = deposited − report. Negative (red) means short; positive (amber) means over. Signature times are taken from the server clock (SAST).</p>
   </div>`;
 }
 function alertHtml(lead) {
-  const done = [["Wholesale", W], ["Retail", Rt], ["Manager", Mg]].filter(([, d]) => signed(d)).map(([l, d]) => `<li>${l}: ${esc(d.signedBy)} · ${when(d)}</li>`).join("");
+  const done = [["Wholesale", W], ["Retail", Rt], ["Manager", Mg], ...(withCD ? [["City Deep", Cd], ["City Deep manager", Cm]] : [])].filter(([, d]) => signed(d)).map(([l, d]) => `<li>${l}: ${esc(d.signedBy)} · ${when(d)}</li>`).join("");
   return `<div style="font-family:Arial,Helvetica,sans-serif;color:#1f1c18">
   <p>${lead}</p>
   <p><b>Missing signature${missing.length > 1 ? "s" : ""}:</b> ${missing.join(", ")}</p>
   ${done ? `<p><b>Already signed:</b></p><ul>${done}</ul>` : "<p>Nothing has been signed yet.</p>"}
-  <p style="color:#7a7268">The cash up must be completed and signed by Wholesale, Retail and the Manager by 7 pm every trading day (Monday to Saturday).</p></div>`;
+  <p style="color:#7a7268">The cash up must be completed and signed by Wholesale, Retail and the Manager${withCD ? ", and by City Deep and its manager," : ""} by 7 pm every trading day (Monday to Saturday).</p></div>`;
 }
 // ---------- PDF attachment (same layout as the app's "Download PDF") ----------
 async function reportPdf(status) {
@@ -145,7 +155,7 @@ async function reportPdf(status) {
     photos = ps.docs.map(x => x.data()).filter(p => p.removed !== true)
       .sort((a, b) => String(a.dept).localeCompare(String(b.dept)) || String(a.takenAt || "").localeCompare(String(b.takenAt || "")));
   } catch (e) { console.error("Photos could not be read:", e.message); }
-  const pdf = buildReportPdf(jsPDF, { date: DATE, niceDate, W: iso(W), Rt: iso(Rt), M: iso(Mg), status, photos });
+  const pdf = buildReportPdf(jsPDF, { date: DATE, niceDate, W: iso(W), Rt: iso(Rt), M: iso(Mg), C: withCD ? (iso(Cd) || { status: "new" }) : null, CM: withCD ? (iso(Cm) || { status: "new" }) : null, status, photos });
   return { filename: reportFileName(DATE), content: Buffer.from(pdf.output("arraybuffer")), contentType: "application/pdf" };
 }
 async function send(to, subject, html, pdfStatus) {
@@ -172,7 +182,7 @@ if (MODE === "seven") {
 } else if (MODE === "nine") {
   if (log.martieFinalSent) { console.log("Complete report already sent at 7 pm. Nothing to do."); process.exit(0); }
   if (complete) {
-    const last = Math.max(...[W, Rt, Mg].map(d => signedTime(d)?.getTime() || 0));
+    const last = Math.max(...[W, Rt, Mg, Cd, Cm].map(d => signedTime(d)?.getTime() || 0));
     const lastStr = new Date(last).toLocaleString("en-ZA", { timeZone: TZ, hour: "2-digit", minute: "2-digit" });
     const late = last > DEADLINE.getTime();
     const note = log.sentAt
