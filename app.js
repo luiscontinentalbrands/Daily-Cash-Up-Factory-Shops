@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-19a";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-19b";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -217,7 +217,8 @@ function whoBar(){const w=$("#who");w.hidden=false;
   w.innerHTML=`<b>${esc(state.me.name)}</b><span class="roletag">${esc(ROLE_LABEL[role()]||"")}</span><button id="mypin" type="button">Change PIN</button><button id="switchu" type="button">Switch user</button>`;
   $("#switchu").addEventListener("click",()=>{flushAll();showWho();});
   $("#mypin").addEventListener("click",()=>{flushAll();showChangePin(state.me,false);});
-  $("#tab-users").hidden=role()!=="admin";}
+  $("#tab-users").hidden=role()!=="admin";
+  $("#tab-notbanked").hidden=!["manager","admin"].includes(role());}
 function lockApp(msg){flushAll();showWho(msg);}
 let idleT=null;
 function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockApp("Locked after 15 minutes without use. Tap your name to continue."),15*60000);}
@@ -226,7 +227,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-19a";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-19b";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -318,7 +319,7 @@ function render(force){if(!state.ready)return;updateDots();
   state.deferred=false;
   if(state.tab==="users"){renderUsers();return;}
   if(state.tab==="wholesale"||state.tab==="retail")renderDept(state.tab);
-  else if(state.tab==="combined")renderCombined();else renderHistory();}
+  else if(state.tab==="combined")renderCombined();else if(state.tab==="notbanked")renderNotBanked();else renderHistory();}
 
 function banner(di){if(di.kind==="sunday")return "";
   return `<div class="banner ${di.kind==="done"?"ok":di.kind==="overdue"?"bad":"wait"}" style="font-weight:500">${di.kind==="overdue"?"Past the 7 pm deadline. Missing: "+di.missing.join(", ")+".":di.kind==="open"?di.label+". Wholesale, Retail and the Manager must all sign.":di.label+"."}</div>`;}
@@ -546,7 +547,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-19a"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-19b"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager");const info=dayInfo(state.date,W,Rt,M);
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
   const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,status:info.label,photos});
@@ -765,6 +766,59 @@ function renderUsers(){
       catch(x){m.className="msg err";m.textContent="Could not save.";}});
   }));
 }
+/* ---------- Not banked report: Retail CashGuard counted & retained, not banked, for a date range ---------- */
+function renderNotBanked(){
+  if(!["manager","admin"].includes(role())){main.innerHTML='<div class="empty-state">Only a manager or the administrator can see this report.</div>';return;}
+  const t=todayStr();state.nb=state.nb||{from:t.slice(0,8)+"01",to:t,rows:null};const nb=state.nb;
+  const rows=nb.rows||[];const total=rows.reduce((a,r)=>a+r.retained,0);
+  const table=nb.loading?'<div class="empty-state">Loading…</div>':nb.err?`<div class="msg err">${esc(nb.err)}</div>`:nb.rows==null?'<div class="empty-state">Choose the dates and tap Show report.</div>':!rows.length?`<div class="empty-state">No money was recorded as counted &amp; retained, not banked between ${shortDate(nb.from)} and ${shortDate(nb.to)}.</div>`:
+    `<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Per report<small>CashGuard</small></th><th>In Nedbank<small>Deposited</small></th><th>Not banked<small>Counted &amp; retained</small></th><th>Retail sheet</th></tr></thead>
+      <tbody>${rows.map(r=>`<tr class="nbrow" data-d="${esc(r.date)}" style="cursor:pointer"><td>${shortDate(r.date)}</td><td class="num">${R(r.report)}</td><td class="num">${R(r.banked)}</td><td class="num"><b>${R(r.retained)}</b></td><td>${r.signed?`Signed · ${esc(r.signedBy)}`:'<span class="chip draft">Not signed</span>'}</td></tr>`).join("")}</tbody>
+      <tfoot><tr><td>Total · ${rows.length} day${rows.length>1?"s":""}</td><td class="num">${R(rows.reduce((a,r)=>a+r.report,0))}</td><td class="num">${R(rows.reduce((a,r)=>a+r.banked,0))}</td><td class="num">${R(total)}</td><td></td></tr></tfoot></table></div>
+    <div class="actions" style="margin-top:12px"><button class="btn primary" id="nb-pdf" type="button">Download PDF</button><button class="btn" id="nb-csv" type="button">Download CSV</button><span class="msg" id="nb-msg">Tap a day to open its End of Day.</span></div>`;
+  main.innerHTML=`<section class="sheet">
+    <div class="sheet-head"><div><div class="eyebrow">Retail CashGuard</div><h2>Money not banked</h2></div>${nb.rows&&rows.length?`<span class="chip draft">Total ${R(total)}</span>`:""}</div>
+    <div class="sheet-body">
+      <div class="msg">Cash counted from the Retail CashGuard and kept back, not deposited in Nedbank, for each day in the period.</div>
+      <form id="nbform" class="fields" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:end" novalidate>
+        <div class="field"><label for="nbfrom">From</label><input type="date" id="nbfrom" value="${esc(nb.from)}" max="${t}"></div>
+        <div class="field"><label for="nbto">To</label><input type="date" id="nbto" value="${esc(nb.to)}" max="${t}"></div>
+        <button class="btn primary" type="submit" id="nbgo">Show report</button>
+      </form>
+      ${table}
+    </div></section>`;
+  $("#nbform").addEventListener("submit",e=>{e.preventDefault();let f=$("#nbfrom").value,to=$("#nbto").value;
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(f)||!/^\d{4}-\d{2}-\d{2}$/.test(to)){nb.err="Choose both dates.";nb.rows=null;render();return;}
+    if(f>to){const x=f;f=to;to=x;}loadNotBanked(f,to);});
+  main.querySelectorAll(".nbrow").forEach(r=>r.addEventListener("click",()=>{$("#date").value=r.dataset.d;setDate(r.dataset.d);setTab("combined");}));
+  const pb=$("#nb-pdf");if(pb)pb.addEventListener("click",notBankedPdf);
+  const cb=$("#nb-csv");if(cb)cb.addEventListener("click",()=>{
+    const cell=c=>{c=String(c==null?"":c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;};
+    const lines=[["Money not banked - Retail CashGuard"],["From",nb.from,"To",nb.to],[],["Date","CashGuard per report","Deposited in Nedbank","Counted & retained, not banked","Retail signed by"]]
+      .concat(rows.map(r=>[r.date,r.report.toFixed(2),r.banked.toFixed(2),r.retained.toFixed(2),r.signed?r.signedBy:"NOT SIGNED"]),[["Total","","",total.toFixed(2),""]]);
+    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([lines.map(l=>l.map(cell).join(",")).join("\n")],{type:"text/csv"}));a.download=`Not-banked-${nb.from}-to-${nb.to}.csv`;document.body.appendChild(a);a.click();a.remove();});
+}
+async function loadNotBanked(from,to){const nb=state.nb;nb.from=from;nb.to=to;nb.loading=true;nb.err="";render();
+  try{const snap=await getDocs(query(shopCol(),where("date",">=",from),where("date","<=",to)));
+    nb.rows=snap.docs.map(d=>d.data()).filter(d=>d&&d.dept==="retail"&&d.date>=from&&d.date<=to).map(d=>{const n=normalize(d,d.date,"retail");const cg=n.lines.cashguard;
+      return {date:n.date,report:num(cg.report),banked:num(cg.deposited),retained:num(cg.retained),signed:n.status==="signed",signedBy:n.signedBy||""};})
+      .filter(r=>r.retained!==0).sort((a,b)=>a.date.localeCompare(b.date));}
+  catch(e){console.error("Not banked:",e);nb.rows=null;nb.err="The report could not be loaded ("+(e&&(e.code||e.message)||e)+"). Check the connection and try again.";}
+  nb.loading=false;if(state.tab==="notbanked")render();}
+async function notBankedPdf(){const nb=state.nb,rows=nb.rows||[];const m=$("#nb-msg");if(m)m.textContent="Preparing the PDF…";
+  try{const jsPDF=await loadJsPDF();const pdf=new jsPDF({unit:"mm",format:"a4"});const P=s=>String(s).replace(/[\u00a0\u202f\u2009]/g," ").replace(/\u2212/g,"-");
+    let y=18;pdf.setFont("helvetica","bold");pdf.setFontSize(16);pdf.text("Money not banked - Retail CashGuard",14,y);
+    pdf.setFont("helvetica","normal");pdf.setFontSize(10);pdf.setTextColor(110);pdf.text(P(`Continental Brands  -  ${longDate(nb.from)} to ${longDate(nb.to)}`),14,y+6);pdf.setTextColor(0);
+    y+=16;const X=[14,60,100,140,196];pdf.setFont("helvetica","bold");pdf.setFontSize(9);
+    pdf.text("Date",X[0],y);pdf.text("CashGuard report",X[2]-2,y,{align:"right"});pdf.text("In Nedbank",X[3]-2,y,{align:"right"});pdf.text("Not banked",X[4]-30,y,{align:"right"});pdf.text("Signed by",X[4]-28,y);
+    pdf.setDrawColor(200);pdf.line(14,y+2,196,y+2);pdf.setFont("helvetica","normal");pdf.setFontSize(10);
+    rows.forEach(r=>{y+=7;if(y>280){pdf.addPage();y=20;}pdf.text(P(shortDate(r.date)),X[0],y);pdf.text(P(R(r.report)),X[2]-2,y,{align:"right"});pdf.text(P(R(r.banked)),X[3]-2,y,{align:"right"});
+      pdf.setFont("helvetica","bold");pdf.text(P(R(r.retained)),X[4]-30,y,{align:"right"});pdf.setFont("helvetica","normal");pdf.text(P(r.signed?r.signedBy:"NOT SIGNED").slice(0,22),X[4]-28,y);});
+    y+=4;pdf.setDrawColor(0);pdf.setLineWidth(0.5);pdf.line(14,y,196,y);y+=6;pdf.setFont("helvetica","bold");
+    pdf.text(`Total (${rows.length} day${rows.length>1?"s":""})`,X[0],y);pdf.text(P(R(rows.reduce((a,r)=>a+r.retained,0))),X[4]-30,y,{align:"right"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(pdf.output("blob"));a.download=`Not-banked-${nb.from}-to-${nb.to}.pdf`;document.body.appendChild(a);a.click();a.remove();
+    if(m)m.textContent="PDF downloaded.";}
+  catch(e){console.error(e);if(m){m.className="msg err";m.textContent="The PDF could not be made: "+(e&&e.message||e);}}}
 function renderHistory(){
   const by={};state.history.forEach(d=>{if(!d||!d.date)return;(by[d.date]=by[d.date]||{})[d.dept]=d;});
   const dates=Object.keys(by).sort().reverse();
