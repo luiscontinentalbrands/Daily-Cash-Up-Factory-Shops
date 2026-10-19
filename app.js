@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-19b";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-19c";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -9,8 +9,8 @@ const METHODS=[
   {k:"eft",l:"EFT"},{k:"shop2shop",l:"Shop2Shop"},{k:"snapscan",l:"SnapScan"}
 ];
 const DEPTS={wholesale:"Wholesale",retail:"Retail",manager:"Manager"};
-// Retail: the cash line is coins, and there is no EFT line (EFT slips are credit card payments)
-const methodsFor=dept=>dept==="retail"?METHODS.filter(m=>m.k!=="eft"):METHODS;
+// Retail: the cash line is coins, there is no EFT line (EFT slips are credit card payments) and no Shop2Shop
+const methodsFor=dept=>dept==="retail"?METHODS.filter(m=>m.k!=="eft"&&m.k!=="shop2shop"):METHODS;
 const lbl=(m,dept)=>m.k==="cash"?(dept==="retail"?"Coins":dept==="wholesale"?"Cash":"Cash / Coins (Retail)"):m.l;
 const fmt=new Intl.NumberFormat("en-ZA",{minimumFractionDigits:2,maximumFractionDigits:2});
 const R=v=>"R "+fmt.format(v||0);
@@ -35,9 +35,10 @@ function normalize(raw,date,dept){const b=blank(date,dept);if(!raw)return b;cons
   delete r.signedAtServer;delete r.updatedAtServer;delete r.reopenedAt;
   const o=Object.assign(b,clone(r));METHODS.forEach(m=>{o.lines[m.k]=Object.assign(m.k==="cashguard"?{report:"",deposited:"",retained:""}:{report:"",deposited:""},(raw.lines||{})[m.k]||{});});
   if(dept!=="retail")o.lines.cashguard.retained=""; // the "retained, not banked" amount is a Retail-only line
+  if(dept==="retail"){o.lines.shop2shop={report:"",deposited:""};}
   if(dept==="retail"){const e=o.lines.eft,c=o.lines.card;["report","deposited"].forEach(f=>{if(e[f]!==""&&e[f]!=null){c[f]=(num(c[f])+num(e[f])).toFixed(2);e[f]="";}});}
   return o;}
-function totals(doc){let r=0,d=0;METHODS.forEach(m=>{r+=num(doc.lines[m.k].report);d+=dep(doc.lines[m.k]);});const ret=num(doc.lines.cashguard&&doc.lines.cashguard.retained);return {report:r,deposited:d,variance:d-r,retained:ret,banked:d-ret};}
+function totals(doc){let r=0,d=0;methodsFor(doc.dept).forEach(m=>{r+=num(doc.lines[m.k].report);d+=dep(doc.lines[m.k]);});const ret=num(doc.lines.cashguard&&doc.lines.cashguard.retained);return {report:r,deposited:d,variance:d-r,retained:ret,banked:d-ret};}
 
 /* Deadline: every trading day Mon–Sat, all three signatures by 19:00 */
 function dayInfo(date,W,Rt,M){const [y,m,d]=date.split("-").map(Number);const dt=new Date(y,m-1,d);
@@ -227,7 +228,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-19b";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-19c";
   const r=role();state.tab=r==="retail"?"retail":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -547,7 +548,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-19b"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-19c"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager");const info=dayInfo(state.date,W,Rt,M);
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
   const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,status:info.label,photos});
