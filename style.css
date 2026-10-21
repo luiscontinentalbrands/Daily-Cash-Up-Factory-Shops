@@ -167,3 +167,4 @@ header.bar.dept-citydeep{border-bottom-color:var(--cd)}
 td.muted{color:var(--muted)}
 .hrow.cd{grid-template-columns:150px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) 140px}
 @media (max-width:640px){.hrow.cd{grid-template-columns:1fr 1fr}}
+tr.nbdone td{color:var(--muted)} tr.nbdone td b{text-decoration:line-through;font-weight:500}
