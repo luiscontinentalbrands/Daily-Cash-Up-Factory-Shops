@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-21c";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-21d";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -75,7 +75,7 @@ if(configured){app=initializeApp(firebaseConfig);
   db=getFirestore(app);}
 
 const state={date:todayStr(),tab:"wholesale",docs:{wholesale:null,retail:null,manager:null,citydeep:null,cdmanager:null},history:[],pending:{},key:null,ready:false,users:[],me:null};
-const local={};let daySub=null,histSub=null,photoSub=null,timers={};
+const local={};let daySub=null,histSub=null,photoSub=null,hoSub=null,timers={};
 state.photos=[];
 
 /* ---------- device access code ----------
@@ -240,7 +240,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-21c";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-21d";
   const r=role();state.tab=r==="retail"?"retail":r==="citydeep"?"citydeep":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -253,7 +253,7 @@ document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("clic
 function setTab(t){if(t==="users"&&role()!=="admin")t="wholesale";state.tab=t;SHEETS.forEach(d=>document.querySelector("header.bar").classList.toggle("dept-"+d,t===d));
   document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===t)));render(true);}
 function setDate(d){flushAll();state.date=d;state.docs={wholesale:null,retail:null,manager:null,citydeep:null,cdmanager:null};Object.keys(DEPTS).forEach(k=>delete local[k]);subscribeDay();render(true);}
-function stopSubs(){if(photoSub){photoSub();photoSub=null;}if(daySub){daySub();daySub=null;}if(histSub){histSub();histSub=null;}}
+function stopSubs(){if(hoSub){hoSub();hoSub=null;}if(photoSub){photoSub();photoSub=null;}if(daySub){daySub();daySub=null;}if(histSub){histSub();histSub=null;}}
 
 function canReopen(dept){if(isMgr(dept))return canSignManager();const M=current(mgrOf(dept));if(["manager","admin"].includes(role()))return M.status!=="signed";return current(dept).signedBy===state.me.name&&M.status!=="signed";}
 function dayNow(){return dayInfo(state.date,current("wholesale"),current("retail"),current("manager"),current("citydeep"),current("cdmanager"));}
@@ -300,6 +300,10 @@ function setSaved(dept,t,err){const el=document.getElementById("saved-"+dept)||d
 function subscribeDay(){if(daySub){daySub();daySub=null;}
   const date=state.date;
   if(photoSub){photoSub();photoSub=null;}state.photos=[];
+  if(hoSub){hoSub();hoSub=null;}state.handovers=[];
+  hoSub=onSnapshot(query(handoversCol(),where("date","==",date)),snap=>{if(date!==state.date)return;
+    state.handovers=snap.docs.map(d=>Object.assign({id:d.id},d.data())).sort((a,b)=>String(a.atIso||"").localeCompare(String(b.atIso||"")));
+    const el=document.getElementById("ho-list");if(el)el.innerHTML=handoverList();},()=>{});
   photoSub=onSnapshot(query(photosCol(),where("date","==",date)),snap=>{if(date!==state.date)return;
     state.photos=snap.docs.map(d=>Object.assign({id:d.id},d.data())).sort((a,b)=>String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
     document.querySelectorAll("[data-photos]").forEach(el=>{el.innerHTML=photoStrip(el.dataset.photos);bindThumbs(el);});},()=>{});
@@ -329,7 +333,7 @@ function subscribeHistory(){if(histSub){histSub();histSub=null;}
 
 /* ---------- rendering ---------- */
 function render(force){if(!state.ready)return;updateDots();
-  const pd=document.getElementById("pad");if(!force&&pd&&pd.dataset.inked==="1"){state.deferred=true;return;}
+  const pd=document.getElementById("pad"),hp=document.getElementById("hpad");if(!force&&((pd&&pd.dataset.inked==="1")||(hp&&hp.dataset.inked==="1"))){state.deferred=true;return;}
   state.deferred=false;
   if(state.tab==="users"){renderUsers();return;}
   if(SHEETS.includes(state.tab))renderDept(state.tab);
@@ -399,9 +403,51 @@ function renderDept(dept){
   <section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">Sign-off</div><h2>${DEPTS[dept]} signature</h2></div></div>
     <div class="sheet-body">${signed?signedBlock(doc,dept):canSignDept(dept)?signBlock(doc,dept):`<div class="msg">Only the ${DEPTS[dept]} cashier can sign this sheet.</div>`}</div>
-  </section>`;
-  bindDept(dept);
+  </section>${dept==="retail"?handoverSection(doc,editable||canEditDept(dept)):""}`;
+  bindDept(dept);if(dept==="retail")bindHandover();
 }
+/* ---------- Cash handover: Aeroton Retail hands the cash not banked to Candido, who signs for it ---------- */
+const handoversCol=()=>collection(db,"shops",state.key,"handovers");
+const HO_TO="Candido";
+function handoverList(){const hs=(state.handovers||[]).filter(h=>h.shop==="retail");
+  if(!hs.length)return '<div class="msg">No cash handed over yet for this day.</div>';
+  return `<div class="hlist">${hs.map(h=>{const img=safeImg(h.signature);return `<div class="sigbox"><div class="eyebrow">${R(num(h.amount))} · received by ${esc(h.receivedBy)}</div><div class="sig-img">${img?`<img src="${img}" alt="Signature of ${esc(h.receivedBy)}">`:""}</div><div class="who">Given by ${esc(h.givenBy)} · ${esc(timeStr(h.at&&h.at.toDate?h.at.toDate().toISOString():h.atIso))}${h.note?" · "+esc(h.note):""}</div></div>`;}).join("")}</div>`;}
+function handoverSection(doc,can){const t=totals(doc);const due=Math.round((t.retained+t.petty)*100)/100;
+  return `<section class="sheet" id="ho-sec"><div class="sheet-head"><div><div class="eyebrow">Cash not banked · handover</div><h2>Cash handed to ${HO_TO}</h2></div><span class="chip">${R(due)} not banked today</span></div>
+    <div class="sheet-body">
+      <div class="msg">When Aeroton Retail hands over the cash that was not banked (CashGuard retained and petty cash), ${HO_TO} checks the amount and signs here to confirm he received it.</div>
+      <div id="ho-list">${handoverList()}</div>
+      ${can?`<div class="sign" style="margin-top:12px">
+        <div class="pad"><canvas id="hpad" width="900" height="300" aria-label="Signature pad for the person receiving the cash"></canvas><div class="base"></div><div class="hint">${HO_TO} signs above the line</div></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="field"><label for="ho-amt">Amount handed over (R)</label><input id="ho-amt" class="num" inputmode="decimal" autocomplete="off" value="${due?due.toFixed(2):""}" placeholder="0.00" style="text-align:right"></div>
+          <div class="field"><label for="ho-to">Received by</label><input id="ho-to" value="${HO_TO}" maxlength="60" autocomplete="off"></div>
+          <div class="field"><label for="ho-note">Note (optional)</label><input id="ho-note" maxlength="200" autocomplete="off" placeholder="e.g. envelope sealed, counted together"></div>
+          <div><div class="eyebrow">Handed over by</div><div class="signer-static">${esc(state.me.name)}</div></div>
+          <div class="actions"><button class="btn" id="ho-clear" type="button">Clear</button><button class="btn primary" id="ho-sign" type="button">Sign for the cash</button></div>
+          <div class="msg" id="ho-msg"></div>
+        </div></div>`:""}
+    </div></section>`;}
+function bindHandover(){const cv=$("#hpad");if(!cv)return;const ctx=cv.getContext("2d");let drawing=false,inked=false,last=null;
+  ctx.lineWidth=3.2;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#1f2a44";ctx.fillStyle="#1f2a44";
+  const pt=e=>{const r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*cv.width/r.width,y:(e.clientY-r.top)*cv.height/r.height};};
+  cv.addEventListener("pointerdown",e=>{cv.dataset.inked="1";drawing=true;last=pt(e);cv.setPointerCapture(e.pointerId);ctx.beginPath();ctx.arc(last.x,last.y,1.5,0,Math.PI*2);ctx.fill();inked=true;});
+  cv.addEventListener("pointermove",e=>{if(!drawing)return;const p=pt(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;});
+  const end=()=>{drawing=false;};cv.addEventListener("pointerup",end);cv.addEventListener("pointercancel",end);
+  const amt=$("#ho-amt");amt.addEventListener("input",()=>{if(/[^0-9.,]/.test(amt.value))amt.value=amt.value.replace(/[^0-9.,]/g,"");});
+  amt.addEventListener("blur",()=>{if(amt.value!=="")amt.value=num(money(amt.value)).toFixed(2);});
+  $("#ho-clear").addEventListener("click",()=>{ctx.clearRect(0,0,cv.width,cv.height);inked=false;delete cv.dataset.inked;$("#ho-msg").textContent="";if(state.deferred)render(true);});
+  $("#ho-sign").addEventListener("click",async()=>{const m=$("#ho-msg");m.className="msg err";
+    const a=Math.round(num(money(amt.value))*100)/100,to=$("#ho-to").value.trim(),note=$("#ho-note").value.trim();
+    if(!(a>0)){m.textContent="Enter the amount handed over.";return;}
+    if(to.length<3){m.textContent="Enter the name of the person receiving the cash.";return;}
+    if(to.toLowerCase()===state.me.name.trim().toLowerCase()){m.textContent="The person receiving the cash must be someone else.";return;}
+    if(!inked){m.textContent=to+" must sign in the box first.";return;}
+    const out=document.createElement("canvas");out.width=600;out.height=200;const o=out.getContext("2d");o.fillStyle="#fff";o.fillRect(0,0,600,200);o.drawImage(cv,0,0,600,200);
+    $("#ho-sign").disabled=true;m.className="msg";m.textContent="Saving…";
+    try{await setDoc(fdoc(handoversCol()),{date:state.date,shop:"retail",amount:a,givenBy:state.me.name,receivedBy:to,note,signature:out.toDataURL("image/png"),at:serverTimestamp(),atIso:new Date().toISOString()});
+      ctx.clearRect(0,0,cv.width,cv.height);inked=false;delete cv.dataset.inked;$("#ho-note").value="";m.textContent=`Saved: ${R(a)} handed to ${to}.`;$("#ho-sign").disabled=false;if(state.deferred)render(true);}
+    catch(e){console.error("Handover:",e);$("#ho-sign").disabled=false;m.className="msg err";m.textContent=e&&e.code==="permission-denied"?"Not saved: the Firebase rules need updating (publish the new rules).":"Not saved. Check the connection and try again.";}});}
 function signedBlock(doc,dept){const img=safeImg(doc.signature);return `<div class="sign">
   <div class="sig-img">${img?`<img src="${img}" alt="Signature of ${esc(doc.signedBy)}">`:""}</div>
   <div style="display:flex;flex-direction:column;gap:10px">
@@ -543,6 +589,7 @@ function renderCombined(){
       ${notes?`<div class="field"><label>Notes</label><div class="static" style="font-weight:400;white-space:pre-wrap">${notes}</div></div>`:""}
       <div class="field"><label>CashGuard</label><div class="static num" style="font-weight:400">${splitShops.map(([d,doc,t])=>`<b>${DEPTS[d]}:</b> deposited in Nedbank ${R(num(doc.lines.cashguard.deposited))} · counted &amp; retained, not banked <b>${R(t.retained)}</b>`).join("<br>")}</div></div>
       ${tr.petty||Rt.pettyNotes?`<div class="field"><label>Aeroton Retail petty cash (not banked)</label><div class="static num" style="font-weight:400"><b>${R(tr.petty)}</b>${Rt.pettyNotes?" · "+esc(Rt.pettyNotes):""}</div></div>`:""}
+      ${(state.handovers||[]).length?`<div class="field"><label>Cash handed over (signed for)</label><div class="static num" style="font-weight:400">${state.handovers.map(h=>`${R(num(h.amount))} from ${esc(h.givenBy)} to <b>${esc(h.receivedBy)}</b> · ${esc(timeStr(h.at&&h.at.toDate?h.at.toDate().toISOString():h.atIso))}`).join("<br>")}</div></div>`:""}
       <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">${each((d)=>R(num(d.damaged))+(d.damagedNotes?" ("+esc(d.damagedNotes)+")":""))} · <b>Total ${R(S.reduce((a,[,d])=>a+num(d.damaged),0))}</b></div></div>
       <div class="fields" style="grid-template-columns:repeat(${S.length},minmax(0,1fr))">
         ${S.map(([d])=>`<div class="field"><label>${DEPTS[d]} report photos</label><div data-photos="${d}">${photoStrip(d)}</div></div>`).join("")}
@@ -585,11 +632,11 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-21c"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-21d"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager"),C=current("citydeep"),CM=current("cdmanager");const info=dayNow();
   const showCD=cdOn(state.date)||statusOf(C)!=="new";
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
-  const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,C:showCD?C:null,CM:showCD?CM:null,status:info.label,photos});
+  const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,C:showCD?C:null,CM:showCD?CM:null,status:info.label,photos,handovers:(state.handovers||[]).map(h=>({amount:num(h.amount),givenBy:h.givenBy,receivedBy:h.receivedBy,at:h.at&&h.at.toDate?h.at.toDate().toISOString():h.atIso}))});
   return {blob:pdf.output("blob"),name:reportFileName(state.date),info};}
 async function pdfAction(kind){const msg=$("#csv-msg");const say=(t,err)=>{if(msg){msg.className="msg"+(err?" err":"");msg.textContent=t;}};
   say("Preparing the PDF…");let r;
@@ -821,6 +868,9 @@ function renderNotBanked(){
       <tfoot>${[["retail","cg","Aeroton Retail CashGuard"],["retail","petty","Aeroton Retail petty cash"],["citydeep","cg","City Deep Retail CashGuard"]].filter(([sh,k])=>all.some(r=>r.shop===sh&&r.kind===k)).map(([sh,k,l])=>`<tr><td colspan="4" style="font-weight:400">${l} still not banked</td><td class="num">${R(all.filter(r=>r.shop===sh&&r.kind===k&&!r.done).reduce((a,r)=>a+r.retained,0))}</td><td colspan="2"></td></tr>`).join("")}
       ${later?`<tr><td colspan="4" style="font-weight:400">Banked later (ticked)</td><td class="num" style="font-weight:400">${R(later)}</td><td colspan="2"></td></tr>`:""}
       <tr><td colspan="4">Still not banked · ${all.filter(r=>!r.done).length} of ${all.length} line${all.length>1?"s":""}</td><td class="num">${R(out)}</td><td colspan="2"></td></tr></tfoot></table></div>
+    ${(nb.hand||[]).length?`<h3 style="margin:18px 0 6px;font-size:1rem">Cash handed over and signed for</h3><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Amount</th><th>Given by</th><th>Received by</th><th>Signed</th></tr></thead>
+      <tbody>${nb.hand.map(h=>`<tr><td>${shortDate(h.date)}</td><td class="num">${R(num(h.amount))}</td><td>${esc(h.givenBy)}</td><td>${esc(h.receivedBy)}</td><td>${safeImg(h.signature)?`<img src="${safeImg(h.signature)}" alt="Signature" style="height:34px;background:#fff;border-radius:4px">`:""}</td></tr>`).join("")}</tbody>
+      <tfoot><tr><td>Total handed over</td><td class="num">${R(nb.hand.reduce((a,h)=>a+num(h.amount),0))}</td><td colspan="3"></td></tr></tfoot></table></div>`:""}
     <div class="actions" style="margin-top:12px"><button class="btn primary" id="nb-pdf" type="button">Download PDF</button><button class="btn" id="nb-csv" type="button">Download CSV</button><span class="msg" id="nb-msg">Tap a day to open its End of Day.</span></div>`;
   main.innerHTML=`<section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">CashGuard · Aeroton Retail and City Deep Retail</div><h2>Money not banked</h2></div>${nb.rows&&all.length?`<span class="chip ${out?"draft":"signed"}">Still not banked ${R(out)}</span>`:""}</div>
@@ -863,6 +913,9 @@ async function loadNotBanked(from,to){const nb=state.nb;nb.from=from;nb.to=to;nb
   try{const [snap,bsnap]=await Promise.all([getDocs(query(shopCol(),where("date",">=",from),where("date","<=",to))),
       getDocs(query(bankedCol(),where("date",">=",from),where("date","<=",to))).catch(e=>{console.error("Banked ticks:",e);return {docs:[]};})]);
     const bk={};bsnap.docs.forEach(d=>{bk[d.id]=d.data();});
+    try{const hs=await getDocs(query(handoversCol(),where("date",">=",from),where("date","<=",to)));
+      nb.hand=hs.docs.map(d=>d.data()).filter(h=>h&&h.date>=from&&h.date<=to).sort((a,b)=>a.date.localeCompare(b.date)||String(a.atIso||"").localeCompare(String(b.atIso||"")));}
+    catch(e){console.error("Handovers:",e);nb.hand=[];}
     // one line per shop per day for CashGuard retained, plus a line for Aeroton Retail petty cash
     const mk=(n,shop,key,kind,report,nedbank,retained)=>{const b=bk[n.date+"_"+key];const ticked=!!(b&&b.banked===true);const same=ticked&&Math.abs(num(b.amount)-retained)<0.005;
       return {date:n.date,shop,key,kind,report,nedbank,retained,signed:n.status==="signed",signedBy:n.signedBy||"",
@@ -890,6 +943,10 @@ async function notBankedPdf(){const nb=state.nb,rows=nb.rows||[];const m=$("#nb-
     y+=4;pdf.setDrawColor(0);pdf.setLineWidth(0.5);pdf.line(14,y,196,y);y+=6;
     if(later){pdf.setFont("helvetica","normal");pdf.text("Banked later (ticked)",C.date,y);pdf.text(P(R(later)),C.nb,y,{align:"right"});y+=6;}
     pdf.setFont("helvetica","bold");pdf.text("Still not banked",C.date,y);pdf.text(P(R(out)),C.nb,y,{align:"right"});
+    const hand=nb.hand||[];if(hand.length){y+=14;if(y>260){pdf.addPage();y=20;}pdf.setFontSize(11);pdf.text("Cash handed over and signed for",14,y);pdf.setFontSize(9.5);
+      hand.forEach(h=>{y+=9;if(y>275){pdf.addPage();y=20;}pdf.setFont("helvetica","normal");pdf.text(P(shortDate(h.date)),C.date,y);pdf.text(P(R(num(h.amount))),C.rep,y,{align:"right"});pdf.text(P(`${h.givenBy} to ${h.receivedBy}`).slice(0,40),C.rep+6,y);
+        if(safeImg(h.signature)){try{pdf.addImage(h.signature,"PNG",160,y-6,30,10,undefined,"FAST");}catch(e){}}});
+      y+=8;pdf.setFont("helvetica","bold");pdf.text("Total handed over",C.date,y);pdf.text(P(R(hand.reduce((a,h)=>a+num(h.amount),0))),C.rep,y,{align:"right"});}
     const a=document.createElement("a");a.href=URL.createObjectURL(pdf.output("blob"));a.download=`Not-banked-${nb.from}-to-${nb.to}.pdf`;document.body.appendChild(a);a.click();a.remove();
     if(m)m.textContent="PDF downloaded.";}
   catch(e){console.error(e);if(m){m.className="msg err";m.textContent="The PDF could not be made: "+(e&&e.message||e);}}}

@@ -136,6 +136,22 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Cash handovers: Aeroton Retail hands the cash not banked to the receiver, who signs for it. Can be added, never changed or deleted.
+    match /shops/{k}/handovers/{hid} {
+      function h() { return request.resource.data; }
+      allow read: if okKey(k);
+      allow create: if okKey(k)
+        && h().date is string && h().date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+        && h().shop in ['retail']
+        && (h().amount is number || h().amount is int) && h().amount > 0
+        && h().givenBy is string && h().givenBy.size() >= 3 && h().givenBy.size() <= 80
+        && h().receivedBy is string && h().receivedBy.trim().size() >= 3 && h().receivedBy.size() <= 60
+        && h().receivedBy.trim().lower() != h().givenBy.trim().lower()
+        && h().signature is string && h().signature.size() < 300000 && h().signature.matches('^data:image/png;base64,.*')
+        && h().at == request.time;
+      allow update, delete: if false;
+    }
+
     // People who use the app (managed by the administrator inside the app)
     match /shops/{k}/users/{uid} {
       function u() { return request.resource.data; }

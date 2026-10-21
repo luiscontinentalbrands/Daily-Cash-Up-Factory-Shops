@@ -102,6 +102,7 @@ export function buildReportPdf(jsPDF, d) {
   shops.filter(([, , s]) => splitShop(s)).forEach(([l, doc]) =>
     row(l + " CashGuard", `Deposited in Nedbank ${R(line(doc, "cashguard", "deposited"))}    Counted & retained, not banked ${R(line(doc, "cashguard", "retained"))}`));
   if (line(Rt, "petty", "deposited") || Rt?.pettyNotes) row("Aeroton Retail petty cash", `${R(line(Rt, "petty", "deposited"))} not banked${Rt?.pettyNotes ? "  -  " + Rt.pettyNotes : ""}`);
+  (d.handovers || []).forEach(h => row("Cash handed over", `${R(h.amount)} from ${h.givenBy || "-"} to ${h.receivedBy || "-"} (signed)${h.at ? "  -  " + when(h.at) : ""}`));
   row("Damaged notes & coins", shops.map(([l, doc]) => `${l} ${R(num(doc?.damaged))}${doc?.damagedNotes ? " (" + doc.damagedNotes + ")" : ""}`).join("    ") + `    Total ${R(shops.reduce((a, [, doc]) => a + num(doc?.damaged), 0))}`);
   shops.forEach(([l, doc]) => { if (doc?.notes) row(l + " notes", doc.notes); });
 
