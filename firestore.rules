@@ -8,7 +8,7 @@ rules_version = '2';
 //   - Nothing can be read or written without the secret access code.
 //   - Signed sheets are locked. Reopening removes the signature and is recorded.
 //   - Once the manager closes the day, a sheet can only be reopened by first reopening the day.
-//   - City Deep is a separate shop: its sheet is closed by its own manager sign-off (cdmanager).
+//   - One manager signs off the whole day. From 2026-10-20 that includes City Deep Retail.
 //   - The manager's name must differ from the names of the cashiers who signed.
 //   - Signature times come from Google's server clock, not the phone.
 //   - The audit trail can only be added to, never changed or deleted.
@@ -24,7 +24,13 @@ service cloud.firestore {
       function dept() { return d().dept; }
       function isDeptDoc() { return dept() in ['wholesale', 'retail', 'citydeep']; }
       // which sign-off closes a sheet: City Deep has its own manager
-      function mgrDept() { return dept() == 'citydeep' ? 'cdmanager' : 'manager'; }
+      function mgrDept() { return 'manager'; }
+      // City Deep Retail must be signed before the manager signs, from the day it started
+      function cityDeepOk() {
+        return d().date < '2026-10-20'
+          || (exists(otherPath('citydeep')) && otherDoc('citydeep').status == 'signed'
+              && d().signedBy.trim().lower() != otherDoc('citydeep').signedBy.trim().lower());
+      }
       function wasSigned() { return resource != null && resource.data.status == 'signed'; }
       function nowSigned() { return d().status == 'signed'; }
       function otherPath(dp) { return /databases/$(database)/documents/shops/$(k)/cashups/$(d().date + '_' + dp); }
@@ -58,12 +64,13 @@ service cloud.firestore {
           || (wasSigned() && !nowSigned() && reopening() && !managerSigned())
         ))
         || (dept() == 'manager' && (
-          // manager signs off the day: both sheets signed, by someone else
+          // manager signs off the day: every shop signed, by someone else
           (!wasSigned() && nowSigned() && signingOk()
             && otherDoc('wholesale').status == 'signed'
             && otherDoc('retail').status == 'signed'
             && d().signedBy.trim().lower() != otherDoc('wholesale').signedBy.trim().lower()
-            && d().signedBy.trim().lower() != otherDoc('retail').signedBy.trim().lower())
+            && d().signedBy.trim().lower() != otherDoc('retail').signedBy.trim().lower()
+            && cityDeepOk())
           // manager reopens the day
           || (wasSigned() && !nowSigned() && reopening())
           || (!wasSigned() && !nowSigned())

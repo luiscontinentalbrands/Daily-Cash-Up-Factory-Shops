@@ -80,9 +80,8 @@ const signed = MODE === "seven" ? signedByDeadline : signedNow;
 const missing = [];
 if (!signed(W)) missing.push("Wholesale");
 if (!signed(Rt)) missing.push("Aeroton Retail");
-if (!signed(Mg)) missing.push("Aeroton manager");
+if (!signed(Mg)) missing.push("Manager");
 if (withCD && !signed(Cd)) missing.push("City Deep Retail");
-if (withCD && !signed(Cm)) missing.push("City Deep manager");
 const complete = missing.length === 0;
 const nothing = !W && !Rt && !Mg && !Cd && !Cm;
 
@@ -134,17 +133,17 @@ function reportHtml(title, note) {
   <p style="margin:4px 0"><b>Damaged bank notes &amp; coins:</b> ${each(d => R(num(d?.damaged)) + (d?.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(shops.reduce((a, [, d]) => a + num(d?.damaged), 0))}</b></p>
   <p style="margin:4px 0"><b>Cashed up by:</b> ${each(d => esc(d?.cashier || "—"))}</p>
   ${shops.map(([l, d]) => d?.notes ? `<p style="margin:4px 0"><b>${l} notes:</b> ${esc(d.notes)}</p>` : "").join("")}
-  <table style="margin-top:10px;font-size:14px"><tbody>${sigRow("Wholesale signature", W)}${sigRow("Aeroton Retail signature", Rt)}${sigRow(withCD ? "Aeroton manager signature" : "Manager signature", Mg)}${withCD ? sigRow("City Deep Retail signature", Cd) + sigRow("City Deep manager signature", Cm) : ""}</tbody></table>
+  <table style="margin-top:10px;font-size:14px"><tbody>${sigRow("Wholesale signature", W)}${sigRow("Aeroton Retail signature", Rt)}${withCD ? sigRow("City Deep Retail signature", Cd) : ""}${sigRow("Manager signature", Mg)}</tbody></table>
   <p style="color:#7a7268;font-size:12px;margin-top:18px">Variance = deposited − report. Negative (red) means short; positive (amber) means over. Signature times are taken from the server clock (SAST).</p>
   </div>`;
 }
 function alertHtml(lead) {
-  const done = [["Wholesale", W], ["Aeroton Retail", Rt], ["Aeroton manager", Mg], ...(withCD ? [["City Deep Retail", Cd], ["City Deep manager", Cm]] : [])].filter(([, d]) => signed(d)).map(([l, d]) => `<li>${l}: ${esc(d.signedBy)} · ${when(d)}</li>`).join("");
+  const done = [["Wholesale", W], ["Aeroton Retail", Rt], ...(withCD ? [["City Deep Retail", Cd]] : []), ["Manager", Mg]].filter(([, d]) => signed(d)).map(([l, d]) => `<li>${l}: ${esc(d.signedBy)} · ${when(d)}</li>`).join("");
   return `<div style="font-family:Arial,Helvetica,sans-serif;color:#1f1c18">
   <p>${lead}</p>
   <p><b>Missing signature${missing.length > 1 ? "s" : ""}:</b> ${missing.join(", ")}</p>
   ${done ? `<p><b>Already signed:</b></p><ul>${done}</ul>` : "<p>Nothing has been signed yet.</p>"}
-  <p style="color:#7a7268">The cash up must be completed and signed by Wholesale, Aeroton Retail and the Aeroton manager${withCD ? ", and by City Deep Retail and its manager," : ""} by 7 pm every trading day (Monday to Saturday).</p></div>`;
+  <p style="color:#7a7268">The cash up must be completed and signed by Wholesale, Aeroton Retail${withCD ? ", City Deep Retail" : ""} and the Manager by 7 pm every trading day (Monday to Saturday).</p></div>`;
 }
 // ---------- PDF attachment (same layout as the app's "Download PDF") ----------
 async function reportPdf(status) {
@@ -155,7 +154,7 @@ async function reportPdf(status) {
     photos = ps.docs.map(x => x.data()).filter(p => p.removed !== true)
       .sort((a, b) => String(a.dept).localeCompare(String(b.dept)) || String(a.takenAt || "").localeCompare(String(b.takenAt || "")));
   } catch (e) { console.error("Photos could not be read:", e.message); }
-  const pdf = buildReportPdf(jsPDF, { date: DATE, niceDate, W: iso(W), Rt: iso(Rt), M: iso(Mg), C: withCD ? (iso(Cd) || { status: "new" }) : null, CM: withCD ? (iso(Cm) || { status: "new" }) : null, status, photos });
+  const pdf = buildReportPdf(jsPDF, { date: DATE, niceDate, W: iso(W), Rt: iso(Rt), M: iso(Mg), C: withCD ? (iso(Cd) || { status: "new" }) : null, status, photos });
   return { filename: reportFileName(DATE), content: Buffer.from(pdf.output("arraybuffer")), contentType: "application/pdf" };
 }
 async function send(to, subject, html, pdfStatus) {
@@ -182,7 +181,7 @@ if (MODE === "seven") {
 } else if (MODE === "nine") {
   if (log.martieFinalSent) { console.log("Complete report already sent at 7 pm. Nothing to do."); process.exit(0); }
   if (complete) {
-    const last = Math.max(...[W, Rt, Mg, Cd, Cm].map(d => signedTime(d)?.getTime() || 0));
+    const last = Math.max(...[W, Rt, Mg, Cd].map(d => signedTime(d)?.getTime() || 0));
     const lastStr = new Date(last).toLocaleString("en-ZA", { timeZone: TZ, hour: "2-digit", minute: "2-digit" });
     const late = last > DEADLINE.getTime();
     const note = log.sentAt

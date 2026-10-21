@@ -105,8 +105,9 @@ export function buildReportPdf(jsPDF, d) {
 
   // signatures
   y += 3; if (y > PH - 48) { pdf.addPage(); y = 18; }
-  const boxes = [["Wholesale", W], ["Aeroton Retail", Rt], [C ? "Aeroton manager" : "Manager", M]];
-  if (C) boxes.push(["City Deep Retail", C], ["City Deep manager", CM]);
+  const boxes = [["Wholesale", W], ["Aeroton Retail", Rt]];
+  if (C) boxes.push(["City Deep Retail", C]);
+  boxes.push(["Manager", M]);
   const bw = (PW - 2 * X - 6 * (boxes.length - 1)) / boxes.length;
   boxes.forEach(([l, doc], i) => {
     const bx = X + i * (bw + 6);
