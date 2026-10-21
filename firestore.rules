@@ -127,7 +127,7 @@ service cloud.firestore {
       allow read: if okKey(k);
       allow create, update: if okKey(k)
         && b().date is string && b().date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
-        && b().shop in ['retail', 'citydeep']
+        && b().shop in ['retail', 'citydeep', 'retailpetty']
         && bid == b().date + '_' + b().shop
         && b().banked is bool
         && (b().amount is number || b().amount is int)

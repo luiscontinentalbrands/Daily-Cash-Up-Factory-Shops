@@ -17,6 +17,7 @@ const REPORT_TO = process.env.REPORT_TO || "martie@tastytreats.co.za";
 const METHODS = [
   ["cash", "Cash / Coins (Retail shops)"], ["cashguard", "CashGuard"], ["card", "Credit card"],
   ["eft", "EFT"], ["shop2shop", "Shop2Shop"], ["snapscan", "SnapScan"],
+  ["petty", "Petty cash (not banked)"],
 ];
 
 function need(name) {
@@ -93,7 +94,7 @@ const log = logSnap.exists ? logSnap.data() : {};
 function line(doc, k, f) { return num(doc?.lines?.[k]?.[f]); }
 // Lines per shop: Retail has no EFT or Shop2Shop; Retail and City Deep split CashGuard (Nedbank + counted & retained, not banked)
 const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: ["cash", "cashguard", "card", "snapscan"] };
-const hasLine = (shop, k) => !SHOP_LINES[shop] || SHOP_LINES[shop].includes(k);
+const hasLine = (shop, k) => k === "petty" ? shop === "retail" : (!SHOP_LINES[shop] || SHOP_LINES[shop].includes(k));
 const splitShop = shop => shop === "retail" || shop === "citydeep";
 function reportHtml(title, note) {
   const shops = [["Wholesale", W, "wholesale"], ["Aeroton Retail", Rt, "retail"]];
@@ -130,6 +131,7 @@ function reportHtml(title, note) {
   </table>
   ${withCD ? `<p style="margin:14px 0 4px"><b>Variance by shop:</b> Aeroton ${RV((tot[0][1] + tot[1][1]) - (tot[0][0] + tot[1][0]))} · City Deep Retail ${RV(tot[2][1] - tot[2][0])} · <b>All shops ${RV(gv)}</b></p>` : ""}
   ${shops.filter(([, , sh]) => splitShop(sh)).map(([l, doc]) => `<p style="margin:4px 0"><b>${l} CashGuard:</b> deposited in Nedbank ${R(line(doc, "cashguard", "deposited"))} · counted &amp; retained, not banked <b>${R(line(doc, "cashguard", "retained"))}</b></p>`).join("")}
+  ${line(Rt, "petty", "deposited") || Rt?.pettyNotes ? `<p style="margin:4px 0"><b>Aeroton Retail petty cash (not banked):</b> ${R(line(Rt, "petty", "deposited"))}${Rt?.pettyNotes ? " · " + esc(Rt.pettyNotes) : ""}</p>` : ""}
   <p style="margin:4px 0"><b>Damaged bank notes &amp; coins:</b> ${each(d => R(num(d?.damaged)) + (d?.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(shops.reduce((a, [, d]) => a + num(d?.damaged), 0))}</b></p>
   <p style="margin:4px 0"><b>Cashed up by:</b> ${each(d => esc(d?.cashier || "—"))}</p>
   ${shops.map(([l, d]) => d?.notes ? `<p style="margin:4px 0"><b>${l} notes:</b> ${esc(d.notes)}</p>` : "").join("")}

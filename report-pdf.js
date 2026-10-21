@@ -7,6 +7,7 @@
 const METHODS = [
   ["cash", "Cash / Coins (Retail shops)"], ["cashguard", "CashGuard"], ["card", "Credit card"],
   ["eft", "EFT"], ["shop2shop", "Shop2Shop"], ["snapscan", "SnapScan"],
+  ["petty", "Petty cash (not banked)"],
 ];
 const num = s => { if (s === "" || s == null) return 0; const n = parseFloat(String(s).replace(/[^0-9.\-]/g, "")); return isFinite(n) ? n : 0; };
 const fmt = new Intl.NumberFormat("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -22,7 +23,7 @@ const isJpg = s => /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(String(s || 
 
 // Which lines each shop uses: Retail has no EFT or Shop2Shop; Retail and City Deep split CashGuard (Nedbank + not banked)
 const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: ["cash", "cashguard", "card", "snapscan"] };
-const hasLine = (shop, k) => !SHOP_LINES[shop] || SHOP_LINES[shop].includes(k);
+const hasLine = (shop, k) => k === "petty" ? shop === "retail" : (!SHOP_LINES[shop] || SHOP_LINES[shop].includes(k));
 const splitShop = shop => shop === "retail" || shop === "citydeep";
 const depOf = (doc, shop, k) => line(doc, k, "deposited") + (splitShop(shop) ? line(doc, k, "retained") : 0);
 
@@ -100,6 +101,7 @@ export function buildReportPdf(jsPDF, d) {
   row("Cashed up by", shops.map(([l, doc]) => `${l}: ${doc?.cashier || "-"}`).join("    "));
   shops.filter(([, , s]) => splitShop(s)).forEach(([l, doc]) =>
     row(l + " CashGuard", `Deposited in Nedbank ${R(line(doc, "cashguard", "deposited"))}    Counted & retained, not banked ${R(line(doc, "cashguard", "retained"))}`));
+  if (line(Rt, "petty", "deposited") || Rt?.pettyNotes) row("Aeroton Retail petty cash", `${R(line(Rt, "petty", "deposited"))} not banked${Rt?.pettyNotes ? "  -  " + Rt.pettyNotes : ""}`);
   row("Damaged notes & coins", shops.map(([l, doc]) => `${l} ${R(num(doc?.damaged))}${doc?.damagedNotes ? " (" + doc.damagedNotes + ")" : ""}`).join("    ") + `    Total ${R(shops.reduce((a, [, doc]) => a + num(doc?.damaged), 0))}`);
   shops.forEach(([l, doc]) => { if (doc?.notes) row(l + " notes", doc.notes); });
 
