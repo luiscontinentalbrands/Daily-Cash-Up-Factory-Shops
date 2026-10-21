@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-21d";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-21e";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -240,7 +240,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-21d";
+  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-21e";
   const r=role();state.tab=r==="retail"?"retail":r==="citydeep"?"citydeep":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -255,7 +255,7 @@ function setTab(t){if(t==="users"&&role()!=="admin")t="wholesale";state.tab=t;SH
 function setDate(d){flushAll();state.date=d;state.docs={wholesale:null,retail:null,manager:null,citydeep:null,cdmanager:null};Object.keys(DEPTS).forEach(k=>delete local[k]);subscribeDay();render(true);}
 function stopSubs(){if(hoSub){hoSub();hoSub=null;}if(photoSub){photoSub();photoSub=null;}if(daySub){daySub();daySub=null;}if(histSub){histSub();histSub=null;}}
 
-function canReopen(dept){if(isMgr(dept))return canSignManager();const M=current(mgrOf(dept));if(["manager","admin"].includes(role()))return M.status!=="signed";return current(dept).signedBy===state.me.name&&M.status!=="signed";}
+function canReopen(dept){if(isMgr(dept))return canSignManager();const M=current(mgrOf(dept));if(["manager","admin"].includes(role()))return true;return current(dept).signedBy===state.me.name&&M.status!=="signed";}
 function dayNow(){return dayInfo(state.date,current("wholesale"),current("retail"),current("manager"),current("citydeep"),current("cdmanager"));}
 function current(dept){if(!local[dept])local[dept]=normalize(state.docs[dept],state.date,dept);return local[dept];}
 function statusOf(doc){if(!doc)return "new";return doc.status==="signed"?"signed":(doc.status==="draft"?"draft":"new");}
@@ -362,7 +362,8 @@ function renderDept(dept){
       <td class="inp"><input id="${dept}-${m.k}-deposited" data-m="${m.k}" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="${lbl(m,dept)} deposited"></td>
       <td class="num ${vcls(v)}" id="v-${m.k}">${RV(v)}</td></tr>`;}).join("");
   const di=dayNow();
-  main.innerHTML=`${!canEditDept(dept)?`<div class="notice">You are signed in as ${esc(ROLE_LABEL[role()])}, so the ${DEPTS[dept]} sheet is view-only for you.</div>`:""}${banner(di)}
+  const lockNote=signed&&canEditDept(dept)?`<div class="notice" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>This sheet is <b>signed and locked</b>, so the figures can't be changed. ${canReopen(dept)?"To correct it, reopen it first: the signature is removed and it must be signed again.":"Ask the manager or administrator to reopen it."}</span>${canReopen(dept)?'<button class="btn" type="button" id="goreopen">Reopen to correct</button>':""}</div>`:"";
+  main.innerHTML=`${lockNote}${!canEditDept(dept)?`<div class="notice">You are signed in as ${esc(ROLE_LABEL[role()])}, so the ${DEPTS[dept]} sheet is view-only for you.</div>`:""}${banner(di)}
   <div class="deptband ${dept}" role="heading" aria-level="2"><div><div class="big">${DEPTS[dept]} cash up</div><div class="small">${longDate(state.date)}</div></div><div class="small">You are filling in the <b>${DEPTS[dept]}</b> sheet</div></div>
   <section class="sheet ${dept}">
     <div class="sheet-head"><div><div class="eyebrow">${DEPTS[dept]} department</div><h2>${longDate(state.date)}</h2></div>${chip(statusOf(doc))}</div>
@@ -405,6 +406,7 @@ function renderDept(dept){
     <div class="sheet-body">${signed?signedBlock(doc,dept):canSignDept(dept)?signBlock(doc,dept):`<div class="msg">Only the ${DEPTS[dept]} cashier can sign this sheet.</div>`}</div>
   </section>${dept==="retail"?handoverSection(doc,editable||canEditDept(dept)):""}`;
   bindDept(dept);if(dept==="retail")bindHandover();
+  const gr=$("#goreopen");if(gr)gr.addEventListener("click",()=>{const b=$("#reopen");if(b){b.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>b.click(),350);}});
 }
 /* ---------- Cash handover: Aeroton Retail hands the cash not banked to Candido, who signs for it ---------- */
 const handoversCol=()=>collection(db,"shops",state.key,"handovers");
@@ -591,9 +593,6 @@ function renderCombined(){
       ${tr.petty||Rt.pettyNotes?`<div class="field"><label>Aeroton Retail petty cash (not banked)</label><div class="static num" style="font-weight:400"><b>${R(tr.petty)}</b>${Rt.pettyNotes?" · "+esc(Rt.pettyNotes):""}</div></div>`:""}
       ${(state.handovers||[]).length?`<div class="field"><label>Cash handed over (signed for)</label><div class="static num" style="font-weight:400">${state.handovers.map(h=>`${R(num(h.amount))} from ${esc(h.givenBy)} to <b>${esc(h.receivedBy)}</b> · ${esc(timeStr(h.at&&h.at.toDate?h.at.toDate().toISOString():h.atIso))}`).join("<br>")}</div></div>`:""}
       <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">${each((d)=>R(num(d.damaged))+(d.damagedNotes?" ("+esc(d.damagedNotes)+")":""))} · <b>Total ${R(S.reduce((a,[,d])=>a+num(d.damaged),0))}</b></div></div>
-      <div class="fields" style="grid-template-columns:repeat(${S.length},minmax(0,1fr))">
-        ${S.map(([d])=>`<div class="field"><label>${DEPTS[d]} report photos</label><div data-photos="${d}">${photoStrip(d)}</div></div>`).join("")}
-      </div>
       <div class="sigs">${sig(W,"wholesale")}${sig(Rt,"retail")}${showCD?sig(C,"citydeep"):""}${sig(M,"manager")}</div>
       <div class="actions"><button class="btn primary" id="pdf-mail" type="button">Email PDF report</button><button class="btn" id="pdf-dl" type="button">Download PDF</button><button class="btn" id="csv">Download day as CSV</button><span class="msg" id="csv-msg"></span></div>
     </div>
@@ -632,11 +631,11 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-21d"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-21e"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager"),C=current("citydeep"),CM=current("cdmanager");const info=dayNow();
   const showCD=cdOn(state.date)||statusOf(C)!=="new";
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
-  const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,C:showCD?C:null,CM:showCD?CM:null,status:info.label,photos,handovers:(state.handovers||[]).map(h=>({amount:num(h.amount),givenBy:h.givenBy,receivedBy:h.receivedBy,at:h.at&&h.at.toDate?h.at.toDate().toISOString():h.atIso}))});
+  const pdf=buildReportPdf(jsPDF,{date:state.date,niceDate:longDate(state.date),W,Rt,M,C:showCD?C:null,CM:showCD?CM:null,status:info.label,photos:[],handovers:(state.handovers||[]).map(h=>({amount:num(h.amount),givenBy:h.givenBy,receivedBy:h.receivedBy,at:h.at&&h.at.toDate?h.at.toDate().toISOString():h.atIso}))});
   return {blob:pdf.output("blob"),name:reportFileName(state.date),info};}
 async function pdfAction(kind){const msg=$("#csv-msg");const say=(t,err)=>{if(msg){msg.className="msg"+(err?" err":"");msg.textContent=t;}};
   say("Preparing the PDF…");let r;
@@ -793,7 +792,7 @@ Use null when a tender is not on the report. Give amounts as plain JSON numbers 
   const low={};Object.keys(out||{}).forEach(k=>low[k.toLowerCase().replace(/[^a-z0-9]/g,"")]=out[k]);
   const alias={cash:["cash"],cashguard:["cashguard"],card:["card","creditcard","cards"],eft:["eft"],shop2shop:["shop2shop","shoptoshop"],snapscan:["snapscan"]};
   out.total=toNum(low.total);
-  const vals={};METHODS.forEach(m=>{let v=null;for(const k of alias[m.k]){if(low[k]!=null){v=toNum(low[k]);break;}}vals[m.k]=v;});
+  const vals={};METHODS.forEach(m=>{let v=null;for(const k of (alias[m.k]||[])){if(low[k]!=null){v=toNum(low[k]);break;}}vals[m.k]=v;});
   // Retail: slips marked EFT are credit card payments, so they are added to Credit card
   if(isRetail(dept)&&vals.eft!=null){vals.card=(vals.card||0)+vals.eft;vals.eft=null;}
   const filledKeys=[];
