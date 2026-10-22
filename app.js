@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-21e";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-22a";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -91,7 +91,7 @@ const shopCol=()=>collection(db,"shops",state.key,"cashups");
 const shopDoc=id=>fdoc(db,"shops",state.key,"cashups",id);
 const usersCol=()=>collection(db,"shops",state.key,"users");
 const photosCol=()=>collection(db,"shops",state.key,"photos");
-const ROLE_LABEL={wholesale:"Wholesale cashier",retail:"Aeroton Retail cashier",citydeep:"City Deep Retail cashier",manager:"Manager",admin:"Administrator"};
+const ROLE_LABEL={wholesale:"Wholesale cashier",retail:"Aeroton Retail manager",citydeep:"City Deep Retail manager",manager:"Manager",admin:"Administrator"};
 async function pinHash(salt,pin){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(salt+":"+pin));
   return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");}
 function newSalt(){const a=new Uint8Array(16);crypto.getRandomValues(a);return Array.from(a).map(x=>x.toString(16).padStart(2,"0")).join("");}
@@ -240,7 +240,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all cashiers · App version 2026-10-21e";
+  $("#foot").textContent="Live sync active · shared by all users · App version 2026-10-22a";
   const r=role();state.tab=r==="retail"?"retail":r==="citydeep"?"citydeep":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -403,7 +403,7 @@ function renderDept(dept){
   </section>
   <section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">Sign-off</div><h2>${DEPTS[dept]} signature</h2></div></div>
-    <div class="sheet-body">${signed?signedBlock(doc,dept):canSignDept(dept)?signBlock(doc,dept):`<div class="msg">Only the ${DEPTS[dept]} cashier can sign this sheet.</div>`}</div>
+    <div class="sheet-body">${signed?signedBlock(doc,dept):canSignDept(dept)?signBlock(doc,dept):`<div class="msg">Only the ${DEPTS[dept]} ${dept==="wholesale"?"cashier":"manager"} can sign this sheet.</div>`}</div>
   </section>${dept==="retail"?handoverSection(doc,editable||canEditDept(dept)):""}`;
   bindDept(dept);if(dept==="retail")bindHandover();
   const gr=$("#goreopen");if(gr)gr.addEventListener("click",()=>{const b=$("#reopen");if(b){b.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>b.click(),350);}});
@@ -528,7 +528,7 @@ function bindPad(cv,dept){const ctx=cv.getContext("2d");let drawing=false,inked=
     if(isMgr(dept)){const sh=sheetsOf(dept).map(current);
       if(!sh.every(x=>x.status==="signed")){msg.textContent=cdOn(state.date)?"Wholesale, Aeroton Retail and City Deep Retail must all sign first.":"Wholesale and Aeroton Retail must both sign first.";return;}
       const nm=state.me.name.trim().toLowerCase();
-      if(nm&&sh.some(x=>nm===String(x.signedBy).trim().toLowerCase())){msg.textContent="The manager sign-off must be done by a different person from the cashier who signed.";return;}}
+      if(nm&&sh.some(x=>nm===String(x.signedBy).trim().toLowerCase())){msg.textContent="The manager sign-off must be done by a different person from the people who signed the shop sheets.";return;}}
     else{const t=totals(doc);if(t.report===0&&t.deposited===0){msg.textContent="Enter the report and deposited amounts before signing.";return;}}
     const who=state.me.name;
     if(!inked){msg.textContent="Draw the signature in the box first.";return;}
@@ -631,7 +631,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-21e"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-22a"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager"),C=current("citydeep"),CM=current("cdmanager");const info=dayNow();
   const showCD=cdOn(state.date)||statusOf(C)!=="new";
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
@@ -817,7 +817,7 @@ function renderUsers(){
       <form id="uform" class="fields" style="grid-template-columns:minmax(0,2fr) minmax(0,1.3fr) minmax(0,1fr) auto;align-items:end" novalidate>
         <div class="field"><label for="un">Full name</label><input id="un" maxlength="60" autocomplete="off"></div>
         <div class="field"><label for="ur">Role</label><select id="ur" style="font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)">
-          <option value="wholesale">Wholesale cashier</option><option value="retail">Aeroton Retail cashier</option><option value="citydeep">City Deep Retail cashier</option><option value="manager">Manager</option><option value="admin">Administrator</option></select></div>
+          <option value="wholesale">Wholesale cashier</option><option value="retail">Aeroton Retail manager</option><option value="citydeep">City Deep Retail manager</option><option value="manager">Manager</option><option value="admin">Administrator</option></select></div>
         <div class="field"><label for="up">4-digit PIN</label><input id="up" inputmode="numeric" maxlength="4" autocomplete="off"></div>
         <button class="btn primary" type="submit" id="ubtn">Add user</button>
       </form>
