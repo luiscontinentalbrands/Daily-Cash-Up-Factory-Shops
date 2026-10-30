@@ -1741,19 +1741,27 @@ function canRemovePhoto(dept) {
 }
 /* ---------- PDF report ---------- */
 const REPORT_TO = "martie@tastytreats.co.za";
+// Load a library with a <script> tag; resolves with what pick() then finds on the page
+function loadScript(src, name, pick) {
+  return new Promise((res, rej) => {
+    const sc = document.createElement("script");
+    sc.src = src;
+    sc.onload = () => {
+      const lib = pick();
+      lib ? res(lib) : rej(new Error(name + " did not load"));
+    };
+    sc.onerror = () => rej(new Error(name + " could not be downloaded"));
+    document.head.appendChild(sc);
+  });
+}
 let jsPDFlib = null;
 function loadJsPDF() {
   if (jsPDFlib) return Promise.resolve(jsPDFlib);
-  return new Promise((res, rej) => {
-    const sc = document.createElement("script");
-    sc.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
-    sc.onload = () => {
-      jsPDFlib = window.jspdf && window.jspdf.jsPDF;
-      jsPDFlib ? res(jsPDFlib) : rej(new Error("PDF tool did not load"));
-    };
-    sc.onerror = () => rej(new Error("PDF tool could not be downloaded"));
-    document.head.appendChild(sc);
-  });
+  return loadScript(
+    "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
+    "PDF tool",
+    () => (jsPDFlib = window.jspdf && window.jspdf.jsPDF),
+  );
 }
 async function makePdf() {
   const [{ buildReportPdf, reportFileName }, jsPDF] = await Promise.all([
@@ -2043,18 +2051,11 @@ async function readWithAI(parts) {
 let pdfjsLib = null;
 function loadPdfJs() {
   if (pdfjsLib) return Promise.resolve(pdfjsLib);
-  return new Promise((res, rej) => {
-    const sc = document.createElement("script");
-    sc.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
-    sc.onload = () => {
-      pdfjsLib = window.pdfjsLib;
-      if (!pdfjsLib) return rej(new Error("PDF reader did not load"));
-      pdfjsLib.GlobalWorkerOptions.workerSrc =
-        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-      res(pdfjsLib);
-    };
-    sc.onerror = () => rej(new Error("PDF reader could not be downloaded"));
-    document.head.appendChild(sc);
+  return loadScript("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js", "PDF reader", () => {
+    pdfjsLib = window.pdfjsLib;
+    if (pdfjsLib)
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    return pdfjsLib;
   });
 }
 // Turn each PDF page into a JPEG picture (max 6 pages) so it is kept and read exactly like a photo.
