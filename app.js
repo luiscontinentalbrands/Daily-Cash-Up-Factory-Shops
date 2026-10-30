@@ -40,6 +40,20 @@ const DEPTS = {
 };
 // City Deep is a separate shop with its own cash up; it is required from this date
 const CD_START = "2026-10-20";
+// Version for cache-busting. Bump it together with the ?v= in index.html (twice) and in the first import above.
+const APP_VERSION = "2026-10-30c";
+// Timings and limits (the on-screen texts that mention them, e.g. "7 pm" or "15 minutes", are written out separately)
+const DEADLINE_HOUR = 19; // every sheet and the manager must be signed by 7 pm
+const SAVE_DELAY_MS = 700; // save this long after the last change
+const IDLE_LOCK_MS = 15 * 60000; // lock the app after this long without use
+const PIN_MAX_TRIES = 5; // wrong PINs allowed on this device…
+const PIN_WINDOW_MS = 5 * 60000; // …within this window
+const ALERT_MS = 20000; // how long the "NOT saved" alert stays up
+const ARMED_MS = 4000; // a "Tap again" button disarms after this long
+const REFRESH_MS = 60000; // re-render this often to keep the deadline countdown current
+const HISTORY_LIMIT = 240; // sheets loaded for the History tab
+const PDF_MAX_PAGES = 6; // pages kept from an attached PDF
+const PHOTO_MAX_CHARS = 850000; // a stored photo is shrunk until it fits; firestore.rules refuses 900000 and more
 const cdOn = date => String(date || "") >= CD_START;
 const SHEETS = ["wholesale", "retail", "citydeep"];
 const isMgr = d => d === "manager";
@@ -194,7 +208,7 @@ function dayInfo(date, W, Rt, M, C) {
   const [y, m, d] = date.split("-").map(Number);
   const dt = new Date(y, m - 1, d);
   if (dt.getDay() === 0) return { kind: "sunday", label: "Sunday · not a trading day", cls: "", missing: [] };
-  const dl = new Date(y, m - 1, d, 19, 0, 0);
+  const dl = new Date(y, m - 1, d, DEADLINE_HOUR, 0, 0);
   const missing = [];
   const all = [W, Rt, M];
   if (!(W && W.status === "signed")) missing.push("Wholesale");
@@ -455,8 +469,8 @@ function askPin(u) {
     e.preventDefault();
     const m = $("#pinmsg");
     const now = Date.now();
-    state.tries = (state.tries || []).filter(t => now - t < 5 * 60000);
-    if (state.tries.length >= 5) {
+    state.tries = (state.tries || []).filter(t => now - t < PIN_WINDOW_MS);
+    if (state.tries.length >= PIN_MAX_TRIES) {
       m.className = "msg err";
       m.textContent = "Too many wrong PINs. Wait 5 minutes and try again.";
       return;
@@ -505,8 +519,8 @@ function showChangePin(u, forced) {
       b = $("#cp2").value;
     if (!forced) {
       const now = Date.now();
-      state.tries = (state.tries || []).filter(t => now - t < 5 * 60000);
-      if (state.tries.length >= 5) {
+      state.tries = (state.tries || []).filter(t => now - t < PIN_WINDOW_MS);
+      if (state.tries.length >= PIN_MAX_TRIES) {
         m.textContent = "Too many wrong PINs. Wait 5 minutes and try again.";
         return;
       }
@@ -629,7 +643,7 @@ let idleT = null;
 function resetIdle() {
   clearTimeout(idleT);
   if (state.me)
-    idleT = setTimeout(() => lockApp("Locked after 15 minutes without use. Tap your name to continue."), 15 * 60000);
+    idleT = setTimeout(() => lockApp("Locked after 15 minutes without use. Tap your name to continue."), IDLE_LOCK_MS);
 }
 ["pointerdown", "keydown"].forEach(ev => document.addEventListener(ev, resetIdle, { passive: true }));
 
@@ -640,7 +654,7 @@ function startApp() {
   whoBar();
   state.ready = true;
   resetIdle();
-  $("#foot").textContent = "Live sync active · shared by all users · App version 2026-10-30c";
+  $("#foot").textContent = "Live sync active · shared by all users · App version " + APP_VERSION;
   const r = role();
   state.tab = r === "retail" ? "retail" : r === "citydeep" ? "citydeep" : r === "manager" ? "combined" : "wholesale";
   state.date = todayStr();
@@ -738,7 +752,7 @@ function scheduleSave(dept) {
   state.pending[dept] = true;
   clearTimeout(timers[dept]);
   setSaved(dept, "Saving…");
-  timers[dept] = setTimeout(() => save(dept), 700);
+  timers[dept] = setTimeout(() => save(dept), SAVE_DELAY_MS);
   updateDots();
 }
 function flushAll() {
@@ -815,7 +829,7 @@ function saveAlert(t) {
   clearTimeout(b._t);
   b._t = setTimeout(() => {
     b.hidden = true;
-  }, 20000);
+  }, ALERT_MS);
 }
 function setSaved(dept, t, err) {
   const el = document.getElementById("saved-" + dept) || document.getElementById("sign-msg");
@@ -910,7 +924,7 @@ function subscribeHistory() {
     histSub = null;
   }
   histSub = onSnapshot(
-    query(shopCol(), orderBy("date", "desc"), limit(240)),
+    query(shopCol(), orderBy("date", "desc"), limit(HISTORY_LIMIT)),
     snap => {
       state.history = snap.docs.map(d => d.data());
       if (state.tab === "history") render();
@@ -1370,7 +1384,7 @@ function bindDept(dept) {
             ro.textContent = "Reopen to correct";
             $("#reopen-msg").textContent = "";
           }
-        }, 4000);
+        }, ARMED_MS);
         return;
       }
       ro.disabled = true;
@@ -1731,7 +1745,7 @@ function loadJsPDF() {
 }
 async function makePdf() {
   const [{ buildReportPdf, reportFileName }, jsPDF] = await Promise.all([
-    import("./report-pdf.js?v=2026-10-30c"),
+    import(`./report-pdf.js?v=${APP_VERSION}`),
     loadJsPDF(),
   ]);
   const W = current("wholesale"),
@@ -1892,7 +1906,7 @@ function bindThumbs(el) {
         setTimeout(() => {
           armed = false;
           if (b.isConnected) b.textContent = "Remove";
-        }, 4000);
+        }, ARMED_MS);
         return;
       }
       b.disabled = true;
@@ -2041,7 +2055,7 @@ async function pdfToImages(file) {
   const lib = await loadPdfJs();
   const pdf = await lib.getDocument({ data: await file.arrayBuffer() }).promise;
   const out = [];
-  const n = Math.min(pdf.numPages, 6);
+  const n = Math.min(pdf.numPages, PDF_MAX_PAGES);
   for (let i = 1; i <= n; i++) {
     const page = await pdf.getPage(i);
     const vp0 = page.getViewport({ scale: 1 });
@@ -2125,8 +2139,8 @@ async function scanPhoto(file, dept, read) {
   try {
     forAi = await toJpeg(file, 1800, 0.85);
     keep = await toJpeg(file, 1400, 0.6);
-    if (keep.length > 850000) keep = await toJpeg(file, 1100, 0.5);
-    if (keep.length > 850000) keep = await toJpeg(file, 900, 0.45);
+    if (keep.length > PHOTO_MAX_CHARS) keep = await toJpeg(file, 1100, 0.5);
+    if (keep.length > PHOTO_MAX_CHARS) keep = await toJpeg(file, 900, 0.45);
   } catch (e) {
     say("That file could not be opened as a photo. Try again.", true);
     return;
@@ -2902,4 +2916,4 @@ document.addEventListener("visibilitychange", () => {
 setInterval(() => {
   if (state.ready && state.tab !== "users" && !main.contains(document.activeElement) && !document.getElementById("pad"))
     render();
-}, 60000); // keep the deadline countdown current
+}, REFRESH_MS);
