@@ -8,17 +8,13 @@ import admin from "firebase-admin";
 import nodemailer from "nodemailer";
 import { jsPDF } from "jspdf";
 import { buildReportPdf, reportFileName } from "../report-pdf.js";
+// the same address report-pdf.js uses, so Node loads the shared rules once
+import { CD_START, METHODS, R, RV, esc, hasSplit, methodLabel, methodsFor, num } from "../cashup-core.js?v=2026-10-30c";
 
 const MODE = (process.argv[2] || "seven").toLowerCase();
 const TZ = "Africa/Johannesburg";
 const ALERT_TO = process.env.ALERT_TO || "ulla@tastytreats.co.za";
 const REPORT_TO = process.env.REPORT_TO || "martie@tastytreats.co.za";
-
-const METHODS = [
-  ["cash", "Cash / Coins (Retail shops)"], ["cashguard", "CashGuard"], ["card", "Credit card"], ["cardcbm", "Credit card CBM"], ["payfast", "PayFast card"],
-  ["eft", "EFT"], ["shop2shop", "Shop2Shop"], ["snapscan", "SnapScan"],
-  ["petty", "Petty cash (not banked)"],
-];
 
 function need(name) {
   const v = process.env[name];
@@ -54,12 +50,7 @@ const niceDate = new Date(Date.UTC(Y, M - 1, D, 12)).toLocaleDateString("en-ZA",
 if (dayName.startsWith("Sun")) { console.log(`${DATE} is a Sunday, not a trading day. Nothing to do.`); process.exit(0); }
 
 // ---------- helpers ----------
-const num = s => { const n = parseFloat(String(s ?? "").replace(/[^0-9.\-]/g, "")); return isFinite(n) ? n : 0; };
-const fmt = new Intl.NumberFormat("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const R = v => "R " + fmt.format(v || 0);
-const RV = v => { const a = Math.round(v * 100) / 100; return a === 0 ? "R 0.00" : (a > 0 ? "+" : "−") + "R " + fmt.format(Math.abs(a)); };
 const vcolor = v => { const a = Math.round(v * 100) / 100; return a === 0 ? "#2f6b3a" : a > 0 ? "#9a6a12" : "#b03a2a"; };
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const when = doc => {
   const t = doc?.signedAtServer?.toDate ? doc.signedAtServer.toDate() : (doc?.signedAt ? new Date(doc.signedAt) : null);
   return t ? t.toLocaleString("en-ZA", { timeZone: TZ, day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "";
@@ -67,8 +58,7 @@ const when = doc => {
 const signedTime = doc => doc?.signedAtServer?.toDate ? doc.signedAtServer.toDate() : (doc?.signedAt ? new Date(doc.signedAt) : null);
 
 // ---------- read the day ----------
-// City Deep (a separate shop with its own manager sign-off) is required from this date; keep in step with CD_START in app.js
-const CD_START = "2026-10-20";
+// City Deep Retail is required from CD_START (cashup-core.js; firestore.rules has the same date)
 const ids = ["wholesale", "retail", "manager", "citydeep", "cdmanager"];
 const snaps = await Promise.all(ids.map(d => db.doc(`${base}/cashups/${DATE}_${d}`).get()));
 const [W, Rt, Mg, Cd0, Cm0] = snaps.map(s => (s.exists ? s.data() : null));
@@ -92,20 +82,19 @@ const log = logSnap.exists ? logSnap.data() : {};
 
 // ---------- build report ----------
 function line(doc, k, f) { return num(doc?.lines?.[k]?.[f]); }
-// Lines per shop: Retail has no EFT or Shop2Shop; Retail and City Deep split CashGuard (Nedbank + counted & retained, not banked)
-const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: ["cash", "cashguard", "card", "snapscan"] };
-const hasLine = (shop, k) => (k === "payfast" || k === "cardcbm") ? shop === "wholesale" : k === "petty" ? shop === "retail" : (!SHOP_LINES[shop] || SHOP_LINES[shop].includes(k));
-const splitShop = shop => shop === "retail" || shop === "citydeep";
+// Lines per shop (see methodsFor in cashup-core.js); Retail and City Deep split CashGuard (Nedbank + counted & retained, not banked)
+const hasLine = (shop, k) => methodsFor(shop).some(m => m.k === k);
 function reportHtml(title, note) {
   const shops = [["Wholesale", W, "wholesale"], ["Aeroton Retail", Rt, "retail"]];
   if (withCD) shops.push(["City Deep Retail", Cd, "citydeep"]);
   const td = 'style="padding:6px 8px;text-align:right;border-bottom:1px solid #eee"';
   const tot = shops.map(() => [0, 0]);
-  const rows = METHODS.map(([k, l]) => {
+  const rows = METHODS.map(m => {
+    const k = m.k, l = methodLabel(m, "combined");
     let r = 0, dd = 0;
     const cells = shops.map(([, doc, shop], i) => {
       if (!hasLine(shop, k)) return `<td ${td}>—</td><td ${td}>—</td>`;
-      const a = line(doc, k, "report"), b = line(doc, k, "deposited") + (splitShop(shop) ? line(doc, k, "retained") : 0);
+      const a = line(doc, k, "report"), b = line(doc, k, "deposited") + (hasSplit(shop) ? line(doc, k, "retained") : 0);
       r += a; dd += b; tot[i][0] += a; tot[i][1] += b;
       return `<td ${td}>${R(a)}</td><td ${td}>${R(b)}</td>`;
     }).join("");
@@ -130,7 +119,7 @@ function reportHtml(title, note) {
       <td ${tf}><b>${R(gr)}</b></td><td ${tf}><b>${R(gd)}</b></td><td style="padding:8px;text-align:right;color:${vcolor(gv)}"><b>${RV(gv)}</b></td></tr></tfoot>
   </table>
   ${withCD ? `<p style="margin:14px 0 4px"><b>Variance by shop:</b> Aeroton ${RV((tot[0][1] + tot[1][1]) - (tot[0][0] + tot[1][0]))} · City Deep Retail ${RV(tot[2][1] - tot[2][0])} · <b>All shops ${RV(gv)}</b></p>` : ""}
-  ${shops.filter(([, , sh]) => splitShop(sh)).map(([l, doc]) => `<p style="margin:4px 0"><b>${l} CashGuard:</b> deposited in Nedbank ${R(line(doc, "cashguard", "deposited"))} · counted &amp; retained, not banked <b>${R(line(doc, "cashguard", "retained"))}</b></p>`).join("")}
+  ${shops.filter(([, , sh]) => hasSplit(sh)).map(([l, doc]) => `<p style="margin:4px 0"><b>${l} CashGuard:</b> deposited in Nedbank ${R(line(doc, "cashguard", "deposited"))} · counted &amp; retained, not banked <b>${R(line(doc, "cashguard", "retained"))}</b></p>`).join("")}
   ${line(Rt, "petty", "deposited") || Rt?.pettyNotes ? `<p style="margin:4px 0"><b>Aeroton Retail petty cash (not banked):</b> ${R(line(Rt, "petty", "deposited"))}${Rt?.pettyNotes ? " · " + esc(Rt.pettyNotes) : ""}</p>` : ""}
   <p style="margin:4px 0"><b>Damaged bank notes &amp; coins:</b> ${each(d => R(num(d?.damaged)) + (d?.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(shops.reduce((a, [, d]) => a + num(d?.damaged), 0))}</b></p>
   <p style="margin:4px 0"><b>Cashed up by:</b> ${each(d => esc(d?.cashier || "—"))}</p>
