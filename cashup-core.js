@@ -65,13 +65,34 @@ export const esc = s =>
     c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
   );
 export const safeImg = s => (/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(String(s || "")) ? s : "");
-export function todayStr() {
-  const d = new Date();
-  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+// Every date and time in the cash up is South African time (SAST, UTC+2 all year, no daylight saving),
+// whatever time zone the phone or computer is set to.
+export const TZ = "Africa/Johannesburg";
+const SAST_OFFSET = "+02:00";
+// The parts of a moment in South African time: { year, month, day, hour, minute, second } as 2-digit strings
+function sastParts(t) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(t);
+  return Object.fromEntries(parts.map(p => [p.type, p.value]));
 }
+// Today's date in South Africa, YYYY-MM-DD
+export function todayStr() {
+  const p = sastParts(new Date());
+  return `${p.year}-${p.month}-${p.day}`;
+}
+// A YYYY-MM-DD date as a moment on that day (noon in South Africa), for showing it in words
+const onDay = s => new Date(`${s}T12:00:00${SAST_OFFSET}`);
 export function longDate(s) {
-  const [y, m, d] = s.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("en-ZA", {
+  return onDay(s).toLocaleDateString("en-ZA", {
+    timeZone: TZ,
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -79,8 +100,8 @@ export function longDate(s) {
   });
 }
 export function shortDate(s) {
-  const [y, m, d] = s.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("en-ZA", {
+  return onDay(s).toLocaleDateString("en-ZA", {
+    timeZone: TZ,
     weekday: "short",
     day: "numeric",
     month: "short",
@@ -93,6 +114,7 @@ export function timeStr(iso) {
   if (!iso) return "";
   try {
     return new Date(iso).toLocaleString("en-ZA", {
+      timeZone: TZ,
       day: "numeric",
       month: "short",
       hour: "2-digit",
@@ -101,6 +123,14 @@ export function timeStr(iso) {
   } catch (e) {
     return "";
   }
+}
+// A moment as "YYYY-MM-DD HH:MM" in South African time, for CSV files ("" when there is none)
+export function sastStamp(iso) {
+  if (!iso) return "";
+  const t = new Date(iso);
+  if (isNaN(t)) return String(iso);
+  const p = sastParts(t);
+  return `${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}`;
 }
 // CSV: a cell with a comma, quote or line break goes in quotes; rows are joined with cell() applied to each cell
 export const csvQuote = c => (/[",\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c);
@@ -179,13 +209,11 @@ export function totals(doc) {
   return { report: r, deposited: d, variance: d - r, retained: ret, petty: pet, banked: d - ret - pet };
 }
 
-/* Deadline: every trading day (Mon–Sat) every shop sheet and the manager's sign-off by DEADLINE_HOUR,
-   by the clock and time zone of the device showing it */
+/* Deadline: every trading day (Mon–Sat) every shop sheet and the manager's sign-off by DEADLINE_HOUR, South African time */
 export function dayInfo(date, W, Rt, M, C) {
-  const [y, m, d] = date.split("-").map(Number);
-  const dt = new Date(y, m - 1, d);
-  if (dt.getDay() === 0) return { kind: "sunday", label: "Sunday · not a trading day", cls: "", missing: [] };
-  const dl = new Date(y, m - 1, d, DEADLINE_HOUR, 0, 0);
+  if (onDay(date).getUTCDay() === 0)
+    return { kind: "sunday", label: "Sunday · not a trading day", cls: "", missing: [] };
+  const dl = new Date(`${date}T${String(DEADLINE_HOUR).padStart(2, "0")}:00:00${SAST_OFFSET}`);
   const missing = [];
   const all = [W, Rt, M];
   if (!(W && W.status === "signed")) missing.push("Wholesale");

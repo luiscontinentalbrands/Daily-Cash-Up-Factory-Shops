@@ -92,3 +92,30 @@ test("dates", t => {
   t.mock.timers.enable({ apis: ["Date"], now: Date.parse(`${DAY}T23:30:00+02:00`) });
   snap(t, { today: core.todayStr(), long: core.longDate(DAY), short: core.shortDate(DAY), time: core.timeStr("2026-10-28T15:04:00Z"), noTime: core.timeStr(""), badTime: core.timeStr("nope"), cdOn: [PRE, "2026-10-20", DAY, "", null].map(core.cdOn) });
 });
+
+test("dates, times and the 7 pm deadline are South African time whatever the device's time zone", t => {
+  const seen = {};
+  for (const zone of ["Africa/Johannesburg", "America/New_York", "Pacific/Auckland", "UTC"]) {
+    process.env.TZ = zone;
+    const at = iso => { t.mock.timers.enable({ apis: ["Date"], now: Date.parse(iso) }); };
+    const out = {};
+    at("2026-10-29T00:30:00+02:00"); // just after midnight in South Africa
+    out.today = core.todayStr();
+    t.mock.timers.reset();
+    out.long = core.longDate(DAY);
+    out.short = core.shortDate(SUN);
+    out.time = core.timeStr("2026-10-28T17:30:00Z");
+    out.stamp = core.sastStamp("2026-10-28T22:15:00Z");
+    at("2026-10-28T19:00:30+02:00"); // half a minute after the deadline
+    out.deadline = core.dayInfo(DAY, null, null, null, null).kind;
+    t.mock.timers.reset();
+    at("2026-10-28T18:30:00+02:00");
+    out.countdown = core.dayInfo(DAY, null, null, null, null).label;
+    t.mock.timers.reset();
+    out.sunday = core.dayInfo(SUN, null, null, null, null).kind;
+    seen[zone] = out;
+  }
+  process.env.TZ = "Africa/Johannesburg";
+  for (const zone of Object.keys(seen)) assert.deepEqual(seen[zone], seen["Africa/Johannesburg"], zone);
+  snap(t, seen["Africa/Johannesburg"]);
+});

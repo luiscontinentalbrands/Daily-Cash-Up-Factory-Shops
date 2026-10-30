@@ -44,6 +44,7 @@ import {
   num,
   safeImg,
   savedAtIso,
+  sastStamp,
   shortDate,
   timeStr,
   toCsv,
@@ -1478,7 +1479,7 @@ function endOfDayCsv(shops, M, info) {
   lines.push([]);
   shops.forEach(([d, doc, t]) => {
     lines.push(
-      [DEPTS[d] + " cashed up by", doc.cashier, "Signed by", doc.signedBy, doc.signedAt],
+      [DEPTS[d] + " cashed up by", doc.cashier, "Signed by", doc.signedBy, sastStamp(doc.signedAt)],
       [DEPTS[d] + " notes", doc.notes],
       ["Damaged notes & coins - " + DEPTS[d], num(doc.damaged).toFixed(2), doc.damagedNotes],
     );
@@ -1490,7 +1491,7 @@ function endOfDayCsv(shops, M, info) {
         [DEPTS[d] + " CashGuard counted & retained, not banked", t.retained.toFixed(2)],
       );
   });
-  lines.push(["Manager signed by", M.signedBy, M.signedAt]);
+  lines.push(["Manager signed by", M.signedBy, sastStamp(M.signedAt)]);
   lines.push(["Day status", info.label]);
   // Prefix cells that start with = + - @ so spreadsheets do not run them as formulas
   const cell = c => {
@@ -2246,7 +2247,7 @@ function notBankedCsv(nb, all, out, later) {
       r.signed ? r.signedBy : "NOT SIGNED",
       r.done ? "Yes" : "No",
       r.done ? r.doneBy : "",
-      r.done ? r.doneAt : "",
+      r.done ? sastStamp(r.doneAt) : "",
     ]),
     [
       [],

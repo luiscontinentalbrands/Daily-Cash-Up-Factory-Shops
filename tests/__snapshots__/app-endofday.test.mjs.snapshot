@@ -3565,22 +3565,22 @@ SnapScan,45.00,45.00,60.00,60.00,0.00,0.00,105.00,105.00,0.00
 Petty cash (not banked),0.00,0.00,0.00,200.00,0.00,0.00,0.00,200.00,200.00
 Total,8175.49,8125.49,8245.75,8245.75,5111.95,5142.00,21533.19,21513.24,-19.95
 
-Wholesale cashed up by,Wanda Wholesale,Signed by,Wanda Wholesale,2026-10-28T15:00:00.000Z
+Wholesale cashed up by,Wanda Wholesale,Signed by,Wanda Wholesale,2026-10-28 17:00
 Wholesale notes,"'=SUM(A1) ""quoted"", with comma
 and a new line"
 Damaged notes & coins - Wholesale,100.00,1 x R100 torn
-Aeroton Retail cashed up by,Rita Retail,Signed by,Rita Retail,2026-10-28T15:05:00.000Z
+Aeroton Retail cashed up by,Rita Retail,Signed by,Rita Retail,2026-10-28 17:05
 Aeroton Retail notes,
 Damaged notes & coins - Aeroton Retail,0.00,
 Aeroton Retail petty cash (not banked),200.00,'-R20 refund
 Aeroton Retail CashGuard deposited in Nedbank,4900.00
 "Aeroton Retail CashGuard counted & retained, not banked",300.00
-City Deep Retail cashed up by,Cindy Deep,Signed by,Cindy Deep,2026-10-28T15:10:00.000Z
+City Deep Retail cashed up by,Cindy Deep,Signed by,Cindy Deep,2026-10-28 17:10
 City Deep Retail notes,Card machine offline 10 minutes
 Damaged notes & coins - City Deep Retail,0.00,
 City Deep Retail CashGuard deposited in Nedbank,3000.00
 "City Deep Retail CashGuard counted & retained, not banked",150.00
-Manager signed by,Manny Manager,2026-10-28T16:30:00.000Z
+Manager signed by,Manny Manager,2026-10-28 18:30
 Day status,Completed on time
 `;
 

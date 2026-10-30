@@ -16,6 +16,19 @@ exports[`dates 1`] = `
 }
 `;
 
+exports[`dates, times and the 7 pm deadline are South African time whatever the device's time zone 1`] = `
+{
+  "today": "2026-10-29",
+  "long": "Wednesday, 28 October 2026",
+  "short": "Sun, 25 Oct 2026",
+  "time": "28 Oct, 19:30",
+  "stamp": "2026-10-29 00:15",
+  "deadline": "overdue",
+  "countdown": "Due by 7 pm · 0h 30m left",
+  "sunday": "sunday"
+}
+`;
+
 exports[`dayInfo through the day 1`] = `
 {
   "open, morning": {
