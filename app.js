@@ -476,6 +476,12 @@ function showWho(msg) {
     .querySelectorAll("button[data-u]")
     .forEach(b => b.addEventListener("click", () => askPin(state.users.find(u => u.id === b.dataset.u))));
 }
+// Wrong PINs on this device (any user): after PIN_MAX_TRIES within PIN_WINDOW_MS, PIN entry waits
+const PIN_LOCKED_MSG = "Too many wrong PINs. Wait 5 minutes and try again.";
+function pinLockedOut(now) {
+  state.tries = state.tries.filter(t => now - t < PIN_WINDOW_MS);
+  return state.tries.length >= PIN_MAX_TRIES;
+}
 function askPin(u) {
   if (!u) return;
   main.innerHTML = `<form class="login sheet" id="pinform" style="padding:22px" novalidate>
@@ -491,10 +497,9 @@ function askPin(u) {
     e.preventDefault();
     const m = $("#pinmsg");
     const now = Date.now();
-    state.tries = state.tries.filter(t => now - t < PIN_WINDOW_MS);
-    if (state.tries.length >= PIN_MAX_TRIES) {
+    if (pinLockedOut(now)) {
       m.className = "msg err";
-      m.textContent = "Too many wrong PINs. Wait 5 minutes and try again.";
+      m.textContent = PIN_LOCKED_MSG;
       return;
     }
     if ((await pinHash(u.salt, p.value)) === u.pinHash) {
@@ -541,9 +546,8 @@ function showChangePin(u, forced) {
       b = $("#cp2").value;
     if (!forced) {
       const now = Date.now();
-      state.tries = state.tries.filter(t => now - t < PIN_WINDOW_MS);
-      if (state.tries.length >= PIN_MAX_TRIES) {
-        m.textContent = "Too many wrong PINs. Wait 5 minutes and try again.";
+      if (pinLockedOut(now)) {
+        m.textContent = PIN_LOCKED_MSG;
         return;
       }
       if ((await pinHash(u.salt, $("#cp0").value)) !== u.pinHash) {
