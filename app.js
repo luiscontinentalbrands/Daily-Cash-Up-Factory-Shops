@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-30a";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-30b";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -6,6 +6,7 @@ import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collecti
 /* ---------- constants & helpers ---------- */
 const METHODS=[
   {k:"cash",l:"Cash"},{k:"cashguard",l:"CashGuard"},{k:"card",l:"Credit card"},
+  {k:"payfast",l:"PayFast card"},           // Wholesale only
   {k:"eft",l:"EFT"},{k:"shop2shop",l:"Shop2Shop"},{k:"snapscan",l:"SnapScan"},
   {k:"petty",l:"Petty cash (not banked)"}   // Aeroton Retail only: cash taken for petty cash, counted but not banked (no report figure)
 ];
@@ -21,7 +22,7 @@ const sheetsOf=(m,date)=>cdOn(date||state.date)?["wholesale","retail","citydeep"
 const hasSplit=d=>d==="retail"||d==="citydeep";                               // CashGuard: Nedbank + counted & retained, not banked
 // The two retail shops (Aeroton Retail, City Deep Retail): cash is coins, no EFT line (EFT slips are credit card payments), no Shop2Shop
 const isRetail=d=>d==="retail"||d==="citydeep";
-const methodsFor=dept=>METHODS.filter(m=>m.k==="petty"?dept==="retail":isRetail(dept)?(m.k!=="eft"&&m.k!=="shop2shop"):true);
+const methodsFor=dept=>METHODS.filter(m=>m.k==="petty"?dept==="retail":m.k==="payfast"?dept==="wholesale":isRetail(dept)?(m.k!=="eft"&&m.k!=="shop2shop"):true);
 const lbl=(m,dept)=>m.k==="cash"?(isRetail(dept)?"Coins":dept==="wholesale"?"Cash":"Cash / Coins (Retail shops)"):m.l;
 const fmt=new Intl.NumberFormat("en-ZA",{minimumFractionDigits:2,maximumFractionDigits:2});
 const R=v=>"R "+fmt.format(v||0);
@@ -240,7 +241,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all users · App version 2026-10-30a";
+  $("#foot").textContent="Live sync active · shared by all users · App version 2026-10-30b";
   const r=role();state.tab=r==="retail"?"retail":r==="citydeep"?"citydeep":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -634,7 +635,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-30a"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-30b"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager"),C=current("citydeep"),CM=current("cdmanager");const info=dayNow();
   const showCD=cdOn(state.date)||statusOf(C)!=="new";
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
@@ -767,10 +768,10 @@ Read the TOTAL amount per payment/tender type as printed on the report. Map tend
 - cash: Cash (notes and coins tender)
 - cashguard: CashGuard (cash recycler / CashGuard tender)
 - card: Credit card / debit card / speedpoint / card machine totals combined${isRetail(dept)?" (in this shop, amounts printed as EFT are card-machine payments: include them here)":""}
-- eft: EFT / bank transfer${isRetail(dept)?" (always null for this shop: put EFT amounts under card)":""}
+${dept==="wholesale"?"- payfast: PayFast card payments (keep these separate from card)\n":""}- eft: EFT / bank transfer${isRetail(dept)?" (always null for this shop: put EFT amounts under card)":""}
 - shop2shop: Shop2Shop
 - snapscan: SnapScan
-Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
+Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,${dept==="wholesale"?'"payfast":number|null,':""}"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
 Use null when a tender is not on the report. Give amounts as plain JSON numbers with a dot for decimals (e.g. 1234.56), without currency symbols, spaces or thousands separators, even if the slip prints them as "R 1 234,56". Set readable false if the photo is not a cash-up report or too blurry to read.`;
   let out=null;
   try{const r=await readWithAI([prompt,{inlineData:{data:dataUrl.split(",")[1],mimeType:"image/jpeg"}}]);
@@ -793,7 +794,7 @@ Use null when a tender is not on the report. Give amounts as plain JSON numbers 
     if(t.includes(",")&&!t.includes("."))t=t.replace(/,(?=\d{1,2}$)/,".").replace(/,/g,"");else t=t.replace(/,/g,"");
     const n=parseFloat(t);return isFinite(n)?n:null;};
   const low={};Object.keys(out||{}).forEach(k=>low[k.toLowerCase().replace(/[^a-z0-9]/g,"")]=out[k]);
-  const alias={cash:["cash"],cashguard:["cashguard"],card:["card","creditcard","cards"],eft:["eft"],shop2shop:["shop2shop","shoptoshop"],snapscan:["snapscan"]};
+  const alias={cash:["cash"],cashguard:["cashguard"],card:["card","creditcard","cards"],payfast:["payfast","payfastcard"],eft:["eft"],shop2shop:["shop2shop","shoptoshop"],snapscan:["snapscan"]};
   out.total=toNum(low.total);
   const vals={};METHODS.forEach(m=>{let v=null;for(const k of (alias[m.k]||[])){if(low[k]!=null){v=toNum(low[k]);break;}}vals[m.k]=v;});
   // Retail: slips marked EFT are credit card payments, so they are added to Credit card
