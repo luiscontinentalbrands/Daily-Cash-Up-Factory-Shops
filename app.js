@@ -60,7 +60,8 @@ import {
 } from "./photo-reader.js?v=2026-10-30c";
 
 /* ---------- constants & helpers ---------- */
-// Version for cache-busting. Bump it together with the ?v= in index.html (twice) and in the imports above.
+// Version for cache-busting. When releasing, change it everywhere it is written: index.html (twice), the imports
+// above, and the imports in photo-reader.js, report-pdf.js and scripts/daily-check.mjs (search for the value).
 const APP_VERSION = "2026-10-30c";
 // Timings and limits (the on-screen texts that mention them, e.g. "7 pm" or "15 minutes", are written out separately)
 const SAVE_DELAY_MS = 700; // save this long after the last change
@@ -608,7 +609,11 @@ function updateDots() {
   });
 }
 
-/* ---------- persistence ---------- */
+/* ---------- persistence ----------
+   Each change to a sheet bumps state.ver[dept] and marks it pending; the save runs SAVE_DELAY_MS after the
+   last change. While a sheet is pending, live updates from the database leave the draft alone (so typing is
+   not overwritten), unless someone else signed it meanwhile. A save clears pending only if no newer change
+   was made and no other save of that sheet is still on its way (state.inflight). */
 function idOf(dept, date) {
   return (date || state.date) + "_" + dept;
 }

@@ -150,6 +150,8 @@ export function normalize(raw, date, dept) {
     );
   });
   if (!hasSplit(dept)) o.lines.cashguard.retained = ""; // the "retained, not banked" amount is only on Retail and City Deep
+  // The retail shops have no Shop2Shop line, and their EFT slips are card-machine payments: sheets saved before
+  // that rule still have EFT figures, which are added to Credit card here.
   if (isRetail(dept)) {
     o.lines.shop2shop = { report: "", deposited: "" };
   }
@@ -177,7 +179,8 @@ export function totals(doc) {
   return { report: r, deposited: d, variance: d - r, retained: ret, petty: pet, banked: d - ret - pet };
 }
 
-/* Deadline: every trading day Mon–Sat, all three signatures by 19:00 */
+/* Deadline: every trading day (Mon–Sat) every shop sheet and the manager's sign-off by DEADLINE_HOUR,
+   by the clock and time zone of the device showing it */
 export function dayInfo(date, W, Rt, M, C) {
   const [y, m, d] = date.split("-").map(Number);
   const dt = new Date(y, m - 1, d);
@@ -213,9 +216,9 @@ export function dayInfo(date, W, Rt, M, C) {
   };
 }
 
-// Amounts: accept a comma or a point as the decimal mark, keep at most 2 decimals
-// Amounts may be typed with a comma or a point for the cents: 1480,55 / 1480.55 / 1 480,55 / 1.480,55 / 1,480.55
-// The last comma or point is the decimal mark (1 or 2 digits after it); 3 digits after it means a thousands separator.
+// A typed amount as stored: digits with a point for the cents. It may be typed with a comma or a point:
+// 1480,55 / 1480.55 / 1 480,55 / 1.480,55 / 1,480.55. The last comma or point is the decimal mark
+// (1 or 2 digits after it); 3 digits after it means a thousands separator.
 export const money = v => {
   const t = String(v == null ? "" : v).replace(/[^0-9.,]/g, "");
   const last = Math.max(t.lastIndexOf("."), t.lastIndexOf(","));
