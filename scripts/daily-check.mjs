@@ -11,7 +11,7 @@ import nodemailer from "nodemailer";
 import { jsPDF } from "jspdf";
 import { buildReportPdf, reportFileName } from "../report-pdf.js";
 // the same address report-pdf.js uses, so Node loads the shared rules once
-import { BIG_VARIANCE, CD_START, DEPTS, PAYMENT_METHODS, R, RV, bigVariances, countedTotal, esc, hasSplit, methodLabel, methodsFor, normalize, num } from "../cashup-core.js?v=2026-10-30c";
+import { BIG_VARIANCE, CD_START, DEPTS, PAYMENT_METHODS, R, RV, bigVariances, countedTotal, esc, hasSplit, methodLabel, methodsFor, normalize, num } from "../cashup-core.js?v=2026-10-30d";
 
 const MODE = (process.argv[2] || "seven").toLowerCase();
 const TZ = "Africa/Johannesburg";
