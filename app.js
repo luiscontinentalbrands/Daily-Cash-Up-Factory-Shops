@@ -37,13 +37,12 @@ const DEPTS = {
   retail: "Aeroton Retail",
   citydeep: "City Deep Retail",
   manager: "Manager",
-  cdmanager: "City Deep manager",
 };
-// City Deep is a separate shop with its own cash up and its own manager sign-off; it is required from this date
+// City Deep is a separate shop with its own cash up; it is required from this date
 const CD_START = "2026-10-20";
 const cdOn = date => String(date || "") >= CD_START;
 const SHEETS = ["wholesale", "retail", "citydeep"];
-const isMgr = d => d === "manager" || d === "cdmanager";
+const isMgr = d => d === "manager";
 // One manager signs off the whole day at End of Day (Wholesale, Aeroton Retail and, from CD_START, City Deep Retail)
 const sheetsOf = date => (cdOn(date || state.date) ? ["wholesale", "retail", "citydeep"] : ["wholesale", "retail"]);
 const hasSplit = d => d === "retail" || d === "citydeep"; // CashGuard: Nedbank + counted & retained, not banked
@@ -191,7 +190,7 @@ function totals(doc) {
 }
 
 /* Deadline: every trading day Mon–Sat, all three signatures by 19:00 */
-function dayInfo(date, W, Rt, M, C, CM) {
+function dayInfo(date, W, Rt, M, C) {
   const [y, m, d] = date.split("-").map(Number);
   const dt = new Date(y, m - 1, d);
   if (dt.getDay() === 0) return { kind: "sunday", label: "Sunday · not a trading day", cls: "", missing: [] };
@@ -250,7 +249,7 @@ if (configured) {
 const state = {
   date: todayStr(),
   tab: "wholesale",
-  docs: { wholesale: null, retail: null, manager: null, citydeep: null, cdmanager: null },
+  docs: { wholesale: null, retail: null, manager: null, citydeep: null },
   history: [],
   pending: {},
   key: null,
@@ -671,7 +670,7 @@ function setTab(t) {
 function setDate(d) {
   flushAll();
   state.date = d;
-  state.docs = { wholesale: null, retail: null, manager: null, citydeep: null, cdmanager: null };
+  state.docs = { wholesale: null, retail: null, manager: null, citydeep: null };
   Object.keys(DEPTS).forEach(k => delete local[k]);
   subscribeDay();
   render(true);
@@ -702,14 +701,7 @@ function canReopen(dept) {
   return current(dept).signedBy === state.me.name && M.status !== "signed";
 }
 function dayNow() {
-  return dayInfo(
-    state.date,
-    current("wholesale"),
-    current("retail"),
-    current("manager"),
-    current("citydeep"),
-    current("cdmanager"),
-  );
+  return dayInfo(state.date, current("wholesale"), current("retail"), current("manager"), current("citydeep"));
 }
 function current(dept) {
   if (!local[dept]) local[dept] = normalize(state.docs[dept], state.date, dept);
@@ -879,7 +871,7 @@ function subscribeDay() {
     query(shopCol(), where("date", "==", date)),
     snap => {
       if (date !== state.date) return;
-      const got = { wholesale: null, retail: null, manager: null, citydeep: null, cdmanager: null };
+      const got = { wholesale: null, retail: null, manager: null, citydeep: null };
       snap.docs.forEach(d => {
         const v = d.data();
         if (v && Object.prototype.hasOwnProperty.call(got, v.dept)) got[v.dept] = v;
@@ -898,8 +890,8 @@ function subscribeDay() {
         if (!local[dept] || JSON.stringify(fresh) !== JSON.stringify(local[dept])) {
           const statusChanged = !local[dept] || local[dept].status !== fresh.status;
           local[dept] = fresh;
-          if (state.tab === dept || (dept === "cdmanager" && state.tab === "citydeep")) {
-            if (dept === "cdmanager" || statusChanged || !main.contains(document.activeElement)) needRender = true;
+          if (state.tab === dept) {
+            if (statusChanged || !main.contains(document.activeElement)) needRender = true;
             else patchInputs(dept);
           } else needRender = true;
         }
@@ -1219,7 +1211,7 @@ function signBlock(doc, dept) {
   return `<div class="sign">
   <div class="pad"><canvas id="pad" data-dept="${dept}" width="900" height="300" aria-label="Signature pad"></canvas><div class="base"></div><div class="hint">Sign above the line with finger or mouse</div></div>
   <div style="display:flex;flex-direction:column;gap:10px">
-    <div class="msg">${dept === "manager" ? `By signing, I confirm I have checked the ${cdOn(state.date) ? "Wholesale, Aeroton Retail and City Deep Retail" : "Wholesale and Aeroton Retail"} cash ups for ${shortDate(state.date)} and the combined totals are correct.` : dept === "cdmanager" ? `By signing, I confirm I have checked the City Deep Retail cash up for ${shortDate(state.date)} and the totals are correct.` : `By signing, I confirm the amounts deposited for ${DEPTS[dept]} on ${shortDate(state.date)} are correct.`}</div>
+    <div class="msg">${dept === "manager" ? `By signing, I confirm I have checked the ${cdOn(state.date) ? "Wholesale, Aeroton Retail and City Deep Retail" : "Wholesale and Aeroton Retail"} cash ups for ${shortDate(state.date)} and the combined totals are correct.` : `By signing, I confirm the amounts deposited for ${DEPTS[dept]} on ${shortDate(state.date)} are correct.`}</div>
     <div><div class="eyebrow">Signing as</div><div class="signer-static">${esc(state.me.name)}</div></div>
     <div class="actions"><button class="btn" id="clear" type="button">Clear</button><button class="btn primary" id="signbtn" type="button">Sign &amp; submit</button></div>
     <div class="msg" id="sign-msg"></div>
@@ -1544,8 +1536,7 @@ function renderCombined() {
   const W = current("wholesale"),
     Rt = current("retail"),
     M = current("manager"),
-    C = current("citydeep"),
-    CM = current("cdmanager");
+    C = current("citydeep");
   const tw = totals(W),
     tr = totals(Rt),
     tc = totals(C);
@@ -1746,8 +1737,7 @@ async function makePdf() {
   const W = current("wholesale"),
     Rt = current("retail"),
     M = current("manager"),
-    C = current("citydeep"),
-    CM = current("cdmanager");
+    C = current("citydeep");
   const info = dayNow();
   const showCD = cdOn(state.date) || statusOf(C) !== "new";
   const pdf = buildReportPdf(jsPDF, {
@@ -1757,7 +1747,6 @@ async function makePdf() {
     Rt,
     M,
     C: showCD ? C : null,
-    CM: showCD ? CM : null,
     status: info.label,
     photos: [],
     handovers: (state.handovers || []).map(h => ({
@@ -2886,12 +2875,11 @@ function renderHistory() {
               const w = nz("wholesale"),
                 r = nz("retail"),
                 mg = nz("manager"),
-                c = nz("citydeep"),
-                cm = nz("cdmanager");
+                c = nz("citydeep");
               const sh = [w, r, c].filter(Boolean);
               const tot = sh.reduce((a, x) => a + totals(x).deposited, 0),
                 vr = sh.reduce((a, x) => a + totals(x).variance, 0);
-              const di = dayInfo(d, w, r, mg, c, cm);
+              const di = dayInfo(d, w, r, mg, c);
               const withCD = cdOn(d) || !!c;
               return `<button class="hrow${withCD ? " cd" : ""}" data-d="${esc(d)}"><div><div class="d">${shortDate(d)}</div><span class="chip ${di.cls}" style="margin-top:4px">${di.kind === "done" ? "Closed on time" : di.kind === "late" ? "Closed late" : di.kind === "overdue" ? "Overdue" : di.kind === "sunday" ? "Sunday" : "Open"}</span></div>${cell(by[d].wholesale, "wholesale")}${cell(by[d].retail, "retail")}${withCD ? cell(by[d].citydeep, "citydeep") : ""}<div class="r"><div class="num"><b>${R(tot)}</b></div><div class="num msg ${vcls(vr)}">${RV(vr)}</div></div></button>`;
             })
