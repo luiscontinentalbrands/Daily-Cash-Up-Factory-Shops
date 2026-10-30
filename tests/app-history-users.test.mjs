@@ -24,6 +24,20 @@ test("History: days newest first, status and totals; tap a day to open End of Da
   snap(t, empty.html(), "empty");
 });
 
+test("History with more sheets than it loads: the oldest day is not shown half loaded", async t => {
+  const docs = {};
+  for (let i = 0; i < 90; i++) {
+    const date = new Date(Date.UTC(2026, 9, 28 - i)).toISOString().slice(0, 10);
+    Object.assign(docs, dayDocs(date, { signed: ["wholesale", "retail", "citydeep", "manager"] }));
+  }
+  // one extra sheet, so the 240 loaded end part-way through a day
+  docs["cashups/2026-10-10_citydeep"] = { ...dayDocs(DAY)[`cashups/${DAY}_citydeep`], date: "2026-10-10" };
+  const app = await boot(t, { me: "u-whole", docs, now: `${DAY}T20:00:00+02:00` });
+  await app.tab("history");
+  const rows = app.all(".hrow");
+  snap(t, { days: rows.length, oldest: rows.slice(-2).map(r => r.textContent.replace(/\s+/g, " ").trim()) });
+});
+
 test("Users: only the administrator; the list", async t => {
   const app = await boot(t, { me: "u-mgr" });
   await app.tab("users");
