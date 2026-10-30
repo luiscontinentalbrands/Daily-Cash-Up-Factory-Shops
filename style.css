@@ -169,3 +169,16 @@ td.muted{color:var(--muted)}
 @media (max-width:640px){.hrow.cd{grid-template-columns:1fr 1fr}}
 tr.nbdone td{color:var(--muted)} tr.nbdone td b{text-decoration:line-through;font-weight:500}
 .hlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+/* Payment lines more than R1000 out, and the alert shown before such a sheet is signed */
+tr.bigvar td{background:var(--bad-soft)}
+tr.bigvar td:first-child{box-shadow:inset 4px 0 0 var(--bad);color:var(--bad);font-weight:700}
+.bigalert{position:fixed;inset:0;z-index:60;background:rgba(20,10,8,.62);display:flex;align-items:center;justify-content:center;padding:16px}
+.bigalert-box{background:var(--surface);border:3px solid var(--bad);border-radius:16px;max-width:540px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.bigalert-head{background:var(--bad);color:#fff;display:flex;align-items:center;gap:14px;padding:18px 20px}
+.bigalert-head h2{font-family:var(--display);font-size:1.3rem;margin:0;color:#fff}
+.bigalert-mark{flex:none;width:44px;height:44px;border-radius:50%;background:#fff;color:var(--bad);font:700 1.7rem/44px var(--display);text-align:center}
+.bigalert-body{padding:16px 20px 20px;display:flex;flex-direction:column;gap:12px}
+.bigalert-body p{margin:0}
+.bigalert-body ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.bigalert-body li b.num{color:var(--bad)}
+.bigalert .btn.bigalert-sign{background:var(--bad);border-color:var(--bad);color:#fff}

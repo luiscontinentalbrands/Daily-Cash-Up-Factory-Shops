@@ -614,7 +614,7 @@ exports[`scan a photo: saved, figures filled (Wholesale), checks against total a
 exports[`scan a photo: saved, figures filled (Wholesale), checks against total and date 5`] = `
 ## rows
 <tbody>
-  <tr>
+  <tr class="bigvar">
     <td>"Cash"</td>
     " "
     <td class="inp">
@@ -627,7 +627,7 @@ exports[`scan a photo: saved, figures filled (Wholesale), checks against total a
     " "
     <td class="num var-neg" id="v-cash">"−R 1 234,56"</td>
   </tr>
-  <tr>
+  <tr class="bigvar">
     <td>"CashGuard"</td>
     " "
     <td class="inp">
@@ -640,7 +640,7 @@ exports[`scan a photo: saved, figures filled (Wholesale), checks against total a
     " "
     <td class="num var-neg" id="v-cashguard">"−R 2 000,00"</td>
   </tr>
-  <tr>
+  <tr class="bigvar">
     <td>"Credit card"</td>
     " "
     <td class="inp">

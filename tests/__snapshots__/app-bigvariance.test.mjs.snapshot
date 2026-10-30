@@ -1,0 +1,109 @@
+exports[`changing the figures after going back asks to check again; Escape goes back too 1`] = `
+## new difference: check again
+Check these figures before signing
+`;
+
+exports[`changing the figures after going back asks to check again; Escape goes back too 2`] = `
+## same difference: confirm
+Are these figures correct?
+`;
+
+exports[`rows more than R1000 out are marked red while typing; exactly R1000 is not 1`] = `
+## rows
+[
+  "bigvar Cash",
+  "- CashGuard",
+  "bigvar Credit card",
+  "- Credit card CBM",
+  "- PayFast card",
+  "- EFT",
+  "- Shop2Shop",
+  "- SnapScan"
+]
+`;
+
+exports[`signing with a big difference: sent back to check first, then asked to confirm 1`] = `
+## first alert
+<div class="bigalert" role="alertdialog" aria-modal="true" aria-labelledby="bigalert-title">
+  <div class="bigalert-box">
+    " "
+    <div class="bigalert-head">
+      <span class="bigalert-mark" aria-hidden="true">"!"</span>
+      <h2 id="bigalert-title">"Check these figures before signing"</h2>
+    </div>
+    " "
+    <div class="bigalert-body">
+      " "
+      <p>"This payment type is more than R 1 000,00 out. A difference this big usually means a figure was typed wrong. Go back and check it against the till report and the money counted."</p>
+      " "
+      <ul>
+        <li>
+          <b>"CashGuard"</b>
+          ": per report R 5 000,00, deposited R 3 500,00 "
+          <b class="num">"−R 1 500,00"</b>
+        </li>
+      </ul>
+      " "
+      <div class="actions">
+        <button class="btn primary" type="button" id="bigalert-back">"Go back and check"</button>
+      </div>
+      " "
+    </div>
+    " "
+  </div>
+</div>
+`;
+
+exports[`signing with a big difference: sent back to check first, then asked to confirm 2`] = `
+## message after going back
+Check the figures marked in red, then tap Sign & submit again.
+`;
+
+exports[`signing with a big difference: sent back to check first, then asked to confirm 3`] = `
+## second alert
+<div class="bigalert" role="alertdialog" aria-modal="true" aria-labelledby="bigalert-title">
+  <div class="bigalert-box">
+    " "
+    <div class="bigalert-head">
+      <span class="bigalert-mark" aria-hidden="true">"!"</span>
+      <h2 id="bigalert-title">"Are these figures correct?"</h2>
+    </div>
+    " "
+    <div class="bigalert-body">
+      " "
+      <p>"This payment type is more than R 1 000,00 out. Sign only if you have checked it against the till report and the money counted."</p>
+      " "
+      <ul>
+        <li>
+          <b>"CashGuard"</b>
+          ": per report R 5 000,00, deposited R 3 500,00 "
+          <b class="num">"−R 1 500,00"</b>
+        </li>
+      </ul>
+      " "
+      <div class="actions">
+        <button class="btn" type="button" id="bigalert-back">"Go back and check"</button>
+        <button class="btn bigalert-sign" type="button" id="bigalert-sign">"The figures are correct, sign"</button>
+      </div>
+      " "
+    </div>
+    " "
+  </div>
+</div>
+`;
+
+exports[`signing with a big difference: sent back to check first, then asked to confirm 4`] = `
+## signed
+[
+  [
+    "set",
+    "shops/TestShopKey0123456789abc/cashups/2026-10-28_retail",
+    "signed"
+  ],
+  [
+    "add",
+    "shops/TestShopKey0123456789abc/cashups/2026-10-28_retail/history/auto001",
+    "signed"
+  ]
+]
+`;

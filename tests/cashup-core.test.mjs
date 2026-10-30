@@ -119,3 +119,16 @@ test("dates, times and the 7 pm deadline are South African time whatever the dev
   for (const zone of Object.keys(seen)) assert.deepEqual(seen[zone], seen["Africa/Johannesburg"], zone);
   snap(t, seen["Africa/Johannesburg"]);
 });
+
+test("bigVariances: lines more than R1000 out, short or over; petty cash never counts", t => {
+  const s = (dept, lines) => core.normalize(sheet(DAY, dept, { lines }), DAY, dept);
+  const pick = doc => core.bigVariances(doc).map(x => `${x.m.k} ${x.variance}`);
+  snap(t, {
+    exactly1000: pick(s("wholesale", { cash: ["2000", "1000"], card: ["0", "1000"] })),
+    justOver: pick(s("wholesale", { cash: ["2000", "999.99"], card: ["0", "1000.01"] })),
+    roundsToCents: pick(s("wholesale", { cash: ["1000.004", "0"] })),
+    cashguardRetainedCounts: pick(s("retail", { cashguard: ["5000", "3000", "500"] })),
+    pettyIgnored: pick(s("retail", { petty: ["", "5000"] })),
+    eftOnRetailIsCard: pick(s("citydeep", { card: ["0", "600"], eft: ["0", "600"] })),
+  });
+});

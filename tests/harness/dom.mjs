@@ -60,13 +60,14 @@ export class Element extends Node {
       },
     });
     const list = () => el.className.split(/\s+/).filter(Boolean);
+    // like a browser, leave the class attribute alone when nothing changes
     this.classList = {
       contains: c => list().includes(c),
-      add: (...cs) => { el.className = [...list(), ...cs.filter(c => !list().includes(c))].join(" "); },
-      remove: (...cs) => { el.className = list().filter(c => !cs.includes(c)).join(" "); },
+      add: (...cs) => { if (cs.some(c => !list().includes(c))) el.className = [...list(), ...cs.filter(c => !list().includes(c))].join(" "); },
+      remove: (...cs) => { if (cs.some(c => list().includes(c))) el.className = list().filter(c => !cs.includes(c)).join(" "); },
       toggle: (c, force) => {
         const want = force === undefined ? !list().includes(c) : !!force;
-        el.className = (want ? [...list().filter(x => x !== c), c] : list().filter(x => x !== c)).join(" ");
+        if (want !== list().includes(c)) el.className = (want ? [...list(), c] : list().filter(x => x !== c)).join(" ");
         return want;
       },
     };

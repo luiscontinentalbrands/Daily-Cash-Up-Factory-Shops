@@ -1,3 +1,21 @@
+exports[`bigVariances: lines more than R1000 out, short or over; petty cash never counts 1`] = `
+{
+  "exactly1000": [],
+  "justOver": [
+    "cash -1000.01",
+    "card 1000.01"
+  ],
+  "roundsToCents": [],
+  "cashguardRetainedCounts": [
+    "cashguard -1500"
+  ],
+  "pettyIgnored": [],
+  "eftOnRetailIsCard": [
+    "card 1200"
+  ]
+}
+`;
+
 exports[`dates 1`] = `
 {
   "today": "2026-10-28",

@@ -20,6 +20,7 @@ import {
   serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 import {
+  BIG_VARIANCE,
   CD_START,
   DEPTS,
   METHODS,
@@ -33,6 +34,8 @@ import {
   depositedTotal,
   esc,
   hasSplit,
+  bigVariances,
+  isBigVariance,
   isMgr,
   isRetail,
   longDate,
@@ -134,6 +137,7 @@ const state = {
   deferred: false, // a live update waited while a signature was being drawn
   lastAI: "", // what the photo reader returned, shown under its message
   nb: null, // Not banked report; set up on first visit (dates start at that day's month)
+  bigChecked: {}, // per sheet: the large differences the person was already sent back to check
 };
 // The sheets as they are being edited on this device, per dept. state.docs keeps the last copy from the
 // database; a draft is made from it (normalize) when first needed and replaced when the database sends a change.
@@ -858,19 +862,20 @@ function cgNote(t) {
 // CashGuard on the retail shops has two: deposited in Nedbank, and counted & retained (not banked).
 function sheetRow(dept, m, ln, dis) {
   const inA = `inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" ${dis}`;
-  const v = depositedTotal(ln) - num(ln.report);
+  const v = depositedTotal(ln) - num(ln.report),
+    big = isBigVariance(v);
   if (m.k === "petty")
     return `<tr class="petty"><td>${m.l}<div class="msg" style="font-size:.72rem;font-weight:400">Cash kept for petty cash</div></td>
       <td class="num muted">—</td>
       <td class="inp"><input id="${dept}-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="Petty cash, not banked"></td>
       <td class="num muted">—</td></tr>`;
   if (m.k === "cashguard" && hasSplit(dept))
-    return `<tr class="cg"><td>${m.l}</td>
+    return `<tr class="cg${big ? " bigvar" : ""}"><td>${m.l}</td>
       <td class="inp"><input id="${dept}-cashguard-report" data-m="cashguard" data-f="report" ${inA} value="${esc(ln.report)}" aria-label="CashGuard per report"></td>
       <td class="inp"><label class="sub" for="${dept}-cashguard-deposited">Deposited in Nedbank</label><input id="${dept}-cashguard-deposited" data-m="cashguard" data-f="deposited" ${inA} value="${esc(ln.deposited)}" aria-label="CashGuard deposited in Nedbank">
         <label class="sub" for="${dept}-cashguard-retained">Counted &amp; retained, not banked</label><input id="${dept}-cashguard-retained" data-m="cashguard" data-f="retained" ${inA} value="${esc(ln.retained)}" aria-label="CashGuard counted and retained, not banked"></td>
       <td class="num ${vcls(v)}" id="v-cashguard">${RV(v)}</td></tr>`;
-  return `<tr><td>${methodLabel(m, dept)}</td>
+  return `<tr${big ? ' class="bigvar"' : ""}><td>${methodLabel(m, dept)}</td>
       <td class="inp"><input id="${dept}-${m.k}-report" data-m="${m.k}" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.report)}" ${dis} aria-label="${methodLabel(m, dept)} per report"></td>
       <td class="inp"><input id="${dept}-${m.k}-deposited" data-m="${m.k}" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="${methodLabel(m, dept)} deposited"></td>
       <td class="num ${vcls(v)}" id="v-${m.k}">${RV(v)}</td></tr>`;
@@ -1167,6 +1172,7 @@ function recalc(dept) {
     if (el) {
       el.textContent = RV(v);
       el.className = "num " + vcls(v);
+      el.parentElement.classList.toggle("bigvar", isBigVariance(v));
     }
   });
   const t = totals(doc),
@@ -1350,6 +1356,54 @@ function signOffProblem(dept, doc) {
   if (t.report === 0 && t.deposited === 0) return "Enter the report and deposited amounts before signing.";
   return "";
 }
+// Before a shop sheet is signed: a big red alert for every payment line more than BIG_VARIANCE out. The first
+// time, it sends the person back to check those figures. If they sign again with the same differences, it asks
+// them to confirm the figures are correct. Resolves true when the sheet may be signed.
+function confirmBigVariances(dept, doc) {
+  const big = bigVariances(doc);
+  if (!big.length) return Promise.resolve(true);
+  const key = big.map(x => x.m.k + ":" + x.variance).join("|");
+  const checked = state.bigChecked[dept] === key;
+  const it = big.length === 1 ? "it" : "them";
+  return new Promise(resolve => {
+    const ov = document.createElement("div");
+    ov.className = "bigalert";
+    ov.setAttribute("role", "alertdialog");
+    ov.setAttribute("aria-modal", "true");
+    ov.setAttribute("aria-labelledby", "bigalert-title");
+    ov.innerHTML = `<div class="bigalert-box">
+      <div class="bigalert-head"><span class="bigalert-mark" aria-hidden="true">!</span><h2 id="bigalert-title">${checked ? "Are these figures correct?" : "Check these figures before signing"}</h2></div>
+      <div class="bigalert-body">
+        <p>${big.length === 1 ? "This payment type is" : "These payment types are"} more than ${R(BIG_VARIANCE)} out.${checked ? ` Sign only if you have checked ${it} against the till report and the money counted.` : ` A difference this big usually means a figure was typed wrong. Go back and check ${it} against the till report and the money counted.`}</p>
+        <ul>${big.map(({ m, variance }) => `<li><b>${methodLabel(m, dept)}</b>: per report ${R(num(doc.lines[m.k].report))}, deposited ${R(depositedTotal(doc.lines[m.k]))} <b class="num">${RV(variance)}</b></li>`).join("")}</ul>
+        <div class="actions"><button class="btn${checked ? "" : " primary"}" type="button" id="bigalert-back">Go back and check</button>${checked ? '<button class="btn bigalert-sign" type="button" id="bigalert-sign">The figures are correct, sign</button>' : ""}</div>
+      </div>
+    </div>`;
+    const back = () => {
+      state.bigChecked[dept] = key;
+      ov.remove();
+      resolve(false);
+      // take them to the first figure to check (its row is marked in red)
+      const first = document.getElementById(dept + "-" + big[0].m.k + "-report");
+      if (first) {
+        first.scrollIntoView({ behavior: "smooth", block: "center" });
+        first.focus();
+      }
+    };
+    ov.querySelector("#bigalert-back").addEventListener("click", back);
+    const sign = ov.querySelector("#bigalert-sign");
+    if (sign)
+      sign.addEventListener("click", () => {
+        ov.remove();
+        resolve(true);
+      });
+    ov.addEventListener("keydown", e => {
+      if (e.key === "Escape") back();
+    });
+    document.body.appendChild(ov);
+    ov.querySelector("#bigalert-back").focus();
+  });
+}
 function bindPad(cv, dept) {
   const pad = signaturePad(cv);
   $("#clear").addEventListener("click", () => {
@@ -1369,6 +1423,10 @@ function bindPad(cv, dept) {
     const who = state.me.name;
     if (!pad.isInked()) {
       msg.textContent = "Draw the signature in the box first.";
+      return;
+    }
+    if (!isMgr(dept) && !(await confirmBigVariances(dept, doc))) {
+      msg.textContent = "Check the figures marked in red, then tap Sign & submit again.";
       return;
     }
     const signature = pad.png();

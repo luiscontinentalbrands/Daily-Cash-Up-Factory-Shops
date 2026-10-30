@@ -216,6 +216,18 @@ export function totals(doc) {
   return { report: r, deposited: d, variance: d - r, retained: ret, petty: pet, banked: d - ret - pet };
 }
 
+// A payment line more than this many rand out, short or over, must be checked again before the sheet is signed
+export const BIG_VARIANCE = 1000;
+export const isBigVariance = v => Math.abs(Math.round(v * 100) / 100) > BIG_VARIANCE;
+// The payment lines of a sheet that are more than BIG_VARIANCE out: [{ m, variance }]. Petty cash has no report
+// figure to compare with, so it never counts.
+export function bigVariances(doc) {
+  return methodsFor(doc.dept)
+    .filter(m => m.k !== "petty")
+    .map(m => ({ m, variance: Math.round((depositedTotal(doc.lines[m.k]) - num(doc.lines[m.k].report)) * 100) / 100 }))
+    .filter(x => isBigVariance(x.variance));
+}
+
 /* Deadline: every trading day (Mon–Sat) every shop sheet and the manager's sign-off by DEADLINE_HOUR, South African time */
 export function dayInfo(date, W, Rt, M, C) {
   if (onDay(date).getUTCDay() === 0)
