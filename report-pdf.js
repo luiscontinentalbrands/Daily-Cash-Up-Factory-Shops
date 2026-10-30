@@ -3,7 +3,7 @@
 // Usage: buildReportPdf(jsPDF, {date, niceDate, W, Rt, M, C, status, photos, handovers})  ->  jsPDF document
 //   W / Rt / M: the Wholesale, Aeroton Retail and Manager sheets; C: City Deep Retail (omit before City Deep started)
 //   photos: [{dept, data (jpeg data URL), by, takenAt}] (optional, removed photos already filtered out)
-import { METHODS, R as rand, RV as randVariance, hasSplit, methodLabel, methodsFor, num } from "./cashup-core.js?v=2026-10-30c";
+import { PAYMENT_METHODS, R as rand, RV as randVariance, countedTotal, hasSplit, methodLabel, methodsFor, num } from "./cashup-core.js?v=2026-10-30c";
 
 // standard PDF fonts have no special spaces or minus signs: keep to plain characters
 const plain = s => String(s ?? "").replace(/[   ]/g, " ").replace(/−/g, "-").replace(/[^\x20-\x7e\xa0-\xff]/g, "");
@@ -15,9 +15,8 @@ const line = (doc, k, f) => num(doc?.lines?.[k]?.[f]);
 const isPng = s => /^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(String(s || ""));
 const isJpg = s => /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(String(s || ""));
 
-// Which lines each shop uses (see methodsFor in cashup-core.js); Retail and City Deep split CashGuard (Nedbank + not banked)
+// Which lines each shop uses, and what was counted for each (see methodsFor and countedTotal in cashup-core.js)
 const hasLine = (shop, k) => methodsFor(shop).some(m => m.k === k);
-const depOf = (doc, shop, k) => line(doc, k, "deposited") + (hasSplit(shop) ? line(doc, k, "retained") : 0);
 
 export function buildReportPdf(jsPDF, d) {
   const { W, Rt, M, C } = d;
@@ -60,14 +59,14 @@ export function buildReportPdf(jsPDF, d) {
   y += 12;
   pdf.setDrawColor(230, 225, 217); pdf.setLineWidth(0.2);
   const tot = shops.map(() => [0, 0]);
-  METHODS.forEach(m => {
+  PAYMENT_METHODS.forEach(m => {
     const k = m.k, l = methodLabel(m, "combined");
     y += 6.5; ink(); pdf.setFont("helvetica", "normal"); pdf.setFontSize(fs);
     text(l, X + 2, y);
     let r = 0, dd = 0;
     shops.forEach(([, doc, shop], i) => {
       if (!hasLine(shop, k)) { grey(); text("-", right(1 + 2 * i), y, { align: "right" }); text("-", right(2 + 2 * i), y, { align: "right" }); ink(); return; }
-      const a = line(doc, k, "report"), b = depOf(doc, shop, k); r += a; dd += b; tot[i][0] += a; tot[i][1] += b;
+      const a = line(doc, k, "report"), b = countedTotal(doc, k); r += a; dd += b; tot[i][0] += a; tot[i][1] += b;
       text(R(a), right(1 + 2 * i), y, { align: "right" }); text(R(b), right(2 + 2 * i), y, { align: "right" });
     });
     const v = dd - r, base = 2 * shops.length;

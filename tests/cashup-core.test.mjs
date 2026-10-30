@@ -38,9 +38,10 @@ test("payment lines and labels per shop", t => {
 // "which lines each shop uses". This is that copy, word for word, to prove it agrees with methodsFor().
 const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: ["cash", "cashguard", "card", "snapscan"] };
 const hasLine = (shop, k) => (k === "payfast" || k === "cardcbm") ? shop === "wholesale" : k === "petty" ? shop === "retail" : (!SHOP_LINES[shop] || SHOP_LINES[shop].includes(k));
-test("methodsFor agrees with the PDF and email job's hasLine for every shop and line", () => {
+test("methodsFor: the old per-shop line list, except that petty cash is no longer a line of its own", () => {
   for (const shop of SHOPS)
-    for (const m of core.METHODS) assert.equal(core.methodsFor(shop).some(x => x.k === m.k), hasLine(shop, m.k), `${shop} ${m.k}`);
+    for (const m of core.METHODS)
+      assert.equal(core.methodsFor(shop).some(x => x.k === m.k), m.k !== "petty" && hasLine(shop, m.k), `${shop} ${m.k}`);
 });
 
 test("normalize: blank sheets, older stored data, server signature time", t => {

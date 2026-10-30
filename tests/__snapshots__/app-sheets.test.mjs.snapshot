@@ -127,9 +127,12 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
                 " "
                 <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
                 <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="300.00" aria-label="CashGuard counted and retained, not banked">
+                " "
+                <label class="sub" for="retail-petty-deposited">"Petty cash, not banked"</label>
+                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" aria-label="Petty cash, not banked">
               </td>
               " "
-              <td class="num var-neg" id="v-cashguard">"−R 200,00"</td>
+              <td class="num var-neg" id="v-cashguard">"−R 400,00"</td>
             </tr>
             <tr>
               <td>"Credit card"</td>
@@ -157,28 +160,14 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
               " "
               <td class="num var-zero" id="v-snapscan">"R 0,00"</td>
             </tr>
-            <tr class="petty">
-              <td>
-                "Petty cash (not banked)"
-                <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
-              </td>
-              " "
-              <td class="num muted">"—"</td>
-              " "
-              <td class="inp">
-                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" aria-label="Petty cash, not banked">
-              </td>
-              " "
-              <td class="num muted">"—"</td>
-            </tr>
           </tbody>
           " "
           <tfoot>
             <tr>
               <td>"Total"</td>
               <td class="num" id="t-report">"R 8 245,75"</td>
-              <td class="num" id="t-dep">"R 8 245,75"</td>
-              <td class="num var-zero" id="t-var">"R 0,00"</td>
+              <td class="num" id="t-dep">"R 7 845,75"</td>
+              <td class="num var-neg" id="t-var">"−R 400,00"</td>
             </tr>
             " "
             <tr class="cgnote">
@@ -771,6 +760,9 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
                 " "
                 <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
                 <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard counted and retained, not banked">
+                " "
+                <label class="sub" for="retail-petty-deposited">"Petty cash, not banked"</label>
+                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Petty cash, not banked">
               </td>
               " "
               <td class="num var-zero" id="v-cashguard">"R 0,00"</td>
@@ -800,20 +792,6 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
               </td>
               " "
               <td class="num var-zero" id="v-snapscan">"R 0,00"</td>
-            </tr>
-            <tr class="petty">
-              <td>
-                "Petty cash (not banked)"
-                <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
-              </td>
-              " "
-              <td class="num muted">"—"</td>
-              " "
-              <td class="inp">
-                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Petty cash, not banked">
-              </td>
-              " "
-              <td class="num muted">"—"</td>
             </tr>
           </tbody>
           " "
@@ -1411,9 +1389,12 @@ exports[`notes, damaged notes and coins, petty cash details 3`] = `
               " "
               <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
               <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200" aria-label="CashGuard counted and retained, not banked">
+              " "
+              <label class="sub" for="retail-petty-deposited">"Petty cash, not banked"</label>
+              <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" aria-label="Petty cash, not banked" data-sel>
             </td>
             " "
-            <td class="num var-pos" id="v-cashguard">"+R 200,00"</td>
+            <td class="num var-zero" id="v-cashguard">"R 0,00"</td>
           </tr>
           <tr>
             <td>"Credit card"</td>
@@ -1441,28 +1422,14 @@ exports[`notes, damaged notes and coins, petty cash details 3`] = `
             " "
             <td class="num var-zero" id="v-snapscan">"R 0,00"</td>
           </tr>
-          <tr class="petty">
-            <td>
-              "Petty cash (not banked)"
-              <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
-            </td>
-            " "
-            <td class="num muted">"—"</td>
-            " "
-            <td class="inp">
-              <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" aria-label="Petty cash, not banked" data-sel>
-            </td>
-            " "
-            <td class="num muted">"—"</td>
-          </tr>
         </tbody>
         " "
         <tfoot>
           <tr>
             <td>"Total"</td>
             <td class="num" id="t-report">"R 0,00"</td>
-            <td class="num" id="t-dep">"R 400,00"</td>
-            <td class="num var-pos" id="t-var">"+R 400,00"</td>
+            <td class="num" id="t-dep">"R 0,00"</td>
+            <td class="num var-zero" id="t-var">"R 0,00"</td>
           </tr>
           " "
           <tr class="cgnote">
@@ -1645,6 +1612,9 @@ exports[`older stored data is tidied on load (Retail EFT into card, no Shop2Shop
       " "
       <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
       <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="5" aria-label="CashGuard counted and retained, not banked">
+      " "
+      <label class="sub" for="retail-petty-deposited">"Petty cash, not banked"</label>
+      <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Petty cash, not banked">
     </td>
     " "
     <td class="num var-zero" id="v-cashguard">"R 0,00"</td>
@@ -1674,20 +1644,6 @@ exports[`older stored data is tidied on load (Retail EFT into card, no Shop2Shop
     </td>
     " "
     <td class="num var-zero" id="v-snapscan">"R 0,00"</td>
-  </tr>
-  <tr class="petty">
-    <td>
-      "Petty cash (not banked)"
-      <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
-    </td>
-    " "
-    <td class="num muted">"—"</td>
-    " "
-    <td class="inp">
-      <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Petty cash, not banked">
-    </td>
-    " "
-    <td class="num muted">"—"</td>
   </tr>
 </tbody>
 `;
@@ -2147,9 +2103,12 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
                 " "
                 <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
                 <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="300.00" aria-label="CashGuard counted and retained, not banked">
+                " "
+                <label class="sub" for="retail-petty-deposited">"Petty cash, not banked"</label>
+                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" aria-label="Petty cash, not banked">
               </td>
               " "
-              <td class="num var-neg" id="v-cashguard">"−R 200,00"</td>
+              <td class="num var-neg" id="v-cashguard">"−R 400,00"</td>
             </tr>
             <tr>
               <td>"Credit card"</td>
@@ -2177,28 +2136,14 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
               " "
               <td class="num var-zero" id="v-snapscan">"R 0,00"</td>
             </tr>
-            <tr class="petty">
-              <td>
-                "Petty cash (not banked)"
-                <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
-              </td>
-              " "
-              <td class="num muted">"—"</td>
-              " "
-              <td class="inp">
-                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" aria-label="Petty cash, not banked">
-              </td>
-              " "
-              <td class="num muted">"—"</td>
-            </tr>
           </tbody>
           " "
           <tfoot>
             <tr>
               <td>"Total"</td>
               <td class="num" id="t-report">"R 8 245,75"</td>
-              <td class="num" id="t-dep">"R 8 245,75"</td>
-              <td class="num var-zero" id="t-var">"R 0,00"</td>
+              <td class="num" id="t-dep">"R 7 845,75"</td>
+              <td class="num var-neg" id="t-var">"−R 400,00"</td>
             </tr>
             " "
             <tr class="cgnote">
@@ -2974,9 +2919,12 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
                 " "
                 <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
                 <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="300.00" aria-label="CashGuard counted and retained, not banked">
+                " "
+                <label class="sub" for="retail-petty-deposited">"Petty cash, not banked"</label>
+                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="200.00" aria-label="Petty cash, not banked">
               </td>
               " "
-              <td class="num var-neg" id="v-cashguard">"−R 200,00"</td>
+              <td class="num var-neg" id="v-cashguard">"−R 400,00"</td>
             </tr>
             <tr>
               <td>"Credit card"</td>
@@ -3004,28 +2952,14 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
               " "
               <td class="num var-zero" id="v-snapscan">"R 0,00"</td>
             </tr>
-            <tr class="petty">
-              <td>
-                "Petty cash (not banked)"
-                <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
-              </td>
-              " "
-              <td class="num muted">"—"</td>
-              " "
-              <td class="inp">
-                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" disabled aria-label="Petty cash, not banked">
-              </td>
-              " "
-              <td class="num muted">"—"</td>
-            </tr>
           </tbody>
           " "
           <tfoot>
             <tr>
               <td>"Total"</td>
               <td class="num" id="t-report">"R 8 245,75"</td>
-              <td class="num" id="t-dep">"R 8 245,75"</td>
-              <td class="num var-zero" id="t-var">"R 0,00"</td>
+              <td class="num" id="t-dep">"R 7 845,75"</td>
+              <td class="num var-neg" id="t-var">"−R 400,00"</td>
             </tr>
             " "
             <tr class="cgnote">
@@ -3740,9 +3674,12 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
                 " "
                 <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
                 <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="300.00" aria-label="CashGuard counted and retained, not banked">
+                " "
+                <label class="sub" for="retail-petty-deposited">"Petty cash, not banked"</label>
+                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="200.00" aria-label="Petty cash, not banked">
               </td>
               " "
-              <td class="num var-neg" id="v-cashguard">"−R 200,00"</td>
+              <td class="num var-neg" id="v-cashguard">"−R 400,00"</td>
             </tr>
             <tr>
               <td>"Credit card"</td>
@@ -3770,28 +3707,14 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
               " "
               <td class="num var-zero" id="v-snapscan">"R 0,00"</td>
             </tr>
-            <tr class="petty">
-              <td>
-                "Petty cash (not banked)"
-                <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
-              </td>
-              " "
-              <td class="num muted">"—"</td>
-              " "
-              <td class="inp">
-                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" disabled aria-label="Petty cash, not banked">
-              </td>
-              " "
-              <td class="num muted">"—"</td>
-            </tr>
           </tbody>
           " "
           <tfoot>
             <tr>
               <td>"Total"</td>
               <td class="num" id="t-report">"R 8 245,75"</td>
-              <td class="num" id="t-dep">"R 8 245,75"</td>
-              <td class="num var-zero" id="t-var">"R 0,00"</td>
+              <td class="num" id="t-dep">"R 7 845,75"</td>
+              <td class="num var-neg" id="t-var">"−R 400,00"</td>
             </tr>
             " "
             <tr class="cgnote">
@@ -4001,9 +3924,12 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
                 " "
                 <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
                 <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="300.00" aria-label="CashGuard counted and retained, not banked">
+                " "
+                <label class="sub" for="retail-petty-deposited">"Petty cash, not banked"</label>
+                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="200.00" aria-label="Petty cash, not banked">
               </td>
               " "
-              <td class="num var-neg" id="v-cashguard">"−R 200,00"</td>
+              <td class="num var-neg" id="v-cashguard">"−R 400,00"</td>
             </tr>
             <tr>
               <td>"Credit card"</td>
@@ -4031,28 +3957,14 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
               " "
               <td class="num var-zero" id="v-snapscan">"R 0,00"</td>
             </tr>
-            <tr class="petty">
-              <td>
-                "Petty cash (not banked)"
-                <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
-              </td>
-              " "
-              <td class="num muted">"—"</td>
-              " "
-              <td class="inp">
-                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" disabled aria-label="Petty cash, not banked">
-              </td>
-              " "
-              <td class="num muted">"—"</td>
-            </tr>
           </tbody>
           " "
           <tfoot>
             <tr>
               <td>"Total"</td>
               <td class="num" id="t-report">"R 8 245,75"</td>
-              <td class="num" id="t-dep">"R 8 245,75"</td>
-              <td class="num var-zero" id="t-var">"R 0,00"</td>
+              <td class="num" id="t-dep">"R 7 845,75"</td>
+              <td class="num var-neg" id="t-var">"−R 400,00"</td>
             </tr>
             " "
             <tr class="cgnote">

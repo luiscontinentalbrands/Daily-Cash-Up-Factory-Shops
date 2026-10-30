@@ -2,8 +2,8 @@ exports[`History with more sheets than it loads: the oldest day is not shown hal
 {
   "days": 76,
   "oldest": [
-    "Sat, 15 Aug 2026Closed on timeWholesaleSigned off R 8 125,49Aeroton RetailSigned off R 8 245,75R 16 371,24−R 50,00",
-    "Fri, 14 Aug 2026Closed on timeWholesaleSigned off R 8 125,49Aeroton RetailSigned off R 8 245,75R 16 371,24−R 50,00"
+    "Sat, 15 Aug 2026Closed on timeWholesaleSigned off R 8 125,49Aeroton RetailSigned off R 7 845,75R 15 971,24−R 450,00",
+    "Fri, 14 Aug 2026Closed on timeWholesaleSigned off R 8 125,49Aeroton RetailSigned off R 7 845,75R 15 971,24−R 450,00"
   ]
 }
 `;
@@ -35,7 +35,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
           <div class="eyebrow">"Aeroton Retail"</div>
           <span class="chip draft">"In progress"</span>
           " "
-          <span class="num msg">"R 8 245,75"</span>
+          <span class="num msg">"R 7 845,75"</span>
         </div>
         <div>
           <div class="eyebrow">"City Deep Retail"</div>
@@ -45,9 +45,9 @@ exports[`History: days newest first, status and totals; tap a day to open End of
         </div>
         <div class="r">
           <div class="num">
-            <b>"R 21 513,24"</b>
+            <b>"R 21 113,24"</b>
           </div>
-          <div class="num msg var-neg">"−R 19,95"</div>
+          <div class="num msg var-neg">"−R 419,95"</div>
         </div>
       </button>
       <button class="hrow cd" data-d="2026-10-27">
@@ -65,7 +65,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
           <div class="eyebrow">"Aeroton Retail"</div>
           <span class="chip draft">"In progress"</span>
           " "
-          <span class="num msg">"R 8 245,75"</span>
+          <span class="num msg">"R 7 845,75"</span>
         </div>
         <div>
           <div class="eyebrow">"City Deep Retail"</div>
@@ -75,9 +75,9 @@ exports[`History: days newest first, status and totals; tap a day to open End of
         </div>
         <div class="r">
           <div class="num">
-            <b>"R 21 513,24"</b>
+            <b>"R 21 113,24"</b>
           </div>
-          <div class="num msg var-neg">"−R 19,95"</div>
+          <div class="num msg var-neg">"−R 419,95"</div>
         </div>
       </button>
       <button class="hrow cd" data-d="2026-10-26">
@@ -95,7 +95,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
           <div class="eyebrow">"Aeroton Retail"</div>
           <span class="chip signed">"Signed off"</span>
           " "
-          <span class="num msg">"R 8 245,75"</span>
+          <span class="num msg">"R 7 845,75"</span>
         </div>
         <div>
           <div class="eyebrow">"City Deep Retail"</div>
@@ -105,9 +105,9 @@ exports[`History: days newest first, status and totals; tap a day to open End of
         </div>
         <div class="r">
           <div class="num">
-            <b>"R 21 513,24"</b>
+            <b>"R 21 113,24"</b>
           </div>
-          <div class="num msg var-neg">"−R 19,95"</div>
+          <div class="num msg var-neg">"−R 419,95"</div>
         </div>
       </button>
       <button class="hrow cd" data-d="2026-10-25">
@@ -151,13 +151,13 @@ exports[`History: days newest first, status and totals; tap a day to open End of
           <div class="eyebrow">"Aeroton Retail"</div>
           <span class="chip signed">"Signed off"</span>
           " "
-          <span class="num msg">"R 8 245,75"</span>
+          <span class="num msg">"R 7 845,75"</span>
         </div>
         <div class="r">
           <div class="num">
-            <b>"R 16 371,24"</b>
+            <b>"R 15 971,24"</b>
           </div>
-          <div class="num msg var-neg">"−R 50,00"</div>
+          <div class="num msg var-neg">"−R 450,00"</div>
         </div>
       </button>
     </div>

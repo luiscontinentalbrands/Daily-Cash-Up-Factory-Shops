@@ -9,7 +9,9 @@ exports[`bigVariances: lines more than R1000 out, short or over; petty cash neve
   "cashguardRetainedCounts": [
     "cashguard -1500"
   ],
-  "pettyIgnored": [],
+  "pettyIgnored": [
+    "cashguard -5000"
+  ],
   "eftOnRetailIsCard": [
     "card 1200"
   ]
@@ -467,8 +469,7 @@ exports[`payment lines and labels per shop 1`] = `
     "cash: Coins",
     "cashguard: CashGuard",
     "card: Credit card",
-    "snapscan: SnapScan",
-    "petty: Petty cash (not banked)"
+    "snapscan: SnapScan"
   ],
   "citydeep": [
     "cash: Coins",
@@ -507,8 +508,8 @@ exports[`totals per shop 1`] = `
   },
   "retail": {
     "report": 8245.75,
-    "deposited": 8245.75,
-    "variance": 0,
+    "deposited": 7845.75,
+    "variance": -400,
     "retained": 300,
     "petty": 200,
     "banked": 7745.75

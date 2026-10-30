@@ -532,8 +532,8 @@ exports[`manager reopens a sheet after the day is closed: the day reopens first 
       "at": "<serverTimestamp>",
       "totals": {
         "report": 8245.75,
-        "deposited": 8245.75,
-        "variance": 0,
+        "deposited": 7845.75,
+        "variance": -400,
         "retained": 300,
         "petty": 200,
         "banked": 7745.75
@@ -796,12 +796,12 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
     " "
     <div class="stat">
       <div class="k">"Deposited"</div>
-      <div class="v num">"R 21 513,24"</div>
+      <div class="v num">"R 21 113,24"</div>
     </div>
     " "
     <div class="stat">
       <div class="k">"Variance"</div>
-      <div class="v num var-neg">"−R 19,95"</div>
+      <div class="v num var-neg">"−R 419,95"</div>
     </div>
     " "
     <div class="stat">
@@ -840,7 +840,7 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
         <div class="eodviews" role="group" aria-label="Show the figures of">
           <button type="button" class="eodview on" data-eod="all" aria-pressed="true">
             <span>"All shops"</span>
-            <span class="num var-neg">"−R 19,95"</span>
+            <span class="num var-neg">"−R 419,95"</span>
           </button>
           <button type="button" class="eodview" data-eod="wholesale" aria-pressed="false">
             <span>"Wholesale"</span>
@@ -848,7 +848,7 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
           </button>
           <button type="button" class="eodview" data-eod="retail" aria-pressed="false">
             <span>"Aeroton Retail"</span>
-            <span class="num var-zero">"R 0,00"</span>
+            <span class="num var-neg">"−R 400,00"</span>
           </button>
           <button type="button" class="eodview" data-eod="citydeep" aria-pressed="false">
             <span>"City Deep Retail"</span>
@@ -877,8 +877,8 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
               <tr>
                 <td>"CashGuard"</td>
                 <td class="num" data-l="Report">"R 10 500,00"</td>
-                <td class="num" data-l="Deposited">"R 10 350,00"</td>
-                <td class="num var-neg" data-l="Variance">"−R 150,00"</td>
+                <td class="num" data-l="Deposited">"R 10 150,00"</td>
+                <td class="num var-neg" data-l="Variance">"−R 350,00"</td>
               </tr>
               <tr>
                 <td>"Credit card"</td>
@@ -916,20 +916,14 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
                 <td class="num" data-l="Deposited">"R 105,00"</td>
                 <td class="num var-zero" data-l="Variance">"R 0,00"</td>
               </tr>
-              <tr>
-                <td>"Petty cash (not banked)"</td>
-                <td class="num" data-l="Report">"R 0,00"</td>
-                <td class="num" data-l="Deposited">"R 200,00"</td>
-                <td class="num var-pos" data-l="Variance">"+R 200,00"</td>
-              </tr>
             </tbody>
             " "
             <tfoot>
               <tr>
                 <td>"Total"</td>
                 <td class="num" data-l="Report">"R 21 533,19"</td>
-                <td class="num" data-l="Deposited">"R 21 513,24"</td>
-                <td class="num var-neg" data-l="Variance">"−R 19,95"</td>
+                <td class="num" data-l="Deposited">"R 21 113,24"</td>
+                <td class="num var-neg" data-l="Variance">"−R 419,95"</td>
               </tr>
             </tfoot>
             " "
@@ -941,7 +935,7 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
         " "
         <div class="field">
           <label>"Aeroton variance"</label>
-          <div class="static num var-neg">"−R 50,00"</div>
+          <div class="static num var-neg">"−R 450,00"</div>
         </div>
         " "
         <div class="field">
@@ -951,7 +945,7 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
         " "
         <div class="field">
           <label>"All shops variance"</label>
-          <div class="static num var-neg">"−R 19,95"</div>
+          <div class="static num var-neg">"−R 419,95"</div>
         </div>
       </div>
       " "

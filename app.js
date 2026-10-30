@@ -24,6 +24,7 @@ import {
   CD_START,
   DEPTS,
   METHODS,
+  PAYMENT_METHODS,
   R,
   RV,
   SHEETS,
@@ -31,7 +32,7 @@ import {
   clone,
   csvCell,
   dayInfo,
-  depositedTotal,
+  countedTotal,
   esc,
   hasSplit,
   bigVariances,
@@ -859,22 +860,23 @@ function cgNote(t) {
     ? `Includes CashGuard counted &amp; retained, not banked: <b>${R(t.retained)}</b>${p}. Banked total: ${R(t.banked)}.`
     : "Nothing kept back: everything counted was banked.";
 }
-// One payment line of a shop sheet: per report, deposited and variance. Petty cash has only a deposited box;
-// CashGuard on the retail shops has two: deposited in Nedbank, and counted & retained (not banked).
-function sheetRow(dept, m, ln, dis) {
+// One payment line of a shop sheet: per report, deposited and variance. CashGuard on the retail shops has more
+// than one deposited box: deposited in Nedbank, counted & retained (not banked), and on Aeroton Retail petty cash.
+function sheetRow(dept, m, doc, dis) {
+  const ln = doc.lines[m.k];
   const inA = `inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" ${dis}`;
-  const v = depositedTotal(ln) - num(ln.report),
+  const v = countedTotal(doc, m.k) - num(ln.report),
     big = isBigVariance(v);
-  if (m.k === "petty")
-    return `<tr class="petty"><td>${m.l}<div class="msg" style="font-size:.72rem;font-weight:400">Cash kept for petty cash</div></td>
-      <td class="num muted">—</td>
-      <td class="inp"><input id="${dept}-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="Petty cash, not banked"></td>
-      <td class="num muted">—</td></tr>`;
   if (m.k === "cashguard" && hasSplit(dept))
     return `<tr class="cg${big ? " bigvar" : ""}"><td>${m.l}</td>
       <td class="inp"><input id="${dept}-cashguard-report" data-m="cashguard" data-f="report" ${inA} value="${esc(ln.report)}" aria-label="CashGuard per report"></td>
       <td class="inp"><label class="sub" for="${dept}-cashguard-deposited">Deposited in Nedbank</label><input id="${dept}-cashguard-deposited" data-m="cashguard" data-f="deposited" ${inA} value="${esc(ln.deposited)}" aria-label="CashGuard deposited in Nedbank">
-        <label class="sub" for="${dept}-cashguard-retained">Counted &amp; retained, not banked</label><input id="${dept}-cashguard-retained" data-m="cashguard" data-f="retained" ${inA} value="${esc(ln.retained)}" aria-label="CashGuard counted and retained, not banked"></td>
+        <label class="sub" for="${dept}-cashguard-retained">Counted &amp; retained, not banked</label><input id="${dept}-cashguard-retained" data-m="cashguard" data-f="retained" ${inA} value="${esc(ln.retained)}" aria-label="CashGuard counted and retained, not banked">${
+          dept === "retail"
+            ? `
+        <label class="sub" for="${dept}-petty-deposited">Petty cash, not banked</label><input id="${dept}-petty-deposited" data-m="petty" data-f="deposited" ${inA} value="${esc(doc.lines.petty.deposited)}" aria-label="Petty cash, not banked">`
+            : ""
+        }</td>
       <td class="num ${vcls(v)}" id="v-cashguard">${RV(v)}</td></tr>`;
   return `<tr${big ? ' class="bigvar"' : ""}><td>${methodLabel(m, dept)}</td>
       <td class="inp"><input id="${dept}-${m.k}-report" data-m="${m.k}" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.report)}" ${dis} aria-label="${methodLabel(m, dept)} per report"></td>
@@ -914,7 +916,7 @@ function renderDept(dept) {
     dis = editable ? "" : "disabled";
   const t = totals(doc);
   const rows = methodsFor(dept)
-    .map(m => sheetRow(dept, m, doc.lines[m.k], dis))
+    .map(m => sheetRow(dept, m, doc, dis))
     .join("");
   const di = dayNow();
   const lockNote = lockNotice(dept, signed);
@@ -1168,7 +1170,7 @@ function patchInputs(dept) {
 function recalc(dept) {
   const doc = drafts[dept];
   METHODS.forEach(m => {
-    const v = depositedTotal(doc.lines[m.k]) - num(doc.lines[m.k].report);
+    const v = countedTotal(doc, m.k) - num(doc.lines[m.k].report);
     const el = document.getElementById("v-" + m.k);
     if (el) {
       el.textContent = RV(v);
@@ -1376,7 +1378,7 @@ function confirmBigVariances(dept, doc) {
       <div class="bigalert-head"><span class="bigalert-mark" aria-hidden="true">!</span><h2 id="bigalert-title">${checked ? "Are these figures correct?" : "Check these figures before signing"}</h2></div>
       <div class="bigalert-body">
         <p>${big.length === 1 ? "This payment type is" : "These payment types are"} more than ${R(BIG_VARIANCE)} out.${checked ? ` Sign only if you have checked ${it} against the till report and the money counted.` : ` A difference this big usually means a figure was typed wrong. Go back and check ${it} against the till report and the money counted.`}</p>
-        <ul>${big.map(({ m, variance }) => `<li><b>${methodLabel(m, dept)}</b>: per report ${R(num(doc.lines[m.k].report))}, deposited ${R(depositedTotal(doc.lines[m.k]))} <b class="num">${RV(variance)}</b></li>`).join("")}</ul>
+        <ul>${big.map(({ m, variance }) => `<li><b>${methodLabel(m, dept)}</b>: per report ${R(num(doc.lines[m.k].report))}, deposited ${R(countedTotal(doc, m.k))} <b class="num">${RV(variance)}</b></li>`).join("")}</ul>
         <div class="actions"><button class="btn${checked ? "" : " primary"}" type="button" id="bigalert-back">Go back and check</button>${checked ? '<button class="btn bigalert-sign" type="button" id="bigalert-sign">The figures are correct, sign</button>' : ""}</div>
       </div>
     </div>`;
@@ -1467,7 +1469,7 @@ function combinedLine(m, shops) {
   const cells = shops.map(([d, doc]) => {
     if (!methodsFor(d).some(x => x.k === m.k)) return null;
     const a = num(doc.lines[m.k].report),
-      b = depositedTotal(doc.lines[m.k]);
+      b = countedTotal(doc, m.k);
     report += a;
     deposited += b;
     return [a, b];
@@ -1519,7 +1521,7 @@ function endOfDayTable(shops, showCD, grandReport, grandDeposited, grandVariance
   };
   let rows, foot;
   if (view === "all") {
-    rows = METHODS.map(m => {
+    rows = PAYMENT_METHODS.map(m => {
       const { report, deposited } = combinedLine(m, shops);
       return row(methodLabel(m, "combined"), report, deposited);
     }).join("");
@@ -1527,7 +1529,7 @@ function endOfDayTable(shops, showCD, grandReport, grandDeposited, grandVariance
   } else {
     const [d, doc, t] = shops.find(([x]) => x === view);
     rows = methodsFor(d)
-      .map(m => row(methodLabel(m, d), num(doc.lines[m.k].report), depositedTotal(doc.lines[m.k])))
+      .map(m => row(methodLabel(m, d), num(doc.lines[m.k].report), countedTotal(doc, m.k)))
       .join("");
     foot = [t.report, t.deposited, t.variance];
   }
@@ -1548,7 +1550,7 @@ function endOfDayCsv(shops, M, info) {
   shops.forEach(([d]) => head.push(DEPTS[d] + " report", DEPTS[d] + " deposited"));
   head.push("All shops report", "All shops deposited", "Variance");
   const lines = [["Date", state.date], [], head];
-  METHODS.forEach(m => {
+  PAYMENT_METHODS.forEach(m => {
     const { cells, report: r, deposited: dd } = combinedLine(m, shops);
     const row = [methodLabel(m, "combined")];
     cells.forEach(c => row.push(...(c || [0, 0])));

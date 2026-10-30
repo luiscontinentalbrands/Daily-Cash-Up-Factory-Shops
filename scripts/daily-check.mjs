@@ -9,7 +9,7 @@ import nodemailer from "nodemailer";
 import { jsPDF } from "jspdf";
 import { buildReportPdf, reportFileName } from "../report-pdf.js";
 // the same address report-pdf.js uses, so Node loads the shared rules once
-import { CD_START, METHODS, R, RV, esc, hasSplit, methodLabel, methodsFor, normalize, num } from "../cashup-core.js?v=2026-10-30c";
+import { CD_START, PAYMENT_METHODS, R, RV, countedTotal, esc, hasSplit, methodLabel, methodsFor, normalize, num } from "../cashup-core.js?v=2026-10-30c";
 
 const MODE = (process.argv[2] || "seven").toLowerCase();
 const TZ = "Africa/Johannesburg";
@@ -90,12 +90,12 @@ function reportHtml(title, note) {
   if (withCD) shops.push(["City Deep Retail", Cd, "citydeep"]);
   const td = 'style="padding:6px 8px;text-align:right;border-bottom:1px solid #eee"';
   const tot = shops.map(() => [0, 0]);
-  const rows = METHODS.map(m => {
+  const rows = PAYMENT_METHODS.map(m => {
     const k = m.k, l = methodLabel(m, "combined");
     let r = 0, dd = 0;
     const cells = shops.map(([, doc, shop], i) => {
       if (!hasLine(shop, k)) return `<td ${td}>—</td><td ${td}>—</td>`;
-      const a = line(doc, k, "report"), b = line(doc, k, "deposited") + (hasSplit(shop) ? line(doc, k, "retained") : 0);
+      const a = line(doc, k, "report"), b = countedTotal(doc, k);
       r += a; dd += b; tot[i][0] += a; tot[i][1] += b;
       return `<td ${td}>${R(a)}</td><td ${td}>${R(b)}</td>`;
     }).join("");

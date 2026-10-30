@@ -11,8 +11,12 @@ export const METHODS = [
   { k: "eft", l: "EFT" },
   { k: "shop2shop", l: "Shop2Shop" },
   { k: "snapscan", l: "SnapScan" },
-  { k: "petty", l: "Petty cash (not banked)" }, // Aeroton Retail only: cash taken for petty cash, counted but not banked (no report figure)
+  // Aeroton Retail only: cash paid out as petty cash, not banked. Not a payment line of its own: it is entered
+  // under CashGuard and taken off what CashGuard counted (see countedTotal).
+  { k: "petty", l: "Petty cash (not banked)" },
 ];
+// The payment types shown as lines (petty cash is part of CashGuard)
+export const PAYMENT_METHODS = METHODS.filter(m => m.k !== "petty");
 export const DEPTS = {
   wholesale: "Wholesale",
   retail: "Aeroton Retail",
@@ -32,14 +36,12 @@ export const hasSplit = d => d === "retail" || d === "citydeep"; // CashGuard: N
 // The two retail shops (Aeroton Retail, City Deep Retail): cash is coins, no EFT line (EFT slips are credit card payments), no Shop2Shop
 export const isRetail = d => d === "retail" || d === "citydeep";
 export const methodsFor = dept =>
-  METHODS.filter(m =>
-    m.k === "petty"
-      ? dept === "retail"
-      : m.k === "payfast" || m.k === "cardcbm"
-        ? dept === "wholesale"
-        : isRetail(dept)
-          ? m.k !== "eft" && m.k !== "shop2shop"
-          : true,
+  PAYMENT_METHODS.filter(m =>
+    m.k === "payfast" || m.k === "cardcbm"
+      ? dept === "wholesale"
+      : isRetail(dept)
+        ? m.k !== "eft" && m.k !== "shop2shop"
+        : true,
   );
 export const methodLabel = (m, dept) =>
   m.k === "cash" ? (isRetail(dept) ? "Coins" : dept === "wholesale" ? "Cash" : "Cash / Coins (Retail shops)") : m.l;
@@ -146,8 +148,17 @@ export function clone(o) {
   return JSON.parse(JSON.stringify(o));
 }
 
-// CashGuard has two "deposited" amounts: banked in Nedbank (deposited) and counted but retained, not yet banked (retained)
-export const depositedTotal = ln => num(ln && ln.deposited) + num(ln && ln.retained);
+// What was counted for a payment line of a sheet (the Deposited column). On the retail shops CashGuard has more
+// than one amount: deposited in Nedbank plus counted & retained (not banked), and on Aeroton Retail minus the petty
+// cash paid out of it. Works on a missing sheet (0).
+export function countedTotal(doc, k) {
+  const lines = (doc && doc.lines) || {};
+  const amount = (key, f) => num(lines[key] && lines[key][f]);
+  let c = amount(k, "deposited");
+  if (k === "cashguard" && hasSplit(doc && doc.dept)) c += amount("cashguard", "retained");
+  if (k === "cashguard" && doc && doc.dept === "retail") c -= amount("petty", "deposited");
+  return c;
+}
 export function blank(date, dept) {
   const lines = {};
   METHODS.forEach(
@@ -209,22 +220,21 @@ export function totals(doc) {
     d = 0;
   methodsFor(doc.dept).forEach(m => {
     r += num(doc.lines[m.k].report);
-    d += depositedTotal(doc.lines[m.k]);
+    d += countedTotal(doc, m.k);
   });
   const ret = num(doc.lines.cashguard && doc.lines.cashguard.retained);
   const pet = doc.dept === "retail" ? num(doc.lines.petty && doc.lines.petty.deposited) : 0;
-  return { report: r, deposited: d, variance: d - r, retained: ret, petty: pet, banked: d - ret - pet };
+  // banked: what was counted less what was kept back (retained), adding back the petty cash already taken off
+  return { report: r, deposited: d, variance: d - r, retained: ret, petty: pet, banked: d - ret + pet };
 }
 
 // A payment line more than this many rand out, short or over, must be checked again before the sheet is signed
 export const BIG_VARIANCE = 1000;
 export const isBigVariance = v => Math.abs(Math.round(v * 100) / 100) > BIG_VARIANCE;
-// The payment lines of a sheet that are more than BIG_VARIANCE out: [{ m, variance }]. Petty cash has no report
-// figure to compare with, so it never counts.
+// The payment lines of a sheet that are more than BIG_VARIANCE out: [{ m, variance }]
 export function bigVariances(doc) {
   return methodsFor(doc.dept)
-    .filter(m => m.k !== "petty")
-    .map(m => ({ m, variance: Math.round((depositedTotal(doc.lines[m.k]) - num(doc.lines[m.k].report)) * 100) / 100 }))
+    .map(m => ({ m, variance: Math.round((countedTotal(doc, m.k) - num(doc.lines[m.k].report)) * 100) / 100 }))
     .filter(x => isBigVariance(x.variance));
 }
 

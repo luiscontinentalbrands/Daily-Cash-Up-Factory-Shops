@@ -39,8 +39,8 @@ exports[`signing with a big difference: sent back to check first, then asked to 
       <ul>
         <li>
           <b>"CashGuard"</b>
-          ": per report R 5 000,00, deposited R 3 500,00 "
-          <b class="num">"−R 1 500,00"</b>
+          ": per report R 5 000,00, deposited R -1 500,00 "
+          <b class="num">"−R 6 500,00"</b>
         </li>
       </ul>
       " "
@@ -76,8 +76,8 @@ exports[`signing with a big difference: sent back to check first, then asked to 
       <ul>
         <li>
           <b>"CashGuard"</b>
-          ": per report R 5 000,00, deposited R 3 500,00 "
-          <b class="num">"−R 1 500,00"</b>
+          ": per report R 5 000,00, deposited R -1 500,00 "
+          <b class="num">"−R 6 500,00"</b>
         </li>
       </ul>
       " "
