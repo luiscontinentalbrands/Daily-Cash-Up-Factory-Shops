@@ -133,6 +133,16 @@ function timeStr(iso) {
     return "";
   }
 }
+// Hand a file to the browser to save; returns its temporary blob: address
+function downloadBlob(blob, name) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  return a.href;
+}
 function clone(o) {
   return JSON.parse(JSON.stringify(o));
 }
@@ -1720,12 +1730,7 @@ function renderCombined() {
       return /[",\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c;
     };
     const csv = lines.map(r => r.map(cell).join(",")).join("\n");
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-    a.download = "cash-up-" + state.date + ".csv";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    downloadBlob(new Blob([csv], { type: "text/csv" }), "cash-up-" + state.date + ".csv");
     $("#csv-msg").textContent = "Downloaded.";
   });
 }
@@ -1797,13 +1802,8 @@ async function pdfAction(kind) {
     return;
   }
   const download = () => {
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(r.blob);
-    a.download = r.name;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+    const url = downloadBlob(r.blob, r.name);
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
   };
   if (kind === "download") {
     download();
@@ -2616,12 +2616,10 @@ function renderNotBanked() {
           ["Banked later (ticked)", "", "", "", "", later.toFixed(2)],
         ],
       );
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(new Blob([lines.map(l => l.map(cell).join(",")).join("\n")], { type: "text/csv" }));
-      a.download = `Not-banked-${nb.from}-to-${nb.to}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+      downloadBlob(
+        new Blob([lines.map(l => l.map(cell).join(",")).join("\n")], { type: "text/csv" }),
+        `Not-banked-${nb.from}-to-${nb.to}.csv`,
+      );
     });
 }
 // Administrator only: mark a retained amount as banked (or undo). Kept in its own record, so signed sheets stay untouched.
@@ -2859,12 +2857,7 @@ async function notBankedPdf() {
       pdf.text("Total handed over", C.date, y);
       pdf.text(P(R(hand.reduce((a, h) => a + num(h.amount), 0))), C.rep, y, { align: "right" });
     }
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(pdf.output("blob"));
-    a.download = `Not-banked-${nb.from}-to-${nb.to}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    downloadBlob(pdf.output("blob"), `Not-banked-${nb.from}-to-${nb.to}.pdf`);
     if (m) m.textContent = "PDF downloaded.";
   } catch (e) {
     console.error(e);
