@@ -56,6 +56,8 @@ const PDF_MAX_PAGES = 6; // pages kept from an attached PDF
 const PHOTO_MAX_CHARS = 850000; // a stored photo is shrunk until it fits; firestore.rules refuses 900000 and more
 const cdOn = date => String(date || "") >= CD_START;
 const SHEETS = ["wholesale", "retail", "citydeep"];
+// The stored sheets of one day, one per shop plus the manager's sign-off; null until loaded
+const noSheets = () => ({ wholesale: null, retail: null, manager: null, citydeep: null });
 const isMgr = d => d === "manager";
 // One manager signs off the whole day at End of Day (Wholesale, Aeroton Retail and, from CD_START, City Deep Retail)
 const sheetsOf = date => (cdOn(date || state.date) ? ["wholesale", "retail", "citydeep"] : ["wholesale", "retail"]);
@@ -275,7 +277,7 @@ if (configured) {
 const state = {
   date: todayStr(),
   tab: "wholesale",
-  docs: { wholesale: null, retail: null, manager: null, citydeep: null },
+  docs: noSheets(),
   history: [],
   pending: {},
   key: null,
@@ -710,7 +712,7 @@ function setTab(t) {
 function setDate(d) {
   flushAll();
   state.date = d;
-  state.docs = { wholesale: null, retail: null, manager: null, citydeep: null };
+  state.docs = noSheets();
   Object.keys(DEPTS).forEach(k => delete local[k]);
   subscribeDay();
   render(true);
@@ -908,7 +910,7 @@ function subscribeDay() {
     query(shopCol(), where("date", "==", date)),
     snap => {
       if (date !== state.date) return;
-      const got = { wholesale: null, retail: null, manager: null, citydeep: null };
+      const got = noSheets();
       snap.docs.forEach(d => {
         const v = d.data();
         if (v && Object.prototype.hasOwnProperty.call(got, v.dept)) got[v.dept] = v;
