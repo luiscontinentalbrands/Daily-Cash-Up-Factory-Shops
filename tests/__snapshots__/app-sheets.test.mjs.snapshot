@@ -1,0 +1,4443 @@
+exports[`before City Deep started: retail sheet and banner 1`] = `
+<main id="main">
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 7h 0m left. Wholesale, Aeroton Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband retail" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Aeroton Retail cash up"</div>
+      <div class="small">"Saturday, 17 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Aeroton Retail"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet retail">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Aeroton Retail department"</div>
+        <h2>"Saturday, 17 October 2026"</h2>
+      </div>
+      <span class="chip draft">"In progress"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Sat, 17 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Rita Retail"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Aeroton Retail"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="scan">
+        " "
+        <div style="min-width:0">
+          <div class="eyebrow">"Fill from photo"</div>
+          <div class="msg">"Take a photo of the last page of the cash up report, or attach a saved photo or PDF. The report figures are filled in for you to check, and a copy is kept with this cash up."</div>
+        </div>
+        " "
+        <div class="actions">
+          " "
+          <label class="btn primary" for="retail-photo" style="display:inline-flex;align-items:center;gap:8px">"Scan report photo"</label>
+          " "
+          <label class="btn" for="retail-photo2" style="display:inline-flex;align-items:center;gap:8px">"Add another photo"</label>
+          " "
+          <label class="btn" for="retail-file" style="display:inline-flex;align-items:center;gap:8px">"Attach file"</label>
+          " "
+        </div>
+        " "
+        <input type="file" id="retail-photo" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="retail-photo2" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="retail-file" accept="image/*,application/pdf,.pdf" multiple hidden>
+        " "
+        <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="retail">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Coins"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="35.50" aria-label="Coins per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="35.50" aria-label="Coins deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cash">"R 0.00"</td>
+            </tr>
+            <tr class="cg">
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="5400.00" aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <label class="sub" for="retail-cashguard-deposited">"Deposited in Nedbank"</label>
+                <input id="retail-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="4900.00" aria-label="CashGuard deposited in Nedbank">
+                " "
+                <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
+                <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="300.00" aria-label="CashGuard counted and retained, not banked">
+              </td>
+              " "
+              <td class="num var-neg" id="v-cashguard">"−R 200,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="retail-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2750.25" aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2750.25" aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="retail-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="60.00" aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="60.00" aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+            <tr class="petty">
+              <td>
+                "Petty cash (not banked)"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
+              </td>
+              " "
+              <td class="num muted">"—"</td>
+              " "
+              <td class="inp">
+                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" aria-label="Petty cash, not banked">
+              </td>
+              " "
+              <td class="num muted">"—"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 8 245,75"</td>
+              <td class="num" id="t-dep">"R 8 245,75"</td>
+              <td class="num var-zero" id="t-var">"R 0.00"</td>
+            </tr>
+            " "
+            <tr class="cgnote">
+              <td colspan="4" id="t-cg">
+                "Includes CashGuard counted & retained, not banked: "
+                <b>"R 300,00"</b>
+                " · petty cash, not banked: "
+                <b>"R 200,00"</b>
+                ". Banked total: R 7 745,75."
+              </td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="retail-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="retail-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="retail-damagedNotes">"Damaged details"</label>
+          <input id="retail-damagedNotes" value placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-pettyNotes">"Petty cash details"</label>
+        <input id="retail-pettyNotes" value="R200 cleaning materials" placeholder="e.g. R200 for cleaning materials, slip in petty cash box" autocomplete="off" maxlength="300">
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-notes">"Notes (explain any variance)"</label>
+        <textarea id="retail-notes" maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice"></textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-retail">"Last saved 17 Oct, 10:00"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Aeroton Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="pad">
+          <canvas id="pad" data-dept="retail" width="900" height="300" aria-label="Signature pad"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Sign above the line with finger or mouse"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="msg">"By signing, I confirm the amounts deposited for Aeroton Retail on Sat, 17 Oct 2026 are correct."</div>
+          " "
+          <div>
+            <div class="eyebrow">"Signing as"</div>
+            <div class="signer-static">"Rita Retail"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="clear" type="button">"Clear"</button>
+            <button class="btn primary" id="signbtn" type="button">"Sign & submit"</button>
+          </div>
+          " "
+          <div class="msg" id="sign-msg"></div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+  <section class="sheet" id="ho-sec">
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Cash not banked · handover"</div>
+        <h2>"Cash handed to Candido"</h2>
+      </div>
+      <span class="chip">"R 500,00 not banked today"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="msg">"When Aeroton Retail hands over the cash that was not banked (CashGuard retained and petty cash), Candido checks the amount and signs here to confirm he received it."</div>
+      " "
+      <div id="ho-list">
+        <div class="msg">"No cash handed over yet for this day."</div>
+      </div>
+      " "
+      <div class="sign" style="margin-top:12px">
+        " "
+        <div class="pad">
+          <canvas id="hpad" width="900" height="300" aria-label="Signature pad for the person receiving the cash"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Candido signs above the line"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="field">
+            <label for="ho-amt">"Amount handed over (R)"</label>
+            <input id="ho-amt" class="num" inputmode="decimal" autocomplete="off" value="500.00" placeholder="0.00" style="text-align:right">
+          </div>
+          " "
+          <div class="field">
+            <label for="ho-to">"Received by"</label>
+            <input id="ho-to" value="Candido" maxlength="60" autocomplete="off">
+          </div>
+          " "
+          <div class="field">
+            <label for="ho-note">"Note (optional)"</label>
+            <input id="ho-note" maxlength="200" autocomplete="off" placeholder="e.g. envelope sealed, counted together">
+          </div>
+          " "
+          <div>
+            <div class="eyebrow">"Handed over by"</div>
+            <div class="signer-static">"Rita Retail"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="ho-clear" type="button">"Clear"</button>
+            <button class="btn primary" id="ho-sign" type="button">"Sign for the cash"</button>
+          </div>
+          " "
+          <div class="msg" id="ho-msg"></div>
+          " "
+        </div>
+      </div>
+      " "
+    </div>
+  </section>
+</main>
+`;
+
+exports[`changing the date and the minute refresh 1`] = `
+## before 7 pm
+<div class="banner wait" style="font-weight:500">"Due by 7 pm · 0h 2m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+`;
+
+exports[`changing the date and the minute refresh 2`] = `
+## after the minute refresh
+<div class="banner wait" style="font-weight:500">"Due by 7 pm · 0h 2m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+`;
+
+exports[`changing the date and the minute refresh 3`] = `
+## other date
+<div class="deptband wholesale" role="heading" aria-level="2">
+  <div>
+    <div class="big">"Wholesale cash up"</div>
+    <div class="small">"Saturday, 17 October 2026"</div>
+  </div>
+  <div class="small">
+    "You are filling in the "
+    <b>"Wholesale"</b>
+    " sheet"
+  </div>
+</div>
+`;
+
+exports[`empty sheets, as their own cashier/manager 1`] = `
+## wholesale
+<main id="main">
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 9h 0m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband wholesale" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Wholesale cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Wholesale"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet wholesale">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Wholesale department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip">"Not started"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Wanda Wholesale"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Wholesale"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="scan">
+        " "
+        <div style="min-width:0">
+          <div class="eyebrow">"Fill from photo"</div>
+          <div class="msg">"Take a photo of the last page of the cash up report, or attach a saved photo or PDF. The report figures are filled in for you to check, and a copy is kept with this cash up."</div>
+        </div>
+        " "
+        <div class="actions">
+          " "
+          <label class="btn primary" for="wholesale-photo" style="display:inline-flex;align-items:center;gap:8px">"Scan report photo"</label>
+          " "
+          <label class="btn" for="wholesale-photo2" style="display:inline-flex;align-items:center;gap:8px">"Add another photo"</label>
+          " "
+          <label class="btn" for="wholesale-file" style="display:inline-flex;align-items:center;gap:8px">"Attach file"</label>
+          " "
+        </div>
+        " "
+        <input type="file" id="wholesale-photo" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="wholesale-photo2" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="wholesale-file" accept="image/*,application/pdf,.pdf" multiple hidden>
+        " "
+        <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="wholesale">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Cash per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Cash deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cash">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-report" data-m="payfast" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="PayFast card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-deposited" data-m="payfast" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="PayFast card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-payfast">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-report" data-m="eft" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="EFT per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="EFT deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-eft">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-report" data-m="shop2shop" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Shop2Shop per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-deposited" data-m="shop2shop" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Shop2Shop deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-shop2shop">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 0,00"</td>
+              <td class="num" id="t-dep">"R 0,00"</td>
+              <td class="num var-zero" id="t-var">"R 0.00"</td>
+            </tr>
+            " "
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="wholesale-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="wholesale-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="wholesale-damagedNotes">"Damaged details"</label>
+          <input id="wholesale-damagedNotes" value placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="wholesale-notes">"Notes (explain any variance)"</label>
+        <textarea id="wholesale-notes" maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice"></textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-wholesale">"Saves automatically as you type"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="pad">
+          <canvas id="pad" data-dept="wholesale" width="900" height="300" aria-label="Signature pad"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Sign above the line with finger or mouse"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="msg">"By signing, I confirm the amounts deposited for Wholesale on Wed, 28 Oct 2026 are correct."</div>
+          " "
+          <div>
+            <div class="eyebrow">"Signing as"</div>
+            <div class="signer-static">"Wanda Wholesale"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="clear" type="button">"Clear"</button>
+            <button class="btn primary" id="signbtn" type="button">"Sign & submit"</button>
+          </div>
+          " "
+          <div class="msg" id="sign-msg"></div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+</main>
+`;
+
+exports[`empty sheets, as their own cashier/manager 2`] = `
+## retail
+<main id="main">
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 9h 0m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband retail" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Aeroton Retail cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Aeroton Retail"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet retail">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Aeroton Retail department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip">"Not started"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Rita Retail"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Aeroton Retail"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="scan">
+        " "
+        <div style="min-width:0">
+          <div class="eyebrow">"Fill from photo"</div>
+          <div class="msg">"Take a photo of the last page of the cash up report, or attach a saved photo or PDF. The report figures are filled in for you to check, and a copy is kept with this cash up."</div>
+        </div>
+        " "
+        <div class="actions">
+          " "
+          <label class="btn primary" for="retail-photo" style="display:inline-flex;align-items:center;gap:8px">"Scan report photo"</label>
+          " "
+          <label class="btn" for="retail-photo2" style="display:inline-flex;align-items:center;gap:8px">"Add another photo"</label>
+          " "
+          <label class="btn" for="retail-file" style="display:inline-flex;align-items:center;gap:8px">"Attach file"</label>
+          " "
+        </div>
+        " "
+        <input type="file" id="retail-photo" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="retail-photo2" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="retail-file" accept="image/*,application/pdf,.pdf" multiple hidden>
+        " "
+        <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="retail">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Coins"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Coins per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Coins deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cash">"R 0.00"</td>
+            </tr>
+            <tr class="cg">
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <label class="sub" for="retail-cashguard-deposited">"Deposited in Nedbank"</label>
+                <input id="retail-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard deposited in Nedbank">
+                " "
+                <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
+                <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard counted and retained, not banked">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="retail-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="retail-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+            <tr class="petty">
+              <td>
+                "Petty cash (not banked)"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
+              </td>
+              " "
+              <td class="num muted">"—"</td>
+              " "
+              <td class="inp">
+                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Petty cash, not banked">
+              </td>
+              " "
+              <td class="num muted">"—"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 0,00"</td>
+              <td class="num" id="t-dep">"R 0,00"</td>
+              <td class="num var-zero" id="t-var">"R 0.00"</td>
+            </tr>
+            " "
+            <tr class="cgnote">
+              <td colspan="4" id="t-cg">"Nothing kept back: everything counted was banked."</td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="retail-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="retail-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="retail-damagedNotes">"Damaged details"</label>
+          <input id="retail-damagedNotes" value placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-pettyNotes">"Petty cash details"</label>
+        <input id="retail-pettyNotes" value placeholder="e.g. R200 for cleaning materials, slip in petty cash box" autocomplete="off" maxlength="300">
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-notes">"Notes (explain any variance)"</label>
+        <textarea id="retail-notes" maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice"></textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-retail">"Saves automatically as you type"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Aeroton Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="pad">
+          <canvas id="pad" data-dept="retail" width="900" height="300" aria-label="Signature pad"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Sign above the line with finger or mouse"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="msg">"By signing, I confirm the amounts deposited for Aeroton Retail on Wed, 28 Oct 2026 are correct."</div>
+          " "
+          <div>
+            <div class="eyebrow">"Signing as"</div>
+            <div class="signer-static">"Rita Retail"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="clear" type="button">"Clear"</button>
+            <button class="btn primary" id="signbtn" type="button">"Sign & submit"</button>
+          </div>
+          " "
+          <div class="msg" id="sign-msg"></div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+  <section class="sheet" id="ho-sec">
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Cash not banked · handover"</div>
+        <h2>"Cash handed to Candido"</h2>
+      </div>
+      <span class="chip">"R 0,00 not banked today"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="msg">"When Aeroton Retail hands over the cash that was not banked (CashGuard retained and petty cash), Candido checks the amount and signs here to confirm he received it."</div>
+      " "
+      <div id="ho-list">
+        <div class="msg">"No cash handed over yet for this day."</div>
+      </div>
+      " "
+      <div class="sign" style="margin-top:12px">
+        " "
+        <div class="pad">
+          <canvas id="hpad" width="900" height="300" aria-label="Signature pad for the person receiving the cash"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Candido signs above the line"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="field">
+            <label for="ho-amt">"Amount handed over (R)"</label>
+            <input id="ho-amt" class="num" inputmode="decimal" autocomplete="off" value placeholder="0.00" style="text-align:right">
+          </div>
+          " "
+          <div class="field">
+            <label for="ho-to">"Received by"</label>
+            <input id="ho-to" value="Candido" maxlength="60" autocomplete="off">
+          </div>
+          " "
+          <div class="field">
+            <label for="ho-note">"Note (optional)"</label>
+            <input id="ho-note" maxlength="200" autocomplete="off" placeholder="e.g. envelope sealed, counted together">
+          </div>
+          " "
+          <div>
+            <div class="eyebrow">"Handed over by"</div>
+            <div class="signer-static">"Rita Retail"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="ho-clear" type="button">"Clear"</button>
+            <button class="btn primary" id="ho-sign" type="button">"Sign for the cash"</button>
+          </div>
+          " "
+          <div class="msg" id="ho-msg"></div>
+          " "
+        </div>
+      </div>
+      " "
+    </div>
+  </section>
+</main>
+`;
+
+exports[`empty sheets, as their own cashier/manager 3`] = `
+## citydeep
+<main id="main">
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 9h 0m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband citydeep" role="heading" aria-level="2">
+    <div>
+      <div class="big">"City Deep Retail cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"City Deep Retail"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet citydeep">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"City Deep Retail department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip">"Not started"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Cindy Deep"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"City Deep Retail"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="scan">
+        " "
+        <div style="min-width:0">
+          <div class="eyebrow">"Fill from photo"</div>
+          <div class="msg">"Take a photo of the last page of the cash up report, or attach a saved photo or PDF. The report figures are filled in for you to check, and a copy is kept with this cash up."</div>
+        </div>
+        " "
+        <div class="actions">
+          " "
+          <label class="btn primary" for="citydeep-photo" style="display:inline-flex;align-items:center;gap:8px">"Scan report photo"</label>
+          " "
+          <label class="btn" for="citydeep-photo2" style="display:inline-flex;align-items:center;gap:8px">"Add another photo"</label>
+          " "
+          <label class="btn" for="citydeep-file" style="display:inline-flex;align-items:center;gap:8px">"Attach file"</label>
+          " "
+        </div>
+        " "
+        <input type="file" id="citydeep-photo" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="citydeep-photo2" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="citydeep-file" accept="image/*,application/pdf,.pdf" multiple hidden>
+        " "
+        <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="citydeep">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Coins"</td>
+              " "
+              <td class="inp">
+                <input id="citydeep-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Coins per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="citydeep-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Coins deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cash">"R 0.00"</td>
+            </tr>
+            <tr class="cg">
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="citydeep-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <label class="sub" for="citydeep-cashguard-deposited">"Deposited in Nedbank"</label>
+                <input id="citydeep-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard deposited in Nedbank">
+                " "
+                <label class="sub" for="citydeep-cashguard-retained">"Counted & retained, not banked"</label>
+                <input id="citydeep-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard counted and retained, not banked">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="citydeep-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="citydeep-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="citydeep-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="citydeep-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 0,00"</td>
+              <td class="num" id="t-dep">"R 0,00"</td>
+              <td class="num var-zero" id="t-var">"R 0.00"</td>
+            </tr>
+            " "
+            <tr class="cgnote">
+              <td colspan="4" id="t-cg">"Nothing kept back: everything counted was banked."</td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="citydeep-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="citydeep-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="citydeep-damagedNotes">"Damaged details"</label>
+          <input id="citydeep-damagedNotes" value placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="citydeep-notes">"Notes (explain any variance)"</label>
+        <textarea id="citydeep-notes" maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice"></textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-citydeep">"Saves automatically as you type"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"City Deep Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="pad">
+          <canvas id="pad" data-dept="citydeep" width="900" height="300" aria-label="Signature pad"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Sign above the line with finger or mouse"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="msg">"By signing, I confirm the amounts deposited for City Deep Retail on Wed, 28 Oct 2026 are correct."</div>
+          " "
+          <div>
+            <div class="eyebrow">"Signing as"</div>
+            <div class="signer-static">"Cindy Deep"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="clear" type="button">"Clear"</button>
+            <button class="btn primary" id="signbtn" type="button">"Sign & submit"</button>
+          </div>
+          " "
+          <div class="msg" id="sign-msg"></div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+</main>
+`;
+
+exports[`leaving the page or switching tabs saves typing at once 1`] = `
+## hidden
+[
+  "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale"
+]
+`;
+
+exports[`leaving the page or switching tabs saves typing at once 2`] = `
+## pagehide
+[
+  "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale"
+]
+`;
+
+exports[`notes, damaged notes and coins, petty cash details 1`] = `
+## same amount as retained and petty cash
+<td colspan="4" id="t-cg">
+  <span style="color:var(--bad);font-weight:600">"Check: the same amount (R 200,00) is entered as CashGuard retained AND as petty cash, so it counts twice as not banked. Keep it in one box only."</span>
+</td>
+`;
+
+exports[`notes, damaged notes and coins, petty cash details 2`] = `
+## saved
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_retail",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "retail",
+      "cashier": "Rita Retail",
+      "lines": {
+        "cash": {
+          "report": "",
+          "deposited": ""
+        },
+        "cashguard": {
+          "report": "",
+          "deposited": "",
+          "retained": "200"
+        },
+        "card": {
+          "report": "",
+          "deposited": ""
+        },
+        "cardcbm": {
+          "report": "",
+          "deposited": ""
+        },
+        "payfast": {
+          "report": "",
+          "deposited": ""
+        },
+        "eft": {
+          "report": "",
+          "deposited": ""
+        },
+        "shop2shop": {
+          "report": "",
+          "deposited": ""
+        },
+        "snapscan": {
+          "report": "",
+          "deposited": ""
+        },
+        "petty": {
+          "report": "",
+          "deposited": "200.00"
+        }
+      },
+      "damaged": "12.50",
+      "damagedNotes": "2 x R5 bent",
+      "notes": "Short R10\\nfloat recount",
+      "status": "draft",
+      "signature": "",
+      "signedBy": "",
+      "signedAt": "",
+      "updatedAt": "2026-10-28T08:00:00.700Z",
+      "pettyNotes": "R200 cleaning",
+      "updatedAtServer": "<serverTimestamp>",
+      "reopenedAt": null,
+      "signedAtServer": null
+    }
+  }
+]
+`;
+
+exports[`notes, damaged notes and coins, petty cash details 3`] = `
+## sheet
+<section class="sheet retail">
+  " "
+  <div class="sheet-head">
+    <div>
+      <div class="eyebrow">"Aeroton Retail department"</div>
+      <h2>"Wednesday, 28 October 2026"</h2>
+    </div>
+    <span class="chip">"Not started"</span>
+  </div>
+  " "
+  <div class="sheet-body">
+    " "
+    <div class="fields">
+      " "
+      <div class="field">
+        <label>"Date"</label>
+        <div class="static">"Wed, 28 Oct 2026"</div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Person cashing up"</label>
+        <div class="static">"Rita Retail"</div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Department"</label>
+        <div class="static">"Aeroton Retail"</div>
+      </div>
+      " "
+    </div>
+    " "
+    <div class="scan">
+      " "
+      <div style="min-width:0">
+        <div class="eyebrow">"Fill from photo"</div>
+        <div class="msg">"Take a photo of the last page of the cash up report, or attach a saved photo or PDF. The report figures are filled in for you to check, and a copy is kept with this cash up."</div>
+      </div>
+      " "
+      <div class="actions">
+        " "
+        <label class="btn primary" for="retail-photo" style="display:inline-flex;align-items:center;gap:8px">"Scan report photo"</label>
+        " "
+        <label class="btn" for="retail-photo2" style="display:inline-flex;align-items:center;gap:8px">"Add another photo"</label>
+        " "
+        <label class="btn" for="retail-file" style="display:inline-flex;align-items:center;gap:8px">"Attach file"</label>
+        " "
+      </div>
+      " "
+      <input type="file" id="retail-photo" accept="image/*" capture="environment" hidden>
+      " "
+      <input type="file" id="retail-photo2" accept="image/*" capture="environment" hidden>
+      " "
+      <input type="file" id="retail-file" accept="image/*,application/pdf,.pdf" multiple hidden>
+      " "
+      <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
+      " "
+    </div>
+    " "
+    <div class="field">
+      <label>"Report photos"</label>
+      <div data-photos="retail">
+        <div class="msg">"No photo yet."</div>
+      </div>
+    </div>
+    " "
+    <div class="tbl-wrap">
+      <table>
+        " "
+        <thead>
+          <tr>
+            <th>"Payment type"</th>
+            <th>
+              "Per report"
+              <small>"Till / Z-report"</small>
+            </th>
+            <th>
+              "Deposited"
+              <small>"Actual counted"</small>
+            </th>
+            <th>
+              "Variance"
+              <small>"Deposited − report"</small>
+            </th>
+          </tr>
+        </thead>
+        " "
+        <tbody>
+          <tr>
+            <td>"Coins"</td>
+            " "
+            <td class="inp">
+              <input id="retail-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Coins per report">
+            </td>
+            " "
+            <td class="inp">
+              <input id="retail-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Coins deposited">
+            </td>
+            " "
+            <td class="num var-zero" id="v-cash">"R 0.00"</td>
+          </tr>
+          <tr class="cg">
+            <td>"CashGuard"</td>
+            " "
+            <td class="inp">
+              <input id="retail-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard per report">
+            </td>
+            " "
+            <td class="inp">
+              <label class="sub" for="retail-cashguard-deposited">"Deposited in Nedbank"</label>
+              <input id="retail-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard deposited in Nedbank">
+              " "
+              <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
+              <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200" aria-label="CashGuard counted and retained, not banked">
+            </td>
+            " "
+            <td class="num var-pos" id="v-cashguard">"+R 200,00"</td>
+          </tr>
+          <tr>
+            <td>"Credit card"</td>
+            " "
+            <td class="inp">
+              <input id="retail-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card per report">
+            </td>
+            " "
+            <td class="inp">
+              <input id="retail-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card deposited">
+            </td>
+            " "
+            <td class="num var-zero" id="v-card">"R 0.00"</td>
+          </tr>
+          <tr>
+            <td>"SnapScan"</td>
+            " "
+            <td class="inp">
+              <input id="retail-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan per report">
+            </td>
+            " "
+            <td class="inp">
+              <input id="retail-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan deposited">
+            </td>
+            " "
+            <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+          </tr>
+          <tr class="petty">
+            <td>
+              "Petty cash (not banked)"
+              <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
+            </td>
+            " "
+            <td class="num muted">"—"</td>
+            " "
+            <td class="inp">
+              <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" aria-label="Petty cash, not banked" data-sel>
+            </td>
+            " "
+            <td class="num muted">"—"</td>
+          </tr>
+        </tbody>
+        " "
+        <tfoot>
+          <tr>
+            <td>"Total"</td>
+            <td class="num" id="t-report">"R 0,00"</td>
+            <td class="num" id="t-dep">"R 400,00"</td>
+            <td class="num var-pos" id="t-var">"+R 400,00"</td>
+          </tr>
+          " "
+          <tr class="cgnote">
+            <td colspan="4" id="t-cg">
+              <span style="color:var(--bad);font-weight:600">"Check: the same amount (R 200,00) is entered as CashGuard retained AND as petty cash, so it counts twice as not banked. Keep it in one box only."</span>
+            </td>
+          </tr>
+        </tfoot>
+        " "
+      </table>
+    </div>
+    " "
+    <div class="dmg">
+      " "
+      <div class="field">
+        <label for="retail-damaged">"Damaged bank notes & coins (R)"</label>
+        <input id="retail-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="12.50" style="text-align:right" data-sel>
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-damagedNotes">"Damaged details"</label>
+        <input id="retail-damagedNotes" value="2 x R5 bent" placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" maxlength="300">
+      </div>
+      " "
+    </div>
+    " "
+    <div class="field">
+      <label for="retail-pettyNotes">"Petty cash details"</label>
+      <input id="retail-pettyNotes" value="R200 cleaning" placeholder="e.g. R200 for cleaning materials, slip in petty cash box" autocomplete="off" maxlength="300">
+    </div>
+    " "
+    <div class="field">
+      <label for="retail-notes">"Notes (explain any variance)"</label>
+      <textarea id="retail-notes" maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice">"Short R10 float recount"</textarea>
+    </div>
+    " "
+    <div class="saved" id="saved-retail">"Saved for everyone · 28 Oct, 10:00"</div>
+    " "
+  </div>
+  " "
+</section>
+`;
+
+exports[`older stored data is tidied on load (Retail EFT into card, no Shop2Shop, no Wholesale retained) 1`] = `
+## wholesale rows
+<tbody>
+  <tr>
+    <td>"Cash"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Cash per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Cash deposited">
+    </td>
+    " "
+    <td class="num var-zero" id="v-cash">"R 0.00"</td>
+  </tr>
+  <tr>
+    <td>"CashGuard"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="300" aria-label="CashGuard per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="250" aria-label="CashGuard deposited">
+    </td>
+    " "
+    <td class="num var-neg" id="v-cashguard">"−R 50,00"</td>
+  </tr>
+  <tr>
+    <td>"Credit card"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card deposited">
+    </td>
+    " "
+    <td class="num var-zero" id="v-card">"R 0.00"</td>
+  </tr>
+  <tr>
+    <td>"Credit card CBM"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM deposited">
+    </td>
+    " "
+    <td class="num var-zero" id="v-cardcbm">"R 0.00"</td>
+  </tr>
+  <tr>
+    <td>"PayFast card"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-payfast-report" data-m="payfast" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="PayFast card per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-payfast-deposited" data-m="payfast" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="PayFast card deposited">
+    </td>
+    " "
+    <td class="num var-zero" id="v-payfast">"R 0.00"</td>
+  </tr>
+  <tr>
+    <td>"EFT"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-eft-report" data-m="eft" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="EFT per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="EFT deposited">
+    </td>
+    " "
+    <td class="num var-zero" id="v-eft">"R 0.00"</td>
+  </tr>
+  <tr>
+    <td>"Shop2Shop"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-shop2shop-report" data-m="shop2shop" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Shop2Shop per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-shop2shop-deposited" data-m="shop2shop" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Shop2Shop deposited">
+    </td>
+    " "
+    <td class="num var-zero" id="v-shop2shop">"R 0.00"</td>
+  </tr>
+  <tr>
+    <td>"SnapScan"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan deposited">
+    </td>
+    " "
+    <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+  </tr>
+</tbody>
+`;
+
+exports[`older stored data is tidied on load (Retail EFT into card, no Shop2Shop, no Wholesale retained) 2`] = `
+## retail rows
+<tbody>
+  <tr>
+    <td>"Coins"</td>
+    " "
+    <td class="inp">
+      <input id="retail-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Coins per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="retail-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Coins deposited">
+    </td>
+    " "
+    <td class="num var-zero" id="v-cash">"R 0.00"</td>
+  </tr>
+  <tr class="cg">
+    <td>"CashGuard"</td>
+    " "
+    <td class="inp">
+      <input id="retail-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="10" aria-label="CashGuard per report">
+    </td>
+    " "
+    <td class="inp">
+      <label class="sub" for="retail-cashguard-deposited">"Deposited in Nedbank"</label>
+      <input id="retail-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="5" aria-label="CashGuard deposited in Nedbank">
+      " "
+      <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
+      <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="5" aria-label="CashGuard counted and retained, not banked">
+    </td>
+    " "
+    <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+  </tr>
+  <tr>
+    <td>"Credit card"</td>
+    " "
+    <td class="inp">
+      <input id="retail-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="150.50" aria-label="Credit card per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="retail-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="140.50" aria-label="Credit card deposited">
+    </td>
+    " "
+    <td class="num var-neg" id="v-card">"−R 10,00"</td>
+  </tr>
+  <tr>
+    <td>"SnapScan"</td>
+    " "
+    <td class="inp">
+      <input id="retail-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="retail-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan deposited">
+    </td>
+    " "
+    <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+  </tr>
+  <tr class="petty">
+    <td>
+      "Petty cash (not banked)"
+      <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
+    </td>
+    " "
+    <td class="num muted">"—"</td>
+    " "
+    <td class="inp">
+      <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Petty cash, not banked">
+    </td>
+    " "
+    <td class="num muted">"—"</td>
+  </tr>
+</tbody>
+`;
+
+exports[`older stored data is tidied on load (Retail EFT into card, no Shop2Shop, no Wholesale retained) 3`] = `
+## retail totals
+<tfoot>
+  <tr>
+    <td>"Total"</td>
+    <td class="num" id="t-report">"R 160,50"</td>
+    <td class="num" id="t-dep">"R 150,50"</td>
+    <td class="num var-neg" id="t-var">"−R 10,00"</td>
+  </tr>
+  " "
+  <tr class="cgnote">
+    <td colspan="4" id="t-cg">
+      "Includes CashGuard counted & retained, not banked: "
+      <b>"R 5,00"</b>
+      ". Banked total: R 145,50."
+    </td>
+  </tr>
+</tfoot>
+`;
+
+exports[`save refused: message on the sheet and an alert 1`] = `
+## sheet note
+NOT SAVED. The database refused to save it (permission-denied). The Firebase rules may be out of date.
+`;
+
+exports[`save refused: message on the sheet and an alert 2`] = `
+## alert
+<div id="savealert" role="alert" style="position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;background:var(--bad);color:#fff;padding:12px 16px;border-radius:12px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.25)">"Your last change was NOT saved. The database refused to save it (permission-denied). The Firebase rules may be out of date."</div>
+`;
+
+exports[`save refused: message on the sheet and an alert 3`] = `
+## offline note
+NOT SAVED. Could not reach the database (unavailable). Check the connection.
+`;
+
+exports[`sheets with figures, draft and signed, seen by different roles 1`] = `
+## u-whole on wholesale, signed: none
+<main id="main">
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 1h 0m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband wholesale" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Wholesale cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Wholesale"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet wholesale">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Wholesale department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip draft">"In progress"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Wanda Wholesale"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Wholesale"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="scan">
+        " "
+        <div style="min-width:0">
+          <div class="eyebrow">"Fill from photo"</div>
+          <div class="msg">"Take a photo of the last page of the cash up report, or attach a saved photo or PDF. The report figures are filled in for you to check, and a copy is kept with this cash up."</div>
+        </div>
+        " "
+        <div class="actions">
+          " "
+          <label class="btn primary" for="wholesale-photo" style="display:inline-flex;align-items:center;gap:8px">"Scan report photo"</label>
+          " "
+          <label class="btn" for="wholesale-photo2" style="display:inline-flex;align-items:center;gap:8px">"Add another photo"</label>
+          " "
+          <label class="btn" for="wholesale-file" style="display:inline-flex;align-items:center;gap:8px">"Attach file"</label>
+          " "
+        </div>
+        " "
+        <input type="file" id="wholesale-photo" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="wholesale-photo2" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="wholesale-file" accept="image/*,application/pdf,.pdf" multiple hidden>
+        " "
+        <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="wholesale">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1500.00" aria-label="Cash per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1450.00" aria-label="Cash deposited">
+              </td>
+              " "
+              <td class="num var-neg" id="v-cash">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2000.00" aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2000.00" aria-label="CashGuard deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="3200.50" aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="3200.50" aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="410.00" aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="410.00" aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-report" data-m="payfast" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="99.99" aria-label="PayFast card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-deposited" data-m="payfast" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="99.99" aria-label="PayFast card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-payfast">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-report" data-m="eft" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="800.00" aria-label="EFT per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="800.00" aria-label="EFT deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-eft">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-report" data-m="shop2shop" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="120.00" aria-label="Shop2Shop per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-deposited" data-m="shop2shop" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="120.00" aria-label="Shop2Shop deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-shop2shop">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="45.00" aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="45.00" aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 8 175,49"</td>
+              <td class="num" id="t-dep">"R 8 125,49"</td>
+              <td class="num var-neg" id="t-var">"−R 50,00"</td>
+            </tr>
+            " "
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="wholesale-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="wholesale-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="100.00" style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="wholesale-damagedNotes">"Damaged details"</label>
+          <input id="wholesale-damagedNotes" value="1 x R100 torn" placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="wholesale-notes">"Notes (explain any variance)"</label>
+        <textarea id="wholesale-notes" maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice">"R50 short, float counted twice"</textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-wholesale">"Last saved 28 Oct, 10:00"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="pad">
+          <canvas id="pad" data-dept="wholesale" width="900" height="300" aria-label="Signature pad"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Sign above the line with finger or mouse"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="msg">"By signing, I confirm the amounts deposited for Wholesale on Wed, 28 Oct 2026 are correct."</div>
+          " "
+          <div>
+            <div class="eyebrow">"Signing as"</div>
+            <div class="signer-static">"Wanda Wholesale"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="clear" type="button">"Clear"</button>
+            <button class="btn primary" id="signbtn" type="button">"Sign & submit"</button>
+          </div>
+          " "
+          <div class="msg" id="sign-msg"></div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+</main>
+`;
+
+exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
+## u-retail on retail, signed: none
+<main id="main">
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 1h 0m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband retail" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Aeroton Retail cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Aeroton Retail"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet retail">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Aeroton Retail department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip draft">"In progress"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Rita Retail"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Aeroton Retail"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="scan">
+        " "
+        <div style="min-width:0">
+          <div class="eyebrow">"Fill from photo"</div>
+          <div class="msg">"Take a photo of the last page of the cash up report, or attach a saved photo or PDF. The report figures are filled in for you to check, and a copy is kept with this cash up."</div>
+        </div>
+        " "
+        <div class="actions">
+          " "
+          <label class="btn primary" for="retail-photo" style="display:inline-flex;align-items:center;gap:8px">"Scan report photo"</label>
+          " "
+          <label class="btn" for="retail-photo2" style="display:inline-flex;align-items:center;gap:8px">"Add another photo"</label>
+          " "
+          <label class="btn" for="retail-file" style="display:inline-flex;align-items:center;gap:8px">"Attach file"</label>
+          " "
+        </div>
+        " "
+        <input type="file" id="retail-photo" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="retail-photo2" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="retail-file" accept="image/*,application/pdf,.pdf" multiple hidden>
+        " "
+        <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="retail">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Coins"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="35.50" aria-label="Coins per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="35.50" aria-label="Coins deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cash">"R 0.00"</td>
+            </tr>
+            <tr class="cg">
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="5400.00" aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <label class="sub" for="retail-cashguard-deposited">"Deposited in Nedbank"</label>
+                <input id="retail-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="4900.00" aria-label="CashGuard deposited in Nedbank">
+                " "
+                <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
+                <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="300.00" aria-label="CashGuard counted and retained, not banked">
+              </td>
+              " "
+              <td class="num var-neg" id="v-cashguard">"−R 200,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="retail-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2750.25" aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2750.25" aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="retail-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="60.00" aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="60.00" aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+            <tr class="petty">
+              <td>
+                "Petty cash (not banked)"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
+              </td>
+              " "
+              <td class="num muted">"—"</td>
+              " "
+              <td class="inp">
+                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" aria-label="Petty cash, not banked">
+              </td>
+              " "
+              <td class="num muted">"—"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 8 245,75"</td>
+              <td class="num" id="t-dep">"R 8 245,75"</td>
+              <td class="num var-zero" id="t-var">"R 0.00"</td>
+            </tr>
+            " "
+            <tr class="cgnote">
+              <td colspan="4" id="t-cg">
+                "Includes CashGuard counted & retained, not banked: "
+                <b>"R 300,00"</b>
+                " · petty cash, not banked: "
+                <b>"R 200,00"</b>
+                ". Banked total: R 7 745,75."
+              </td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="retail-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="retail-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="retail-damagedNotes">"Damaged details"</label>
+          <input id="retail-damagedNotes" value placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-pettyNotes">"Petty cash details"</label>
+        <input id="retail-pettyNotes" value="R200 cleaning materials" placeholder="e.g. R200 for cleaning materials, slip in petty cash box" autocomplete="off" maxlength="300">
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-notes">"Notes (explain any variance)"</label>
+        <textarea id="retail-notes" maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice"></textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-retail">"Last saved 28 Oct, 10:00"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Aeroton Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="pad">
+          <canvas id="pad" data-dept="retail" width="900" height="300" aria-label="Signature pad"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Sign above the line with finger or mouse"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="msg">"By signing, I confirm the amounts deposited for Aeroton Retail on Wed, 28 Oct 2026 are correct."</div>
+          " "
+          <div>
+            <div class="eyebrow">"Signing as"</div>
+            <div class="signer-static">"Rita Retail"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="clear" type="button">"Clear"</button>
+            <button class="btn primary" id="signbtn" type="button">"Sign & submit"</button>
+          </div>
+          " "
+          <div class="msg" id="sign-msg"></div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+  <section class="sheet" id="ho-sec">
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Cash not banked · handover"</div>
+        <h2>"Cash handed to Candido"</h2>
+      </div>
+      <span class="chip">"R 500,00 not banked today"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="msg">"When Aeroton Retail hands over the cash that was not banked (CashGuard retained and petty cash), Candido checks the amount and signs here to confirm he received it."</div>
+      " "
+      <div id="ho-list">
+        <div class="msg">"No cash handed over yet for this day."</div>
+      </div>
+      " "
+      <div class="sign" style="margin-top:12px">
+        " "
+        <div class="pad">
+          <canvas id="hpad" width="900" height="300" aria-label="Signature pad for the person receiving the cash"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Candido signs above the line"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="field">
+            <label for="ho-amt">"Amount handed over (R)"</label>
+            <input id="ho-amt" class="num" inputmode="decimal" autocomplete="off" value="500.00" placeholder="0.00" style="text-align:right">
+          </div>
+          " "
+          <div class="field">
+            <label for="ho-to">"Received by"</label>
+            <input id="ho-to" value="Candido" maxlength="60" autocomplete="off">
+          </div>
+          " "
+          <div class="field">
+            <label for="ho-note">"Note (optional)"</label>
+            <input id="ho-note" maxlength="200" autocomplete="off" placeholder="e.g. envelope sealed, counted together">
+          </div>
+          " "
+          <div>
+            <div class="eyebrow">"Handed over by"</div>
+            <div class="signer-static">"Rita Retail"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="ho-clear" type="button">"Clear"</button>
+            <button class="btn primary" id="ho-sign" type="button">"Sign for the cash"</button>
+          </div>
+          " "
+          <div class="msg" id="ho-msg"></div>
+          " "
+        </div>
+      </div>
+      " "
+    </div>
+  </section>
+</main>
+`;
+
+exports[`sheets with figures, draft and signed, seen by different roles 3`] = `
+## u-cd on citydeep, signed: none
+<main id="main">
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 1h 0m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband citydeep" role="heading" aria-level="2">
+    <div>
+      <div class="big">"City Deep Retail cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"City Deep Retail"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet citydeep">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"City Deep Retail department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip draft">"In progress"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Cindy Deep"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"City Deep Retail"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="scan">
+        " "
+        <div style="min-width:0">
+          <div class="eyebrow">"Fill from photo"</div>
+          <div class="msg">"Take a photo of the last page of the cash up report, or attach a saved photo or PDF. The report figures are filled in for you to check, and a copy is kept with this cash up."</div>
+        </div>
+        " "
+        <div class="actions">
+          " "
+          <label class="btn primary" for="citydeep-photo" style="display:inline-flex;align-items:center;gap:8px">"Scan report photo"</label>
+          " "
+          <label class="btn" for="citydeep-photo2" style="display:inline-flex;align-items:center;gap:8px">"Add another photo"</label>
+          " "
+          <label class="btn" for="citydeep-file" style="display:inline-flex;align-items:center;gap:8px">"Attach file"</label>
+          " "
+        </div>
+        " "
+        <input type="file" id="citydeep-photo" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="citydeep-photo2" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="citydeep-file" accept="image/*,application/pdf,.pdf" multiple hidden>
+        " "
+        <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="citydeep">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Coins"</td>
+              " "
+              <td class="inp">
+                <input id="citydeep-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="12.00" aria-label="Coins per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="citydeep-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="12.00" aria-label="Coins deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cash">"R 0.00"</td>
+            </tr>
+            <tr class="cg">
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="citydeep-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="3100.00" aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <label class="sub" for="citydeep-cashguard-deposited">"Deposited in Nedbank"</label>
+                <input id="citydeep-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="3000.00" aria-label="CashGuard deposited in Nedbank">
+                " "
+                <label class="sub" for="citydeep-cashguard-retained">"Counted & retained, not banked"</label>
+                <input id="citydeep-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="150.00" aria-label="CashGuard counted and retained, not banked">
+              </td>
+              " "
+              <td class="num var-pos" id="v-cashguard">"+R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="citydeep-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1999.95" aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="citydeep-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1980.00" aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-neg" id="v-card">"−R 19,95"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="citydeep-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="citydeep-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 5 111,95"</td>
+              <td class="num" id="t-dep">"R 5 142,00"</td>
+              <td class="num var-pos" id="t-var">"+R 30,05"</td>
+            </tr>
+            " "
+            <tr class="cgnote">
+              <td colspan="4" id="t-cg">
+                "Includes CashGuard counted & retained, not banked: "
+                <b>"R 150,00"</b>
+                ". Banked total: R 4 992,00."
+              </td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="citydeep-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="citydeep-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="citydeep-damagedNotes">"Damaged details"</label>
+          <input id="citydeep-damagedNotes" value placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="citydeep-notes">"Notes (explain any variance)"</label>
+        <textarea id="citydeep-notes" maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice">"Card machine offline 10 minutes"</textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-citydeep">"Last saved 28 Oct, 10:00"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"City Deep Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="pad">
+          <canvas id="pad" data-dept="citydeep" width="900" height="300" aria-label="Signature pad"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Sign above the line with finger or mouse"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="msg">"By signing, I confirm the amounts deposited for City Deep Retail on Wed, 28 Oct 2026 are correct."</div>
+          " "
+          <div>
+            <div class="eyebrow">"Signing as"</div>
+            <div class="signer-static">"Cindy Deep"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="clear" type="button">"Clear"</button>
+            <button class="btn primary" id="signbtn" type="button">"Sign & submit"</button>
+          </div>
+          " "
+          <div class="msg" id="sign-msg"></div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+</main>
+`;
+
+exports[`sheets with figures, draft and signed, seen by different roles 4`] = `
+## u-whole on wholesale, signed: wholesale
+<main id="main">
+  <div class="notice" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <span>
+      "This sheet is "
+      <b>"signed and locked"</b>
+      ", so the figures can't be changed. To correct it, reopen it first: the signature is removed and it must be signed again."
+    </span>
+    <button class="btn" type="button" id="goreopen">"Reopen to correct"</button>
+  </div>
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 1h 0m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband wholesale" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Wholesale cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Wholesale"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet wholesale">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Wholesale department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip signed">"Signed off"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Wanda Wholesale"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Wholesale"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="wholesale">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1500.00" disabled aria-label="Cash per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1450.00" disabled aria-label="Cash deposited">
+              </td>
+              " "
+              <td class="num var-neg" id="v-cash">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2000.00" disabled aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2000.00" disabled aria-label="CashGuard deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="3200.50" disabled aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="3200.50" disabled aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="410.00" disabled aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="410.00" disabled aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-report" data-m="payfast" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="99.99" disabled aria-label="PayFast card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-deposited" data-m="payfast" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="99.99" disabled aria-label="PayFast card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-payfast">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-report" data-m="eft" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="800.00" disabled aria-label="EFT per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="800.00" disabled aria-label="EFT deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-eft">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-report" data-m="shop2shop" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="120.00" disabled aria-label="Shop2Shop per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-deposited" data-m="shop2shop" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="120.00" disabled aria-label="Shop2Shop deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-shop2shop">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="45.00" disabled aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="45.00" disabled aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 8 175,49"</td>
+              <td class="num" id="t-dep">"R 8 125,49"</td>
+              <td class="num var-neg" id="t-var">"−R 50,00"</td>
+            </tr>
+            " "
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="wholesale-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="wholesale-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="100.00" disabled style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="wholesale-damagedNotes">"Damaged details"</label>
+          <input id="wholesale-damagedNotes" value="1 x R100 torn" placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" disabled maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="wholesale-notes">"Notes (explain any variance)"</label>
+        <textarea id="wholesale-notes" disabled maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice">"R50 short, float counted twice"</textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-wholesale">"Last saved 28 Oct, 10:00"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="sig-img">
+          <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Signature of Wanda Wholesale">
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div>
+            <div class="eyebrow">"Signed by"</div>
+            <div class="signer-static">"Wanda Wholesale"</div>
+            <div class="msg">"28 Oct, 17:00"</div>
+          </div>
+          " "
+          <div class="msg">"This cash up is locked. Reopen it only to correct a mistake; the signature is removed, the reopen is recorded, and it must be signed again."</div>
+          " "
+          <div class="actions">
+            <button class="btn danger" id="reopen" data-dept="wholesale">"Reopen to correct"</button>
+            <span class="msg" id="reopen-msg"></span>
+          </div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+</main>
+`;
+
+exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
+## u-mgr on retail, signed: retail
+<main id="main">
+  <div class="notice" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <span>
+      "This sheet is "
+      <b>"signed and locked"</b>
+      ", so the figures can't be changed. To correct it, reopen it first: the signature is removed and it must be signed again."
+    </span>
+    <button class="btn" type="button" id="goreopen">"Reopen to correct"</button>
+  </div>
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 1h 0m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband retail" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Aeroton Retail cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Aeroton Retail"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet retail">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Aeroton Retail department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip signed">"Signed off"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Rita Retail"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Aeroton Retail"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="retail">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Coins"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="35.50" disabled aria-label="Coins per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="35.50" disabled aria-label="Coins deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cash">"R 0.00"</td>
+            </tr>
+            <tr class="cg">
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="5400.00" aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <label class="sub" for="retail-cashguard-deposited">"Deposited in Nedbank"</label>
+                <input id="retail-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="4900.00" aria-label="CashGuard deposited in Nedbank">
+                " "
+                <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
+                <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="300.00" aria-label="CashGuard counted and retained, not banked">
+              </td>
+              " "
+              <td class="num var-neg" id="v-cashguard">"−R 200,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="retail-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2750.25" disabled aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2750.25" disabled aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="retail-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="60.00" disabled aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="60.00" disabled aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+            <tr class="petty">
+              <td>
+                "Petty cash (not banked)"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
+              </td>
+              " "
+              <td class="num muted">"—"</td>
+              " "
+              <td class="inp">
+                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" disabled aria-label="Petty cash, not banked">
+              </td>
+              " "
+              <td class="num muted">"—"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 8 245,75"</td>
+              <td class="num" id="t-dep">"R 8 245,75"</td>
+              <td class="num var-zero" id="t-var">"R 0.00"</td>
+            </tr>
+            " "
+            <tr class="cgnote">
+              <td colspan="4" id="t-cg">
+                "Includes CashGuard counted & retained, not banked: "
+                <b>"R 300,00"</b>
+                " · petty cash, not banked: "
+                <b>"R 200,00"</b>
+                ". Banked total: R 7 745,75."
+              </td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="retail-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="retail-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="retail-damagedNotes">"Damaged details"</label>
+          <input id="retail-damagedNotes" value placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" disabled maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-pettyNotes">"Petty cash details"</label>
+        <input id="retail-pettyNotes" value="R200 cleaning materials" placeholder="e.g. R200 for cleaning materials, slip in petty cash box" autocomplete="off" disabled maxlength="300">
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-notes">"Notes (explain any variance)"</label>
+        <textarea id="retail-notes" disabled maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice"></textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-retail">"Last saved 28 Oct, 10:00"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Aeroton Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="sig-img">
+          <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Signature of Rita Retail">
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div>
+            <div class="eyebrow">"Signed by"</div>
+            <div class="signer-static">"Rita Retail"</div>
+            <div class="msg">"28 Oct, 17:05"</div>
+          </div>
+          " "
+          <div class="msg">"This cash up is locked. Reopen it only to correct a mistake; the signature is removed, the reopen is recorded, and it must be signed again."</div>
+          " "
+          <div class="actions">
+            <button class="btn danger" id="reopen" data-dept="retail">"Reopen to correct"</button>
+            <span class="msg" id="reopen-msg"></span>
+          </div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+  <section class="sheet" id="ho-sec">
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Cash not banked · handover"</div>
+        <h2>"Cash handed to Candido"</h2>
+      </div>
+      <span class="chip">"R 500,00 not banked today"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="msg">"When Aeroton Retail hands over the cash that was not banked (CashGuard retained and petty cash), Candido checks the amount and signs here to confirm he received it."</div>
+      " "
+      <div id="ho-list">
+        <div class="msg">"No cash handed over yet for this day."</div>
+      </div>
+      " "
+      <div class="sign" style="margin-top:12px">
+        " "
+        <div class="pad">
+          <canvas id="hpad" width="900" height="300" aria-label="Signature pad for the person receiving the cash"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Candido signs above the line"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="field">
+            <label for="ho-amt">"Amount handed over (R)"</label>
+            <input id="ho-amt" class="num" inputmode="decimal" autocomplete="off" value="500.00" placeholder="0.00" style="text-align:right">
+          </div>
+          " "
+          <div class="field">
+            <label for="ho-to">"Received by"</label>
+            <input id="ho-to" value="Candido" maxlength="60" autocomplete="off">
+          </div>
+          " "
+          <div class="field">
+            <label for="ho-note">"Note (optional)"</label>
+            <input id="ho-note" maxlength="200" autocomplete="off" placeholder="e.g. envelope sealed, counted together">
+          </div>
+          " "
+          <div>
+            <div class="eyebrow">"Handed over by"</div>
+            <div class="signer-static">"Manny Manager"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="ho-clear" type="button">"Clear"</button>
+            <button class="btn primary" id="ho-sign" type="button">"Sign for the cash"</button>
+          </div>
+          " "
+          <div class="msg" id="ho-msg"></div>
+          " "
+        </div>
+      </div>
+      " "
+    </div>
+  </section>
+</main>
+`;
+
+exports[`sheets with figures, draft and signed, seen by different roles 6`] = `
+## u-admin on citydeep, signed: citydeep
+<main id="main">
+  <div class="notice" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <span>
+      "This sheet is "
+      <b>"signed and locked"</b>
+      ", so the figures can't be changed. To correct it, reopen it first: the signature is removed and it must be signed again."
+    </span>
+    <button class="btn" type="button" id="goreopen">"Reopen to correct"</button>
+  </div>
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 1h 0m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband citydeep" role="heading" aria-level="2">
+    <div>
+      <div class="big">"City Deep Retail cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"City Deep Retail"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet citydeep">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"City Deep Retail department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip signed">"Signed off"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Cindy Deep"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"City Deep Retail"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="citydeep">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Coins"</td>
+              " "
+              <td class="inp">
+                <input id="citydeep-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="12.00" disabled aria-label="Coins per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="citydeep-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="12.00" disabled aria-label="Coins deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cash">"R 0.00"</td>
+            </tr>
+            <tr class="cg">
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="citydeep-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="3100.00" aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <label class="sub" for="citydeep-cashguard-deposited">"Deposited in Nedbank"</label>
+                <input id="citydeep-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="3000.00" aria-label="CashGuard deposited in Nedbank">
+                " "
+                <label class="sub" for="citydeep-cashguard-retained">"Counted & retained, not banked"</label>
+                <input id="citydeep-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="150.00" aria-label="CashGuard counted and retained, not banked">
+              </td>
+              " "
+              <td class="num var-pos" id="v-cashguard">"+R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="citydeep-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1999.95" disabled aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="citydeep-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1980.00" disabled aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-neg" id="v-card">"−R 19,95"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="citydeep-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="citydeep-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 5 111,95"</td>
+              <td class="num" id="t-dep">"R 5 142,00"</td>
+              <td class="num var-pos" id="t-var">"+R 30,05"</td>
+            </tr>
+            " "
+            <tr class="cgnote">
+              <td colspan="4" id="t-cg">
+                "Includes CashGuard counted & retained, not banked: "
+                <b>"R 150,00"</b>
+                ". Banked total: R 4 992,00."
+              </td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="citydeep-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="citydeep-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="citydeep-damagedNotes">"Damaged details"</label>
+          <input id="citydeep-damagedNotes" value placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" disabled maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="citydeep-notes">"Notes (explain any variance)"</label>
+        <textarea id="citydeep-notes" disabled maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice">"Card machine offline 10 minutes"</textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-citydeep">"Last saved 28 Oct, 10:00"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"City Deep Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="sig-img">
+          <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Signature of Cindy Deep">
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div>
+            <div class="eyebrow">"Signed by"</div>
+            <div class="signer-static">"Cindy Deep"</div>
+            <div class="msg">"28 Oct, 17:10"</div>
+          </div>
+          " "
+          <div class="msg">"This cash up is locked. Reopen it only to correct a mistake; the signature is removed, the reopen is recorded, and it must be signed again."</div>
+          " "
+          <div class="actions">
+            <button class="btn danger" id="reopen" data-dept="citydeep">"Reopen to correct"</button>
+            <span class="msg" id="reopen-msg"></span>
+          </div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+</main>
+`;
+
+exports[`sheets with figures, draft and signed, seen by different roles 7`] = `
+## u-retail on wholesale, signed: none
+<main id="main">
+  <div class="notice">"You are signed in as Aeroton Retail manager, so the Wholesale sheet is view-only for you."</div>
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 1h 0m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband wholesale" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Wholesale cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Wholesale"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet wholesale">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Wholesale department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip draft">"In progress"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Wanda Wholesale"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Wholesale"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="wholesale">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1500.00" disabled aria-label="Cash per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1450.00" disabled aria-label="Cash deposited">
+              </td>
+              " "
+              <td class="num var-neg" id="v-cash">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2000.00" disabled aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2000.00" disabled aria-label="CashGuard deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="3200.50" disabled aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="3200.50" disabled aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="410.00" disabled aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="410.00" disabled aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-report" data-m="payfast" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="99.99" disabled aria-label="PayFast card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-deposited" data-m="payfast" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="99.99" disabled aria-label="PayFast card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-payfast">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-report" data-m="eft" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="800.00" disabled aria-label="EFT per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="800.00" disabled aria-label="EFT deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-eft">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-report" data-m="shop2shop" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="120.00" disabled aria-label="Shop2Shop per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-deposited" data-m="shop2shop" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="120.00" disabled aria-label="Shop2Shop deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-shop2shop">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="45.00" disabled aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="45.00" disabled aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 8 175,49"</td>
+              <td class="num" id="t-dep">"R 8 125,49"</td>
+              <td class="num var-neg" id="t-var">"−R 50,00"</td>
+            </tr>
+            " "
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="wholesale-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="wholesale-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="100.00" disabled style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="wholesale-damagedNotes">"Damaged details"</label>
+          <input id="wholesale-damagedNotes" value="1 x R100 torn" placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" disabled maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="wholesale-notes">"Notes (explain any variance)"</label>
+        <textarea id="wholesale-notes" disabled maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice">"R50 short, float counted twice"</textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-wholesale">"Last saved 28 Oct, 10:00"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="msg">"Only the Wholesale cashier can sign this sheet."</div>
+    </div>
+    " "
+  </section>
+</main>
+`;
+
+exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
+## u-whole on retail, signed: wholesale,retail,citydeep,manager
+<main id="main">
+  <div class="notice">"You are signed in as Wholesale cashier, so the Aeroton Retail sheet is view-only for you."</div>
+  <div class="banner ok" style="font-weight:500">"Completed on time."</div>
+  " "
+  <div class="deptband retail" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Aeroton Retail cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Aeroton Retail"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet retail">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Aeroton Retail department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip signed">"Signed off"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Rita Retail"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Aeroton Retail"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="retail">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Coins"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="35.50" disabled aria-label="Coins per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="35.50" disabled aria-label="Coins deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cash">"R 0.00"</td>
+            </tr>
+            <tr class="cg">
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="5400.00" aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <label class="sub" for="retail-cashguard-deposited">"Deposited in Nedbank"</label>
+                <input id="retail-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="4900.00" aria-label="CashGuard deposited in Nedbank">
+                " "
+                <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
+                <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="300.00" aria-label="CashGuard counted and retained, not banked">
+              </td>
+              " "
+              <td class="num var-neg" id="v-cashguard">"−R 200,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="retail-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2750.25" disabled aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2750.25" disabled aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="retail-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="60.00" disabled aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="60.00" disabled aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+            <tr class="petty">
+              <td>
+                "Petty cash (not banked)"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
+              </td>
+              " "
+              <td class="num muted">"—"</td>
+              " "
+              <td class="inp">
+                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" disabled aria-label="Petty cash, not banked">
+              </td>
+              " "
+              <td class="num muted">"—"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 8 245,75"</td>
+              <td class="num" id="t-dep">"R 8 245,75"</td>
+              <td class="num var-zero" id="t-var">"R 0.00"</td>
+            </tr>
+            " "
+            <tr class="cgnote">
+              <td colspan="4" id="t-cg">
+                "Includes CashGuard counted & retained, not banked: "
+                <b>"R 300,00"</b>
+                " · petty cash, not banked: "
+                <b>"R 200,00"</b>
+                ". Banked total: R 7 745,75."
+              </td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="retail-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="retail-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="retail-damagedNotes">"Damaged details"</label>
+          <input id="retail-damagedNotes" value placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" disabled maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-pettyNotes">"Petty cash details"</label>
+        <input id="retail-pettyNotes" value="R200 cleaning materials" placeholder="e.g. R200 for cleaning materials, slip in petty cash box" autocomplete="off" disabled maxlength="300">
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-notes">"Notes (explain any variance)"</label>
+        <textarea id="retail-notes" disabled maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice"></textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-retail">"Last saved 28 Oct, 10:00"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Aeroton Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="sig-img">
+          <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Signature of Rita Retail">
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div>
+            <div class="eyebrow">"Signed by"</div>
+            <div class="signer-static">"Rita Retail"</div>
+            <div class="msg">"28 Oct, 17:05"</div>
+          </div>
+          " "
+          <div class="msg">"This cash up is locked. The manager has closed the day, so only the manager can reopen it from End of Day."</div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+  <section class="sheet" id="ho-sec">
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Cash not banked · handover"</div>
+        <h2>"Cash handed to Candido"</h2>
+      </div>
+      <span class="chip">"R 500,00 not banked today"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="msg">"When Aeroton Retail hands over the cash that was not banked (CashGuard retained and petty cash), Candido checks the amount and signs here to confirm he received it."</div>
+      " "
+      <div id="ho-list">
+        <div class="msg">"No cash handed over yet for this day."</div>
+      </div>
+      " "
+    </div>
+  </section>
+</main>
+`;
+
+exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
+## u-retail on retail, signed: wholesale,retail,citydeep,manager
+<main id="main">
+  <div class="notice" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <span>
+      "This sheet is "
+      <b>"signed and locked"</b>
+      ", so the figures can't be changed. Ask the manager or administrator to reopen it."
+    </span>
+  </div>
+  <div class="banner ok" style="font-weight:500">"Completed on time."</div>
+  " "
+  <div class="deptband retail" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Aeroton Retail cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Aeroton Retail"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet retail">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Aeroton Retail department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip signed">"Signed off"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Rita Retail"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Aeroton Retail"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="retail">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Coins"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="35.50" disabled aria-label="Coins per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="35.50" disabled aria-label="Coins deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cash">"R 0.00"</td>
+            </tr>
+            <tr class="cg">
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="5400.00" aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <label class="sub" for="retail-cashguard-deposited">"Deposited in Nedbank"</label>
+                <input id="retail-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="4900.00" aria-label="CashGuard deposited in Nedbank">
+                " "
+                <label class="sub" for="retail-cashguard-retained">"Counted & retained, not banked"</label>
+                <input id="retail-cashguard-retained" data-m="cashguard" data-f="retained" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" disabled value="300.00" aria-label="CashGuard counted and retained, not banked">
+              </td>
+              " "
+              <td class="num var-neg" id="v-cashguard">"−R 200,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="retail-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2750.25" disabled aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2750.25" disabled aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="retail-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="60.00" disabled aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="60.00" disabled aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+            <tr class="petty">
+              <td>
+                "Petty cash (not banked)"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Cash kept for petty cash"</div>
+              </td>
+              " "
+              <td class="num muted">"—"</td>
+              " "
+              <td class="inp">
+                <input id="retail-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="200.00" disabled aria-label="Petty cash, not banked">
+              </td>
+              " "
+              <td class="num muted">"—"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 8 245,75"</td>
+              <td class="num" id="t-dep">"R 8 245,75"</td>
+              <td class="num var-zero" id="t-var">"R 0.00"</td>
+            </tr>
+            " "
+            <tr class="cgnote">
+              <td colspan="4" id="t-cg">
+                "Includes CashGuard counted & retained, not banked: "
+                <b>"R 300,00"</b>
+                " · petty cash, not banked: "
+                <b>"R 200,00"</b>
+                ". Banked total: R 7 745,75."
+              </td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="retail-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="retail-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="retail-damagedNotes">"Damaged details"</label>
+          <input id="retail-damagedNotes" value placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" disabled maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-pettyNotes">"Petty cash details"</label>
+        <input id="retail-pettyNotes" value="R200 cleaning materials" placeholder="e.g. R200 for cleaning materials, slip in petty cash box" autocomplete="off" disabled maxlength="300">
+      </div>
+      " "
+      <div class="field">
+        <label for="retail-notes">"Notes (explain any variance)"</label>
+        <textarea id="retail-notes" disabled maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice"></textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-retail">"Last saved 28 Oct, 10:00"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Aeroton Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="sig-img">
+          <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Signature of Rita Retail">
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div>
+            <div class="eyebrow">"Signed by"</div>
+            <div class="signer-static">"Rita Retail"</div>
+            <div class="msg">"28 Oct, 17:05"</div>
+          </div>
+          " "
+          <div class="msg">"This cash up is locked. The manager has closed the day, so only the manager can reopen it from End of Day."</div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+  <section class="sheet" id="ho-sec">
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Cash not banked · handover"</div>
+        <h2>"Cash handed to Candido"</h2>
+      </div>
+      <span class="chip">"R 500,00 not banked today"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="msg">"When Aeroton Retail hands over the cash that was not banked (CashGuard retained and petty cash), Candido checks the amount and signs here to confirm he received it."</div>
+      " "
+      <div id="ho-list">
+        <div class="msg">"No cash handed over yet for this day."</div>
+      </div>
+      " "
+      <div class="sign" style="margin-top:12px">
+        " "
+        <div class="pad">
+          <canvas id="hpad" width="900" height="300" aria-label="Signature pad for the person receiving the cash"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Candido signs above the line"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="field">
+            <label for="ho-amt">"Amount handed over (R)"</label>
+            <input id="ho-amt" class="num" inputmode="decimal" autocomplete="off" value="500.00" placeholder="0.00" style="text-align:right">
+          </div>
+          " "
+          <div class="field">
+            <label for="ho-to">"Received by"</label>
+            <input id="ho-to" value="Candido" maxlength="60" autocomplete="off">
+          </div>
+          " "
+          <div class="field">
+            <label for="ho-note">"Note (optional)"</label>
+            <input id="ho-note" maxlength="200" autocomplete="off" placeholder="e.g. envelope sealed, counted together">
+          </div>
+          " "
+          <div>
+            <div class="eyebrow">"Handed over by"</div>
+            <div class="signer-static">"Rita Retail"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="ho-clear" type="button">"Clear"</button>
+            <button class="btn primary" id="ho-sign" type="button">"Sign for the cash"</button>
+          </div>
+          " "
+          <div class="msg" id="ho-msg"></div>
+          " "
+        </div>
+      </div>
+      " "
+    </div>
+  </section>
+</main>
+`;
+
+exports[`typing amounts: accepted formats, tidy on leaving the box, debounced save 1`] = `
+## formats
+[
+  {
+    "typed": "1 480,55",
+    "inBox": "1480,55",
+    "afterLeaving": "1480.55",
+    "variance": "−R 1 480,55",
+    "total": "R 1 480,55"
+  },
+  {
+    "typed": "1.480,55",
+    "inBox": "1.480,55",
+    "afterLeaving": "1480.55",
+    "variance": "−R 1 480,55",
+    "total": "R 1 480,55"
+  },
+  {
+    "typed": "1,480.55",
+    "inBox": "1,480.55",
+    "afterLeaving": "1480.55",
+    "variance": "−R 1 480,55",
+    "total": "R 1 480,55"
+  },
+  {
+    "typed": "1480.5",
+    "inBox": "1480.5",
+    "afterLeaving": "1480.50",
+    "variance": "−R 1 480,50",
+    "total": "R 1 480,50"
+  },
+  {
+    "typed": "1.234",
+    "inBox": "1.234",
+    "afterLeaving": "1234.00",
+    "variance": "−R 1 234,00",
+    "total": "R 1 234,00"
+  },
+  {
+    "typed": "12,5",
+    "inBox": "12,5",
+    "afterLeaving": "12.50",
+    "variance": "−R 12,50",
+    "total": "R 12,50"
+  },
+  {
+    "typed": ",5",
+    "inBox": ",5",
+    "afterLeaving": "0.50",
+    "variance": "−R 0,50",
+    "total": "R 0,50"
+  },
+  {
+    "typed": "R 99",
+    "inBox": "99",
+    "afterLeaving": "99.00",
+    "variance": "−R 99,00",
+    "total": "R 99,00"
+  },
+  {
+    "typed": "1234567890123",
+    "inBox": "1234567890123",
+    "afterLeaving": "123456789012.00",
+    "variance": "−R 123 456 789 012,00",
+    "total": "R 123 456 789 012,00"
+  },
+  {
+    "typed": "1.2.3",
+    "inBox": "1.2.3",
+    "afterLeaving": "12.30",
+    "variance": "−R 12,30",
+    "total": "R 12,30"
+  },
+  {
+    "typed": "abc",
+    "inBox": "",
+    "afterLeaving": "",
+    "variance": "R 0.00",
+    "total": "R 0,00"
+  }
+]
+`;
+
+exports[`typing amounts: accepted formats, tidy on leaving the box, debounced save 2`] = `
+## one save after the pause
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "wholesale",
+      "cashier": "Wanda Wholesale",
+      "lines": {
+        "cash": {
+          "report": "",
+          "deposited": ""
+        },
+        "cashguard": {
+          "report": "",
+          "deposited": "",
+          "retained": ""
+        },
+        "card": {
+          "report": "",
+          "deposited": ""
+        },
+        "cardcbm": {
+          "report": "",
+          "deposited": ""
+        },
+        "payfast": {
+          "report": "",
+          "deposited": ""
+        },
+        "eft": {
+          "report": "",
+          "deposited": ""
+        },
+        "shop2shop": {
+          "report": "",
+          "deposited": ""
+        },
+        "snapscan": {
+          "report": "",
+          "deposited": ""
+        },
+        "petty": {
+          "report": "",
+          "deposited": ""
+        }
+      },
+      "damaged": "",
+      "damagedNotes": "",
+      "notes": "",
+      "status": "draft",
+      "signature": "",
+      "signedBy": "",
+      "signedAt": "",
+      "updatedAt": "2026-10-28T08:00:00.700Z",
+      "updatedAtServer": "<serverTimestamp>",
+      "reopenedAt": null,
+      "signedAtServer": null
+    }
+  }
+]
+`;
+
+exports[`typing amounts: accepted formats, tidy on leaving the box, debounced save 3`] = `
+## saved note
+Saved for everyone · 28 Oct, 10:00
+`;
+
+exports[`updates from another device: re-render, or patch while typing, or drop a stale draft 1`] = `
+## re-rendered, first row
+<tr>
+  <td>"Cash"</td>
+  " "
+  <td class="inp">
+    <input id="wholesale-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1.00" aria-label="Cash per report">
+  </td>
+  " "
+  <td class="inp">
+    <input id="wholesale-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2.00" aria-label="Cash deposited">
+  </td>
+  " "
+  <td class="num var-pos" id="v-cash">"+R 1,00"</td>
+</tr>
+`;
+
+exports[`updates from another device: re-render, or patch while typing, or drop a stale draft 2`] = `
+## patched
+{
+  "cash": "1.00",
+  "cardDeposited": "",
+  "total": "R 6,00"
+}
+`;
+
+exports[`updates from another device: re-render, or patch while typing, or drop a stale draft 3`] = `
+## no save after the remote signature
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "wholesale",
+      "cashier": "Wanda Wholesale",
+      "lines": {
+        "cash": {
+          "report": "7.00",
+          "deposited": "7.00"
+        },
+        "card": {
+          "report": "5.00",
+          "deposited": "9.99"
+        }
+      },
+      "damaged": "100.00",
+      "damagedNotes": "1 x R100 torn",
+      "notes": "changed elsewhere",
+      "status": "draft",
+      "signature": "",
+      "signedBy": "",
+      "signedAt": "",
+      "updatedAt": "2026-10-28T08:00:00.700Z",
+      "updatedAtServer": "<ts 2026-10-28T08:00:00.700Z>",
+      "reopenedAt": null,
+      "signedAtServer": null
+    }
+  },
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "wholesale",
+      "cashier": "Wanda Wholesale",
+      "lines": {
+        "cash": {
+          "report": "7.00",
+          "deposited": "7.00"
+        },
+        "card": {
+          "report": "5.00",
+          "deposited": "9.99"
+        }
+      },
+      "damaged": "100.00",
+      "damagedNotes": "1 x R100 torn",
+      "notes": "changed elsewhere",
+      "status": "signed",
+      "signature": "",
+      "signedBy": "Someone Else",
+      "signedAt": "2026-10-28T07:59:00.000Z",
+      "updatedAt": "2026-10-28T08:00:00.700Z",
+      "updatedAtServer": "<ts 2026-10-28T08:00:00.700Z>",
+      "reopenedAt": null,
+      "signedAtServer": null
+    }
+  }
+]
+`;
+
+exports[`updates from another device: re-render, or patch while typing, or drop a stale draft 4`] = `
+## status chip
+Signed off
+`;

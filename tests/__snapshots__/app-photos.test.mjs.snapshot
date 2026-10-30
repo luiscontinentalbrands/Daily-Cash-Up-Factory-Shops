@@ -1,0 +1,777 @@
+exports[`Aeroton cash handover: section, checks, signed for 1`] = `
+## section
+<section class="sheet" id="ho-sec">
+  <div class="sheet-head">
+    <div>
+      <div class="eyebrow">"Cash not banked · handover"</div>
+      <h2>"Cash handed to Candido"</h2>
+    </div>
+    <span class="chip">"R 500,00 not banked today"</span>
+  </div>
+  " "
+  <div class="sheet-body">
+    " "
+    <div class="msg">"When Aeroton Retail hands over the cash that was not banked (CashGuard retained and petty cash), Candido checks the amount and signs here to confirm he received it."</div>
+    " "
+    <div id="ho-list">
+      <div class="msg">"No cash handed over yet for this day."</div>
+    </div>
+    " "
+    <div class="sign" style="margin-top:12px">
+      " "
+      <div class="pad">
+        <canvas id="hpad" width="900" height="300" aria-label="Signature pad for the person receiving the cash"></canvas>
+        <div class="base"></div>
+        <div class="hint">"Candido signs above the line"</div>
+      </div>
+      " "
+      <div style="display:flex;flex-direction:column;gap:10px">
+        " "
+        <div class="field">
+          <label for="ho-amt">"Amount handed over (R)"</label>
+          <input id="ho-amt" class="num" inputmode="decimal" autocomplete="off" value="500.00" placeholder="0.00" style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="ho-to">"Received by"</label>
+          <input id="ho-to" value="Candido" maxlength="60" autocomplete="off">
+        </div>
+        " "
+        <div class="field">
+          <label for="ho-note">"Note (optional)"</label>
+          <input id="ho-note" maxlength="200" autocomplete="off" placeholder="e.g. envelope sealed, counted together">
+        </div>
+        " "
+        <div>
+          <div class="eyebrow">"Handed over by"</div>
+          <div class="signer-static">"Rita Retail"</div>
+        </div>
+        " "
+        <div class="actions">
+          <button class="btn" id="ho-clear" type="button">"Clear"</button>
+          <button class="btn primary" id="ho-sign" type="button">"Sign for the cash"</button>
+        </div>
+        " "
+        <div class="msg" id="ho-msg"></div>
+        " "
+      </div>
+    </div>
+    " "
+  </div>
+</section>
+`;
+
+exports[`Aeroton cash handover: section, checks, signed for 2`] = `
+## checks
+[
+  "Enter the amount handed over.",
+  "123.40",
+  "Enter the name of the person receiving the cash.",
+  "The person receiving the cash must be someone else.",
+  "Candido must sign in the box first."
+]
+`;
+
+exports[`Aeroton cash handover: section, checks, signed for 3`] = `
+## signed for
+{
+  "writes": [
+    {
+      "op": "set",
+      "path": "shops/TestShopKey0123456789abc/handovers/auto001",
+      "data": {
+        "date": "2026-10-28",
+        "shop": "retail",
+        "amount": 123.4,
+        "givenBy": "Rita Retail",
+        "receivedBy": "Candido",
+        "note": "envelope sealed",
+        "signature": "data:image/png;base64,aW1hZ2UvcG5nfDYwMHgyMDB8b3BzIDJ8cSAt",
+        "at": "<serverTimestamp>",
+        "atIso": "2026-10-28T08:00:00.000Z"
+      }
+    }
+  ],
+  "message": "Saved: R 123,40 handed to Candido.",
+  "list": "<div id=\\"ho-list\\">\\n  <div class=\\"hlist\\">\\n    <div class=\\"sigbox\\">\\n      <div class=\\"eyebrow\\">\\"R 123,40 · received by Candido\\"</div>\\n      <div class=\\"sig-img\\">\\n        <img src=\\"data:image/png;base64,aW1hZ2UvcG5nfDYwMHgyMDB8b3BzIDJ8cSAt\\" alt=\\"Signature of Candido\\">\\n      </div>\\n      <div class=\\"who\\">\\"Given by Rita Retail · 28 Oct, 10:00 · envelope sealed\\"</div>\\n    </div>\\n  </div>\\n</div>"
+}
+`;
+
+exports[`Aeroton cash handover: section, checks, signed for 4`] = `
+## refused
+Not saved: the Firebase rules need updating (publish the new rules).
+`;
+
+exports[`Aeroton cash handover: section, checks, signed for 5`] = `
+## view only
+<section class="sheet" id="ho-sec">
+  <div class="sheet-head">
+    <div>
+      <div class="eyebrow">"Cash not banked · handover"</div>
+      <h2>"Cash handed to Candido"</h2>
+    </div>
+    <span class="chip">"R 500,00 not banked today"</span>
+  </div>
+  " "
+  <div class="sheet-body">
+    " "
+    <div class="msg">"When Aeroton Retail hands over the cash that was not banked (CashGuard retained and petty cash), Candido checks the amount and signs here to confirm he received it."</div>
+    " "
+    <div id="ho-list">
+      <div class="msg">"No cash handed over yet for this day."</div>
+    </div>
+    " "
+  </div>
+</section>
+`;
+
+exports[`attach files: PDF pages kept, figures read from the last page; other files refused 1`] = `
+## pdf
+{
+  "writes": [
+    [
+      "shops/TestShopKey0123456789abc/photos/auto001",
+      "2026-10-28T08:00:00.000Z",
+      "data:image/jpeg;base64,aW1hZ2UvanBlZ3wxMDUweDE0MDB8b3BzIDJ8c"
+    ],
+    [
+      "shops/TestShopKey0123456789abc/photos/auto002",
+      "2026-10-28T08:00:00.000Z",
+      "data:image/jpeg;base64,aW1hZ2UvanBlZ3wxMDUweDE0MDB8b3BzIDJ8c"
+    ],
+    [
+      "shops/TestShopKey0123456789abc/photos/auto003",
+      "2026-10-28T08:00:00.000Z",
+      "data:image/jpeg;base64,aW1hZ2UvanBlZ3wxMDUweDE0MDB8b3BzIDJ8c"
+    ],
+    [
+      "shops/TestShopKey0123456789abc/photos/auto004",
+      "2026-10-28T08:00:00.000Z",
+      "data:image/jpeg;base64,aW1hZ2UvanBlZ3wxMDUweDE0MDB8b3BzIDJ8c"
+    ],
+    [
+      "shops/TestShopKey0123456789abc/photos/auto005",
+      "2026-10-28T08:00:00.000Z",
+      "data:image/jpeg;base64,aW1hZ2UvanBlZ3wxMDUweDE0MDB8b3BzIDJ8c"
+    ],
+    [
+      "shops/TestShopKey0123456789abc/photos/auto006",
+      "2026-10-28T08:00:00.000Z",
+      "data:image/jpeg;base64,aW1hZ2UvanBlZ3wxMDUweDE0MDB8b3BzIDJ8c"
+    ]
+  ],
+  "message": "Photo saved. Filled Cash from the report. Check each figure against the slip before signing.Show what the reader saw{\\"cash\\": 42, \\"readable\\": true} Only the first 6 pages of z-report.pdf were kept.",
+  "ai": 1
+}
+`;
+
+exports[`attach files: PDF pages kept, figures read from the last page; other files refused 2`] = `
+## text file
+notes.txt is not a photo or PDF. Attach a photo (JPG, PNG) or a PDF.
+`;
+
+exports[`attach files: PDF pages kept, figures read from the last page; other files refused 3`] = `
+## photo then pdf
+[
+  "shops/TestShopKey0123456789abc/photos/auto007",
+  "shops/TestShopKey0123456789abc/photos/auto008",
+  "shops/TestShopKey0123456789abc/photos/auto009",
+  "shops/TestShopKey0123456789abc/photos/auto010",
+  "shops/TestShopKey0123456789abc/photos/auto011",
+  "shops/TestShopKey0123456789abc/photos/auto012",
+  "shops/TestShopKey0123456789abc/photos/auto013"
+]
+`;
+
+exports[`attach files: PDF pages kept, figures read from the last page; other files refused 4`] = `
+## pdf reader unavailable
+The PDF c.pdf could not be opened: PDF reader could not be downloaded
+`;
+
+exports[`photo reader on the retail shops: EFT counted as card, prompt wording 1`] = `
+## message
+<div class="msg" id="scan-msg" style="flex-basis:100%">
+  "Photo saved. Filled Coins, Credit card from the report. Check each figure against the slip before signing."
+  <details style="margin-top:6px">
+    <summary style="cursor:pointer">"Show what the reader saw"</summary>
+    <pre style="white-space:pre-wrap;font-size:.78rem;max-height:240px;overflow:auto;background:var(--bg);padding:8px;border-radius:8px">"{\\"cash\\": 10, \\"card\\": 100, \\"eft\\": 50.5, \\"snapscan\\": null, \\"total\\": 160.5, \\"date\\": \\"2026-10-28\\", \\"readable\\": true}"</pre>
+  </details>
+</div>
+`;
+
+exports[`photo reader on the retail shops: EFT counted as card, prompt wording 2`] = `
+## card and coins
+[
+  "150.50",
+  "10.00"
+]
+`;
+
+exports[`photo reader on the retail shops: EFT counted as card, prompt wording 3`] = `
+## retail prompt
+This is a photo of the last page of a South African retail till cash-up / Z-report (amounts in Rand) for the Aeroton Retail department of a factory shop.
+Read the TOTAL amount per payment/tender type as printed on the report. Map tenders to these keys:
+- cash: Cash (notes and coins tender)
+- cashguard: CashGuard (cash recycler / CashGuard tender)
+- card: Credit card / debit card / speedpoint / card machine totals combined (in this shop, amounts printed as EFT are card-machine payments: include them here)
+- eft: EFT / bank transfer (always null for this shop: put EFT amounts under card)
+- shop2shop: Shop2Shop
+- snapscan: SnapScan
+Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
+Use null when a tender is not on the report. Give amounts as plain JSON numbers with a dot for decimals (e.g. 1234.56), without currency symbols, spaces or thousands separators, even if the slip prints them as "R 1 234,56". Set readable false if the photo is not a cash-up report or too blurry to read.
+`;
+
+exports[`photo reader on the retail shops: EFT counted as card, prompt wording 4`] = `
+## unreadable
+Photo saved. The photo was not readable. Retake it flat, in good light, with the whole page in view, or type the figures by hand.Show what the reader saw{"readable": false}
+`;
+
+exports[`photo reader on the retail shops: EFT counted as card, prompt wording 5`] = `
+## city deep prompt
+This is a photo of the last page of a South African retail till cash-up / Z-report (amounts in Rand) for the City Deep Retail department of a factory shop.
+Read the TOTAL amount per payment/tender type as printed on the report. Map tenders to these keys:
+- cash: Cash (notes and coins tender)
+- cashguard: CashGuard (cash recycler / CashGuard tender)
+- card: Credit card / debit card / speedpoint / card machine totals combined (in this shop, amounts printed as EFT are card-machine payments: include them here)
+- eft: EFT / bank transfer (always null for this shop: put EFT amounts under card)
+- shop2shop: Shop2Shop
+- snapscan: SnapScan
+Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
+Use null when a tender is not on the report. Give amounts as plain JSON numbers with a dot for decimals (e.g. 1234.56), without currency symbols, spaces or thousands separators, even if the slip prints them as "R 1 234,56". Set readable false if the photo is not a cash-up report or too blurry to read.
+`;
+
+exports[`photo reader: an unknown model moves on to the next model 1`] = `
+{
+  "tried": [
+    "vertex:global gemini-3.5-flash",
+    "vertex:global gemini-3.1-flash-lite"
+  ],
+  "remembered": "{\\"r\\":\\"vertex-global\\",\\"m\\":\\"gemini-3.1-flash-lite\\"}",
+  "message": "Photo saved. Filled Cash from the report. Check each figure against the slip before signing.Show what the reader saw{\\"cash\\": 5, \\"readable\\": true}"
+}
+`;
+
+exports[`photo reader: remembered route first, fallbacks, and every error message 1`] = `
+{
+  "app check": {
+    "message": "Photo saved. The figures could not be read automatically. Google's App Check protection is not set up for this app yet. Type the report figures by hand. Details: AppCheck: App Check token is invalidShow what the reader sawERROR: AppCheck: App Check token is invalid",
+    "tried": [
+      "google gemini-2.5-flash",
+      "vertex:global gemini-3.5-flash",
+      "vertex:us-central1 gemini-3.5-flash"
+    ]
+  },
+  "genai config": {
+    "message": "Photo saved. The figures could not be read automatically. Firebase AI Logic is not fully set up for this project (Gemini Developer API link missing). Type the report figures by hand. Details: Firebase AI: genai config not foundShow what the reader sawERROR: Firebase AI: genai config not found",
+    "tried": [
+      "vertex:global gemini-3.5-flash",
+      "vertex:us-central1 gemini-3.5-flash",
+      "google gemini-3.5-flash"
+    ]
+  },
+  "not enabled": {
+    "message": "Photo saved. The figures could not be read automatically. The AI reader is not switched on in Firebase yet. Type the report figures by hand. Details: API has not been used in project 123 before or it is disabled. SERVICE_DISABLEDShow what the reader sawERROR: API has not been used in project 123 before or it is disabled. SERVICE_DISABLED",
+    "tried": [
+      "vertex:global gemini-3.5-flash",
+      "vertex:us-central1 gemini-3.5-flash",
+      "google gemini-3.5-flash"
+    ]
+  },
+  "no model": {
+    "message": "Photo saved. The figures could not be read automatically. None of the AI models were accepted by your project. Check that AI Logic is set up with the Gemini Developer API. Type the report figures by hand. Details: 404 model not foundShow what the reader sawERROR: 404 model not found",
+    "tried": [
+      "vertex:global gemini-3.5-flash",
+      "vertex:global gemini-3.1-flash-lite",
+      "vertex:global gemini-3.5-flash-lite",
+      "vertex:global gemini-flash-latest",
+      "vertex:global gemini-2.5-flash",
+      "vertex:global gemini-2.0-flash",
+      "vertex:us-central1 gemini-3.5-flash",
+      "vertex:us-central1 gemini-3.1-flash-lite",
+      "vertex:us-central1 gemini-3.5-flash-lite",
+      "vertex:us-central1 gemini-flash-latest",
+      "vertex:us-central1 gemini-2.5-flash",
+      "vertex:us-central1 gemini-2.0-flash",
+      "google gemini-3.5-flash",
+      "google gemini-3.1-flash-lite",
+      "google gemini-3.5-flash-lite",
+      "google gemini-flash-latest",
+      "google gemini-2.5-flash",
+      "google gemini-2.0-flash"
+    ]
+  },
+  "quota": {
+    "message": "Photo saved. The figures could not be read automatically. The free AI allowance for today is used up. Type the report figures by hand. Details: 429 RESOURCE_EXHAUSTED: quota exceededShow what the reader sawERROR: 429 RESOURCE_EXHAUSTED: quota exceeded",
+    "tried": [
+      "vertex:global gemini-3.5-flash",
+      "vertex:us-central1 gemini-3.5-flash",
+      "google gemini-3.5-flash"
+    ]
+  },
+  "quota mentioning a model": {
+    "message": "Photo saved. The figures could not be read automatically. None of the AI models were accepted by your project. Check that AI Logic is set up with the Gemini Developer API. Type the report figures by hand. Details: 429 RESOURCE_EXHAUSTED: Quota exceeded for model gemini-3.5-flashShow what the reader sawERROR: 429 RESOURCE_EXHAUSTED: Quota exceeded for model gemini-3.5-flash",
+    "tried": [
+      "vertex:global gemini-3.5-flash",
+      "vertex:us-central1 gemini-3.5-flash",
+      "google gemini-3.5-flash"
+    ]
+  },
+  "key": {
+    "message": "Photo saved. The figures could not be read automatically. The Firebase web key is not allowed to use the AI reader. Type the report figures by hand. Details: API key not valid: referer blockedShow what the reader sawERROR: API key not valid: referer blocked",
+    "tried": [
+      "vertex:global gemini-3.5-flash",
+      "vertex:us-central1 gemini-3.5-flash",
+      "google gemini-3.5-flash"
+    ]
+  },
+  "network": {
+    "message": "Photo saved. The figures could not be read automatically. The AI reader could not be reached (connection). Type the report figures by hand. Details: Failed to fetchShow what the reader sawERROR: Failed to fetch",
+    "tried": [
+      "vertex:global gemini-3.5-flash"
+    ]
+  },
+  "other": {
+    "message": "Photo saved. The figures could not be read automatically. The AI reader refused the request. Type the report figures by hand. Details: Something oddShow what the reader sawERROR: Something odd",
+    "tried": [
+      "vertex:global gemini-3.5-flash",
+      "vertex:us-central1 gemini-3.5-flash",
+      "google gemini-3.5-flash"
+    ]
+  }
+}
+`;
+
+exports[`photos: add another (no reading), unreadable file, big photo is shrunk, strip, enlarge, remove 1`] = `
+## added without reading
+{
+  "writes": [
+    {
+      "op": "set",
+      "path": "shops/TestShopKey0123456789abc/photos/auto001",
+      "data": {
+        "date": "2026-10-28",
+        "dept": "wholesale",
+        "data": "data:image/jpeg;base64,aW1hZ2UvanBlZ3wxNDAweDEwNTB8b3BzIDJ8cSAwLjY=",
+        "by": "Wanda Wholesale",
+        "at": "<serverTimestamp>",
+        "takenAt": "2026-10-28T08:00:00.000Z"
+      }
+    }
+  ],
+  "message": "Photo added. The figures were not changed.",
+  "ai": 0
+}
+`;
+
+exports[`photos: add another (no reading), unreadable file, big photo is shrunk, strip, enlarge, remove 2`] = `
+## broken
+That file could not be opened as a photo. Try again.
+`;
+
+exports[`photos: add another (no reading), unreadable file, big photo is shrunk, strip, enlarge, remove 3`] = `
+## strip
+<div data-photos="wholesale">
+  <div class="actions" style="align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:4px;align-items:center">
+      <button class="thumb" type="button" data-pid="auto001" title="Wanda Wholesale · 28 Oct, 10:00" style="padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;cursor:zoom-in">
+        <img src="data:image/jpeg;base64,aW1hZ2UvanBlZ3wxNDAweDEwNTB8b3BzIDJ8cSAwLjY=" alt="Report photo taken by Wanda Wholesale" style="display:block;height:72px;width:auto">
+      </button>
+      <button class="linkbtn" type="button" data-read="auto001" style="font-size:.78rem">"Read figures"</button>
+      <button class="linkbtn" type="button" data-rm="auto001" style="color:var(--bad);font-size:.78rem">"Remove"</button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`photos: add another (no reading), unreadable file, big photo is shrunk, strip, enlarge, remove 4`] = `
+## enlarged
+<div style="position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:10px;cursor:zoom-out">
+  <img src="data:image/jpeg;base64,aW1hZ2UvanBlZ3wxNDAweDEwNTB8b3BzIDJ8cSAwLjY=" alt="Report photo" style="max-width:100%;max-height:85vh;border-radius:8px;background:#fff">
+  <div style="color:#fff;font-size:.85rem">"Wholesale · Wanda Wholesale · 28 Oct, 10:00 · tap to close"</div>
+</div>
+`;
+
+exports[`removing a photo clears the figures read from it 1`] = `
+## strip with removed note
+<div data-photos="wholesale">
+  <div class="actions" style="align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:4px;align-items:center">
+      <button class="thumb" type="button" data-pid="p1" title="Wanda Wholesale · 28 Oct, 09:00" style="padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;cursor:zoom-in">
+        <img src="data:image/jpeg;base64,UEhPVE8=" alt="Report photo taken by Wanda Wholesale" style="display:block;height:72px;width:auto">
+      </button>
+      <button class="linkbtn" type="button" data-read="p1" style="font-size:.78rem">"Read figures"</button>
+      <button class="linkbtn" type="button" data-rm="p1" style="color:var(--bad);font-size:.78rem">"Remove"</button>
+    </div>
+  </div>
+  <div class="msg" style="margin-top:6px">"Photo removed by Wanda Wholesale · 28 Oct, 09:06"</div>
+</div>
+`;
+
+exports[`removing a photo clears the figures read from it 2`] = `
+## armed
+Tap again: removes photo and its figures
+`;
+
+exports[`removing a photo clears the figures read from it 3`] = `
+## removed
+{
+  "writes": [
+    {
+      "op": "update",
+      "path": "shops/TestShopKey0123456789abc/photos/p1",
+      "data": {
+        "removed": true,
+        "removedBy": "Wanda Wholesale",
+        "removedAt": "<serverTimestamp>",
+        "removedAtIso": "2026-10-28T08:00:00.000Z"
+      }
+    }
+  ],
+  "message": "Photo removed. The report figures read from it were cleared.",
+  "cash": "",
+  "card": "",
+  "cashguard": "2000.00"
+}
+`;
+
+exports[`removing a photo clears the figures read from it 4`] = `
+## sheet saved
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "wholesale",
+      "cashier": "Wanda Wholesale",
+      "lines": {
+        "cash": {
+          "report": "",
+          "deposited": "1450.00"
+        },
+        "cashguard": {
+          "report": "2000.00",
+          "deposited": "2000.00",
+          "retained": ""
+        },
+        "card": {
+          "report": "",
+          "deposited": "3200.50"
+        },
+        "cardcbm": {
+          "report": "410.00",
+          "deposited": "410.00"
+        },
+        "payfast": {
+          "report": "99.99",
+          "deposited": "99.99"
+        },
+        "eft": {
+          "report": "800.00",
+          "deposited": "800.00"
+        },
+        "shop2shop": {
+          "report": "120.00",
+          "deposited": "120.00"
+        },
+        "snapscan": {
+          "report": "45.00",
+          "deposited": "45.00"
+        },
+        "petty": {
+          "report": "",
+          "deposited": ""
+        }
+      },
+      "damaged": "100.00",
+      "damagedNotes": "1 x R100 torn",
+      "notes": "R50 short, float counted twice",
+      "status": "draft",
+      "signature": "",
+      "signedBy": "",
+      "signedAt": "",
+      "updatedAt": "2026-10-28T08:00:00.700Z",
+      "aiFill": {},
+      "updatedAtServer": "<serverTimestamp>",
+      "reopenedAt": null,
+      "signedAtServer": null
+    }
+  }
+]
+`;
+
+exports[`removing the last old photo (nothing recorded) clears the whole report column; re-reading a photo 1`] = `
+## read again
+Filled Cash from the report. Check each figure against the slip before signing.Show what the reader saw{"cash": 1, "readable": true}
+`;
+
+exports[`removing the last old photo (nothing recorded) clears the whole report column; re-reading a photo 2`] = `
+## could not remove
+Could not remove
+`;
+
+exports[`removing the last old photo (nothing recorded) clears the whole report column; re-reading a photo 3`] = `
+## all report boxes
+[
+  "wholesale-cash-report=",
+  "wholesale-cash-deposited=1450.00",
+  "wholesale-cashguard-report=2000.00",
+  "wholesale-cashguard-deposited=2000.00",
+  "wholesale-card-report=3200.50",
+  "wholesale-card-deposited=3200.50",
+  "wholesale-cardcbm-report=410.00",
+  "wholesale-cardcbm-deposited=410.00",
+  "wholesale-payfast-report=99.99",
+  "wholesale-payfast-deposited=99.99",
+  "wholesale-eft-report=800.00",
+  "wholesale-eft-deposited=800.00",
+  "wholesale-shop2shop-report=120.00",
+  "wholesale-shop2shop-deposited=120.00",
+  "wholesale-snapscan-report=45.00",
+  "wholesale-snapscan-deposited=45.00"
+]
+`;
+
+exports[`scan a photo: saved, figures filled (Wholesale), checks against total and date 1`] = `
+## writes
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/photos/auto001",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "wholesale",
+      "data": "data:image/jpeg;base64,aW1hZ2UvanBlZ3wxMDUweDE0MDB8b3BzIDJ8cSAwLjY=",
+      "by": "Wanda Wholesale",
+      "at": "<serverTimestamp>",
+      "takenAt": "2026-10-28T08:00:00.000Z"
+    }
+  }
+]
+`;
+
+exports[`scan a photo: saved, figures filled (Wholesale), checks against total and date 2`] = `
+## AI attempts
+[
+  {
+    "route": "vertex:global",
+    "model": "gemini-3.5-flash",
+    "generationConfig": {
+      "responseMimeType": "application/json",
+      "temperature": 0
+    }
+  }
+]
+`;
+
+exports[`scan a photo: saved, figures filled (Wholesale), checks against total and date 3`] = `
+## prompt
+This is a photo of the last page of a South African retail till cash-up / Z-report (amounts in Rand) for the Wholesale department of a factory shop.
+Read the TOTAL amount per payment/tender type as printed on the report. Map tenders to these keys:
+- cash: Cash (notes and coins tender)
+- cashguard: CashGuard (cash recycler / CashGuard tender)
+- card: Credit card / debit card / speedpoint / card machine totals combined
+- cardcbm: Credit card CBM (the CBM card machine; keep separate from card)
+- payfast: PayFast card payments (keep these separate from card)
+- eft: EFT / bank transfer
+- shop2shop: Shop2Shop
+- snapscan: SnapScan
+Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,"cardcbm":number|null,"payfast":number|null,"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
+Use null when a tender is not on the report. Give amounts as plain JSON numbers with a dot for decimals (e.g. 1234.56), without currency symbols, spaces or thousands separators, even if the slip prints them as "R 1 234,56". Set readable false if the photo is not a cash-up report or too blurry to read.
+`;
+
+exports[`scan a photo: saved, figures filled (Wholesale), checks against total and date 4`] = `
+## message
+<div class="msg err" id="scan-msg" style="flex-basis:100%">
+  "Photo saved. Filled Cash, CashGuard, Credit card, Credit card CBM, PayFast card, Shop2Shop from the report. Check each figure against the slip before signing. The report total reads R 9 999,00 but the lines add to R 4 829,96; check for a missed payment type. The report appears to be dated Tue, 27 Oct 2026, not Wed, 28 Oct 2026."
+  <details style="margin-top:6px">
+    <summary style="cursor:pointer">"Show what the reader saw"</summary>
+    <pre style="white-space:pre-wrap;font-size:.78rem;max-height:240px;overflow:auto;background:var(--bg);padding:8px;border-radius:8px">"\`\`\`json {\\"Cash\\": \\"R 1 234,56\\", \\"cashguard\\": 2000, \\"Credit Card\\": \\"1,480.50\\", \\"CBM\\": 10, \\"payfast\\": \\"99,9\\", \\"eft\\": null, \\"shop2shop\\": 5, \\"snapscan\\": \\"abc\\", \\"total\\": 9999, \\"date\\": \\"2026-10-27\\", \\"readable\\": true} \`\`\`"</pre>
+  </details>
+</div>
+`;
+
+exports[`scan a photo: saved, figures filled (Wholesale), checks against total and date 5`] = `
+## rows
+<tbody>
+  <tr>
+    <td>"Cash"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1234.56" aria-label="Cash per report" style="background:var(--accent-soft)">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Cash deposited">
+    </td>
+    " "
+    <td class="num var-neg" id="v-cash">"−R 1 234,56"</td>
+  </tr>
+  <tr>
+    <td>"CashGuard"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2000.00" aria-label="CashGuard per report" style="background:var(--accent-soft)">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard deposited">
+    </td>
+    " "
+    <td class="num var-neg" id="v-cashguard">"−R 2 000,00"</td>
+  </tr>
+  <tr>
+    <td>"Credit card"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1480.50" aria-label="Credit card per report" style="background:var(--accent-soft)">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card deposited">
+    </td>
+    " "
+    <td class="num var-neg" id="v-card">"−R 1 480,50"</td>
+  </tr>
+  <tr>
+    <td>"Credit card CBM"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="10.00" aria-label="Credit card CBM per report" style="background:var(--accent-soft)">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM deposited">
+    </td>
+    " "
+    <td class="num var-neg" id="v-cardcbm">"−R 10,00"</td>
+  </tr>
+  <tr>
+    <td>"PayFast card"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-payfast-report" data-m="payfast" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="99.90" aria-label="PayFast card per report" style="background:var(--accent-soft)">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-payfast-deposited" data-m="payfast" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="PayFast card deposited">
+    </td>
+    " "
+    <td class="num var-neg" id="v-payfast">"−R 99,90"</td>
+  </tr>
+  <tr>
+    <td>"EFT"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-eft-report" data-m="eft" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="EFT per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="EFT deposited">
+    </td>
+    " "
+    <td class="num var-zero" id="v-eft">"R 0.00"</td>
+  </tr>
+  <tr>
+    <td>"Shop2Shop"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-shop2shop-report" data-m="shop2shop" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="5.00" aria-label="Shop2Shop per report" style="background:var(--accent-soft)">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-shop2shop-deposited" data-m="shop2shop" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Shop2Shop deposited">
+    </td>
+    " "
+    <td class="num var-neg" id="v-shop2shop">"−R 5,00"</td>
+  </tr>
+  <tr>
+    <td>"SnapScan"</td>
+    " "
+    <td class="inp">
+      <input id="wholesale-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan deposited">
+    </td>
+    " "
+    <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+  </tr>
+</tbody>
+`;
+
+exports[`scan a photo: saved, figures filled (Wholesale), checks against total and date 6`] = `
+## sheet saved with aiFill
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "wholesale",
+      "cashier": "Wanda Wholesale",
+      "lines": {
+        "cash": {
+          "report": "1234.56",
+          "deposited": ""
+        },
+        "cashguard": {
+          "report": "2000.00",
+          "deposited": "",
+          "retained": ""
+        },
+        "card": {
+          "report": "1480.50",
+          "deposited": ""
+        },
+        "cardcbm": {
+          "report": "10.00",
+          "deposited": ""
+        },
+        "payfast": {
+          "report": "99.90",
+          "deposited": ""
+        },
+        "eft": {
+          "report": "",
+          "deposited": ""
+        },
+        "shop2shop": {
+          "report": "5.00",
+          "deposited": ""
+        },
+        "snapscan": {
+          "report": "",
+          "deposited": ""
+        },
+        "petty": {
+          "report": "",
+          "deposited": ""
+        }
+      },
+      "damaged": "",
+      "damagedNotes": "",
+      "notes": "",
+      "status": "draft",
+      "signature": "",
+      "signedBy": "",
+      "signedAt": "",
+      "updatedAt": "2026-10-28T08:00:00.700Z",
+      "aiFill": {
+        "auto001": {
+          "cash": "1234.56",
+          "cashguard": "2000.00",
+          "card": "1480.50",
+          "cardcbm": "10.00",
+          "payfast": "99.90",
+          "shop2shop": "5.00"
+        }
+      },
+      "updatedAtServer": "<serverTimestamp>",
+      "reopenedAt": null,
+      "signedAtServer": null
+    }
+  }
+]
+`;

@@ -1,0 +1,1608 @@
+exports[`a signature that cannot be saved is undone 1`] = `
+## message
+Not signed. Check the connection and try again.
+`;
+
+exports[`a signature that cannot be saved is undone 2`] = `
+## still not signed
+In progress
+`;
+
+exports[`cashier reopens own sheet (tap twice), not after the day is closed 1`] = `
+## lock notice
+<div class="notice" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+  <span>
+    "This sheet is "
+    <b>"signed and locked"</b>
+    ", so the figures can't be changed. To correct it, reopen it first: the signature is removed and it must be signed again."
+  </span>
+  <button class="btn" type="button" id="goreopen">"Reopen to correct"</button>
+</div>
+`;
+
+exports[`cashier reopens own sheet (tap twice), not after the day is closed 2`] = `
+## armed
+[
+  "Tap again to reopen",
+  "The signature will be removed."
+]
+`;
+
+exports[`cashier reopens own sheet (tap twice), not after the day is closed 3`] = `
+## disarmed after 4 s
+[
+  "Reopen to correct",
+  ""
+]
+`;
+
+exports[`cashier reopens own sheet (tap twice), not after the day is closed 4`] = `
+## reopened
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "wholesale",
+      "cashier": "Wanda Wholesale",
+      "lines": {
+        "cash": {
+          "report": "1500.00",
+          "deposited": "1450.00"
+        },
+        "cashguard": {
+          "report": "2000.00",
+          "deposited": "2000.00",
+          "retained": ""
+        },
+        "card": {
+          "report": "3200.50",
+          "deposited": "3200.50"
+        },
+        "cardcbm": {
+          "report": "410.00",
+          "deposited": "410.00"
+        },
+        "payfast": {
+          "report": "99.99",
+          "deposited": "99.99"
+        },
+        "eft": {
+          "report": "800.00",
+          "deposited": "800.00"
+        },
+        "shop2shop": {
+          "report": "120.00",
+          "deposited": "120.00"
+        },
+        "snapscan": {
+          "report": "45.00",
+          "deposited": "45.00"
+        },
+        "petty": {
+          "report": "",
+          "deposited": ""
+        }
+      },
+      "damaged": "100.00",
+      "damagedNotes": "1 x R100 torn",
+      "notes": "R50 short, float counted twice",
+      "status": "draft",
+      "signature": "",
+      "signedBy": "",
+      "signedAt": "",
+      "updatedAt": "2026-10-28T08:00:04.350Z",
+      "updatedAtServer": "<serverTimestamp>",
+      "reopenedAt": "<serverTimestamp>",
+      "signedAtServer": null
+    }
+  },
+  {
+    "op": "add",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale/history/auto001",
+    "data": {
+      "name": "Wanda Wholesale",
+      "action": "reopened",
+      "at": "<serverTimestamp>",
+      "totals": {
+        "report": 8175.49,
+        "deposited": 8125.49,
+        "variance": -50,
+        "retained": 0,
+        "petty": 0,
+        "banked": 8125.49
+      }
+    }
+  }
+]
+`;
+
+exports[`cashier reopens own sheet (tap twice), not after the day is closed 5`] = `
+## head
+<div class="sheet-head">
+  <div>
+    <div class="eyebrow">"Wholesale department"</div>
+    <h2>"Wednesday, 28 October 2026"</h2>
+  </div>
+  <span class="chip draft">"In progress"</span>
+</div>
+`;
+
+exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] = `
+## day closed
+<main id="main">
+  <div class="notice" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <span>
+      "This sheet is "
+      <b>"signed and locked"</b>
+      ", so the figures can't be changed. Ask the manager or administrator to reopen it."
+    </span>
+  </div>
+  <div class="banner ok" style="font-weight:500">"Completed on time."</div>
+  " "
+  <div class="deptband wholesale" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Wholesale cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Wholesale"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet wholesale">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Wholesale department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip signed">"Signed off"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Wanda Wholesale"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Wholesale"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="wholesale">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1500.00" disabled aria-label="Cash per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="1450.00" disabled aria-label="Cash deposited">
+              </td>
+              " "
+              <td class="num var-neg" id="v-cash">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2000.00" disabled aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2000.00" disabled aria-label="CashGuard deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="3200.50" disabled aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="3200.50" disabled aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="410.00" disabled aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="410.00" disabled aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-report" data-m="payfast" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="99.99" disabled aria-label="PayFast card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-deposited" data-m="payfast" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="99.99" disabled aria-label="PayFast card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-payfast">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-report" data-m="eft" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="800.00" disabled aria-label="EFT per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="800.00" disabled aria-label="EFT deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-eft">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-report" data-m="shop2shop" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="120.00" disabled aria-label="Shop2Shop per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-deposited" data-m="shop2shop" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="120.00" disabled aria-label="Shop2Shop deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-shop2shop">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="45.00" disabled aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="45.00" disabled aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 8 175,49"</td>
+              <td class="num" id="t-dep">"R 8 125,49"</td>
+              <td class="num var-neg" id="t-var">"−R 50,00"</td>
+            </tr>
+            " "
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="wholesale-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="wholesale-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="100.00" disabled style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="wholesale-damagedNotes">"Damaged details"</label>
+          <input id="wholesale-damagedNotes" value="1 x R100 torn" placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" disabled maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="wholesale-notes">"Notes (explain any variance)"</label>
+        <textarea id="wholesale-notes" disabled maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice">"R50 short, float counted twice"</textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-wholesale">"Last saved 28 Oct, 10:00"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="sig-img">
+          <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Signature of Wanda Wholesale">
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div>
+            <div class="eyebrow">"Signed by"</div>
+            <div class="signer-static">"Wanda Wholesale"</div>
+            <div class="msg">"28 Oct, 17:00"</div>
+          </div>
+          " "
+          <div class="msg">"This cash up is locked. The manager has closed the day, so only the manager can reopen it from End of Day."</div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+</main>
+`;
+
+exports[`manager reopens a sheet after the day is closed: the day reopens first 1`] = `
+## writes
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_manager",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "manager",
+      "cashier": "",
+      "lines": {
+        "cash": {
+          "report": "",
+          "deposited": ""
+        },
+        "cashguard": {
+          "report": "",
+          "deposited": "",
+          "retained": ""
+        },
+        "card": {
+          "report": "",
+          "deposited": ""
+        },
+        "cardcbm": {
+          "report": "",
+          "deposited": ""
+        },
+        "payfast": {
+          "report": "",
+          "deposited": ""
+        },
+        "eft": {
+          "report": "",
+          "deposited": ""
+        },
+        "shop2shop": {
+          "report": "",
+          "deposited": ""
+        },
+        "snapscan": {
+          "report": "",
+          "deposited": ""
+        },
+        "petty": {
+          "report": "",
+          "deposited": ""
+        }
+      },
+      "damaged": "",
+      "damagedNotes": "",
+      "notes": "",
+      "status": "draft",
+      "signature": "",
+      "signedBy": "",
+      "signedAt": "",
+      "updatedAt": "2026-10-28T08:00:00.000Z",
+      "updatedAtServer": "<serverTimestamp>",
+      "reopenedAt": "<serverTimestamp>",
+      "signedAtServer": null
+    }
+  },
+  {
+    "op": "add",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_manager/history/auto001",
+    "data": {
+      "name": "Manny Manager",
+      "action": "reopened",
+      "at": "<serverTimestamp>",
+      "totals": null
+    }
+  },
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_retail",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "retail",
+      "cashier": "Rita Retail",
+      "lines": {
+        "cash": {
+          "report": "35.50",
+          "deposited": "35.50"
+        },
+        "cashguard": {
+          "report": "5400.00",
+          "deposited": "4900.00",
+          "retained": "300.00"
+        },
+        "card": {
+          "report": "2750.25",
+          "deposited": "2750.25"
+        },
+        "snapscan": {
+          "report": "60.00",
+          "deposited": "60.00"
+        },
+        "petty": {
+          "report": "",
+          "deposited": "200.00"
+        },
+        "cardcbm": {
+          "report": "",
+          "deposited": ""
+        },
+        "payfast": {
+          "report": "",
+          "deposited": ""
+        },
+        "eft": {
+          "report": "",
+          "deposited": ""
+        },
+        "shop2shop": {
+          "report": "",
+          "deposited": ""
+        }
+      },
+      "damaged": "",
+      "damagedNotes": "",
+      "notes": "",
+      "status": "draft",
+      "signature": "",
+      "signedBy": "",
+      "signedAt": "",
+      "updatedAt": "2026-10-28T08:00:00.000Z",
+      "pettyNotes": "R200 cleaning materials",
+      "updatedAtServer": "<serverTimestamp>",
+      "reopenedAt": "<serverTimestamp>",
+      "signedAtServer": null
+    }
+  },
+  {
+    "op": "add",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_retail/history/auto002",
+    "data": {
+      "name": "Manny Manager",
+      "action": "reopened",
+      "at": "<serverTimestamp>",
+      "totals": {
+        "report": 8245.75,
+        "deposited": 8245.75,
+        "variance": 0,
+        "retained": 300,
+        "petty": 200,
+        "banked": 7745.75
+      }
+    }
+  }
+]
+`;
+
+exports[`manager reopens a sheet after the day is closed: the day reopens first 2`] = `
+## retail now
+<div class="sheet-head">
+  <div>
+    <div class="eyebrow">"Aeroton Retail department"</div>
+    <h2>"Wednesday, 28 October 2026"</h2>
+  </div>
+  <span class="chip draft">"In progress"</span>
+</div>
+`;
+
+exports[`manager reopens a sheet after the day is closed: the day reopens first 3`] = `
+## manager block
+<section class="sheet">
+  " "
+  <div class="sheet-head">
+    <div>
+      <div class="eyebrow">"End-of-day sign-off · all shops · due by 7 pm"</div>
+      <h2>"Manager signature"</h2>
+    </div>
+    <span class="chip">"Not signed"</span>
+  </div>
+  " "
+  <div class="sheet-body">
+    <div class="msg">"You can sign here once all shops have signed. Still waiting for: Aeroton Retail."</div>
+  </div>
+  " "
+</section>
+`;
+
+exports[`manager reopens the day from End of Day 1`] = `
+## writes
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_manager",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "manager",
+      "cashier": "",
+      "lines": {
+        "cash": {
+          "report": "",
+          "deposited": ""
+        },
+        "cashguard": {
+          "report": "",
+          "deposited": "",
+          "retained": ""
+        },
+        "card": {
+          "report": "",
+          "deposited": ""
+        },
+        "cardcbm": {
+          "report": "",
+          "deposited": ""
+        },
+        "payfast": {
+          "report": "",
+          "deposited": ""
+        },
+        "eft": {
+          "report": "",
+          "deposited": ""
+        },
+        "shop2shop": {
+          "report": "",
+          "deposited": ""
+        },
+        "snapscan": {
+          "report": "",
+          "deposited": ""
+        },
+        "petty": {
+          "report": "",
+          "deposited": ""
+        }
+      },
+      "damaged": "",
+      "damagedNotes": "",
+      "notes": "",
+      "status": "draft",
+      "signature": "",
+      "signedBy": "",
+      "signedAt": "",
+      "updatedAt": "2026-10-28T08:00:00.000Z",
+      "updatedAtServer": "<serverTimestamp>",
+      "reopenedAt": "<serverTimestamp>",
+      "signedAtServer": null
+    }
+  },
+  {
+    "op": "add",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_manager/history/auto001",
+    "data": {
+      "name": "Manny Manager",
+      "action": "reopened",
+      "at": "<serverTimestamp>",
+      "totals": null
+    }
+  }
+]
+`;
+
+exports[`manager reopens the day from End of Day 2`] = `
+## could not reopen the day
+[
+  "Could not reopen the day. Try again.",
+  "Your last change was NOT saved. The database refused to save it (permission-denied). The Firebase rules may be out of date."
+]
+`;
+
+exports[`manager sign-off before City Deep started 1`] = `
+## admin waiting
+<section class="sheet">
+  " "
+  <div class="sheet-head">
+    <div>
+      <div class="eyebrow">"End-of-day sign-off · Wholesale + Aeroton Retail · due by 7 pm"</div>
+      <h2>"Manager signature"</h2>
+    </div>
+    <span class="chip">"Not signed"</span>
+  </div>
+  " "
+  <div class="sheet-body">
+    <div class="msg">"You can sign here once all shops have signed. Still waiting for: Aeroton Retail."</div>
+  </div>
+  " "
+</section>
+`;
+
+exports[`manager sign-off before City Deep started 2`] = `
+## sign text
+<div class="msg">"By signing, I confirm I have checked the Wholesale and Aeroton Retail cash ups for Sat, 17 Oct 2026 and the combined totals are correct."</div>
+`;
+
+exports[`manager sign-off before City Deep started 3`] = `
+## cashier view
+<div class="sheet-body">
+  <div class="msg">"Only a manager can sign off the day. Waiting for the manager."</div>
+</div>
+`;
+
+exports[`manager sign-off: waiting for shops, different person, success 1`] = `
+## waiting for City Deep
+<div class="sheet-body">
+  <div class="msg">"You can sign here once all shops have signed. Still waiting for: City Deep Retail."</div>
+</div>
+`;
+
+exports[`manager sign-off: waiting for shops, different person, success 2`] = `
+## same person signed a shop
+The manager sign-off must be done by a different person from the people who signed the shop sheets.
+`;
+
+exports[`manager sign-off: waiting for shops, different person, success 3`] = `
+## no signature
+Draw the signature in the box first.
+`;
+
+exports[`manager sign-off: waiting for shops, different person, success 4`] = `
+## writes
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_manager",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "manager",
+      "cashier": "",
+      "lines": {
+        "cash": {
+          "report": "",
+          "deposited": ""
+        },
+        "cashguard": {
+          "report": "",
+          "deposited": "",
+          "retained": ""
+        },
+        "card": {
+          "report": "",
+          "deposited": ""
+        },
+        "cardcbm": {
+          "report": "",
+          "deposited": ""
+        },
+        "payfast": {
+          "report": "",
+          "deposited": ""
+        },
+        "eft": {
+          "report": "",
+          "deposited": ""
+        },
+        "shop2shop": {
+          "report": "",
+          "deposited": ""
+        },
+        "snapscan": {
+          "report": "",
+          "deposited": ""
+        },
+        "petty": {
+          "report": "",
+          "deposited": ""
+        }
+      },
+      "damaged": "",
+      "damagedNotes": "",
+      "notes": "",
+      "status": "signed",
+      "signature": "data:image/png;base64,aW1hZ2UvcG5nfDYwMHgyMDB8b3BzIDJ8cSAt",
+      "signedBy": "Manny Manager",
+      "signedAt": "2026-10-28T16:00:00.000Z",
+      "updatedAt": "2026-10-28T16:00:00.000Z",
+      "updatedAtServer": "<serverTimestamp>",
+      "reopenedAt": null,
+      "signedAtServer": "<serverTimestamp>"
+    }
+  },
+  {
+    "op": "add",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_manager/history/auto001",
+    "data": {
+      "name": "Manny Manager",
+      "action": "signed",
+      "at": "<serverTimestamp>",
+      "totals": null
+    }
+  }
+]
+`;
+
+exports[`manager sign-off: waiting for shops, different person, success 5`] = `
+## day closed
+<main id="main">
+  " "
+  <div class="banner ok">"Day closed on time. All cash ups and the manager have signed."</div>
+  " "
+  <div class="eyebrow" style="margin:4px 0 8px">"All shops together · Aeroton (Wholesale + Aeroton Retail) and City Deep Retail"</div>
+  " "
+  <div class="summary">
+    " "
+    <div class="stat">
+      <div class="k">"Per reports"</div>
+      <div class="v num">"R 21 533,19"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Deposited"</div>
+      <div class="v num">"R 21 513,24"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Variance"</div>
+      <div class="v num var-neg">"−R 19,95"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">
+        "Not banked"
+        <br>
+        <span style="font-weight:400;text-transform:none;letter-spacing:0">"CashGuard retained + petty cash"</span>
+      </div>
+      <div class="v num">"R 650,00"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Cash + CashGuard banked"</div>
+      <div class="v num">"R 11 397,50"</div>
+    </div>
+    " "
+  </div>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Combined end-of-day cash up"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <div class="actions">
+        <span class="chip signed">"Wholesale signed"</span>
+        <span class="chip signed">"Aeroton Retail signed"</span>
+        <span class="chip signed">"City Deep Retail signed"</span>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="tbl-wrap">
+        <table style="min-width:1040px">
+          " "
+          <thead>
+            <tr>
+              <th rowspan="2">"Payment type"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Wholesale"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Aeroton Retail"</th>
+              <th colspan="2" class="grp" style="text-align:center">"City Deep Retail"</th>
+              <th colspan="3" class="grp" style="text-align:center">"All shops"</th>
+            </tr>
+            " "
+            <tr>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th>"Variance"</th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash / Coins (Retail shops)"</td>
+              <td class="num grp">"R 1 500,00"</td>
+              <td class="num">"R 1 450,00"</td>
+              <td class="num grp">"R 35,50"</td>
+              <td class="num">"R 35,50"</td>
+              <td class="num grp">"R 12,00"</td>
+              <td class="num">"R 12,00"</td>
+              <td class="num grp">
+                <b>"R 1 547,50"</b>
+              </td>
+              <td class="num">
+                <b>"R 1 497,50"</b>
+              </td>
+              <td class="num var-neg">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              <td class="num grp">"R 2 000,00"</td>
+              <td class="num">"R 2 000,00"</td>
+              <td class="num grp">"R 5 400,00"</td>
+              <td class="num">"R 5 200,00"</td>
+              <td class="num grp">"R 3 100,00"</td>
+              <td class="num">"R 3 150,00"</td>
+              <td class="num grp">
+                <b>"R 10 500,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 10 350,00"</b>
+              </td>
+              <td class="num var-neg">"−R 150,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              <td class="num grp">"R 3 200,50"</td>
+              <td class="num">"R 3 200,50"</td>
+              <td class="num grp">"R 2 750,25"</td>
+              <td class="num">"R 2 750,25"</td>
+              <td class="num grp">"R 1 999,95"</td>
+              <td class="num">"R 1 980,00"</td>
+              <td class="num grp">
+                <b>"R 7 950,70"</b>
+              </td>
+              <td class="num">
+                <b>"R 7 930,75"</b>
+              </td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              <td class="num grp">"R 410,00"</td>
+              <td class="num">"R 410,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              <td class="num grp">"R 99,99"</td>
+              <td class="num">"R 99,99"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              <td class="num grp">"R 800,00"</td>
+              <td class="num">"R 800,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              <td class="num grp">"R 120,00"</td>
+              <td class="num">"R 120,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              <td class="num grp">"R 45,00"</td>
+              <td class="num">"R 45,00"</td>
+              <td class="num grp">"R 60,00"</td>
+              <td class="num">"R 60,00"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 0,00"</td>
+              <td class="num grp">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Petty cash (not banked)"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 200,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 0,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 200,00"</b>
+              </td>
+              <td class="num var-pos">"+R 200,00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num grp">"R 8 175,49"</td>
+              <td class="num">"R 8 125,49"</td>
+              <td class="num grp">"R 8 245,75"</td>
+              <td class="num">"R 8 245,75"</td>
+              <td class="num grp">"R 5 111,95"</td>
+              <td class="num">"R 5 142,00"</td>
+              <td class="num grp">"R 21 533,19"</td>
+              <td class="num">"R 21 513,24"</td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        " "
+        <div class="field">
+          <label>"Aeroton variance"</label>
+          <div class="static num var-neg">"−R 50,00"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"City Deep Retail variance"</label>
+          <div class="static num var-pos">"+R 30,05"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"All shops variance"</label>
+          <div class="static num var-neg">"−R 19,95"</div>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cashed up by"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " Wanda Wholesale · "
+          <b>"Aeroton Retail:"</b>
+          " Rita Retail · "
+          <b>"City Deep Retail:"</b>
+          " Cindy Deep"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Notes"</label>
+        <div class="static" style="font-weight:400;white-space:pre-wrap">
+          <b>"Wholesale:"</b>
+          " R50 short, float counted twice "
+          <b>"City Deep Retail:"</b>
+          " Card machine offline 10 minutes"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"CashGuard"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Aeroton Retail:"</b>
+          " deposited in Nedbank R 4 900,00 · counted & retained, not banked "
+          <b>"R 300,00"</b>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " deposited in Nedbank R 3 000,00 · counted & retained, not banked "
+          <b>"R 150,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Aeroton Retail petty cash (not banked)"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"R 200,00"</b>
+          " · R200 cleaning materials"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Damaged bank notes & coins"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " R 100,00 (1 x R100 torn) · "
+          <b>"Aeroton Retail:"</b>
+          " R 0,00 · "
+          <b>"City Deep Retail:"</b>
+          " R 0,00 · "
+          <b>"Total R 100,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="sigs">
+        <div class="sigbox">
+          <div class="eyebrow">"Wholesale"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Wholesale signature">
+          </div>
+          <div class="who">"Wanda Wholesale · 28 Oct, 17:00"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Aeroton Retail signature">
+          </div>
+          <div class="who">"Rita Retail · 28 Oct, 17:05"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"City Deep Retail"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="City Deep Retail signature">
+          </div>
+          <div class="who">"Cindy Deep · 28 Oct, 17:10"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Manager"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,aW1hZ2UvcG5nfDYwMHgyMDB8b3BzIDJ8cSAt" alt="Manager signature">
+          </div>
+          <div class="who">"Manny Manager · 28 Oct, 18:00"</div>
+        </div>
+      </div>
+      " "
+      <div class="actions">
+        <button class="btn primary" id="pdf-mail" type="button">"Email PDF report"</button>
+        <button class="btn" id="pdf-dl" type="button">"Download PDF"</button>
+        <button class="btn" id="csv">"Download day as CSV"</button>
+        <span class="msg" id="csv-msg"></span>
+      </div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"End-of-day sign-off · all shops · due by 7 pm"</div>
+        <h2>"Manager signature"</h2>
+      </div>
+      <span class="chip signed">"Signed off"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="sig-img">
+          <img src="data:image/png;base64,aW1hZ2UvcG5nfDYwMHgyMDB8b3BzIDJ8cSAt" alt="Signature of Manny Manager">
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div>
+            <div class="eyebrow">"Signed by"</div>
+            <div class="signer-static">"Manny Manager"</div>
+            <div class="msg">"28 Oct, 18:00"</div>
+          </div>
+          " "
+          <div class="msg">"This day is locked. Reopen it only to correct a mistake; the signature is removed, the reopen is recorded, and it must be signed again."</div>
+          " "
+          <div class="actions">
+            <button class="btn danger" id="reopen" data-dept="manager">"Reopen to correct"</button>
+            <span class="msg" id="reopen-msg"></span>
+          </div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+  " "
+</main>
+`;
+
+exports[`signing a shop sheet: checks, then the signature and the audit entry 1`] = `
+## empty sheet
+Enter the report and deposited amounts before signing.
+`;
+
+exports[`signing a shop sheet: checks, then the signature and the audit entry 2`] = `
+## no signature drawn
+Draw the signature in the box first.
+`;
+
+exports[`signing a shop sheet: checks, then the signature and the audit entry 3`] = `
+## cleared
+Draw the signature in the box first.
+`;
+
+exports[`signing a shop sheet: checks, then the signature and the audit entry 4`] = `
+## writes
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "wholesale",
+      "cashier": "Wanda Wholesale",
+      "lines": {
+        "cash": {
+          "report": "100.00",
+          "deposited": ""
+        },
+        "cashguard": {
+          "report": "",
+          "deposited": "",
+          "retained": ""
+        },
+        "card": {
+          "report": "",
+          "deposited": ""
+        },
+        "cardcbm": {
+          "report": "",
+          "deposited": ""
+        },
+        "payfast": {
+          "report": "",
+          "deposited": ""
+        },
+        "eft": {
+          "report": "",
+          "deposited": ""
+        },
+        "shop2shop": {
+          "report": "",
+          "deposited": ""
+        },
+        "snapscan": {
+          "report": "",
+          "deposited": ""
+        },
+        "petty": {
+          "report": "",
+          "deposited": ""
+        }
+      },
+      "damaged": "",
+      "damagedNotes": "",
+      "notes": "",
+      "status": "draft",
+      "signature": "",
+      "signedBy": "",
+      "signedAt": "",
+      "updatedAt": "2026-10-28T14:00:10.000Z",
+      "updatedAtServer": "<serverTimestamp>",
+      "reopenedAt": null,
+      "signedAtServer": null
+    }
+  },
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale",
+    "data": {
+      "date": "2026-10-28",
+      "dept": "wholesale",
+      "cashier": "Wanda Wholesale",
+      "lines": {
+        "cash": {
+          "report": "100.00",
+          "deposited": ""
+        },
+        "cashguard": {
+          "report": "",
+          "deposited": "",
+          "retained": ""
+        },
+        "card": {
+          "report": "",
+          "deposited": ""
+        },
+        "cardcbm": {
+          "report": "",
+          "deposited": ""
+        },
+        "payfast": {
+          "report": "",
+          "deposited": ""
+        },
+        "eft": {
+          "report": "",
+          "deposited": ""
+        },
+        "shop2shop": {
+          "report": "",
+          "deposited": ""
+        },
+        "snapscan": {
+          "report": "",
+          "deposited": ""
+        },
+        "petty": {
+          "report": "",
+          "deposited": ""
+        }
+      },
+      "damaged": "",
+      "damagedNotes": "",
+      "notes": "",
+      "status": "signed",
+      "signature": "data:image/png;base64,aW1hZ2UvcG5nfDYwMHgyMDB8b3BzIDJ8cSAt",
+      "signedBy": "Wanda Wholesale",
+      "signedAt": "2026-10-28T14:00:10.000Z",
+      "updatedAt": "2026-10-28T14:00:10.000Z",
+      "updatedAtServer": "<serverTimestamp>",
+      "reopenedAt": null,
+      "signedAtServer": "<serverTimestamp>"
+    }
+  },
+  {
+    "op": "add",
+    "path": "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale/history/auto001",
+    "data": {
+      "name": "Wanda Wholesale",
+      "action": "signed",
+      "at": "<serverTimestamp>",
+      "totals": {
+        "report": 100,
+        "deposited": 0,
+        "variance": -100,
+        "retained": 0,
+        "petty": 0,
+        "banked": 0
+      }
+    }
+  }
+]
+`;
+
+exports[`signing a shop sheet: checks, then the signature and the audit entry 5`] = `
+## signed
+<main id="main">
+  <div class="notice" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <span>
+      "This sheet is "
+      <b>"signed and locked"</b>
+      ", so the figures can't be changed. To correct it, reopen it first: the signature is removed and it must be signed again."
+    </span>
+    <button class="btn" type="button" id="goreopen">"Reopen to correct"</button>
+  </div>
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 3h 0m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband wholesale" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Wholesale cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Wholesale"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet wholesale">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Wholesale department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip signed">"Signed off"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Wanda Wholesale"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Wholesale"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="wholesale">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="100.00" disabled aria-label="Cash per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Cash deposited">
+              </td>
+              " "
+              <td class="num var-neg" id="v-cash">"−R 100,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="CashGuard deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-report" data-m="payfast" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="PayFast card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-deposited" data-m="payfast" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="PayFast card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-payfast">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-report" data-m="eft" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="EFT per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="EFT deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-eft">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-report" data-m="shop2shop" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Shop2Shop per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-deposited" data-m="shop2shop" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Shop2Shop deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-shop2shop">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 100,00"</td>
+              <td class="num" id="t-dep">"R 0,00"</td>
+              <td class="num var-neg" id="t-var">"−R 100,00"</td>
+            </tr>
+            " "
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="wholesale-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="wholesale-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="wholesale-damagedNotes">"Damaged details"</label>
+          <input id="wholesale-damagedNotes" value placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" disabled maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="wholesale-notes">"Notes (explain any variance)"</label>
+        <textarea id="wholesale-notes" disabled maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice"></textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-wholesale"></div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="sig-img">
+          <img src="data:image/png;base64,aW1hZ2UvcG5nfDYwMHgyMDB8b3BzIDJ8cSAt" alt="Signature of Wanda Wholesale">
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div>
+            <div class="eyebrow">"Signed by"</div>
+            <div class="signer-static">"Wanda Wholesale"</div>
+            <div class="msg">"28 Oct, 16:00"</div>
+          </div>
+          " "
+          <div class="msg">"This cash up is locked. Reopen it only to correct a mistake; the signature is removed, the reopen is recorded, and it must be signed again."</div>
+          " "
+          <div class="actions">
+            <button class="btn danger" id="reopen" data-dept="wholesale">"Reopen to correct"</button>
+            <span class="msg" id="reopen-msg"></span>
+          </div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+</main>
+`;

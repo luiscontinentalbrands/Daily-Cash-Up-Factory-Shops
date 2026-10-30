@@ -1,0 +1,521 @@
+exports[`History: days newest first, status and totals; tap a day to open End of Day 1`] = `
+<main id="main">
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"All cash ups"</div>
+        <h2>"History"</h2>
+      </div>
+    </div>
+    " "
+    <div class="hist">
+      <button class="hrow cd" data-d="2026-10-28">
+        <div>
+          <div class="d">"Wed, 28 Oct 2026"</div>
+          <span class="chip bad" style="margin-top:4px">"Overdue"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"Wholesale"</div>
+          <span class="chip draft">"In progress"</span>
+          " "
+          <span class="num msg">"R 8 125,49"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <span class="chip draft">"In progress"</span>
+          " "
+          <span class="num msg">"R 8 245,75"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"City Deep Retail"</div>
+          <span class="chip draft">"In progress"</span>
+          " "
+          <span class="num msg">"R 5 142,00"</span>
+        </div>
+        <div class="r">
+          <div class="num">
+            <b>"R 21 513,24"</b>
+          </div>
+          <div class="num msg var-neg">"−R 19,95"</div>
+        </div>
+      </button>
+      <button class="hrow cd" data-d="2026-10-27">
+        <div>
+          <div class="d">"Tue, 27 Oct 2026"</div>
+          <span class="chip bad" style="margin-top:4px">"Overdue"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"Wholesale"</div>
+          <span class="chip signed">"Signed off"</span>
+          " "
+          <span class="num msg">"R 8 125,49"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <span class="chip draft">"In progress"</span>
+          " "
+          <span class="num msg">"R 8 245,75"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"City Deep Retail"</div>
+          <span class="chip draft">"In progress"</span>
+          " "
+          <span class="num msg">"R 5 142,00"</span>
+        </div>
+        <div class="r">
+          <div class="num">
+            <b>"R 21 513,24"</b>
+          </div>
+          <div class="num msg var-neg">"−R 19,95"</div>
+        </div>
+      </button>
+      <button class="hrow cd" data-d="2026-10-26">
+        <div>
+          <div class="d">"Mon, 26 Oct 2026"</div>
+          <span class="chip draft" style="margin-top:4px">"Closed late"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"Wholesale"</div>
+          <span class="chip signed">"Signed off"</span>
+          " "
+          <span class="num msg">"R 8 125,49"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <span class="chip signed">"Signed off"</span>
+          " "
+          <span class="num msg">"R 8 245,75"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"City Deep Retail"</div>
+          <span class="chip signed">"Signed off"</span>
+          " "
+          <span class="num msg">"R 5 142,00"</span>
+        </div>
+        <div class="r">
+          <div class="num">
+            <b>"R 21 513,24"</b>
+          </div>
+          <div class="num msg var-neg">"−R 19,95"</div>
+        </div>
+      </button>
+      <button class="hrow cd" data-d="2026-10-25">
+        <div>
+          <div class="d">"Sun, 25 Oct 2026"</div>
+          <span class="chip " style="margin-top:4px">"Sunday"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"Wholesale"</div>
+          <span class="chip draft">"In progress"</span>
+          " "
+          <span class="num msg">"R 8 125,49"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <span class="chip">"Not started"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"City Deep Retail"</div>
+          <span class="chip">"Not started"</span>
+        </div>
+        <div class="r">
+          <div class="num">
+            <b>"R 8 125,49"</b>
+          </div>
+          <div class="num msg var-neg">"−R 50,00"</div>
+        </div>
+      </button>
+      <button class="hrow" data-d="2026-10-17">
+        <div>
+          <div class="d">"Sat, 17 Oct 2026"</div>
+          <span class="chip signed" style="margin-top:4px">"Closed on time"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"Wholesale"</div>
+          <span class="chip signed">"Signed off"</span>
+          " "
+          <span class="num msg">"R 8 125,49"</span>
+        </div>
+        <div>
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <span class="chip signed">"Signed off"</span>
+          " "
+          <span class="num msg">"R 8 245,75"</span>
+        </div>
+        <div class="r">
+          <div class="num">
+            <b>"R 16 371,24"</b>
+          </div>
+          <div class="num msg var-neg">"−R 50,00"</div>
+        </div>
+      </button>
+    </div>
+  </section>
+</main>
+`;
+
+exports[`History: days newest first, status and totals; tap a day to open End of Day 2`] = `
+## empty
+<main id="main">
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"All cash ups"</div>
+        <h2>"History"</h2>
+      </div>
+    </div>
+    " "
+    <div class="hist">
+      <div class="empty-state">"No cash ups yet. Open a shop's tab for today and enter the report and deposited amounts. Each day will appear here."</div>
+    </div>
+  </section>
+</main>
+`;
+
+exports[`Users: add a user (checks), switch off, new PIN 1`] = `
+## rejected
+[
+  "Type the person's full name.",
+  "There is already a user with that name. Use a different name, e.g. add a surname.",
+  "The PIN must be exactly 4 digits."
+]
+`;
+
+exports[`Users: add a user (checks), switch off, new PIN 2`] = `
+## added
+{
+  "writes": [
+    {
+      "op": "set",
+      "path": "shops/TestShopKey0123456789abc/users/auto001",
+      "data": {
+        "name": "Sam Smith",
+        "role": "citydeep",
+        "active": true,
+        "salt": "0b30557a9fc4e90e33587da2c7ec1136",
+        "pinHash": "8c5729e99d96326d346d6f059e84b1d40a252a62158f3761d93b937c9ffd071e",
+        "mustChange": true,
+        "createdAt": "<serverTimestamp>"
+      }
+    }
+  ],
+  "message": "Give each person their starting PIN privately. The first time they sign in, the app asks them to choose their own PIN.",
+  "name": ""
+}
+`;
+
+exports[`Users: add a user (checks), switch off, new PIN 3`] = `
+## switched off
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/users/u-whole",
+    "merge": true,
+    "data": {
+      "active": false
+    }
+  }
+]
+`;
+
+exports[`Users: add a user (checks), switch off, new PIN 4`] = `
+## new PIN form
+<form class="hrow" style="cursor:default" data-pinfor="u-retail">
+  <div class="msg">"New PIN for Rita Retail"</div>
+  <input inputmode="numeric" maxlength="4" style="font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)">
+  <button class="btn primary" type="submit">"Save PIN"</button>
+</form>
+`;
+
+exports[`Users: add a user (checks), switch off, new PIN 5`] = `
+## bad PIN
+The PIN must be exactly 4 digits.
+`;
+
+exports[`Users: add a user (checks), switch off, new PIN 6`] = `
+## new PIN saved
+{
+  "writes": [
+    {
+      "op": "set",
+      "path": "shops/TestShopKey0123456789abc/users/u-retail",
+      "merge": true,
+      "data": {
+        "salt": "5b80a5caef14395e83a8cdf2173c6186",
+        "pinHash": "717cc9bebc8ba20792486922081969321105443d67826acc93bd025eb62c1624",
+        "mustChange": true
+      }
+    }
+  ],
+  "message": "Give each person their starting PIN privately. The first time they sign in, the app asks them to choose their own PIN.",
+  "formGone": true
+}
+`;
+
+exports[`Users: add a user (checks), switch off, new PIN 7`] = `
+## save failures
+Could not save.
+`;
+
+exports[`Users: another administrator can be deleted while you are one (the last-administrator check never triggers) 1`] = `
+{
+  "message": "Give each person their starting PIN privately. The first time they sign in, the app asks them to choose their own PIN.",
+  "confirms": [
+    "Delete Bea Backup?\\n\\nThey will no longer be able to use the app. Cash ups they already signed keep their name and signature."
+  ],
+  "writes": [
+    {
+      "op": "set",
+      "path": "shops/TestShopKey0123456789abc/users/u-admin2",
+      "merge": true,
+      "data": {
+        "active": false,
+        "deleted": true,
+        "deletedBy": "Ada Admin",
+        "deletedAt": "<serverTimestamp>"
+      }
+    }
+  ]
+}
+`;
+
+exports[`Users: delete asks first, keeps the last administrator 1`] = `
+## inactive admin deleted
+{
+  "confirms": [
+    "Delete Bea Backup?\\n\\nThey will no longer be able to use the app. Cash ups they already signed keep their name and signature."
+  ],
+  "writes": [
+    {
+      "op": "set",
+      "path": "shops/TestShopKey0123456789abc/users/u-admin2",
+      "merge": true,
+      "data": {
+        "active": false,
+        "deleted": true,
+        "deletedBy": "Ada Admin",
+        "deletedAt": "<serverTimestamp>"
+      }
+    }
+  ]
+}
+`;
+
+exports[`Users: delete asks first, keeps the last administrator 2`] = `
+## cancelled
+{
+  "confirms": [
+    "Delete Wanda Wholesale?\\n\\nThey will no longer be able to use the app. Cash ups they already signed keep their name and signature."
+  ],
+  "writes": []
+}
+`;
+
+exports[`Users: delete asks first, keeps the last administrator 3`] = `
+## deleted
+{
+  "writes": [
+    {
+      "op": "set",
+      "path": "shops/TestShopKey0123456789abc/users/u-whole",
+      "merge": true,
+      "data": {
+        "active": false,
+        "deleted": true,
+        "deletedBy": "Ada Admin",
+        "deletedAt": "<serverTimestamp>"
+      }
+    }
+  ],
+  "message": "Give each person their starting PIN privately. The first time they sign in, the app asks them to choose their own PIN.",
+  "list": "Ada AdminAdministrator Active YouNew PIN"
+}
+`;
+
+exports[`Users: only the administrator; the list 1`] = `
+<main id="main">
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Administrator"</div>
+        <h2>"Users"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <form id="uform" class="fields" style="grid-template-columns:minmax(0,2fr) minmax(0,1.3fr) minmax(0,1fr) auto;align-items:end" novalidate>
+        " "
+        <div class="field">
+          <label for="un">"Full name"</label>
+          <input id="un" maxlength="60" autocomplete="off">
+        </div>
+        " "
+        <div class="field">
+          <label for="ur">"Role"</label>
+          <select id="ur" style="font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)">
+            " "
+            <option value="wholesale">"Wholesale cashier"</option>
+            <option value="retail">"Aeroton Retail manager"</option>
+            <option value="citydeep">"City Deep Retail manager"</option>
+            <option value="manager">"Manager"</option>
+            <option value="admin">"Administrator"</option>
+          </select>
+        </div>
+        " "
+        <div class="field">
+          <label for="up">"4-digit PIN"</label>
+          <input id="up" inputmode="numeric" maxlength="4" autocomplete="off">
+        </div>
+        " "
+        <button class="btn primary" type="submit" id="ubtn">"Add user"</button>
+        " "
+      </form>
+      " "
+      <div class="msg" id="umsg">"Give each person their starting PIN privately. The first time they sign in, the app asks them to choose their own PIN."</div>
+      " "
+    </div>
+    " "
+    <div class="hist">
+      <div class="hrow" style="cursor:default;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto">
+        " "
+        <div>
+          <div class="d">"Ada Admin"</div>
+          <div class="msg">"Administrator"</div>
+        </div>
+        " "
+        <div>
+          <span class="chip signed">"Active"</span>
+        </div>
+        " "
+        <div class="actions">
+          <span class="msg">"You"</span>
+          <button class="btn" data-act="pin" data-u="u-admin" type="button">"New PIN"</button>
+        </div>
+      </div>
+      <div class="hrow" style="cursor:default;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto">
+        " "
+        <div>
+          <div class="d">"Cindy Deep"</div>
+          <div class="msg">"City Deep Retail manager"</div>
+        </div>
+        " "
+        <div>
+          <span class="chip signed">"Active"</span>
+        </div>
+        " "
+        <div class="actions">
+          <button class="btn" data-act="toggle" data-u="u-cd" type="button">"Switch off"</button>
+          <button class="btn" data-act="pin" data-u="u-cd" type="button">"New PIN"</button>
+          <button class="btn" data-act="del" data-u="u-cd" type="button" style="color:var(--bad)">"Delete"</button>
+        </div>
+      </div>
+      <div class="hrow" style="cursor:default;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto">
+        " "
+        <div>
+          <div class="d">"Manny Manager"</div>
+          <div class="msg">"Manager"</div>
+        </div>
+        " "
+        <div>
+          <span class="chip signed">"Active"</span>
+        </div>
+        " "
+        <div class="actions">
+          <button class="btn" data-act="toggle" data-u="u-mgr" type="button">"Switch off"</button>
+          <button class="btn" data-act="pin" data-u="u-mgr" type="button">"New PIN"</button>
+          <button class="btn" data-act="del" data-u="u-mgr" type="button" style="color:var(--bad)">"Delete"</button>
+        </div>
+      </div>
+      <div class="hrow" style="cursor:default;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto">
+        " "
+        <div>
+          <div class="d">"Mona Second"</div>
+          <div class="msg">"Manager"</div>
+        </div>
+        " "
+        <div>
+          <span class="chip signed">"Active"</span>
+        </div>
+        " "
+        <div class="actions">
+          <button class="btn" data-act="toggle" data-u="u-mgr2" type="button">"Switch off"</button>
+          <button class="btn" data-act="pin" data-u="u-mgr2" type="button">"New PIN"</button>
+          <button class="btn" data-act="del" data-u="u-mgr2" type="button" style="color:var(--bad)">"Delete"</button>
+        </div>
+      </div>
+      <div class="hrow" style="cursor:default;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto">
+        " "
+        <div>
+          <div class="d">"Nina New"</div>
+          <div class="msg">"Wholesale cashier"</div>
+        </div>
+        " "
+        <div>
+          <span class="chip signed">"Active"</span>
+        </div>
+        " "
+        <div class="actions">
+          <button class="btn" data-act="toggle" data-u="u-new" type="button">"Switch off"</button>
+          <button class="btn" data-act="pin" data-u="u-new" type="button">"New PIN"</button>
+          <button class="btn" data-act="del" data-u="u-new" type="button" style="color:var(--bad)">"Delete"</button>
+        </div>
+      </div>
+      <div class="hrow" style="cursor:default;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto">
+        " "
+        <div>
+          <div class="d">"Ollie Off"</div>
+          <div class="msg">"Wholesale cashier"</div>
+        </div>
+        " "
+        <div>
+          <span class="chip">"Switched off"</span>
+        </div>
+        " "
+        <div class="actions">
+          <button class="btn" data-act="toggle" data-u="u-off" type="button">"Switch on"</button>
+          <button class="btn" data-act="pin" data-u="u-off" type="button">"New PIN"</button>
+          <button class="btn" data-act="del" data-u="u-off" type="button" style="color:var(--bad)">"Delete"</button>
+        </div>
+      </div>
+      <div class="hrow" style="cursor:default;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto">
+        " "
+        <div>
+          <div class="d">"Rita Retail"</div>
+          <div class="msg">"Aeroton Retail manager"</div>
+        </div>
+        " "
+        <div>
+          <span class="chip signed">"Active"</span>
+        </div>
+        " "
+        <div class="actions">
+          <button class="btn" data-act="toggle" data-u="u-retail" type="button">"Switch off"</button>
+          <button class="btn" data-act="pin" data-u="u-retail" type="button">"New PIN"</button>
+          <button class="btn" data-act="del" data-u="u-retail" type="button" style="color:var(--bad)">"Delete"</button>
+        </div>
+      </div>
+      <div class="hrow" style="cursor:default;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto">
+        " "
+        <div>
+          <div class="d">"Wanda Wholesale"</div>
+          <div class="msg">"Wholesale cashier"</div>
+        </div>
+        " "
+        <div>
+          <span class="chip signed">"Active"</span>
+        </div>
+        " "
+        <div class="actions">
+          <button class="btn" data-act="toggle" data-u="u-whole" type="button">"Switch off"</button>
+          <button class="btn" data-act="pin" data-u="u-whole" type="button">"New PIN"</button>
+          <button class="btn" data-act="del" data-u="u-whole" type="button" style="color:var(--bad)">"Delete"</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+`;

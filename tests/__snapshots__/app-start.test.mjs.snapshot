@@ -1,0 +1,871 @@
+exports[`PIN entry: wrong, lockout after 5 tries (shared by all users), right 1`] = `
+## pin form
+<main id="main">
+  <form class="login sheet" id="pinform" style="padding:22px" novalidate>
+    " "
+    <div>
+      <div class="eyebrow">"Wholesale cashier"</div>
+      <h2>"Wanda Wholesale"</h2>
+    </div>
+    " "
+    <div class="field">
+      <label for="pin">"PIN"</label>
+      <input id="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="6" style="font-size:1.4rem;letter-spacing:.4em;text-align:center">
+    </div>
+    " "
+    <button class="btn primary" type="submit">"Enter"</button>
+    " "
+    <button class="linkbtn" type="button" id="back">"Not you? Go back"</button>
+    " "
+    <div class="msg" id="pinmsg"></div>
+  </form>
+</main>
+`;
+
+exports[`PIN entry: wrong, lockout after 5 tries (shared by all users), right 2`] = `
+## wrong
+Wrong PIN. Try again.
+`;
+
+exports[`PIN entry: wrong, lockout after 5 tries (shared by all users), right 3`] = `
+## locked out
+Too many wrong PINs. Wait 5 minutes and try again.
+`;
+
+exports[`change my PIN from the top bar 1`] = `
+## form
+<main id="main">
+  <form class="login sheet" id="pinchange" style="padding:22px" novalidate>
+    " "
+    <div>
+      <div class="eyebrow">"Wanda Wholesale"</div>
+      <h2>"Change my PIN"</h2>
+    </div>
+    " "
+    <div class="field">
+      <label for="cp0">"Current PIN"</label>
+      <input id="cp0" type="password" inputmode="numeric" maxlength="6" autocomplete="off">
+    </div>
+    " "
+    <div class="field">
+      <label for="cp1">"New 4-digit PIN"</label>
+      <input id="cp1" type="password" inputmode="numeric" maxlength="4" autocomplete="off">
+    </div>
+    " "
+    <div class="field">
+      <label for="cp2">"Type the new PIN again"</label>
+      <input id="cp2" type="password" inputmode="numeric" maxlength="4" autocomplete="off">
+    </div>
+    " "
+    <button class="btn primary" type="submit" id="cpbtn">"Save new PIN"</button>
+    " "
+    <button class="linkbtn" type="button" id="cpback">"Cancel"</button>
+    " "
+    <div class="msg" id="cpmsg"></div>
+  </form>
+</main>
+`;
+
+exports[`change my PIN from the top bar 2`] = `
+## wrong current
+The current PIN is wrong.
+`;
+
+exports[`change my PIN from the top bar 3`] = `
+## saved
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/users/u-whole",
+    "merge": true,
+    "data": {
+      "salt": "0b30557a9fc4e90e33587da2c7ec1136",
+      "pinHash": "f76309ed85ce1b3df7e197c872fe7fe34d53a6ca0c265032a15d55dece45e077",
+      "mustChange": false,
+      "pinChangedAt": "<serverTimestamp>"
+    }
+  }
+]
+`;
+
+exports[`code refused or database unreachable 1`] = `
+## permission denied
+<main id="main">
+  <form class="login sheet" id="keyform" style="padding:22px" novalidate>
+    " "
+    <div>
+      <div class="eyebrow">"Set up this device"</div>
+      <h2>"Factory Shop Cash Up"</h2>
+    </div>
+    " "
+    <div class="msg">"Open the setup link your manager sent you on this device, or type the shop access code below (a long code of letters and numbers, not your PIN). You only do this once per device. Your PIN comes on the next screen."</div>
+    " "
+    <div class="field">
+      <label for="keyin">"Shop access code"</label>
+      <input id="keyin" autocomplete="off" autocapitalize="off" spellcheck="false">
+    </div>
+    " "
+    <button class="btn primary" type="submit" id="keybtn">"Set up this device"</button>
+    " "
+    <div class="msg err" id="keymsg">"This access code was not accepted. Type the shop access code again, or ask your manager for the setup link. (permission-denied)"</div>
+    " "
+  </form>
+</main>
+`;
+
+exports[`code refused or database unreachable 2`] = `
+## offline
+<main id="main">
+  <form class="login sheet" id="keyform" style="padding:22px" novalidate>
+    " "
+    <div>
+      <div class="eyebrow">"Set up this device"</div>
+      <h2>"Factory Shop Cash Up"</h2>
+    </div>
+    " "
+    <div class="msg">"Open the setup link your manager sent you on this device, or type the shop access code below (a long code of letters and numbers, not your PIN). You only do this once per device. Your PIN comes on the next screen."</div>
+    " "
+    <div class="field">
+      <label for="keyin">"Shop access code"</label>
+      <input id="keyin" autocomplete="off" autocapitalize="off" spellcheck="false">
+    </div>
+    " "
+    <button class="btn primary" type="submit" id="keybtn">"Set up this device"</button>
+    " "
+    <div class="msg err" id="keymsg">"Could not reach the database. Check the internet connection and try again. (Failed to fetch)"</div>
+    " "
+  </form>
+</main>
+`;
+
+exports[`default tab and visible tabs per role 1`] = `
+{
+  "admin Ada Admin": {
+    "tab": "wholesale",
+    "users": true,
+    "notBanked": true,
+    "header": "bar dept-wholesale",
+    "foot": "Live sync active · shared by all users · App version 2026-10-30c"
+  },
+  "wholesale Wanda Wholesale": {
+    "tab": "wholesale",
+    "users": false,
+    "notBanked": false,
+    "header": "bar dept-wholesale",
+    "foot": "Live sync active · shared by all users · App version 2026-10-30c"
+  },
+  "retail Rita Retail": {
+    "tab": "retail",
+    "users": false,
+    "notBanked": false,
+    "header": "bar dept-retail",
+    "foot": "Live sync active · shared by all users · App version 2026-10-30c"
+  },
+  "citydeep Cindy Deep": {
+    "tab": "citydeep",
+    "users": false,
+    "notBanked": false,
+    "header": "bar dept-citydeep",
+    "foot": "Live sync active · shared by all users · App version 2026-10-30c"
+  },
+  "manager Manny Manager": {
+    "tab": "combined",
+    "users": false,
+    "notBanked": true,
+    "header": "bar",
+    "foot": "Live sync active · shared by all users · App version 2026-10-30c"
+  },
+  "manager Mona Second": {
+    "tab": "combined",
+    "users": false,
+    "notBanked": true,
+    "header": "bar",
+    "foot": "Live sync active · shared by all users · App version 2026-10-30c"
+  }
+}
+`;
+
+exports[`first administrator 1`] = `
+## form
+<main id="main">
+  <form class="login sheet" id="adminform" style="padding:22px" novalidate>
+    " "
+    <div>
+      <div class="eyebrow">"First-time setup"</div>
+      <h2>"Create the administrator"</h2>
+    </div>
+    " "
+    <div class="msg">"This is you. As administrator you add the cashiers and managers in the app, under Users."</div>
+    " "
+    <div class="field">
+      <label for="an">"Full name"</label>
+      <input id="an" maxlength="60" autocomplete="name">
+    </div>
+    " "
+    <div class="field">
+      <label for="ap">"Choose a 4-digit PIN"</label>
+      <input id="ap" type="password" inputmode="numeric" maxlength="4" autocomplete="off">
+    </div>
+    " "
+    <div class="field">
+      <label for="ap2">"Type the PIN again"</label>
+      <input id="ap2" type="password" inputmode="numeric" maxlength="4" autocomplete="off">
+    </div>
+    " "
+    <button class="btn primary" type="submit" id="abtn">"Create administrator"</button>
+    " "
+    <div class="msg" id="amsg"></div>
+  </form>
+</main>
+`;
+
+exports[`first administrator 2`] = `
+## short name
+Type your full name.
+`;
+
+exports[`first administrator 3`] = `
+## bad pin
+The PIN must be exactly 4 digits.
+`;
+
+exports[`first administrator 4`] = `
+## pins differ
+The two PINs do not match.
+`;
+
+exports[`first administrator 5`] = `
+## writes
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/users/auto001",
+    "data": {
+      "name": "Alex Owner",
+      "role": "admin",
+      "active": true,
+      "salt": "0b30557a9fc4e90e33587da2c7ec1136",
+      "pinHash": "dfeb28be4ba287c444e5000ec34ad58f753e8dfc26f20539d84ec44fe6abc131",
+      "createdAt": "<serverTimestamp>"
+    }
+  }
+]
+`;
+
+exports[`first administrator 6`] = `
+## app started
+<main id="main">
+  <div class="banner wait" style="font-weight:500">"Due by 7 pm · 9h 0m left. Wholesale, Aeroton Retail, City Deep Retail and the manager must all sign."</div>
+  " "
+  <div class="deptband wholesale" role="heading" aria-level="2">
+    <div>
+      <div class="big">"Wholesale cash up"</div>
+      <div class="small">"Wednesday, 28 October 2026"</div>
+    </div>
+    <div class="small">
+      "You are filling in the "
+      <b>"Wholesale"</b>
+      " sheet"
+    </div>
+  </div>
+  " "
+  <section class="sheet wholesale">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Wholesale department"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <span class="chip">"Not started"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="fields">
+        " "
+        <div class="field">
+          <label>"Date"</label>
+          <div class="static">"Wed, 28 Oct 2026"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Person cashing up"</label>
+          <div class="static">"Alex Owner"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"Department"</label>
+          <div class="static">"Wholesale"</div>
+        </div>
+        " "
+      </div>
+      " "
+      <div class="scan">
+        " "
+        <div style="min-width:0">
+          <div class="eyebrow">"Fill from photo"</div>
+          <div class="msg">"Take a photo of the last page of the cash up report, or attach a saved photo or PDF. The report figures are filled in for you to check, and a copy is kept with this cash up."</div>
+        </div>
+        " "
+        <div class="actions">
+          " "
+          <label class="btn primary" for="wholesale-photo" style="display:inline-flex;align-items:center;gap:8px">"Scan report photo"</label>
+          " "
+          <label class="btn" for="wholesale-photo2" style="display:inline-flex;align-items:center;gap:8px">"Add another photo"</label>
+          " "
+          <label class="btn" for="wholesale-file" style="display:inline-flex;align-items:center;gap:8px">"Attach file"</label>
+          " "
+        </div>
+        " "
+        <input type="file" id="wholesale-photo" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="wholesale-photo2" accept="image/*" capture="environment" hidden>
+        " "
+        <input type="file" id="wholesale-file" accept="image/*,application/pdf,.pdf" multiple hidden>
+        " "
+        <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label>"Report photos"</label>
+        <div data-photos="wholesale">
+          <div class="msg">"No photo yet."</div>
+        </div>
+      </div>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          " "
+          <thead>
+            <tr>
+              <th>"Payment type"</th>
+              <th>
+                "Per report"
+                <small>"Till / Z-report"</small>
+              </th>
+              <th>
+                "Deposited"
+                <small>"Actual counted"</small>
+              </th>
+              <th>
+                "Variance"
+                <small>"Deposited − report"</small>
+              </th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-report" data-m="cash" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Cash per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Cash deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cash">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-report" data-m="cashguard" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-report" data-m="card" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-card">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-report" data-m="payfast" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="PayFast card per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-payfast-deposited" data-m="payfast" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="PayFast card deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-payfast">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-report" data-m="eft" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="EFT per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="EFT deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-eft">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-report" data-m="shop2shop" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Shop2Shop per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-shop2shop-deposited" data-m="shop2shop" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Shop2Shop deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-shop2shop">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-report" data-m="snapscan" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num" id="t-report">"R 0,00"</td>
+              <td class="num" id="t-dep">"R 0,00"</td>
+              <td class="num var-zero" id="t-var">"R 0.00"</td>
+            </tr>
+            " "
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="dmg">
+        " "
+        <div class="field">
+          <label for="wholesale-damaged">"Damaged bank notes & coins (R)"</label>
+          <input id="wholesale-damaged" class="num" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value style="text-align:right">
+        </div>
+        " "
+        <div class="field">
+          <label for="wholesale-damagedNotes">"Damaged details"</label>
+          <input id="wholesale-damagedNotes" value placeholder="e.g. 1 × R100 torn, 3 × R5 coins bent" autocomplete="off" maxlength="300">
+        </div>
+        " "
+      </div>
+      " "
+      <div class="field">
+        <label for="wholesale-notes">"Notes (explain any variance)"</label>
+        <textarea id="wholesale-notes" maxlength="1000" placeholder="e.g. R50 short on cash, float counted twice"></textarea>
+      </div>
+      " "
+      <div class="saved" id="saved-wholesale">"Saves automatically as you type"</div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="pad">
+          <canvas id="pad" data-dept="wholesale" width="900" height="300" aria-label="Signature pad"></canvas>
+          <div class="base"></div>
+          <div class="hint">"Sign above the line with finger or mouse"</div>
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div class="msg">"By signing, I confirm the amounts deposited for Wholesale on Wed, 28 Oct 2026 are correct."</div>
+          " "
+          <div>
+            <div class="eyebrow">"Signing as"</div>
+            <div class="signer-static">"Alex Owner"</div>
+          </div>
+          " "
+          <div class="actions">
+            <button class="btn" id="clear" type="button">"Clear"</button>
+            <button class="btn primary" id="signbtn" type="button">"Sign & submit"</button>
+          </div>
+          " "
+          <div class="msg" id="sign-msg"></div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+</main>
+`;
+
+exports[`first administrator 7`] = `
+## top bar
+<div class="who-bar" id="who">
+  <b>"Alex Owner"</b>
+  <span class="roletag">"Administrator"</span>
+  <button id="mypin" type="button">"Change PIN"</button>
+  <button id="switchu" type="button">"Switch user"</button>
+</div>
+`;
+
+exports[`forced PIN change after the administrator set the PIN 1`] = `
+## choose PIN
+<main id="main">
+  <form class="login sheet" id="pinchange" style="padding:22px" novalidate>
+    " "
+    <div>
+      <div class="eyebrow">"Nina New"</div>
+      <h2>"Choose your own PIN"</h2>
+    </div>
+    " "
+    <div class="msg">"Your PIN was set by the administrator. Choose a new 4-digit PIN that only you know."</div>
+    " "
+    <div class="field">
+      <label for="cp1">"New 4-digit PIN"</label>
+      <input id="cp1" type="password" inputmode="numeric" maxlength="4" autocomplete="off">
+    </div>
+    " "
+    <div class="field">
+      <label for="cp2">"Type the new PIN again"</label>
+      <input id="cp2" type="password" inputmode="numeric" maxlength="4" autocomplete="off">
+    </div>
+    " "
+    <button class="btn primary" type="submit" id="cpbtn">"Save new PIN"</button>
+    " "
+    <button class="linkbtn" type="button" id="cpback">"Not now, go back"</button>
+    " "
+    <div class="msg" id="cpmsg"></div>
+  </form>
+</main>
+`;
+
+exports[`forced PIN change after the administrator set the PIN 2`] = `
+## rejected
+[
+  "The new PIN must be exactly 4 digits.",
+  "The two new PINs are not the same.",
+  "That PIN is too easy to guess. Choose another.",
+  "That PIN is too easy to guess. Choose another.",
+  "Choose a PIN different from the old one."
+]
+`;
+
+exports[`forced PIN change after the administrator set the PIN 3`] = `
+## saved
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/users/u-new",
+    "merge": true,
+    "data": {
+      "salt": "0b30557a9fc4e90e33587da2c7ec1136",
+      "pinHash": "f76309ed85ce1b3df7e197c872fe7fe34d53a6ca0c265032a15d55dece45e077",
+      "mustChange": false,
+      "pinChangedAt": "<serverTimestamp>"
+    }
+  }
+]
+`;
+
+exports[`no access code: setup screen 1`] = `
+<main id="main">
+  <form class="login sheet" id="keyform" style="padding:22px" novalidate>
+    " "
+    <div>
+      <div class="eyebrow">"Set up this device"</div>
+      <h2>"Factory Shop Cash Up"</h2>
+    </div>
+    " "
+    <div class="msg">"Open the setup link your manager sent you on this device, or type the shop access code below (a long code of letters and numbers, not your PIN). You only do this once per device. Your PIN comes on the next screen."</div>
+    " "
+    <div class="field">
+      <label for="keyin">"Shop access code"</label>
+      <input id="keyin" autocomplete="off" autocapitalize="off" spellcheck="false">
+    </div>
+    " "
+    <button class="btn primary" type="submit" id="keybtn">"Set up this device"</button>
+    " "
+    <div class="msg " id="keymsg"></div>
+    " "
+  </form>
+</main>
+`;
+
+exports[`no access code: setup screen 2`] = `
+## PIN typed instead of the code
+This box needs the shop access code (a long code of letters and numbers), not your PIN. You enter your PIN on the next screen.
+`;
+
+exports[`no access code: setup screen 3`] = `
+## invalid code
+That code is not valid. Check it and try again.
+`;
+
+exports[`setup link stores the code and removes it from the address 1`] = `
+<main id="main">
+  <div class="login sheet" style="padding:22px">
+    " "
+    <div>
+      <div class="eyebrow">"Who is using the app?"</div>
+      <h2>"Factory Shop Cash Up"</h2>
+    </div>
+    " "
+    <div class="msg ">"Tap your name, then enter your PIN."</div>
+    " "
+    <div class="actions" style="flex-direction:column;align-items:stretch">
+      <button class="btn" data-u="u-admin" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Ada Admin"</span>
+        <span class="msg">"Administrator"</span>
+      </button>
+      <button class="btn" data-u="u-cd" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Cindy Deep"</span>
+        <span class="msg">"City Deep Retail manager"</span>
+      </button>
+      <button class="btn" data-u="u-mgr" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Manny Manager"</span>
+        <span class="msg">"Manager"</span>
+      </button>
+      <button class="btn" data-u="u-mgr2" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Mona Second"</span>
+        <span class="msg">"Manager"</span>
+      </button>
+      <button class="btn" data-u="u-new" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Nina New"</span>
+        <span class="msg">"Wholesale cashier"</span>
+      </button>
+      <button class="btn" data-u="u-retail" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Rita Retail"</span>
+        <span class="msg">"Aeroton Retail manager"</span>
+      </button>
+      <button class="btn" data-u="u-whole" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Wanda Wholesale"</span>
+        <span class="msg">"Wholesale cashier"</span>
+      </button>
+    </div>
+    " "
+  </div>
+</main>
+`;
+
+exports[`switch user, switched off while signed in, idle lock 1`] = `
+## switch user
+<main id="main">
+  <div class="login sheet" style="padding:22px">
+    " "
+    <div>
+      <div class="eyebrow">"Who is using the app?"</div>
+      <h2>"Factory Shop Cash Up"</h2>
+    </div>
+    " "
+    <div class="msg ">"Tap your name, then enter your PIN."</div>
+    " "
+    <div class="actions" style="flex-direction:column;align-items:stretch">
+      <button class="btn" data-u="u-admin" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Ada Admin"</span>
+        <span class="msg">"Administrator"</span>
+      </button>
+      <button class="btn" data-u="u-cd" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Cindy Deep"</span>
+        <span class="msg">"City Deep Retail manager"</span>
+      </button>
+      <button class="btn" data-u="u-mgr" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Manny Manager"</span>
+        <span class="msg">"Manager"</span>
+      </button>
+      <button class="btn" data-u="u-mgr2" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Mona Second"</span>
+        <span class="msg">"Manager"</span>
+      </button>
+      <button class="btn" data-u="u-new" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Nina New"</span>
+        <span class="msg">"Wholesale cashier"</span>
+      </button>
+      <button class="btn" data-u="u-retail" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Rita Retail"</span>
+        <span class="msg">"Aeroton Retail manager"</span>
+      </button>
+      <button class="btn" data-u="u-whole" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Wanda Wholesale"</span>
+        <span class="msg">"Wholesale cashier"</span>
+      </button>
+    </div>
+    " "
+  </div>
+</main>
+`;
+
+exports[`switch user, switched off while signed in, idle lock 2`] = `
+## switched off
+<main id="main">
+  <div class="login sheet" style="padding:22px">
+    " "
+    <div>
+      <div class="eyebrow">"Who is using the app?"</div>
+      <h2>"Factory Shop Cash Up"</h2>
+    </div>
+    " "
+    <div class="msg err">"Your user was switched off by the administrator."</div>
+    " "
+    <div class="actions" style="flex-direction:column;align-items:stretch">
+      <button class="btn" data-u="u-admin" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Ada Admin"</span>
+        <span class="msg">"Administrator"</span>
+      </button>
+      <button class="btn" data-u="u-cd" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Cindy Deep"</span>
+        <span class="msg">"City Deep Retail manager"</span>
+      </button>
+      <button class="btn" data-u="u-mgr" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Manny Manager"</span>
+        <span class="msg">"Manager"</span>
+      </button>
+      <button class="btn" data-u="u-mgr2" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Mona Second"</span>
+        <span class="msg">"Manager"</span>
+      </button>
+      <button class="btn" data-u="u-new" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Nina New"</span>
+        <span class="msg">"Wholesale cashier"</span>
+      </button>
+      <button class="btn" data-u="u-retail" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Rita Retail"</span>
+        <span class="msg">"Aeroton Retail manager"</span>
+      </button>
+    </div>
+    " "
+  </div>
+</main>
+`;
+
+exports[`switch user, switched off while signed in, idle lock 3`] = `
+## idle lock
+<main id="main">
+  <div class="login sheet" style="padding:22px">
+    " "
+    <div>
+      <div class="eyebrow">"Who is using the app?"</div>
+      <h2>"Factory Shop Cash Up"</h2>
+    </div>
+    " "
+    <div class="msg err">"Locked after 15 minutes without use. Tap your name to continue."</div>
+    " "
+    <div class="actions" style="flex-direction:column;align-items:stretch">
+      <button class="btn" data-u="u-admin" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Ada Admin"</span>
+        <span class="msg">"Administrator"</span>
+      </button>
+      <button class="btn" data-u="u-cd" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Cindy Deep"</span>
+        <span class="msg">"City Deep Retail manager"</span>
+      </button>
+      <button class="btn" data-u="u-mgr" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Manny Manager"</span>
+        <span class="msg">"Manager"</span>
+      </button>
+      <button class="btn" data-u="u-mgr2" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Mona Second"</span>
+        <span class="msg">"Manager"</span>
+      </button>
+      <button class="btn" data-u="u-new" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Nina New"</span>
+        <span class="msg">"Wholesale cashier"</span>
+      </button>
+      <button class="btn" data-u="u-retail" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Rita Retail"</span>
+        <span class="msg">"Aeroton Retail manager"</span>
+      </button>
+    </div>
+    " "
+  </div>
+</main>
+`;
+
+exports[`who is using the app: active users only, sorted 1`] = `
+<main id="main">
+  <div class="login sheet" style="padding:22px">
+    " "
+    <div>
+      <div class="eyebrow">"Who is using the app?"</div>
+      <h2>"Factory Shop Cash Up"</h2>
+    </div>
+    " "
+    <div class="msg ">"Tap your name, then enter your PIN."</div>
+    " "
+    <div class="actions" style="flex-direction:column;align-items:stretch">
+      <button class="btn" data-u="u-admin" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Ada Admin"</span>
+        <span class="msg">"Administrator"</span>
+      </button>
+      <button class="btn" data-u="u-cd" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Cindy Deep"</span>
+        <span class="msg">"City Deep Retail manager"</span>
+      </button>
+      <button class="btn" data-u="u-mgr" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Manny Manager"</span>
+        <span class="msg">"Manager"</span>
+      </button>
+      <button class="btn" data-u="u-mgr2" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Mona Second"</span>
+        <span class="msg">"Manager"</span>
+      </button>
+      <button class="btn" data-u="u-new" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Nina New"</span>
+        <span class="msg">"Wholesale cashier"</span>
+      </button>
+      <button class="btn" data-u="u-retail" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Rita Retail"</span>
+        <span class="msg">"Aeroton Retail manager"</span>
+      </button>
+      <button class="btn" data-u="u-whole" type="button" style="text-align:left;display:flex;justify-content:space-between;gap:10px">
+        <span>"Wanda Wholesale"</span>
+        <span class="msg">"Wholesale cashier"</span>
+      </button>
+    </div>
+    " "
+  </div>
+</main>
+`;

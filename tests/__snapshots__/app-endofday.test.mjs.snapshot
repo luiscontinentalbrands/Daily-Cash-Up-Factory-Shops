@@ -1,0 +1,3662 @@
+exports[`City Deep before its start date shows once it has figures 1`] = `
+## summary
+<div class="summary">
+  " "
+  <div class="stat">
+    <div class="k">"Per reports"</div>
+    <div class="v num">"R 21 533,19"</div>
+  </div>
+  " "
+  <div class="stat">
+    <div class="k">"Deposited"</div>
+    <div class="v num">"R 21 513,24"</div>
+  </div>
+  " "
+  <div class="stat">
+    <div class="k">"Variance"</div>
+    <div class="v num var-neg">"−R 19,95"</div>
+  </div>
+  " "
+  <div class="stat">
+    <div class="k">
+      "Not banked"
+      <br>
+      <span style="font-weight:400;text-transform:none;letter-spacing:0">"CashGuard retained + petty cash"</span>
+    </div>
+    <div class="v num">"R 650,00"</div>
+  </div>
+  " "
+  <div class="stat">
+    <div class="k">"Cash + CashGuard banked"</div>
+    <div class="v num">"R 11 397,50"</div>
+  </div>
+  " "
+</div>
+`;
+
+exports[`City Deep before its start date shows once it has figures 2`] = `
+## columns
+<thead>
+  <tr>
+    <th rowspan="2">"Payment type"</th>
+    <th colspan="2" class="grp" style="text-align:center">"Wholesale"</th>
+    <th colspan="2" class="grp" style="text-align:center">"Aeroton Retail"</th>
+    <th colspan="2" class="grp" style="text-align:center">"City Deep Retail"</th>
+    <th colspan="3" class="grp" style="text-align:center">"All shops"</th>
+  </tr>
+  " "
+  <tr>
+    <th class="grp">"Report"</th>
+    <th>"Deposited"</th>
+    <th class="grp">"Report"</th>
+    <th>"Deposited"</th>
+    <th class="grp">"Report"</th>
+    <th>"Deposited"</th>
+    <th class="grp">"Report"</th>
+    <th>"Deposited"</th>
+    <th>"Variance"</th>
+  </tr>
+</thead>
+`;
+
+exports[`End of Day screen through the day 1`] = `
+## open, nothing signed
+<main id="main">
+  " "
+  <div class="banner wait">"Day still open. Due by 7 pm · 9h 0m left. Still to sign: Wholesale, Aeroton Retail, Manager, City Deep Retail."</div>
+  " "
+  <div class="eyebrow" style="margin:4px 0 8px">"All shops together · Aeroton (Wholesale + Aeroton Retail) and City Deep Retail"</div>
+  " "
+  <div class="summary">
+    " "
+    <div class="stat">
+      <div class="k">"Per reports"</div>
+      <div class="v num">"R 21 533,19"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Deposited"</div>
+      <div class="v num">"R 21 513,24"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Variance"</div>
+      <div class="v num var-neg">"−R 19,95"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">
+        "Not banked"
+        <br>
+        <span style="font-weight:400;text-transform:none;letter-spacing:0">"CashGuard retained + petty cash"</span>
+      </div>
+      <div class="v num">"R 650,00"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Cash + CashGuard banked"</div>
+      <div class="v num">"R 11 397,50"</div>
+    </div>
+    " "
+  </div>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Combined end-of-day cash up"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <div class="actions">
+        <span class="chip draft">"Wholesale in progress"</span>
+        <span class="chip draft">"Aeroton Retail in progress"</span>
+        <span class="chip draft">"City Deep Retail in progress"</span>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="tbl-wrap">
+        <table style="min-width:1040px">
+          " "
+          <thead>
+            <tr>
+              <th rowspan="2">"Payment type"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Wholesale"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Aeroton Retail"</th>
+              <th colspan="2" class="grp" style="text-align:center">"City Deep Retail"</th>
+              <th colspan="3" class="grp" style="text-align:center">"All shops"</th>
+            </tr>
+            " "
+            <tr>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th>"Variance"</th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash / Coins (Retail shops)"</td>
+              <td class="num grp">"R 1 500,00"</td>
+              <td class="num">"R 1 450,00"</td>
+              <td class="num grp">"R 35,50"</td>
+              <td class="num">"R 35,50"</td>
+              <td class="num grp">"R 12,00"</td>
+              <td class="num">"R 12,00"</td>
+              <td class="num grp">
+                <b>"R 1 547,50"</b>
+              </td>
+              <td class="num">
+                <b>"R 1 497,50"</b>
+              </td>
+              <td class="num var-neg">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              <td class="num grp">"R 2 000,00"</td>
+              <td class="num">"R 2 000,00"</td>
+              <td class="num grp">"R 5 400,00"</td>
+              <td class="num">"R 5 200,00"</td>
+              <td class="num grp">"R 3 100,00"</td>
+              <td class="num">"R 3 150,00"</td>
+              <td class="num grp">
+                <b>"R 10 500,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 10 350,00"</b>
+              </td>
+              <td class="num var-neg">"−R 150,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              <td class="num grp">"R 3 200,50"</td>
+              <td class="num">"R 3 200,50"</td>
+              <td class="num grp">"R 2 750,25"</td>
+              <td class="num">"R 2 750,25"</td>
+              <td class="num grp">"R 1 999,95"</td>
+              <td class="num">"R 1 980,00"</td>
+              <td class="num grp">
+                <b>"R 7 950,70"</b>
+              </td>
+              <td class="num">
+                <b>"R 7 930,75"</b>
+              </td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              <td class="num grp">"R 410,00"</td>
+              <td class="num">"R 410,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              <td class="num grp">"R 99,99"</td>
+              <td class="num">"R 99,99"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              <td class="num grp">"R 800,00"</td>
+              <td class="num">"R 800,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              <td class="num grp">"R 120,00"</td>
+              <td class="num">"R 120,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              <td class="num grp">"R 45,00"</td>
+              <td class="num">"R 45,00"</td>
+              <td class="num grp">"R 60,00"</td>
+              <td class="num">"R 60,00"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 0,00"</td>
+              <td class="num grp">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Petty cash (not banked)"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 200,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 0,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 200,00"</b>
+              </td>
+              <td class="num var-pos">"+R 200,00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num grp">"R 8 175,49"</td>
+              <td class="num">"R 8 125,49"</td>
+              <td class="num grp">"R 8 245,75"</td>
+              <td class="num">"R 8 245,75"</td>
+              <td class="num grp">"R 5 111,95"</td>
+              <td class="num">"R 5 142,00"</td>
+              <td class="num grp">"R 21 533,19"</td>
+              <td class="num">"R 21 513,24"</td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        " "
+        <div class="field">
+          <label>"Aeroton variance"</label>
+          <div class="static num var-neg">"−R 50,00"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"City Deep Retail variance"</label>
+          <div class="static num var-pos">"+R 30,05"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"All shops variance"</label>
+          <div class="static num var-neg">"−R 19,95"</div>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cashed up by"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " Wanda Wholesale · "
+          <b>"Aeroton Retail:"</b>
+          " Rita Retail · "
+          <b>"City Deep Retail:"</b>
+          " Cindy Deep"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Notes"</label>
+        <div class="static" style="font-weight:400;white-space:pre-wrap">
+          <b>"Wholesale:"</b>
+          " R50 short, float counted twice "
+          <b>"City Deep Retail:"</b>
+          " Card machine offline 10 minutes"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"CashGuard"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Aeroton Retail:"</b>
+          " deposited in Nedbank R 4 900,00 · counted & retained, not banked "
+          <b>"R 300,00"</b>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " deposited in Nedbank R 3 000,00 · counted & retained, not banked "
+          <b>"R 150,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Aeroton Retail petty cash (not banked)"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"R 200,00"</b>
+          " · R200 cleaning materials"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cash handed over (signed for)"</label>
+        <div class="static num" style="font-weight:400">
+          "R 300,00 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 28 Oct, 17:30"
+          <br>
+          "R 200,50 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 28 Oct, 17:45"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Damaged bank notes & coins"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " R 100,00 (1 x R100 torn) · "
+          <b>"Aeroton Retail:"</b>
+          " R 0,00 · "
+          <b>"City Deep Retail:"</b>
+          " R 0,00 · "
+          <b>"Total R 100,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="sigs">
+        <div class="sigbox">
+          <div class="eyebrow">"Wholesale"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"Wanda Wholesale · in progress"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"Rita Retail · in progress"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"City Deep Retail"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"Cindy Deep · in progress"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Manager"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"signed below"</div>
+        </div>
+      </div>
+      " "
+      <div class="actions">
+        <button class="btn primary" id="pdf-mail" type="button">"Email PDF report"</button>
+        <button class="btn" id="pdf-dl" type="button">"Download PDF"</button>
+        <button class="btn" id="csv">"Download day as CSV"</button>
+        <span class="msg" id="csv-msg"></span>
+      </div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"End-of-day sign-off · all shops · due by 7 pm"</div>
+        <h2>"Manager signature"</h2>
+      </div>
+      <span class="chip">"Not signed"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="msg">"You can sign here once all shops have signed. Still waiting for: Wholesale, Aeroton Retail, City Deep Retail."</div>
+    </div>
+    " "
+  </section>
+  " "
+</main>
+`;
+
+exports[`End of Day screen through the day 2`] = `
+## open, last hour
+<main id="main">
+  " "
+  <div class="banner wait">"Day still open. Due by 7 pm · 0h 45m left. Still to sign: Aeroton Retail, Manager, City Deep Retail."</div>
+  " "
+  <div class="eyebrow" style="margin:4px 0 8px">"All shops together · Aeroton (Wholesale + Aeroton Retail) and City Deep Retail"</div>
+  " "
+  <div class="summary">
+    " "
+    <div class="stat">
+      <div class="k">"Per reports"</div>
+      <div class="v num">"R 21 533,19"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Deposited"</div>
+      <div class="v num">"R 21 513,24"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Variance"</div>
+      <div class="v num var-neg">"−R 19,95"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">
+        "Not banked"
+        <br>
+        <span style="font-weight:400;text-transform:none;letter-spacing:0">"CashGuard retained + petty cash"</span>
+      </div>
+      <div class="v num">"R 650,00"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Cash + CashGuard banked"</div>
+      <div class="v num">"R 11 397,50"</div>
+    </div>
+    " "
+  </div>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Combined end-of-day cash up"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <div class="actions">
+        <span class="chip signed">"Wholesale signed"</span>
+        <span class="chip draft">"Aeroton Retail in progress"</span>
+        <span class="chip draft">"City Deep Retail in progress"</span>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="tbl-wrap">
+        <table style="min-width:1040px">
+          " "
+          <thead>
+            <tr>
+              <th rowspan="2">"Payment type"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Wholesale"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Aeroton Retail"</th>
+              <th colspan="2" class="grp" style="text-align:center">"City Deep Retail"</th>
+              <th colspan="3" class="grp" style="text-align:center">"All shops"</th>
+            </tr>
+            " "
+            <tr>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th>"Variance"</th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash / Coins (Retail shops)"</td>
+              <td class="num grp">"R 1 500,00"</td>
+              <td class="num">"R 1 450,00"</td>
+              <td class="num grp">"R 35,50"</td>
+              <td class="num">"R 35,50"</td>
+              <td class="num grp">"R 12,00"</td>
+              <td class="num">"R 12,00"</td>
+              <td class="num grp">
+                <b>"R 1 547,50"</b>
+              </td>
+              <td class="num">
+                <b>"R 1 497,50"</b>
+              </td>
+              <td class="num var-neg">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              <td class="num grp">"R 2 000,00"</td>
+              <td class="num">"R 2 000,00"</td>
+              <td class="num grp">"R 5 400,00"</td>
+              <td class="num">"R 5 200,00"</td>
+              <td class="num grp">"R 3 100,00"</td>
+              <td class="num">"R 3 150,00"</td>
+              <td class="num grp">
+                <b>"R 10 500,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 10 350,00"</b>
+              </td>
+              <td class="num var-neg">"−R 150,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              <td class="num grp">"R 3 200,50"</td>
+              <td class="num">"R 3 200,50"</td>
+              <td class="num grp">"R 2 750,25"</td>
+              <td class="num">"R 2 750,25"</td>
+              <td class="num grp">"R 1 999,95"</td>
+              <td class="num">"R 1 980,00"</td>
+              <td class="num grp">
+                <b>"R 7 950,70"</b>
+              </td>
+              <td class="num">
+                <b>"R 7 930,75"</b>
+              </td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              <td class="num grp">"R 410,00"</td>
+              <td class="num">"R 410,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              <td class="num grp">"R 99,99"</td>
+              <td class="num">"R 99,99"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              <td class="num grp">"R 800,00"</td>
+              <td class="num">"R 800,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              <td class="num grp">"R 120,00"</td>
+              <td class="num">"R 120,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              <td class="num grp">"R 45,00"</td>
+              <td class="num">"R 45,00"</td>
+              <td class="num grp">"R 60,00"</td>
+              <td class="num">"R 60,00"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 0,00"</td>
+              <td class="num grp">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Petty cash (not banked)"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 200,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 0,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 200,00"</b>
+              </td>
+              <td class="num var-pos">"+R 200,00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num grp">"R 8 175,49"</td>
+              <td class="num">"R 8 125,49"</td>
+              <td class="num grp">"R 8 245,75"</td>
+              <td class="num">"R 8 245,75"</td>
+              <td class="num grp">"R 5 111,95"</td>
+              <td class="num">"R 5 142,00"</td>
+              <td class="num grp">"R 21 533,19"</td>
+              <td class="num">"R 21 513,24"</td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        " "
+        <div class="field">
+          <label>"Aeroton variance"</label>
+          <div class="static num var-neg">"−R 50,00"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"City Deep Retail variance"</label>
+          <div class="static num var-pos">"+R 30,05"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"All shops variance"</label>
+          <div class="static num var-neg">"−R 19,95"</div>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cashed up by"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " Wanda Wholesale · "
+          <b>"Aeroton Retail:"</b>
+          " Rita Retail · "
+          <b>"City Deep Retail:"</b>
+          " Cindy Deep"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Notes"</label>
+        <div class="static" style="font-weight:400;white-space:pre-wrap">
+          <b>"Wholesale:"</b>
+          " R50 short, float counted twice "
+          <b>"City Deep Retail:"</b>
+          " Card machine offline 10 minutes"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"CashGuard"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Aeroton Retail:"</b>
+          " deposited in Nedbank R 4 900,00 · counted & retained, not banked "
+          <b>"R 300,00"</b>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " deposited in Nedbank R 3 000,00 · counted & retained, not banked "
+          <b>"R 150,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Aeroton Retail petty cash (not banked)"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"R 200,00"</b>
+          " · R200 cleaning materials"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cash handed over (signed for)"</label>
+        <div class="static num" style="font-weight:400">
+          "R 300,00 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 28 Oct, 17:30"
+          <br>
+          "R 200,50 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 28 Oct, 17:45"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Damaged bank notes & coins"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " R 100,00 (1 x R100 torn) · "
+          <b>"Aeroton Retail:"</b>
+          " R 0,00 · "
+          <b>"City Deep Retail:"</b>
+          " R 0,00 · "
+          <b>"Total R 100,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="sigs">
+        <div class="sigbox">
+          <div class="eyebrow">"Wholesale"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Wholesale signature">
+          </div>
+          <div class="who">"Wanda Wholesale · 28 Oct, 17:00"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"Rita Retail · in progress"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"City Deep Retail"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"Cindy Deep · in progress"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Manager"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"signed below"</div>
+        </div>
+      </div>
+      " "
+      <div class="actions">
+        <button class="btn primary" id="pdf-mail" type="button">"Email PDF report"</button>
+        <button class="btn" id="pdf-dl" type="button">"Download PDF"</button>
+        <button class="btn" id="csv">"Download day as CSV"</button>
+        <span class="msg" id="csv-msg"></span>
+      </div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"End-of-day sign-off · all shops · due by 7 pm"</div>
+        <h2>"Manager signature"</h2>
+      </div>
+      <span class="chip">"Not signed"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="msg">"You can sign here once all shops have signed. Still waiting for: Aeroton Retail, City Deep Retail."</div>
+    </div>
+    " "
+  </section>
+  " "
+</main>
+`;
+
+exports[`End of Day screen through the day 3`] = `
+## overdue
+<main id="main">
+  " "
+  <div class="banner bad">"Past the 7 pm deadline. Missing signature: Manager, City Deep Retail. Ulla is notified by email."</div>
+  " "
+  <div class="eyebrow" style="margin:4px 0 8px">"All shops together · Aeroton (Wholesale + Aeroton Retail) and City Deep Retail"</div>
+  " "
+  <div class="summary">
+    " "
+    <div class="stat">
+      <div class="k">"Per reports"</div>
+      <div class="v num">"R 21 533,19"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Deposited"</div>
+      <div class="v num">"R 21 513,24"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Variance"</div>
+      <div class="v num var-neg">"−R 19,95"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">
+        "Not banked"
+        <br>
+        <span style="font-weight:400;text-transform:none;letter-spacing:0">"CashGuard retained + petty cash"</span>
+      </div>
+      <div class="v num">"R 650,00"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Cash + CashGuard banked"</div>
+      <div class="v num">"R 11 397,50"</div>
+    </div>
+    " "
+  </div>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Combined end-of-day cash up"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <div class="actions">
+        <span class="chip signed">"Wholesale signed"</span>
+        <span class="chip signed">"Aeroton Retail signed"</span>
+        <span class="chip draft">"City Deep Retail in progress"</span>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="tbl-wrap">
+        <table style="min-width:1040px">
+          " "
+          <thead>
+            <tr>
+              <th rowspan="2">"Payment type"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Wholesale"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Aeroton Retail"</th>
+              <th colspan="2" class="grp" style="text-align:center">"City Deep Retail"</th>
+              <th colspan="3" class="grp" style="text-align:center">"All shops"</th>
+            </tr>
+            " "
+            <tr>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th>"Variance"</th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash / Coins (Retail shops)"</td>
+              <td class="num grp">"R 1 500,00"</td>
+              <td class="num">"R 1 450,00"</td>
+              <td class="num grp">"R 35,50"</td>
+              <td class="num">"R 35,50"</td>
+              <td class="num grp">"R 12,00"</td>
+              <td class="num">"R 12,00"</td>
+              <td class="num grp">
+                <b>"R 1 547,50"</b>
+              </td>
+              <td class="num">
+                <b>"R 1 497,50"</b>
+              </td>
+              <td class="num var-neg">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              <td class="num grp">"R 2 000,00"</td>
+              <td class="num">"R 2 000,00"</td>
+              <td class="num grp">"R 5 400,00"</td>
+              <td class="num">"R 5 200,00"</td>
+              <td class="num grp">"R 3 100,00"</td>
+              <td class="num">"R 3 150,00"</td>
+              <td class="num grp">
+                <b>"R 10 500,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 10 350,00"</b>
+              </td>
+              <td class="num var-neg">"−R 150,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              <td class="num grp">"R 3 200,50"</td>
+              <td class="num">"R 3 200,50"</td>
+              <td class="num grp">"R 2 750,25"</td>
+              <td class="num">"R 2 750,25"</td>
+              <td class="num grp">"R 1 999,95"</td>
+              <td class="num">"R 1 980,00"</td>
+              <td class="num grp">
+                <b>"R 7 950,70"</b>
+              </td>
+              <td class="num">
+                <b>"R 7 930,75"</b>
+              </td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              <td class="num grp">"R 410,00"</td>
+              <td class="num">"R 410,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              <td class="num grp">"R 99,99"</td>
+              <td class="num">"R 99,99"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              <td class="num grp">"R 800,00"</td>
+              <td class="num">"R 800,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              <td class="num grp">"R 120,00"</td>
+              <td class="num">"R 120,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              <td class="num grp">"R 45,00"</td>
+              <td class="num">"R 45,00"</td>
+              <td class="num grp">"R 60,00"</td>
+              <td class="num">"R 60,00"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 0,00"</td>
+              <td class="num grp">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Petty cash (not banked)"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 200,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 0,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 200,00"</b>
+              </td>
+              <td class="num var-pos">"+R 200,00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num grp">"R 8 175,49"</td>
+              <td class="num">"R 8 125,49"</td>
+              <td class="num grp">"R 8 245,75"</td>
+              <td class="num">"R 8 245,75"</td>
+              <td class="num grp">"R 5 111,95"</td>
+              <td class="num">"R 5 142,00"</td>
+              <td class="num grp">"R 21 533,19"</td>
+              <td class="num">"R 21 513,24"</td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        " "
+        <div class="field">
+          <label>"Aeroton variance"</label>
+          <div class="static num var-neg">"−R 50,00"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"City Deep Retail variance"</label>
+          <div class="static num var-pos">"+R 30,05"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"All shops variance"</label>
+          <div class="static num var-neg">"−R 19,95"</div>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cashed up by"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " Wanda Wholesale · "
+          <b>"Aeroton Retail:"</b>
+          " Rita Retail · "
+          <b>"City Deep Retail:"</b>
+          " Cindy Deep"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Notes"</label>
+        <div class="static" style="font-weight:400;white-space:pre-wrap">
+          <b>"Wholesale:"</b>
+          " R50 short, float counted twice "
+          <b>"City Deep Retail:"</b>
+          " Card machine offline 10 minutes"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"CashGuard"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Aeroton Retail:"</b>
+          " deposited in Nedbank R 4 900,00 · counted & retained, not banked "
+          <b>"R 300,00"</b>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " deposited in Nedbank R 3 000,00 · counted & retained, not banked "
+          <b>"R 150,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Aeroton Retail petty cash (not banked)"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"R 200,00"</b>
+          " · R200 cleaning materials"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cash handed over (signed for)"</label>
+        <div class="static num" style="font-weight:400">
+          "R 300,00 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 28 Oct, 17:30"
+          <br>
+          "R 200,50 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 28 Oct, 17:45"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Damaged bank notes & coins"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " R 100,00 (1 x R100 torn) · "
+          <b>"Aeroton Retail:"</b>
+          " R 0,00 · "
+          <b>"City Deep Retail:"</b>
+          " R 0,00 · "
+          <b>"Total R 100,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="sigs">
+        <div class="sigbox">
+          <div class="eyebrow">"Wholesale"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Wholesale signature">
+          </div>
+          <div class="who">"Wanda Wholesale · 28 Oct, 17:00"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Aeroton Retail signature">
+          </div>
+          <div class="who">"Rita Retail · 28 Oct, 17:05"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"City Deep Retail"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"Cindy Deep · in progress"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Manager"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"signed below"</div>
+        </div>
+      </div>
+      " "
+      <div class="actions">
+        <button class="btn primary" id="pdf-mail" type="button">"Email PDF report"</button>
+        <button class="btn" id="pdf-dl" type="button">"Download PDF"</button>
+        <button class="btn" id="csv">"Download day as CSV"</button>
+        <span class="msg" id="csv-msg"></span>
+      </div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"End-of-day sign-off · all shops · due by 7 pm"</div>
+        <h2>"Manager signature"</h2>
+      </div>
+      <span class="chip">"Not signed"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="msg">"You can sign here once all shops have signed. Still waiting for: City Deep Retail."</div>
+    </div>
+    " "
+  </section>
+  " "
+</main>
+`;
+
+exports[`End of Day screen through the day 4`] = `
+## closed late
+<main id="main">
+  " "
+  <div class="banner wait">"Day closed, but after the 7 pm deadline. Completed late · 28 Oct, 19:40."</div>
+  " "
+  <div class="eyebrow" style="margin:4px 0 8px">"All shops together · Aeroton (Wholesale + Aeroton Retail) and City Deep Retail"</div>
+  " "
+  <div class="summary">
+    " "
+    <div class="stat">
+      <div class="k">"Per reports"</div>
+      <div class="v num">"R 21 533,19"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Deposited"</div>
+      <div class="v num">"R 21 513,24"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Variance"</div>
+      <div class="v num var-neg">"−R 19,95"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">
+        "Not banked"
+        <br>
+        <span style="font-weight:400;text-transform:none;letter-spacing:0">"CashGuard retained + petty cash"</span>
+      </div>
+      <div class="v num">"R 650,00"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Cash + CashGuard banked"</div>
+      <div class="v num">"R 11 397,50"</div>
+    </div>
+    " "
+  </div>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Combined end-of-day cash up"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <div class="actions">
+        <span class="chip signed">"Wholesale signed"</span>
+        <span class="chip signed">"Aeroton Retail signed"</span>
+        <span class="chip signed">"City Deep Retail signed"</span>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="tbl-wrap">
+        <table style="min-width:1040px">
+          " "
+          <thead>
+            <tr>
+              <th rowspan="2">"Payment type"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Wholesale"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Aeroton Retail"</th>
+              <th colspan="2" class="grp" style="text-align:center">"City Deep Retail"</th>
+              <th colspan="3" class="grp" style="text-align:center">"All shops"</th>
+            </tr>
+            " "
+            <tr>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th>"Variance"</th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash / Coins (Retail shops)"</td>
+              <td class="num grp">"R 1 500,00"</td>
+              <td class="num">"R 1 450,00"</td>
+              <td class="num grp">"R 35,50"</td>
+              <td class="num">"R 35,50"</td>
+              <td class="num grp">"R 12,00"</td>
+              <td class="num">"R 12,00"</td>
+              <td class="num grp">
+                <b>"R 1 547,50"</b>
+              </td>
+              <td class="num">
+                <b>"R 1 497,50"</b>
+              </td>
+              <td class="num var-neg">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              <td class="num grp">"R 2 000,00"</td>
+              <td class="num">"R 2 000,00"</td>
+              <td class="num grp">"R 5 400,00"</td>
+              <td class="num">"R 5 200,00"</td>
+              <td class="num grp">"R 3 100,00"</td>
+              <td class="num">"R 3 150,00"</td>
+              <td class="num grp">
+                <b>"R 10 500,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 10 350,00"</b>
+              </td>
+              <td class="num var-neg">"−R 150,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              <td class="num grp">"R 3 200,50"</td>
+              <td class="num">"R 3 200,50"</td>
+              <td class="num grp">"R 2 750,25"</td>
+              <td class="num">"R 2 750,25"</td>
+              <td class="num grp">"R 1 999,95"</td>
+              <td class="num">"R 1 980,00"</td>
+              <td class="num grp">
+                <b>"R 7 950,70"</b>
+              </td>
+              <td class="num">
+                <b>"R 7 930,75"</b>
+              </td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              <td class="num grp">"R 410,00"</td>
+              <td class="num">"R 410,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              <td class="num grp">"R 99,99"</td>
+              <td class="num">"R 99,99"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              <td class="num grp">"R 800,00"</td>
+              <td class="num">"R 800,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              <td class="num grp">"R 120,00"</td>
+              <td class="num">"R 120,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              <td class="num grp">"R 45,00"</td>
+              <td class="num">"R 45,00"</td>
+              <td class="num grp">"R 60,00"</td>
+              <td class="num">"R 60,00"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 0,00"</td>
+              <td class="num grp">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Petty cash (not banked)"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 200,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 0,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 200,00"</b>
+              </td>
+              <td class="num var-pos">"+R 200,00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num grp">"R 8 175,49"</td>
+              <td class="num">"R 8 125,49"</td>
+              <td class="num grp">"R 8 245,75"</td>
+              <td class="num">"R 8 245,75"</td>
+              <td class="num grp">"R 5 111,95"</td>
+              <td class="num">"R 5 142,00"</td>
+              <td class="num grp">"R 21 533,19"</td>
+              <td class="num">"R 21 513,24"</td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        " "
+        <div class="field">
+          <label>"Aeroton variance"</label>
+          <div class="static num var-neg">"−R 50,00"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"City Deep Retail variance"</label>
+          <div class="static num var-pos">"+R 30,05"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"All shops variance"</label>
+          <div class="static num var-neg">"−R 19,95"</div>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cashed up by"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " Wanda Wholesale · "
+          <b>"Aeroton Retail:"</b>
+          " Rita Retail · "
+          <b>"City Deep Retail:"</b>
+          " Cindy Deep"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Notes"</label>
+        <div class="static" style="font-weight:400;white-space:pre-wrap">
+          <b>"Wholesale:"</b>
+          " R50 short, float counted twice "
+          <b>"City Deep Retail:"</b>
+          " Card machine offline 10 minutes"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"CashGuard"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Aeroton Retail:"</b>
+          " deposited in Nedbank R 4 900,00 · counted & retained, not banked "
+          <b>"R 300,00"</b>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " deposited in Nedbank R 3 000,00 · counted & retained, not banked "
+          <b>"R 150,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Aeroton Retail petty cash (not banked)"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"R 200,00"</b>
+          " · R200 cleaning materials"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cash handed over (signed for)"</label>
+        <div class="static num" style="font-weight:400">
+          "R 300,00 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 28 Oct, 17:30"
+          <br>
+          "R 200,50 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 28 Oct, 17:45"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Damaged bank notes & coins"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " R 100,00 (1 x R100 torn) · "
+          <b>"Aeroton Retail:"</b>
+          " R 0,00 · "
+          <b>"City Deep Retail:"</b>
+          " R 0,00 · "
+          <b>"Total R 100,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="sigs">
+        <div class="sigbox">
+          <div class="eyebrow">"Wholesale"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Wholesale signature">
+          </div>
+          <div class="who">"Wanda Wholesale · 28 Oct, 17:00"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Aeroton Retail signature">
+          </div>
+          <div class="who">"Rita Retail · 28 Oct, 17:05"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"City Deep Retail"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="City Deep Retail signature">
+          </div>
+          <div class="who">"Cindy Deep · 28 Oct, 17:10"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Manager"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Manager signature">
+          </div>
+          <div class="who">"Manny Manager · 28 Oct, 19:40"</div>
+        </div>
+      </div>
+      " "
+      <div class="actions">
+        <button class="btn primary" id="pdf-mail" type="button">"Email PDF report"</button>
+        <button class="btn" id="pdf-dl" type="button">"Download PDF"</button>
+        <button class="btn" id="csv">"Download day as CSV"</button>
+        <span class="msg" id="csv-msg"></span>
+      </div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"End-of-day sign-off · all shops · due by 7 pm"</div>
+        <h2>"Manager signature"</h2>
+      </div>
+      <span class="chip signed">"Signed off"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="sig-img">
+          <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Signature of Manny Manager">
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div>
+            <div class="eyebrow">"Signed by"</div>
+            <div class="signer-static">"Manny Manager"</div>
+            <div class="msg">"28 Oct, 19:40"</div>
+          </div>
+          " "
+          <div class="msg">"This day is locked. Reopen it only to correct a mistake; the signature is removed, the reopen is recorded, and it must be signed again."</div>
+          " "
+          <div class="actions">
+            <button class="btn danger" id="reopen" data-dept="manager">"Reopen to correct"</button>
+            <span class="msg" id="reopen-msg"></span>
+          </div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+  " "
+</main>
+`;
+
+exports[`End of Day screen through the day 5`] = `
+## closed on time
+<main id="main">
+  " "
+  <div class="banner ok">"Day closed on time. All cash ups and the manager have signed."</div>
+  " "
+  <div class="eyebrow" style="margin:4px 0 8px">"All shops together · Aeroton (Wholesale + Aeroton Retail) and City Deep Retail"</div>
+  " "
+  <div class="summary">
+    " "
+    <div class="stat">
+      <div class="k">"Per reports"</div>
+      <div class="v num">"R 21 533,19"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Deposited"</div>
+      <div class="v num">"R 21 513,24"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Variance"</div>
+      <div class="v num var-neg">"−R 19,95"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">
+        "Not banked"
+        <br>
+        <span style="font-weight:400;text-transform:none;letter-spacing:0">"CashGuard retained + petty cash"</span>
+      </div>
+      <div class="v num">"R 650,00"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Cash + CashGuard banked"</div>
+      <div class="v num">"R 11 397,50"</div>
+    </div>
+    " "
+  </div>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Combined end-of-day cash up"</div>
+        <h2>"Wednesday, 28 October 2026"</h2>
+      </div>
+      <div class="actions">
+        <span class="chip signed">"Wholesale signed"</span>
+        <span class="chip signed">"Aeroton Retail signed"</span>
+        <span class="chip signed">"City Deep Retail signed"</span>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="tbl-wrap">
+        <table style="min-width:1040px">
+          " "
+          <thead>
+            <tr>
+              <th rowspan="2">"Payment type"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Wholesale"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Aeroton Retail"</th>
+              <th colspan="2" class="grp" style="text-align:center">"City Deep Retail"</th>
+              <th colspan="3" class="grp" style="text-align:center">"All shops"</th>
+            </tr>
+            " "
+            <tr>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th>"Variance"</th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash / Coins (Retail shops)"</td>
+              <td class="num grp">"R 1 500,00"</td>
+              <td class="num">"R 1 450,00"</td>
+              <td class="num grp">"R 35,50"</td>
+              <td class="num">"R 35,50"</td>
+              <td class="num grp">"R 12,00"</td>
+              <td class="num">"R 12,00"</td>
+              <td class="num grp">
+                <b>"R 1 547,50"</b>
+              </td>
+              <td class="num">
+                <b>"R 1 497,50"</b>
+              </td>
+              <td class="num var-neg">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              <td class="num grp">"R 2 000,00"</td>
+              <td class="num">"R 2 000,00"</td>
+              <td class="num grp">"R 5 400,00"</td>
+              <td class="num">"R 5 200,00"</td>
+              <td class="num grp">"R 3 100,00"</td>
+              <td class="num">"R 3 150,00"</td>
+              <td class="num grp">
+                <b>"R 10 500,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 10 350,00"</b>
+              </td>
+              <td class="num var-neg">"−R 150,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              <td class="num grp">"R 3 200,50"</td>
+              <td class="num">"R 3 200,50"</td>
+              <td class="num grp">"R 2 750,25"</td>
+              <td class="num">"R 2 750,25"</td>
+              <td class="num grp">"R 1 999,95"</td>
+              <td class="num">"R 1 980,00"</td>
+              <td class="num grp">
+                <b>"R 7 950,70"</b>
+              </td>
+              <td class="num">
+                <b>"R 7 930,75"</b>
+              </td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              <td class="num grp">"R 410,00"</td>
+              <td class="num">"R 410,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              <td class="num grp">"R 99,99"</td>
+              <td class="num">"R 99,99"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              <td class="num grp">"R 800,00"</td>
+              <td class="num">"R 800,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              <td class="num grp">"R 120,00"</td>
+              <td class="num">"R 120,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              <td class="num grp">"R 45,00"</td>
+              <td class="num">"R 45,00"</td>
+              <td class="num grp">"R 60,00"</td>
+              <td class="num">"R 60,00"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 0,00"</td>
+              <td class="num grp">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Petty cash (not banked)"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 200,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 0,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 200,00"</b>
+              </td>
+              <td class="num var-pos">"+R 200,00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num grp">"R 8 175,49"</td>
+              <td class="num">"R 8 125,49"</td>
+              <td class="num grp">"R 8 245,75"</td>
+              <td class="num">"R 8 245,75"</td>
+              <td class="num grp">"R 5 111,95"</td>
+              <td class="num">"R 5 142,00"</td>
+              <td class="num grp">"R 21 533,19"</td>
+              <td class="num">"R 21 513,24"</td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        " "
+        <div class="field">
+          <label>"Aeroton variance"</label>
+          <div class="static num var-neg">"−R 50,00"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"City Deep Retail variance"</label>
+          <div class="static num var-pos">"+R 30,05"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"All shops variance"</label>
+          <div class="static num var-neg">"−R 19,95"</div>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cashed up by"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " Wanda Wholesale · "
+          <b>"Aeroton Retail:"</b>
+          " Rita Retail · "
+          <b>"City Deep Retail:"</b>
+          " Cindy Deep"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Notes"</label>
+        <div class="static" style="font-weight:400;white-space:pre-wrap">
+          <b>"Wholesale:"</b>
+          " R50 short, float counted twice "
+          <b>"City Deep Retail:"</b>
+          " Card machine offline 10 minutes"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"CashGuard"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Aeroton Retail:"</b>
+          " deposited in Nedbank R 4 900,00 · counted & retained, not banked "
+          <b>"R 300,00"</b>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " deposited in Nedbank R 3 000,00 · counted & retained, not banked "
+          <b>"R 150,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Aeroton Retail petty cash (not banked)"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"R 200,00"</b>
+          " · R200 cleaning materials"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cash handed over (signed for)"</label>
+        <div class="static num" style="font-weight:400">
+          "R 300,00 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 28 Oct, 17:30"
+          <br>
+          "R 200,50 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 28 Oct, 17:45"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Damaged bank notes & coins"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " R 100,00 (1 x R100 torn) · "
+          <b>"Aeroton Retail:"</b>
+          " R 0,00 · "
+          <b>"City Deep Retail:"</b>
+          " R 0,00 · "
+          <b>"Total R 100,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="sigs">
+        <div class="sigbox">
+          <div class="eyebrow">"Wholesale"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Wholesale signature">
+          </div>
+          <div class="who">"Wanda Wholesale · 28 Oct, 17:00"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Aeroton Retail signature">
+          </div>
+          <div class="who">"Rita Retail · 28 Oct, 17:05"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"City Deep Retail"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="City Deep Retail signature">
+          </div>
+          <div class="who">"Cindy Deep · 28 Oct, 17:10"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Manager"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Manager signature">
+          </div>
+          <div class="who">"Manny Manager · 28 Oct, 18:30"</div>
+        </div>
+      </div>
+      " "
+      <div class="actions">
+        <button class="btn primary" id="pdf-mail" type="button">"Email PDF report"</button>
+        <button class="btn" id="pdf-dl" type="button">"Download PDF"</button>
+        <button class="btn" id="csv">"Download day as CSV"</button>
+        <span class="msg" id="csv-msg"></span>
+      </div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"End-of-day sign-off · all shops · due by 7 pm"</div>
+        <h2>"Manager signature"</h2>
+      </div>
+      <span class="chip signed">"Signed off"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="sig-img">
+          <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Signature of Manny Manager">
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div>
+            <div class="eyebrow">"Signed by"</div>
+            <div class="signer-static">"Manny Manager"</div>
+            <div class="msg">"28 Oct, 18:30"</div>
+          </div>
+          " "
+          <div class="msg">"This day is locked. Reopen it only to correct a mistake; the signature is removed, the reopen is recorded, and it must be signed again."</div>
+          " "
+          <div class="actions">
+            <button class="btn danger" id="reopen" data-dept="manager">"Reopen to correct"</button>
+            <span class="msg" id="reopen-msg"></span>
+          </div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+  " "
+</main>
+`;
+
+exports[`End of Day screen through the day 6`] = `
+## before City Deep
+<main id="main">
+  " "
+  <div class="banner ok">"Day closed on time. All cash ups and the manager have signed."</div>
+  " "
+  <div class="eyebrow" style="margin:4px 0 8px">"Aeroton · Wholesale + Aeroton Retail"</div>
+  " "
+  <div class="summary">
+    " "
+    <div class="stat">
+      <div class="k">"Per reports"</div>
+      <div class="v num">"R 16 421,24"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Deposited"</div>
+      <div class="v num">"R 16 371,24"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Variance"</div>
+      <div class="v num var-neg">"−R 50,00"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">
+        "Not banked"
+        <br>
+        <span style="font-weight:400;text-transform:none;letter-spacing:0">"CashGuard retained + petty cash"</span>
+      </div>
+      <div class="v num">"R 500,00"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Cash + CashGuard banked"</div>
+      <div class="v num">"R 8 385,50"</div>
+    </div>
+    " "
+  </div>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Combined end-of-day cash up"</div>
+        <h2>"Saturday, 17 October 2026"</h2>
+      </div>
+      <div class="actions">
+        <span class="chip signed">"Wholesale signed"</span>
+        <span class="chip signed">"Aeroton Retail signed"</span>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="tbl-wrap">
+        <table style="min-width:820px">
+          " "
+          <thead>
+            <tr>
+              <th rowspan="2">"Payment type"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Wholesale"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Aeroton Retail"</th>
+              <th colspan="3" class="grp" style="text-align:center">"Combined"</th>
+            </tr>
+            " "
+            <tr>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th>"Variance"</th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash / Coins (Retail shops)"</td>
+              <td class="num grp">"R 1 500,00"</td>
+              <td class="num">"R 1 450,00"</td>
+              <td class="num grp">"R 35,50"</td>
+              <td class="num">"R 35,50"</td>
+              <td class="num grp">
+                <b>"R 1 535,50"</b>
+              </td>
+              <td class="num">
+                <b>"R 1 485,50"</b>
+              </td>
+              <td class="num var-neg">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              <td class="num grp">"R 2 000,00"</td>
+              <td class="num">"R 2 000,00"</td>
+              <td class="num grp">"R 5 400,00"</td>
+              <td class="num">"R 5 200,00"</td>
+              <td class="num grp">
+                <b>"R 7 400,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 7 200,00"</b>
+              </td>
+              <td class="num var-neg">"−R 200,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              <td class="num grp">"R 3 200,50"</td>
+              <td class="num">"R 3 200,50"</td>
+              <td class="num grp">"R 2 750,25"</td>
+              <td class="num">"R 2 750,25"</td>
+              <td class="num grp">
+                <b>"R 5 950,75"</b>
+              </td>
+              <td class="num">
+                <b>"R 5 950,75"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              <td class="num grp">"R 410,00"</td>
+              <td class="num">"R 410,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              <td class="num grp">"R 99,99"</td>
+              <td class="num">"R 99,99"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              <td class="num grp">"R 800,00"</td>
+              <td class="num">"R 800,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              <td class="num grp">"R 120,00"</td>
+              <td class="num">"R 120,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              <td class="num grp">"R 45,00"</td>
+              <td class="num">"R 45,00"</td>
+              <td class="num grp">"R 60,00"</td>
+              <td class="num">"R 60,00"</td>
+              <td class="num grp">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Petty cash (not banked)"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 200,00"</td>
+              <td class="num grp">
+                <b>"R 0,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 200,00"</b>
+              </td>
+              <td class="num var-pos">"+R 200,00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num grp">"R 8 175,49"</td>
+              <td class="num">"R 8 125,49"</td>
+              <td class="num grp">"R 8 245,75"</td>
+              <td class="num">"R 8 245,75"</td>
+              <td class="num grp">"R 16 421,24"</td>
+              <td class="num">"R 16 371,24"</td>
+              <td class="num var-neg">"−R 50,00"</td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cashed up by"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " Wanda Wholesale · "
+          <b>"Aeroton Retail:"</b>
+          " Rita Retail"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Notes"</label>
+        <div class="static" style="font-weight:400;white-space:pre-wrap">
+          <b>"Wholesale:"</b>
+          " R50 short, float counted twice"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"CashGuard"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Aeroton Retail:"</b>
+          " deposited in Nedbank R 4 900,00 · counted & retained, not banked "
+          <b>"R 300,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Aeroton Retail petty cash (not banked)"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"R 200,00"</b>
+          " · R200 cleaning materials"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cash handed over (signed for)"</label>
+        <div class="static num" style="font-weight:400">
+          "R 300,00 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 17 Oct, 17:30"
+          <br>
+          "R 200,50 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 17 Oct, 17:45"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Damaged bank notes & coins"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " R 100,00 (1 x R100 torn) · "
+          <b>"Aeroton Retail:"</b>
+          " R 0,00 · "
+          <b>"Total R 100,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="sigs">
+        <div class="sigbox">
+          <div class="eyebrow">"Wholesale"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Wholesale signature">
+          </div>
+          <div class="who">"Wanda Wholesale · 17 Oct, 17:00"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Aeroton Retail signature">
+          </div>
+          <div class="who">"Rita Retail · 17 Oct, 17:05"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Manager"</div>
+          <div class="sig-img">
+            <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Manager signature">
+          </div>
+          <div class="who">"Manny Manager · 17 Oct, 18:30"</div>
+        </div>
+      </div>
+      " "
+      <div class="actions">
+        <button class="btn primary" id="pdf-mail" type="button">"Email PDF report"</button>
+        <button class="btn" id="pdf-dl" type="button">"Download PDF"</button>
+        <button class="btn" id="csv">"Download day as CSV"</button>
+        <span class="msg" id="csv-msg"></span>
+      </div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"End-of-day sign-off · Wholesale + Aeroton Retail · due by 7 pm"</div>
+        <h2>"Manager signature"</h2>
+      </div>
+      <span class="chip signed">"Signed off"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="sign">
+        " "
+        <div class="sig-img">
+          <img src="data:image/png;base64,U0lHTkFUVVJF" alt="Signature of Manny Manager">
+        </div>
+        " "
+        <div style="display:flex;flex-direction:column;gap:10px">
+          " "
+          <div>
+            <div class="eyebrow">"Signed by"</div>
+            <div class="signer-static">"Manny Manager"</div>
+            <div class="msg">"17 Oct, 18:30"</div>
+          </div>
+          " "
+          <div class="msg">"This day is locked. Reopen it only to correct a mistake; the signature is removed, the reopen is recorded, and it must be signed again."</div>
+          " "
+          <div class="actions">
+            <button class="btn danger" id="reopen" data-dept="manager">"Reopen to correct"</button>
+            <span class="msg" id="reopen-msg"></span>
+          </div>
+          " "
+        </div>
+      </div>
+    </div>
+    " "
+  </section>
+  " "
+</main>
+`;
+
+exports[`End of Day screen through the day 7`] = `
+## Sunday
+<main id="main">
+  " "
+  <div class="banner wait">"Sunday is not a trading day."</div>
+  " "
+  <div class="eyebrow" style="margin:4px 0 8px">"All shops together · Aeroton (Wholesale + Aeroton Retail) and City Deep Retail"</div>
+  " "
+  <div class="summary">
+    " "
+    <div class="stat">
+      <div class="k">"Per reports"</div>
+      <div class="v num">"R 21 533,19"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Deposited"</div>
+      <div class="v num">"R 21 513,24"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Variance"</div>
+      <div class="v num var-neg">"−R 19,95"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">
+        "Not banked"
+        <br>
+        <span style="font-weight:400;text-transform:none;letter-spacing:0">"CashGuard retained + petty cash"</span>
+      </div>
+      <div class="v num">"R 650,00"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Cash + CashGuard banked"</div>
+      <div class="v num">"R 11 397,50"</div>
+    </div>
+    " "
+  </div>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Combined end-of-day cash up"</div>
+        <h2>"Sunday, 25 October 2026"</h2>
+      </div>
+      <div class="actions">
+        <span class="chip draft">"Wholesale in progress"</span>
+        <span class="chip draft">"Aeroton Retail in progress"</span>
+        <span class="chip draft">"City Deep Retail in progress"</span>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="tbl-wrap">
+        <table style="min-width:1040px">
+          " "
+          <thead>
+            <tr>
+              <th rowspan="2">"Payment type"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Wholesale"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Aeroton Retail"</th>
+              <th colspan="2" class="grp" style="text-align:center">"City Deep Retail"</th>
+              <th colspan="3" class="grp" style="text-align:center">"All shops"</th>
+            </tr>
+            " "
+            <tr>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th>"Variance"</th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash / Coins (Retail shops)"</td>
+              <td class="num grp">"R 1 500,00"</td>
+              <td class="num">"R 1 450,00"</td>
+              <td class="num grp">"R 35,50"</td>
+              <td class="num">"R 35,50"</td>
+              <td class="num grp">"R 12,00"</td>
+              <td class="num">"R 12,00"</td>
+              <td class="num grp">
+                <b>"R 1 547,50"</b>
+              </td>
+              <td class="num">
+                <b>"R 1 497,50"</b>
+              </td>
+              <td class="num var-neg">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              <td class="num grp">"R 2 000,00"</td>
+              <td class="num">"R 2 000,00"</td>
+              <td class="num grp">"R 5 400,00"</td>
+              <td class="num">"R 5 200,00"</td>
+              <td class="num grp">"R 3 100,00"</td>
+              <td class="num">"R 3 150,00"</td>
+              <td class="num grp">
+                <b>"R 10 500,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 10 350,00"</b>
+              </td>
+              <td class="num var-neg">"−R 150,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              <td class="num grp">"R 3 200,50"</td>
+              <td class="num">"R 3 200,50"</td>
+              <td class="num grp">"R 2 750,25"</td>
+              <td class="num">"R 2 750,25"</td>
+              <td class="num grp">"R 1 999,95"</td>
+              <td class="num">"R 1 980,00"</td>
+              <td class="num grp">
+                <b>"R 7 950,70"</b>
+              </td>
+              <td class="num">
+                <b>"R 7 930,75"</b>
+              </td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              <td class="num grp">"R 410,00"</td>
+              <td class="num">"R 410,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              <td class="num grp">"R 99,99"</td>
+              <td class="num">"R 99,99"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              <td class="num grp">"R 800,00"</td>
+              <td class="num">"R 800,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              <td class="num grp">"R 120,00"</td>
+              <td class="num">"R 120,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              <td class="num grp">"R 45,00"</td>
+              <td class="num">"R 45,00"</td>
+              <td class="num grp">"R 60,00"</td>
+              <td class="num">"R 60,00"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 0,00"</td>
+              <td class="num grp">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Petty cash (not banked)"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 200,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 0,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 200,00"</b>
+              </td>
+              <td class="num var-pos">"+R 200,00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num grp">"R 8 175,49"</td>
+              <td class="num">"R 8 125,49"</td>
+              <td class="num grp">"R 8 245,75"</td>
+              <td class="num">"R 8 245,75"</td>
+              <td class="num grp">"R 5 111,95"</td>
+              <td class="num">"R 5 142,00"</td>
+              <td class="num grp">"R 21 533,19"</td>
+              <td class="num">"R 21 513,24"</td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        " "
+        <div class="field">
+          <label>"Aeroton variance"</label>
+          <div class="static num var-neg">"−R 50,00"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"City Deep Retail variance"</label>
+          <div class="static num var-pos">"+R 30,05"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"All shops variance"</label>
+          <div class="static num var-neg">"−R 19,95"</div>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cashed up by"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " Wanda Wholesale · "
+          <b>"Aeroton Retail:"</b>
+          " Rita Retail · "
+          <b>"City Deep Retail:"</b>
+          " Cindy Deep"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Notes"</label>
+        <div class="static" style="font-weight:400;white-space:pre-wrap">
+          <b>"Wholesale:"</b>
+          " R50 short, float counted twice "
+          <b>"City Deep Retail:"</b>
+          " Card machine offline 10 minutes"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"CashGuard"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Aeroton Retail:"</b>
+          " deposited in Nedbank R 4 900,00 · counted & retained, not banked "
+          <b>"R 300,00"</b>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " deposited in Nedbank R 3 000,00 · counted & retained, not banked "
+          <b>"R 150,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Aeroton Retail petty cash (not banked)"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"R 200,00"</b>
+          " · R200 cleaning materials"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cash handed over (signed for)"</label>
+        <div class="static num" style="font-weight:400">
+          "R 300,00 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 25 Oct, 17:30"
+          <br>
+          "R 200,50 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 25 Oct, 17:45"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Damaged bank notes & coins"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " R 100,00 (1 x R100 torn) · "
+          <b>"Aeroton Retail:"</b>
+          " R 0,00 · "
+          <b>"City Deep Retail:"</b>
+          " R 0,00 · "
+          <b>"Total R 100,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="sigs">
+        <div class="sigbox">
+          <div class="eyebrow">"Wholesale"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"Wanda Wholesale · in progress"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"Rita Retail · in progress"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"City Deep Retail"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"Cindy Deep · in progress"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Manager"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"signed below"</div>
+        </div>
+      </div>
+      " "
+      <div class="actions">
+        <button class="btn primary" id="pdf-mail" type="button">"Email PDF report"</button>
+        <button class="btn" id="pdf-dl" type="button">"Download PDF"</button>
+        <button class="btn" id="csv">"Download day as CSV"</button>
+        <span class="msg" id="csv-msg"></span>
+      </div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"End-of-day sign-off · all shops · due by 7 pm"</div>
+        <h2>"Manager signature"</h2>
+      </div>
+      <span class="chip">"Not signed"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="msg">"You can sign here once all shops have signed. Still waiting for: Wholesale, Aeroton Retail, City Deep Retail."</div>
+    </div>
+    " "
+  </section>
+  " "
+</main>
+`;
+
+exports[`End of Day screen through the day 8`] = `
+## tomorrow, seen today
+<main id="main">
+  " "
+  <div class="banner wait">"Day still open. Due by 7 pm on Thu, 29 Oct 2026. Still to sign: Wholesale, Aeroton Retail, Manager, City Deep Retail."</div>
+  " "
+  <div class="eyebrow" style="margin:4px 0 8px">"All shops together · Aeroton (Wholesale + Aeroton Retail) and City Deep Retail"</div>
+  " "
+  <div class="summary">
+    " "
+    <div class="stat">
+      <div class="k">"Per reports"</div>
+      <div class="v num">"R 21 533,19"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Deposited"</div>
+      <div class="v num">"R 21 513,24"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Variance"</div>
+      <div class="v num var-neg">"−R 19,95"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">
+        "Not banked"
+        <br>
+        <span style="font-weight:400;text-transform:none;letter-spacing:0">"CashGuard retained + petty cash"</span>
+      </div>
+      <div class="v num">"R 650,00"</div>
+    </div>
+    " "
+    <div class="stat">
+      <div class="k">"Cash + CashGuard banked"</div>
+      <div class="v num">"R 11 397,50"</div>
+    </div>
+    " "
+  </div>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Combined end-of-day cash up"</div>
+        <h2>"Thursday, 29 October 2026"</h2>
+      </div>
+      <div class="actions">
+        <span class="chip draft">"Wholesale in progress"</span>
+        <span class="chip draft">"Aeroton Retail in progress"</span>
+        <span class="chip draft">"City Deep Retail in progress"</span>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="tbl-wrap">
+        <table style="min-width:1040px">
+          " "
+          <thead>
+            <tr>
+              <th rowspan="2">"Payment type"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Wholesale"</th>
+              <th colspan="2" class="grp" style="text-align:center">"Aeroton Retail"</th>
+              <th colspan="2" class="grp" style="text-align:center">"City Deep Retail"</th>
+              <th colspan="3" class="grp" style="text-align:center">"All shops"</th>
+            </tr>
+            " "
+            <tr>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th class="grp">"Report"</th>
+              <th>"Deposited"</th>
+              <th>"Variance"</th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Cash / Coins (Retail shops)"</td>
+              <td class="num grp">"R 1 500,00"</td>
+              <td class="num">"R 1 450,00"</td>
+              <td class="num grp">"R 35,50"</td>
+              <td class="num">"R 35,50"</td>
+              <td class="num grp">"R 12,00"</td>
+              <td class="num">"R 12,00"</td>
+              <td class="num grp">
+                <b>"R 1 547,50"</b>
+              </td>
+              <td class="num">
+                <b>"R 1 497,50"</b>
+              </td>
+              <td class="num var-neg">"−R 50,00"</td>
+            </tr>
+            <tr>
+              <td>"CashGuard"</td>
+              <td class="num grp">"R 2 000,00"</td>
+              <td class="num">"R 2 000,00"</td>
+              <td class="num grp">"R 5 400,00"</td>
+              <td class="num">"R 5 200,00"</td>
+              <td class="num grp">"R 3 100,00"</td>
+              <td class="num">"R 3 150,00"</td>
+              <td class="num grp">
+                <b>"R 10 500,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 10 350,00"</b>
+              </td>
+              <td class="num var-neg">"−R 150,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card"</td>
+              <td class="num grp">"R 3 200,50"</td>
+              <td class="num">"R 3 200,50"</td>
+              <td class="num grp">"R 2 750,25"</td>
+              <td class="num">"R 2 750,25"</td>
+              <td class="num grp">"R 1 999,95"</td>
+              <td class="num">"R 1 980,00"</td>
+              <td class="num grp">
+                <b>"R 7 950,70"</b>
+              </td>
+              <td class="num">
+                <b>"R 7 930,75"</b>
+              </td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              <td class="num grp">"R 410,00"</td>
+              <td class="num">"R 410,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 410,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"PayFast card"</td>
+              <td class="num grp">"R 99,99"</td>
+              <td class="num">"R 99,99"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num">
+                <b>"R 99,99"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"EFT"</td>
+              <td class="num grp">"R 800,00"</td>
+              <td class="num">"R 800,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 800,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Shop2Shop"</td>
+              <td class="num grp">"R 120,00"</td>
+              <td class="num">"R 120,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 120,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"SnapScan"</td>
+              <td class="num grp">"R 45,00"</td>
+              <td class="num">"R 45,00"</td>
+              <td class="num grp">"R 60,00"</td>
+              <td class="num">"R 60,00"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 0,00"</td>
+              <td class="num grp">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 105,00"</b>
+              </td>
+              <td class="num var-zero">"R 0.00"</td>
+            </tr>
+            <tr>
+              <td>"Petty cash (not banked)"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">"R 0,00"</td>
+              <td class="num">"R 200,00"</td>
+              <td class="num grp muted">"—"</td>
+              <td class="num muted">"—"</td>
+              <td class="num grp">
+                <b>"R 0,00"</b>
+              </td>
+              <td class="num">
+                <b>"R 200,00"</b>
+              </td>
+              <td class="num var-pos">"+R 200,00"</td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total"</td>
+              <td class="num grp">"R 8 175,49"</td>
+              <td class="num">"R 8 125,49"</td>
+              <td class="num grp">"R 8 245,75"</td>
+              <td class="num">"R 8 245,75"</td>
+              <td class="num grp">"R 5 111,95"</td>
+              <td class="num">"R 5 142,00"</td>
+              <td class="num grp">"R 21 533,19"</td>
+              <td class="num">"R 21 513,24"</td>
+              <td class="num var-neg">"−R 19,95"</td>
+            </tr>
+          </tfoot>
+          " "
+        </table>
+      </div>
+      " "
+      <div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        " "
+        <div class="field">
+          <label>"Aeroton variance"</label>
+          <div class="static num var-neg">"−R 50,00"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"City Deep Retail variance"</label>
+          <div class="static num var-pos">"+R 30,05"</div>
+        </div>
+        " "
+        <div class="field">
+          <label>"All shops variance"</label>
+          <div class="static num var-neg">"−R 19,95"</div>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cashed up by"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " Wanda Wholesale · "
+          <b>"Aeroton Retail:"</b>
+          " Rita Retail · "
+          <b>"City Deep Retail:"</b>
+          " Cindy Deep"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Notes"</label>
+        <div class="static" style="font-weight:400;white-space:pre-wrap">
+          <b>"Wholesale:"</b>
+          " R50 short, float counted twice "
+          <b>"City Deep Retail:"</b>
+          " Card machine offline 10 minutes"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"CashGuard"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Aeroton Retail:"</b>
+          " deposited in Nedbank R 4 900,00 · counted & retained, not banked "
+          <b>"R 300,00"</b>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " deposited in Nedbank R 3 000,00 · counted & retained, not banked "
+          <b>"R 150,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Aeroton Retail petty cash (not banked)"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"R 200,00"</b>
+          " · R200 cleaning materials"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Cash handed over (signed for)"</label>
+        <div class="static num" style="font-weight:400">
+          "R 300,00 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 29 Oct, 17:30"
+          <br>
+          "R 200,50 from Rita Retail to "
+          <b>"Candido"</b>
+          " · 29 Oct, 17:45"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Damaged bank notes & coins"</label>
+        <div class="static num" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " R 100,00 (1 x R100 torn) · "
+          <b>"Aeroton Retail:"</b>
+          " R 0,00 · "
+          <b>"City Deep Retail:"</b>
+          " R 0,00 · "
+          <b>"Total R 100,00"</b>
+        </div>
+      </div>
+      " "
+      <div class="sigs">
+        <div class="sigbox">
+          <div class="eyebrow">"Wholesale"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"Wanda Wholesale · in progress"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Aeroton Retail"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"Rita Retail · in progress"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"City Deep Retail"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"Cindy Deep · in progress"</div>
+        </div>
+        <div class="sigbox">
+          <div class="eyebrow">"Manager"</div>
+          <div class="empty">"Awaiting signature"</div>
+          <div class="who">"signed below"</div>
+        </div>
+      </div>
+      " "
+      <div class="actions">
+        <button class="btn primary" id="pdf-mail" type="button">"Email PDF report"</button>
+        <button class="btn" id="pdf-dl" type="button">"Download PDF"</button>
+        <button class="btn" id="csv">"Download day as CSV"</button>
+        <span class="msg" id="csv-msg"></span>
+      </div>
+      " "
+    </div>
+    " "
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"End-of-day sign-off · all shops · due by 7 pm"</div>
+        <h2>"Manager signature"</h2>
+      </div>
+      <span class="chip">"Not signed"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="msg">"You can sign here once all shops have signed. Still waiting for: Wholesale, Aeroton Retail, City Deep Retail."</div>
+    </div>
+    " "
+  </section>
+  " "
+</main>
+`;
+
+exports[`download the PDF report 1`] = `
+## message
+PDF downloaded.
+`;
+
+exports[`download the PDF report 2`] = `
+## pdf drawing calls
+["new",{"orientation":"landscape","unit":"mm","format":"a4"}]
+["setFont","helvetica","bold"]
+["setFontSize",17]
+["setTextColor",31,28,24]
+["text","Daily Shops Cash Up",14,16,null]
+["setFont","helvetica","normal"]
+["setFontSize",10]
+["setTextColor",122,114,104]
+["text","Continental Brands  -  Aeroton and City Deep",283,12,{"align":"right"}]
+["text","Wednesday, 28 October 2026",283,17,{"align":"right"}]
+["setFillColor",228,240,230]
+["roundedRect",14,18.5,269,7.5,1.5,1.5,"F"]
+["setFont","helvetica","bold"]
+["setFontSize",10]
+["setTextColor",47,107,58]
+["text","Completed on time",17,23.5,null]
+["setFillColor",247,244,239]
+["rect",14,31,269,13,"F"]
+["setFont","helvetica","bold"]
+["setFontSize",9]
+["setTextColor",31,28,24]
+["text","Wholesale",79.44444444444444,35.5,{"align":"center"}]
+["text","Aeroton Retail",130.33333333333331,35.5,{"align":"center"}]
+["text","City Deep Retail",181.22222222222223,35.5,{"align":"center"}]
+["text","All shops",244.83333333333331,35.5,{"align":"center"}]
+["setFontSize",8]
+["text","Payment type",16,41,null]
+["text","Report",77.94444444444444,41,{"align":"right"}]
+["text","Deposited",103.38888888888889,41,{"align":"right"}]
+["text","Report",128.83333333333331,41,{"align":"right"}]
+["text","Deposited",154.27777777777777,41,{"align":"right"}]
+["text","Report",179.72222222222223,41,{"align":"right"}]
+["text","Deposited",205.16666666666666,41,{"align":"right"}]
+["text","Report",230.6111111111111,41,{"align":"right"}]
+["text","Deposited",256.05555555555554,41,{"align":"right"}]
+["text","Variance",281.5,41,{"align":"right"}]
+["setDrawColor",230,225,217]
+["setLineWidth",0.2]
+["setTextColor",31,28,24]
+["setFont","helvetica","normal"]
+["setFontSize",8.5]
+["text","Cash / Coins (Retail shops)",16,50.5,null]
+["text","R 1 500,00",77.94444444444444,50.5,{"align":"right"}]
+["text","R 1 450,00",103.38888888888889,50.5,{"align":"right"}]
+["text","R 35,50",128.83333333333331,50.5,{"align":"right"}]
+["text","R 35,50",154.27777777777777,50.5,{"align":"right"}]
+["text","R 12,00",179.72222222222223,50.5,{"align":"right"}]
+["text","R 12,00",205.16666666666666,50.5,{"align":"right"}]
+["setFont","helvetica","bold"]
+["text","R 1 547,50",230.6111111111111,50.5,{"align":"right"}]
+["text","R 1 497,50",256.05555555555554,50.5,{"align":"right"}]
+["setTextColor",176,58,42]
+["text","-R 50,00",281.5,50.5,{"align":"right"}]
+["line",14,52.7,283,52.7]
+["setTextColor",31,28,24]
+["setFont","helvetica","normal"]
+["setFontSize",8.5]
+["text","CashGuard",16,57,null]
+["text","R 2 000,00",77.94444444444444,57,{"align":"right"}]
+["text","R 2 000,00",103.38888888888889,57,{"align":"right"}]
+["text","R 5 400,00",128.83333333333331,57,{"align":"right"}]
+["text","R 5 200,00",154.27777777777777,57,{"align":"right"}]
+["text","R 3 100,00",179.72222222222223,57,{"align":"right"}]
+["text","R 3 150,00",205.16666666666666,57,{"align":"right"}]
+["setFont","helvetica","bold"]
+["text","R 10 500,00",230.6111111111111,57,{"align":"right"}]
+["text","R 10 350,00",256.05555555555554,57,{"align":"right"}]
+["setTextColor",176,58,42]
+["text","-R 150,00",281.5,57,{"align":"right"}]
+["line",14,59.2,283,59.2]
+["setTextColor",31,28,24]
+["setFont","helvetica","normal"]
+["setFontSize",8.5]
+["text","Credit card",16,63.5,null]
+["text","R 3 200,50",77.94444444444444,63.5,{"align":"right"}]
+["text","R 3 200,50",103.38888888888889,63.5,{"align":"right"}]
+["text","R 2 750,25",128.83333333333331,63.5,{"align":"right"}]
+["text","R 2 750,25",154.27777777777777,63.5,{"align":"right"}]
+["text","R 1 999,95",179.72222222222223,63.5,{"align":"right"}]
+["text","R 1 980,00",205.16666666666666,63.5,{"align":"right"}]
+["setFont","helvetica","bold"]
+["text","R 7 950,70",230.6111111111111,63.5,{"align":"right"}]
+["text","R 7 930,75",256.05555555555554,63.5,{"align":"right"}]
+["setTextColor",176,58,42]
+["text","-R 19,95",281.5,63.5,{"align":"right"}]
+["line",14,65.7,283,65.7]
+["setTextColor",31,28,24]
+["setFont","helvetica","normal"]
+["setFontSize",8.5]
+["text","Credit card CBM",16,70,null]
+["text","R 410,00",77.94444444444444,70,{"align":"right"}]
+["text","R 410,00",103.38888888888889,70,{"align":"right"}]
+["setTextColor",122,114,104]
+["text","-",128.83333333333331,70,{"align":"right"}]
+["text","-",154.27777777777777,70,{"align":"right"}]
+["setTextColor",31,28,24]
+["setTextColor",122,114,104]
+["text","-",179.72222222222223,70,{"align":"right"}]
+["text","-",205.16666666666666,70,{"align":"right"}]
+["setTextColor",31,28,24]
+["setFont","helvetica","bold"]
+["text","R 410,00",230.6111111111111,70,{"align":"right"}]
+["text","R 410,00",256.05555555555554,70,{"align":"right"}]
+["setTextColor",47,107,58]
+["text","R 0.00",281.5,70,{"align":"right"}]
+["line",14,72.2,283,72.2]
+["setTextColor",31,28,24]
+["setFont","helvetica","normal"]
+["setFontSize",8.5]
+["text","PayFast card",16,76.5,null]
+["text","R 99,99",77.94444444444444,76.5,{"align":"right"}]
+["text","R 99,99",103.38888888888889,76.5,{"align":"right"}]
+["setTextColor",122,114,104]
+["text","-",128.83333333333331,76.5,{"align":"right"}]
+["text","-",154.27777777777777,76.5,{"align":"right"}]
+["setTextColor",31,28,24]
+["setTextColor",122,114,104]
+["text","-",179.72222222222223,76.5,{"align":"right"}]
+["text","-",205.16666666666666,76.5,{"align":"right"}]
+["setTextColor",31,28,24]
+["setFont","helvetica","bold"]
+["text","R 99,99",230.6111111111111,76.5,{"align":"right"}]
+["text","R 99,99",256.05555555555554,76.5,{"align":"right"}]
+["setTextColor",47,107,58]
+["text","R 0.00",281.5,76.5,{"align":"right"}]
+["line",14,78.7,283,78.7]
+["setTextColor",31,28,24]
+["setFont","helvetica","normal"]
+["setFontSize",8.5]
+["text","EFT",16,83,null]
+["text","R 800,00",77.94444444444444,83,{"align":"right"}]
+["text","R 800,00",103.38888888888889,83,{"align":"right"}]
+["setTextColor",122,114,104]
+["text","-",128.83333333333331,83,{"align":"right"}]
+["text","-",154.27777777777777,83,{"align":"right"}]
+["setTextColor",31,28,24]
+["setTextColor",122,114,104]
+["text","-",179.72222222222223,83,{"align":"right"}]
+["text","-",205.16666666666666,83,{"align":"right"}]
+["setTextColor",31,28,24]
+["setFont","helvetica","bold"]
+["text","R 800,00",230.6111111111111,83,{"align":"right"}]
+["text","R 800,00",256.05555555555554,83,{"align":"right"}]
+["setTextColor",47,107,58]
+["text","R 0.00",281.5,83,{"align":"right"}]
+["line",14,85.2,283,85.2]
+["setTextColor",31,28,24]
+["setFont","helvetica","normal"]
+["setFontSize",8.5]
+["text","Shop2Shop",16,89.5,null]
+["text","R 120,00",77.94444444444444,89.5,{"align":"right"}]
+["text","R 120,00",103.38888888888889,89.5,{"align":"right"}]
+["setTextColor",122,114,104]
+["text","-",128.83333333333331,89.5,{"align":"right"}]
+["text","-",154.27777777777777,89.5,{"align":"right"}]
+["setTextColor",31,28,24]
+["setTextColor",122,114,104]
+["text","-",179.72222222222223,89.5,{"align":"right"}]
+["text","-",205.16666666666666,89.5,{"align":"right"}]
+["setTextColor",31,28,24]
+["setFont","helvetica","bold"]
+["text","R 120,00",230.6111111111111,89.5,{"align":"right"}]
+["text","R 120,00",256.05555555555554,89.5,{"align":"right"}]
+["setTextColor",47,107,58]
+["text","R 0.00",281.5,89.5,{"align":"right"}]
+["line",14,91.7,283,91.7]
+["setTextColor",31,28,24]
+["setFont","helvetica","normal"]
+["setFontSize",8.5]
+["text","SnapScan",16,96,null]
+["text","R 45,00",77.94444444444444,96,{"align":"right"}]
+["text","R 45,00",103.38888888888889,96,{"align":"right"}]
+["text","R 60,00",128.83333333333331,96,{"align":"right"}]
+["text","R 60,00",154.27777777777777,96,{"align":"right"}]
+["text","R 0,00",179.72222222222223,96,{"align":"right"}]
+["text","R 0,00",205.16666666666666,96,{"align":"right"}]
+["setFont","helvetica","bold"]
+["text","R 105,00",230.6111111111111,96,{"align":"right"}]
+["text","R 105,00",256.05555555555554,96,{"align":"right"}]
+["setTextColor",47,107,58]
+["text","R 0.00",281.5,96,{"align":"right"}]
+["line",14,98.2,283,98.2]
+["setTextColor",31,28,24]
+["setFont","helvetica","normal"]
+["setFontSize",8.5]
+["text","Petty cash (not banked)",16,102.5,null]
+["setTextColor",122,114,104]
+["text","-",77.94444444444444,102.5,{"align":"right"}]
+["text","-",103.38888888888889,102.5,{"align":"right"}]
+["setTextColor",31,28,24]
+["text","R 0,00",128.83333333333331,102.5,{"align":"right"}]
+["text","R 200,00",154.27777777777777,102.5,{"align":"right"}]
+["setTextColor",122,114,104]
+["text","-",179.72222222222223,102.5,{"align":"right"}]
+["text","-",205.16666666666666,102.5,{"align":"right"}]
+["setTextColor",31,28,24]
+["setFont","helvetica","bold"]
+["text","R 0,00",230.6111111111111,102.5,{"align":"right"}]
+["text","R 200,00",256.05555555555554,102.5,{"align":"right"}]
+["setTextColor",154,106,18]
+["text","+R 200,00",281.5,102.5,{"align":"right"}]
+["line",14,104.7,283,104.7]
+["setDrawColor",31,28,24]
+["setLineWidth",0.5]
+["line",14,105.5,283,105.5]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Total",16,110.5,null]
+["text","R 8 175,49",77.94444444444444,110.5,{"align":"right"}]
+["text","R 8 125,49",103.38888888888889,110.5,{"align":"right"}]
+["text","R 8 245,75",128.83333333333331,110.5,{"align":"right"}]
+["text","R 8 245,75",154.27777777777777,110.5,{"align":"right"}]
+["text","R 5 111,95",179.72222222222223,110.5,{"align":"right"}]
+["text","R 5 142,00",205.16666666666666,110.5,{"align":"right"}]
+["text","R 21 533,19",230.6111111111111,110.5,{"align":"right"}]
+["text","R 21 513,24",256.05555555555554,110.5,{"align":"right"}]
+["setTextColor",176,58,42]
+["text","-R 19,95",281.5,110.5,{"align":"right"}]
+["setFontSize",10]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Variance by shop",14,120.5,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","Aeroton -R 50,00    City Deep Retail +R 30,05    All shops -R 19,95",211]
+["text",["Aeroton -R 50,00    City Deep Retail +R 30,05    All shops -R 19,95"],72,120.5]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Cashed up by",14,126.5,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","Wholesale: Wanda Wholesale    Aeroton Retail: Rita Retail    City Deep Retail: Cindy Deep",211]
+["text",["Wholesale: Wanda Wholesale    Aeroton Retail: Rita Retail    City Deep Retail: Cindy Deep"],72,126.5]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Aeroton Retail CashGuard",14,132.5,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","Deposited in Nedbank R 4 900,00    Counted & retained, not banked R 300,00",211]
+["text",["Deposited in Nedbank R 4 900,00    Counted & retained, not banked R 300,00"],72,132.5]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","City Deep Retail CashGuard",14,138.5,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","Deposited in Nedbank R 3 000,00    Counted & retained, not banked R 150,00",211]
+["text",["Deposited in Nedbank R 3 000,00    Counted & retained, not banked R 150,00"],72,138.5]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Aeroton Retail petty cash",14,144.5,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","R 200,00 not banked  -  R200 cleaning materials",211]
+["text",["R 200,00 not banked  -  R200 cleaning materials"],72,144.5]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Cash handed over",14,150.5,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","R 300,00 from Rita Retail to Candido (signed)  -  28 Oct 2026, 17:30",211]
+["text",["R 300,00 from Rita Retail to Candido (signed)  -  28 Oct 2026, 17:30"],72,150.5]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Cash handed over",14,156.5,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","R 200,50 from Rita Retail to Candido (signed)  -  28 Oct 2026, 17:45",211]
+["text",["R 200,50 from Rita Retail to Candido (signed)  -  28 Oct 2026, 17:45"],72,156.5]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Damaged notes & coins",14,162.5,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","Wholesale R 100,00 (1 x R100 torn)    Aeroton Retail R 0,00    City Deep Retail R 0,00    Total R 100,00",211]
+["text",["Wholesale R 100,00 (1 x R100 torn)    Aeroton Retail R 0,00    City Deep Retail R 0,00    Total R 100,00"],72,162.5]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Wholesale notes",14,168.5,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","R50 short, float counted twice",211]
+["text",["R50 short, float counted twice"],72,168.5]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","City Deep Retail notes",14,174.5,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","Card machine offline 10 minutes",211]
+["text",["Card machine offline 10 minutes"],72,174.5]
+["addPage",null,null]
+["setDrawColor",230,225,217]
+["setLineWidth",0.3]
+["roundedRect",14,18,62.75,38,2,2,"S"]
+["setFont","helvetica","bold"]
+["setFontSize",7]
+["setTextColor",122,114,104]
+["text","WHOLESALE SIGNATURE",17,23,null]
+["getImageProperties","data:image/png;base64,U0lHTkFUVVJF…"]
+["addImage","data:image/png;base64,U0lHTkFUVVJF…","PNG",17,25,56.75,18.916666666666668,null,"FAST"]
+["setFontSize",8]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Wanda Wholesale",17,49,null]
+["setFont","helvetica","normal"]
+["setTextColor",122,114,104]
+["text","28 Oct 2026, 17:00",17,53.5,null]
+["setDrawColor",230,225,217]
+["setLineWidth",0.3]
+["roundedRect",82.75,18,62.75,38,2,2,"S"]
+["setFont","helvetica","bold"]
+["setFontSize",7]
+["setTextColor",122,114,104]
+["text","AEROTON RETAIL SIGNATURE",85.75,23,null]
+["getImageProperties","data:image/png;base64,U0lHTkFUVVJF…"]
+["addImage","data:image/png;base64,U0lHTkFUVVJF…","PNG",85.75,25,56.75,18.916666666666668,null,"FAST"]
+["setFontSize",8]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Rita Retail",85.75,49,null]
+["setFont","helvetica","normal"]
+["setTextColor",122,114,104]
+["text","28 Oct 2026, 17:05",85.75,53.5,null]
+["setDrawColor",230,225,217]
+["setLineWidth",0.3]
+["roundedRect",151.5,18,62.75,38,2,2,"S"]
+["setFont","helvetica","bold"]
+["setFontSize",7]
+["setTextColor",122,114,104]
+["text","CITY DEEP RETAIL SIGNATURE",154.5,23,null]
+["getImageProperties","data:image/png;base64,U0lHTkFUVVJF…"]
+["addImage","data:image/png;base64,U0lHTkFUVVJF…","PNG",154.5,25,56.75,18.916666666666668,null,"FAST"]
+["setFontSize",8]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Cindy Deep",154.5,49,null]
+["setFont","helvetica","normal"]
+["setTextColor",122,114,104]
+["text","28 Oct 2026, 17:10",154.5,53.5,null]
+["setDrawColor",230,225,217]
+["setLineWidth",0.3]
+["roundedRect",220.25,18,62.75,38,2,2,"S"]
+["setFont","helvetica","bold"]
+["setFontSize",7]
+["setTextColor",122,114,104]
+["text","MANAGER SIGNATURE",223.25,23,null]
+["getImageProperties","data:image/png;base64,U0lHTkFUVVJF…"]
+["addImage","data:image/png;base64,U0lHTkFUVVJF…","PNG",223.25,25,56.75,18.916666666666668,null,"FAST"]
+["setFontSize",8]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Manny Manager",223.25,49,null]
+["setFont","helvetica","normal"]
+["setTextColor",122,114,104]
+["text","28 Oct 2026, 18:30",223.25,53.5,null]
+["setFont","helvetica","normal"]
+["setFontSize",8]
+["setTextColor",122,114,104]
+["text","Variance = deposited - report. Negative (red) is short; positive (amber) is over. Signature times come from the server clock (SAST).",14,62,null]
+`;
+
+exports[`download the day as CSV 1`] = `
+## csv
+Date,2026-10-28
+
+Payment type,Wholesale report,Wholesale deposited,Aeroton Retail report,Aeroton Retail deposited,City Deep Retail report,City Deep Retail deposited,All shops report,All shops deposited,Variance
+Cash / Coins (Retail shops),1500.00,1450.00,35.50,35.50,12.00,12.00,1547.50,1497.50,-50.00
+CashGuard,2000.00,2000.00,5400.00,5200.00,3100.00,3150.00,10500.00,10350.00,-150.00
+Credit card,3200.50,3200.50,2750.25,2750.25,1999.95,1980.00,7950.70,7930.75,-19.95
+Credit card CBM,410.00,410.00,0.00,0.00,0.00,0.00,410.00,410.00,0.00
+PayFast card,99.99,99.99,0.00,0.00,0.00,0.00,99.99,99.99,0.00
+EFT,800.00,800.00,0.00,0.00,0.00,0.00,800.00,800.00,0.00
+Shop2Shop,120.00,120.00,0.00,0.00,0.00,0.00,120.00,120.00,0.00
+SnapScan,45.00,45.00,60.00,60.00,0.00,0.00,105.00,105.00,0.00
+Petty cash (not banked),0.00,0.00,0.00,200.00,0.00,0.00,0.00,200.00,200.00
+Total,8175.49,8125.49,8245.75,8245.75,5111.95,5142.00,21533.19,21513.24,-19.95
+
+Wholesale cashed up by,Wanda Wholesale,Signed by,Wanda Wholesale,2026-10-28T15:00:00.000Z
+Wholesale notes,"'=SUM(A1) ""quoted"", with comma
+and a new line"
+Damaged notes & coins - Wholesale,100.00,1 x R100 torn
+Aeroton Retail cashed up by,Rita Retail,Signed by,Rita Retail,2026-10-28T15:05:00.000Z
+Aeroton Retail notes,
+Damaged notes & coins - Aeroton Retail,0.00,
+Aeroton Retail petty cash (not banked),200.00,'-R20 refund
+Aeroton Retail CashGuard deposited in Nedbank,4900.00
+"Aeroton Retail CashGuard counted & retained, not banked",300.00
+City Deep Retail cashed up by,Cindy Deep,Signed by,Cindy Deep,2026-10-28T15:10:00.000Z
+City Deep Retail notes,Card machine offline 10 minutes
+Damaged notes & coins - City Deep Retail,0.00,
+City Deep Retail CashGuard deposited in Nedbank,3000.00
+"City Deep Retail CashGuard counted & retained, not banked",150.00
+Manager signed by,Manny Manager,2026-10-28T16:30:00.000Z
+Day status,Completed on time
+`;
+
+exports[`download the day as CSV 2`] = `
+## message
+Downloaded.
+`;
+
+exports[`download the day as CSV 3`] = `
+## csv before City Deep
+Date,2026-10-17
+
+Payment type,Wholesale report,Wholesale deposited,Aeroton Retail report,Aeroton Retail deposited,All shops report,All shops deposited,Variance
+Cash / Coins (Retail shops),1500.00,1450.00,35.50,35.50,1535.50,1485.50,-50.00
+CashGuard,2000.00,2000.00,5400.00,5200.00,7400.00,7200.00,-200.00
+Credit card,3200.50,3200.50,2750.25,2750.25,5950.75,5950.75,0.00
+Credit card CBM,410.00,410.00,0.00,0.00,410.00,410.00,0.00
+PayFast card,99.99,99.99,0.00,0.00,99.99,99.99,0.00
+EFT,800.00,800.00,0.00,0.00,800.00,800.00,0.00
+Shop2Shop,120.00,120.00,0.00,0.00,120.00,120.00,0.00
+SnapScan,45.00,45.00,60.00,60.00,105.00,105.00,0.00
+Petty cash (not banked),0.00,0.00,0.00,200.00,0.00,200.00,200.00
+Total,8175.49,8125.49,8245.75,8245.75,16421.24,16371.24,-50.00
+
+Wholesale cashed up by,Wanda Wholesale,Signed by,,
+Wholesale notes,"R50 short, float counted twice"
+Damaged notes & coins - Wholesale,100.00,1 x R100 torn
+Aeroton Retail cashed up by,Rita Retail,Signed by,,
+Aeroton Retail notes,
+Damaged notes & coins - Aeroton Retail,0.00,
+Aeroton Retail petty cash (not banked),200.00,R200 cleaning materials
+Aeroton Retail CashGuard deposited in Nedbank,4900.00
+"Aeroton Retail CashGuard counted & retained, not banked",300.00
+Manager signed by,,
+Day status,"Overdue · missing Wholesale, Aeroton Retail, Manager"
+`;
+
+exports[`email the PDF: share sheet, cancelled share, or download plus mailto 1`] = `
+## computer
+{
+  "message": "The PDF was downloaded and a new email opened. Attach the file Cash-Up-2026-10-28.pdf (in your Downloads) and press Send.",
+  "downloads": [
+    "Cash-Up-2026-10-28.pdf"
+  ],
+  "mailto": [
+    "mailto:martie@tastytreats.co.za?subject=Factory%20Shop%20Cash%20Up%20%E2%80%93%20Wed%2C%2028%20Oct%202026&body=Hi%20Martie%2C%0A%0APlease%20find%20attached%20the%20factory%20shop%20cash%20up%20report%20for%20Wednesday%2C%2028%20October%202026.%0AStatus%3A%20Completed%20on%20time%0A%0AKind%20regards%2C%0AManny%20Manager%0A%0A(PDF%20attached)"
+  ]
+}
+`;
+
+exports[`email the PDF: share sheet, cancelled share, or download plus mailto 2`] = `
+## phone
+{
+  "message": "Shared. Choose your email app and send it to martie@tastytreats.co.za if it was not filled in.",
+  "shares": [
+    {
+      "title": "Factory Shop Cash Up – Wed, 28 Oct 2026",
+      "text": "Hi Martie,\\n\\nPlease find attached the factory shop cash up report for Wednesday, 28 October 2026.\\nStatus: Completed on time\\n\\nKind regards,\\nManny Manager",
+      "files": [
+        [
+          "Cash-Up-2026-10-28.pdf",
+          "application/pdf"
+        ]
+      ]
+    }
+  ],
+  "downloads": 0
+}
+`;
+
+exports[`email the PDF: share sheet, cancelled share, or download plus mailto 3`] = `
+## cancelled
+Not sent.
+`;
+
+exports[`email the PDF: share sheet, cancelled share, or download plus mailto 4`] = `
+## PDF tool unavailable
+The PDF could not be made: PDF tool could not be downloaded
+`;

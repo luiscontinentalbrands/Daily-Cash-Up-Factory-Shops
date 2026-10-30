@@ -1,0 +1,957 @@
+exports[`Not banked CSV and PDF, and opening a day from the table 1`] = `
+## csv
+[
+  "Not-banked-2026-10-01-to-2026-10-28.csv",
+  "Money not banked - CashGuard (Aeroton Retail and City Deep Retail)\\nFrom,2026-10-01,To,2026-10-28\\n\\nDate,Shop,Type,CashGuard per report,Deposited in Nedbank,Not banked,Details,Signed by,Banked later,Banked ticked by,Ticked at\\n2026-10-17,Aeroton Retail,CashGuard retained,5400.00,4900.00,300.00,,Rita Retail,Yes,Ada Admin,2026-10-28T07:00:00.000Z\\n2026-10-17,Aeroton Retail,Petty cash,,,200.00,R200 cleaning materials,Rita Retail,No,,\\n2026-10-27,City Deep Retail,CashGuard retained,3100.00,3000.00,150.00,,NOT SIGNED,No,,\\n2026-10-27,Aeroton Retail,CashGuard retained,5400.00,4900.00,300.00,,NOT SIGNED,No,,\\n2026-10-27,Aeroton Retail,Petty cash,,,200.00,R200 cleaning materials,NOT SIGNED,No,,\\n2026-10-28,City Deep Retail,CashGuard retained,3100.00,3000.00,150.00,,NOT SIGNED,No,,\\n2026-10-28,Aeroton Retail,CashGuard retained,5400.00,4900.00,300.00,,Rita Retail,No,,\\n2026-10-28,Aeroton Retail,Petty cash,,,200.00,\\"=1+1, \\"\\"petty\\"\\"\\",Rita Retail,No,,\\n\\nStill not banked,,,,,1500.00\\nBanked later (ticked),,,,,300.00"
+]
+`;
+
+exports[`Not banked CSV and PDF, and opening a day from the table 2`] = `
+## pdf
+[
+  "Not-banked-2026-10-01-to-2026-10-28.pdf",
+  "[\\"new\\",{\\"unit\\":\\"mm\\",\\"format\\":\\"a4\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"bold\\"]\\n[\\"setFontSize\\",16]\\n[\\"text\\",\\"Money not banked - CashGuard\\",14,18]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"setFontSize\\",10]\\n[\\"setTextColor\\",110]\\n[\\"text\\",\\"Continental Brands  -  Thursday, 1 October 2026 to Wednesday, 28 October 2026\\",14,24]\\n[\\"setTextColor\\",0]\\n[\\"setFont\\",\\"helvetica\\",\\"bold\\"]\\n[\\"setFontSize\\",9]\\n[\\"text\\",\\"Date\\",14,34]\\n[\\"text\\",\\"Shop\\",42,34]\\n[\\"text\\",\\"CashGuard\\",104,34,{\\"align\\":\\"right\\"}]\\n[\\"text\\",\\"In Nedbank\\",130,34,{\\"align\\":\\"right\\"}]\\n[\\"text\\",\\"Not banked\\",156,34,{\\"align\\":\\"right\\"}]\\n[\\"text\\",\\"Banked later\\",160,34]\\n[\\"setDrawColor\\",200]\\n[\\"line\\",14,36,196,36]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"setFontSize\\",9.5]\\n[\\"setTextColor\\",120]\\n[\\"text\\",\\"Sat, 17 Oct 2026\\",14,41]\\n[\\"text\\",\\"Aeroton Retail\\",42,41]\\n[\\"text\\",\\"R 5 400,00\\",104,41,{\\"align\\":\\"right\\"}]\\n[\\"text\\",\\"R 4 900,00\\",130,41,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"bold\\"]\\n[\\"text\\",\\"R 300,00\\",156,41,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"text\\",\\"Yes - Ada Admin\\",160,41]\\n[\\"setTextColor\\",0]\\n[\\"text\\",\\"Sat, 17 Oct 2026\\",14,48]\\n[\\"text\\",\\"Aeroton Retail - petty\\",42,48]\\n[\\"setFont\\",\\"helvetica\\",\\"bold\\"]\\n[\\"text\\",\\"R 200,00\\",156,48,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"text\\",\\"No\\",160,48]\\n[\\"setTextColor\\",0]\\n[\\"text\\",\\"Tue, 27 Oct 2026\\",14,55]\\n[\\"text\\",\\"City Deep Retail\\",42,55]\\n[\\"text\\",\\"R 3 100,00\\",104,55,{\\"align\\":\\"right\\"}]\\n[\\"text\\",\\"R 3 000,00\\",130,55,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"bold\\"]\\n[\\"text\\",\\"R 150,00\\",156,55,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"text\\",\\"No\\",160,55]\\n[\\"setTextColor\\",0]\\n[\\"text\\",\\"Tue, 27 Oct 2026\\",14,62]\\n[\\"text\\",\\"Aeroton Retail\\",42,62]\\n[\\"text\\",\\"R 5 400,00\\",104,62,{\\"align\\":\\"right\\"}]\\n[\\"text\\",\\"R 4 900,00\\",130,62,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"bold\\"]\\n[\\"text\\",\\"R 300,00\\",156,62,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"text\\",\\"No\\",160,62]\\n[\\"setTextColor\\",0]\\n[\\"text\\",\\"Tue, 27 Oct 2026\\",14,69]\\n[\\"text\\",\\"Aeroton Retail - petty\\",42,69]\\n[\\"setFont\\",\\"helvetica\\",\\"bold\\"]\\n[\\"text\\",\\"R 200,00\\",156,69,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"text\\",\\"No\\",160,69]\\n[\\"setTextColor\\",0]\\n[\\"text\\",\\"Wed, 28 Oct 2026\\",14,76]\\n[\\"text\\",\\"City Deep Retail\\",42,76]\\n[\\"text\\",\\"R 3 100,00\\",104,76,{\\"align\\":\\"right\\"}]\\n[\\"text\\",\\"R 3 000,00\\",130,76,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"bold\\"]\\n[\\"text\\",\\"R 150,00\\",156,76,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"text\\",\\"No\\",160,76]\\n[\\"setTextColor\\",0]\\n[\\"text\\",\\"Wed, 28 Oct 2026\\",14,83]\\n[\\"text\\",\\"Aeroton Retail\\",42,83]\\n[\\"text\\",\\"R 5 400,00\\",104,83,{\\"align\\":\\"right\\"}]\\n[\\"text\\",\\"R 4 900,00\\",130,83,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"bold\\"]\\n[\\"text\\",\\"R 300,00\\",156,83,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"text\\",\\"No\\",160,83]\\n[\\"setTextColor\\",0]\\n[\\"text\\",\\"Wed, 28 Oct 2026\\",14,90]\\n[\\"text\\",\\"Aeroton Retail - petty\\",42,90]\\n[\\"setFont\\",\\"helvetica\\",\\"bold\\"]\\n[\\"text\\",\\"R 200,00\\",156,90,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"text\\",\\"No\\",160,90]\\n[\\"setTextColor\\",0]\\n[\\"setDrawColor\\",0]\\n[\\"setLineWidth\\",0.5]\\n[\\"line\\",14,94,196,94]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"text\\",\\"Banked later (ticked)\\",14,100]\\n[\\"text\\",\\"R 300,00\\",156,100,{\\"align\\":\\"right\\"}]\\n[\\"setFont\\",\\"helvetica\\",\\"bold\\"]\\n[\\"text\\",\\"Still not banked\\",14,106]\\n[\\"text\\",\\"R 1 500,00\\",156,106,{\\"align\\":\\"right\\"}]\\n[\\"setFontSize\\",11]\\n[\\"text\\",\\"Cash handed over and signed for\\",14,120]\\n[\\"setFontSize\\",9.5]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"text\\",\\"Sat, 17 Oct 2026\\",14,129]\\n[\\"text\\",\\"R 300,00\\",104,129,{\\"align\\":\\"right\\"}]\\n[\\"text\\",\\"Rita Retail to Candido\\",110,129]\\n[\\"addImage\\",\\"data:image/png;base64,SA==…\\",\\"PNG\\",160,123,30,10,null,\\"FAST\\"]\\n[\\"setFont\\",\\"helvetica\\",\\"normal\\"]\\n[\\"text\\",\\"Wed, 28 Oct 2026\\",14,138]\\n[\\"text\\",\\"R 120,50\\",104,138,{\\"align\\":\\"right\\"}]\\n[\\"text\\",\\"Rita Retail to Candido\\",110,138]\\n[\\"setFont\\",\\"helvetica\\",\\"bold\\"]\\n[\\"text\\",\\"Total handed over\\",14,146]\\n[\\"text\\",\\"R 420,50\\",104,146,{\\"align\\":\\"right\\"}]",
+  "PDF downloaded."
+]
+`;
+
+exports[`manager sees the report but cannot tick; invalid dates; empty period 1`] = `
+## manager
+<div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>"Date"</th>
+        <th>"Shop"</th>
+        <th>
+          "Per report"
+          <small>"CashGuard"</small>
+        </th>
+        <th>
+          "In Nedbank"
+          <small>"Deposited"</small>
+        </th>
+        <th>
+          "Not banked"
+          <small>"Retained / petty cash"</small>
+        </th>
+        <th>"Sheet"</th>
+        <th style="text-align:center">"Banked"</th>
+      </tr>
+    </thead>
+    " "
+    <tbody>
+      <tr class="nbrow nbdone" data-d="2026-10-17" data-shop="retail" style="cursor:pointer">
+        <td>"Sat, 17 Oct 2026"</td>
+        <td>"Aeroton Retail"</td>
+        <td class="num">"R 5 400,00"</td>
+        <td class="num">"R 4 900,00"</td>
+        <td class="num">
+          <b>"R 300,00"</b>
+        </td>
+        <td>
+          <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="0" checked disabled aria-label="Banked" style="width:20px;height:20px;cursor:default">
+          <div class="msg" style="font-size:.72rem;line-height:1.2">
+            "Ada Admin"
+            <br>
+            "28 Oct, 09:00"
+          </div>
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-17" data-shop="retail" style="cursor:pointer">
+        <td>"Sat, 17 Oct 2026"</td>
+        <td>
+          "Aeroton Retail"
+          <div class="msg" style="font-size:.75rem">"Petty cash · R200 cleaning materials"</div>
+        </td>
+        <td class="num">"—"</td>
+        <td class="num">"—"</td>
+        <td class="num">
+          <b>"R 200,00"</b>
+        </td>
+        <td>
+          <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="1" disabled aria-label="Banked" style="width:20px;height:20px;cursor:default">
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-27" data-shop="citydeep" style="cursor:pointer">
+        <td>"Tue, 27 Oct 2026"</td>
+        <td>"City Deep Retail"</td>
+        <td class="num">"R 3 100,00"</td>
+        <td class="num">"R 3 000,00"</td>
+        <td class="num">
+          <b>"R 150,00"</b>
+        </td>
+        <td>
+          <span class="chip draft">"Not signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="2" disabled aria-label="Banked" style="width:20px;height:20px;cursor:default">
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-27" data-shop="retail" style="cursor:pointer">
+        <td>"Tue, 27 Oct 2026"</td>
+        <td>"Aeroton Retail"</td>
+        <td class="num">"R 5 400,00"</td>
+        <td class="num">"R 4 900,00"</td>
+        <td class="num">
+          <b>"R 300,00"</b>
+        </td>
+        <td>
+          <span class="chip draft">"Not signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="3" disabled aria-label="Banked" style="width:20px;height:20px;cursor:default">
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-27" data-shop="retail" style="cursor:pointer">
+        <td>"Tue, 27 Oct 2026"</td>
+        <td>
+          "Aeroton Retail"
+          <div class="msg" style="font-size:.75rem">"Petty cash · R200 cleaning materials"</div>
+        </td>
+        <td class="num">"—"</td>
+        <td class="num">"—"</td>
+        <td class="num">
+          <b>"R 200,00"</b>
+        </td>
+        <td>
+          <span class="chip draft">"Not signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="4" disabled aria-label="Banked" style="width:20px;height:20px;cursor:default">
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-28" data-shop="citydeep" style="cursor:pointer">
+        <td>"Wed, 28 Oct 2026"</td>
+        <td>"City Deep Retail"</td>
+        <td class="num">"R 3 100,00"</td>
+        <td class="num">"R 3 000,00"</td>
+        <td class="num">
+          <b>"R 150,00"</b>
+        </td>
+        <td>
+          <span class="chip draft">"Not signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="5" disabled aria-label="Banked" style="width:20px;height:20px;cursor:default">
+          <div class="msg err" style="font-size:.75rem">"Amount changed after it was ticked. Tick again."</div>
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-28" data-shop="retail" style="cursor:pointer">
+        <td>"Wed, 28 Oct 2026"</td>
+        <td>"Aeroton Retail"</td>
+        <td class="num">"R 5 400,00"</td>
+        <td class="num">"R 4 900,00"</td>
+        <td class="num">
+          <b>"R 300,00"</b>
+        </td>
+        <td>
+          <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="6" disabled aria-label="Banked" style="width:20px;height:20px;cursor:default">
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-28" data-shop="retail" style="cursor:pointer">
+        <td>"Wed, 28 Oct 2026"</td>
+        <td>
+          "Aeroton Retail"
+          <div class="msg" style="font-size:.75rem">"Petty cash · R200 cleaning materials"</div>
+        </td>
+        <td class="num">"—"</td>
+        <td class="num">"—"</td>
+        <td class="num">
+          <b>"R 200,00"</b>
+        </td>
+        <td>
+          <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="7" disabled aria-label="Banked" style="width:20px;height:20px;cursor:default">
+        </td>
+      </tr>
+    </tbody>
+    " "
+    <tfoot>
+      <tr>
+        <td colspan="4" style="font-weight:400">"Aeroton Retail CashGuard still not banked"</td>
+        <td class="num">"R 600,00"</td>
+        <td colspan="2"></td>
+      </tr>
+      <tr>
+        <td colspan="4" style="font-weight:400">"Aeroton Retail petty cash still not banked"</td>
+        <td class="num">"R 600,00"</td>
+        <td colspan="2"></td>
+      </tr>
+      <tr>
+        <td colspan="4" style="font-weight:400">"City Deep Retail CashGuard still not banked"</td>
+        <td class="num">"R 300,00"</td>
+        <td colspan="2"></td>
+      </tr>
+      " "
+      <tr>
+        <td colspan="4" style="font-weight:400">"Banked later (ticked)"</td>
+        <td class="num" style="font-weight:400">"R 300,00"</td>
+        <td colspan="2"></td>
+      </tr>
+      " "
+      <tr>
+        <td colspan="4">"Still not banked · 7 of 8 lines"</td>
+        <td class="num">"R 1 500,00"</td>
+        <td colspan="2"></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+`;
+
+exports[`manager sees the report but cannot tick; invalid dates; empty period 2`] = `
+## invalid
+<div class="msg err">"Choose both dates."</div>
+`;
+
+exports[`manager sees the report but cannot tick; invalid dates; empty period 3`] = `
+## nothing
+No money was recorded as counted & retained, not banked between Tue, 01 Sept 2026 and Wed, 30 Sept 2026.
+`;
+
+exports[`only managers and the administrator 1`] = `
+<main id="main">
+  <div class="empty-state">"Only a manager or the administrator can see this report."</div>
+</main>
+`;
+
+exports[`report for a date range, hide banked, tick and untick 1`] = `
+## before loading
+<main id="main">
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"CashGuard · Aeroton Retail and City Deep Retail"</div>
+        <h2>"Money not banked"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="msg">
+        "Cash counted from the CashGuard and kept back, not deposited in Nedbank, and Aeroton Retail petty cash, for each day in the period. When the money is banked, the administrator ticks "
+        <b>"Banked"</b>
+        " and it is taken off the total."
+      </div>
+      " "
+      <form id="nbform" class="fields" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:end" novalidate>
+        " "
+        <div class="field">
+          <label for="nbfrom">"From"</label>
+          <input type="date" id="nbfrom" value="2026-10-01" max="2026-10-28">
+        </div>
+        " "
+        <div class="field">
+          <label for="nbto">"To"</label>
+          <input type="date" id="nbto" value="2026-10-28" max="2026-10-28">
+        </div>
+        " "
+        <button class="btn primary" type="submit" id="nbgo">"Show report"</button>
+        " "
+      </form>
+      " "
+      <div class="empty-state">"Choose the dates and tap Show report."</div>
+      " "
+    </div>
+  </section>
+</main>
+`;
+
+exports[`report for a date range, hide banked, tick and untick 2`] = `
+## dates swapped, loaded
+<main id="main">
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"CashGuard · Aeroton Retail and City Deep Retail"</div>
+        <h2>"Money not banked"</h2>
+      </div>
+      <span class="chip draft">"Still not banked R 1 500,00"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      " "
+      <div class="msg">
+        "Cash counted from the CashGuard and kept back, not deposited in Nedbank, and Aeroton Retail petty cash, for each day in the period. When the money is banked, the administrator ticks "
+        <b>"Banked"</b>
+        " and it is taken off the total."
+      </div>
+      " "
+      <form id="nbform" class="fields" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:end" novalidate>
+        " "
+        <div class="field">
+          <label for="nbfrom">"From"</label>
+          <input type="date" id="nbfrom" value="2026-10-01" max="2026-10-28">
+        </div>
+        " "
+        <div class="field">
+          <label for="nbto">"To"</label>
+          <input type="date" id="nbto" value="2026-10-29" max="2026-10-28">
+        </div>
+        " "
+        <button class="btn primary" type="submit" id="nbgo">"Show report"</button>
+        " "
+      </form>
+      " "
+      <label style="display:inline-flex;gap:8px;align-items:center;margin:4px 0 10px;cursor:pointer">
+        <input type="checkbox" id="nbhide">
+        " Hide amounts already banked"
+      </label>
+      " "
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>"Date"</th>
+              <th>"Shop"</th>
+              <th>
+                "Per report"
+                <small>"CashGuard"</small>
+              </th>
+              <th>
+                "In Nedbank"
+                <small>"Deposited"</small>
+              </th>
+              <th>
+                "Not banked"
+                <small>"Retained / petty cash"</small>
+              </th>
+              <th>"Sheet"</th>
+              <th style="text-align:center">"Banked"</th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr class="nbrow nbdone" data-d="2026-10-17" data-shop="retail" style="cursor:pointer">
+              <td>"Sat, 17 Oct 2026"</td>
+              <td>"Aeroton Retail"</td>
+              <td class="num">"R 5 400,00"</td>
+              <td class="num">"R 4 900,00"</td>
+              <td class="num">
+                <b>"R 300,00"</b>
+              </td>
+              <td>
+                <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+              </td>
+              <td class="nbbank" style="text-align:center">
+                <input type="checkbox" class="nbtick" data-i="0" checked aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+                <div class="msg" style="font-size:.72rem;line-height:1.2">
+                  "Ada Admin"
+                  <br>
+                  "28 Oct, 09:00"
+                </div>
+              </td>
+            </tr>
+            <tr class="nbrow" data-d="2026-10-17" data-shop="retail" style="cursor:pointer">
+              <td>"Sat, 17 Oct 2026"</td>
+              <td>
+                "Aeroton Retail"
+                <div class="msg" style="font-size:.75rem">"Petty cash · R200 cleaning materials"</div>
+              </td>
+              <td class="num">"—"</td>
+              <td class="num">"—"</td>
+              <td class="num">
+                <b>"R 200,00"</b>
+              </td>
+              <td>
+                <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+              </td>
+              <td class="nbbank" style="text-align:center">
+                <input type="checkbox" class="nbtick" data-i="1" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+              </td>
+            </tr>
+            <tr class="nbrow" data-d="2026-10-27" data-shop="citydeep" style="cursor:pointer">
+              <td>"Tue, 27 Oct 2026"</td>
+              <td>"City Deep Retail"</td>
+              <td class="num">"R 3 100,00"</td>
+              <td class="num">"R 3 000,00"</td>
+              <td class="num">
+                <b>"R 150,00"</b>
+              </td>
+              <td>
+                <span class="chip draft">"Not signed"</span>
+              </td>
+              <td class="nbbank" style="text-align:center">
+                <input type="checkbox" class="nbtick" data-i="2" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+              </td>
+            </tr>
+            <tr class="nbrow" data-d="2026-10-27" data-shop="retail" style="cursor:pointer">
+              <td>"Tue, 27 Oct 2026"</td>
+              <td>"Aeroton Retail"</td>
+              <td class="num">"R 5 400,00"</td>
+              <td class="num">"R 4 900,00"</td>
+              <td class="num">
+                <b>"R 300,00"</b>
+              </td>
+              <td>
+                <span class="chip draft">"Not signed"</span>
+              </td>
+              <td class="nbbank" style="text-align:center">
+                <input type="checkbox" class="nbtick" data-i="3" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+              </td>
+            </tr>
+            <tr class="nbrow" data-d="2026-10-27" data-shop="retail" style="cursor:pointer">
+              <td>"Tue, 27 Oct 2026"</td>
+              <td>
+                "Aeroton Retail"
+                <div class="msg" style="font-size:.75rem">"Petty cash · R200 cleaning materials"</div>
+              </td>
+              <td class="num">"—"</td>
+              <td class="num">"—"</td>
+              <td class="num">
+                <b>"R 200,00"</b>
+              </td>
+              <td>
+                <span class="chip draft">"Not signed"</span>
+              </td>
+              <td class="nbbank" style="text-align:center">
+                <input type="checkbox" class="nbtick" data-i="4" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+              </td>
+            </tr>
+            <tr class="nbrow" data-d="2026-10-28" data-shop="citydeep" style="cursor:pointer">
+              <td>"Wed, 28 Oct 2026"</td>
+              <td>"City Deep Retail"</td>
+              <td class="num">"R 3 100,00"</td>
+              <td class="num">"R 3 000,00"</td>
+              <td class="num">
+                <b>"R 150,00"</b>
+              </td>
+              <td>
+                <span class="chip draft">"Not signed"</span>
+              </td>
+              <td class="nbbank" style="text-align:center">
+                <input type="checkbox" class="nbtick" data-i="5" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+                <div class="msg err" style="font-size:.75rem">"Amount changed after it was ticked. Tick again."</div>
+              </td>
+            </tr>
+            <tr class="nbrow" data-d="2026-10-28" data-shop="retail" style="cursor:pointer">
+              <td>"Wed, 28 Oct 2026"</td>
+              <td>"Aeroton Retail"</td>
+              <td class="num">"R 5 400,00"</td>
+              <td class="num">"R 4 900,00"</td>
+              <td class="num">
+                <b>"R 300,00"</b>
+              </td>
+              <td>
+                <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+              </td>
+              <td class="nbbank" style="text-align:center">
+                <input type="checkbox" class="nbtick" data-i="6" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+              </td>
+            </tr>
+            <tr class="nbrow" data-d="2026-10-28" data-shop="retail" style="cursor:pointer">
+              <td>"Wed, 28 Oct 2026"</td>
+              <td>
+                "Aeroton Retail"
+                <div class="msg" style="font-size:.75rem">"Petty cash · R200 cleaning materials"</div>
+              </td>
+              <td class="num">"—"</td>
+              <td class="num">"—"</td>
+              <td class="num">
+                <b>"R 200,00"</b>
+              </td>
+              <td>
+                <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+              </td>
+              <td class="nbbank" style="text-align:center">
+                <input type="checkbox" class="nbtick" data-i="7" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+              </td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td colspan="4" style="font-weight:400">"Aeroton Retail CashGuard still not banked"</td>
+              <td class="num">"R 600,00"</td>
+              <td colspan="2"></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="font-weight:400">"Aeroton Retail petty cash still not banked"</td>
+              <td class="num">"R 600,00"</td>
+              <td colspan="2"></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="font-weight:400">"City Deep Retail CashGuard still not banked"</td>
+              <td class="num">"R 300,00"</td>
+              <td colspan="2"></td>
+            </tr>
+            " "
+            <tr>
+              <td colspan="4" style="font-weight:400">"Banked later (ticked)"</td>
+              <td class="num" style="font-weight:400">"R 300,00"</td>
+              <td colspan="2"></td>
+            </tr>
+            " "
+            <tr>
+              <td colspan="4">"Still not banked · 7 of 8 lines"</td>
+              <td class="num">"R 1 500,00"</td>
+              <td colspan="2"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      " "
+      <h3 style="margin:18px 0 6px;font-size:1rem">"Cash handed over and signed for"</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>"Date"</th>
+              <th>"Amount"</th>
+              <th>"Given by"</th>
+              <th>"Received by"</th>
+              <th>"Signed"</th>
+            </tr>
+          </thead>
+          " "
+          <tbody>
+            <tr>
+              <td>"Sat, 17 Oct 2026"</td>
+              <td class="num">"R 300,00"</td>
+              <td>"Rita Retail"</td>
+              <td>"Candido"</td>
+              <td>
+                <img src="data:image/png;base64,SA==" alt="Signature" style="height:34px;background:#fff;border-radius:4px">
+              </td>
+            </tr>
+            <tr>
+              <td>"Wed, 28 Oct 2026"</td>
+              <td class="num">"R 120,50"</td>
+              <td>"Rita Retail"</td>
+              <td>"Candido"</td>
+              <td></td>
+            </tr>
+          </tbody>
+          " "
+          <tfoot>
+            <tr>
+              <td>"Total handed over"</td>
+              <td class="num">"R 420,50"</td>
+              <td colspan="3"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      " "
+      <div class="actions" style="margin-top:12px">
+        <button class="btn primary" id="nb-pdf" type="button">"Download PDF"</button>
+        <button class="btn" id="nb-csv" type="button">"Download CSV"</button>
+        <span class="msg" id="nb-msg">"Tap a day to open its End of Day."</span>
+      </div>
+      " "
+    </div>
+  </section>
+</main>
+`;
+
+exports[`report for a date range, hide banked, tick and untick 3`] = `
+## banked hidden
+<tbody>
+  <tr class="nbrow" data-d="2026-10-17" data-shop="retail" style="cursor:pointer">
+    <td>"Sat, 17 Oct 2026"</td>
+    <td>
+      "Aeroton Retail"
+      <div class="msg" style="font-size:.75rem">"Petty cash · R200 cleaning materials"</div>
+    </td>
+    <td class="num">"—"</td>
+    <td class="num">"—"</td>
+    <td class="num">
+      <b>"R 200,00"</b>
+    </td>
+    <td>
+      <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+    </td>
+    <td class="nbbank" style="text-align:center">
+      <input type="checkbox" class="nbtick" data-i="1" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+    </td>
+  </tr>
+  <tr class="nbrow" data-d="2026-10-27" data-shop="citydeep" style="cursor:pointer">
+    <td>"Tue, 27 Oct 2026"</td>
+    <td>"City Deep Retail"</td>
+    <td class="num">"R 3 100,00"</td>
+    <td class="num">"R 3 000,00"</td>
+    <td class="num">
+      <b>"R 150,00"</b>
+    </td>
+    <td>
+      <span class="chip draft">"Not signed"</span>
+    </td>
+    <td class="nbbank" style="text-align:center">
+      <input type="checkbox" class="nbtick" data-i="2" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+    </td>
+  </tr>
+  <tr class="nbrow" data-d="2026-10-27" data-shop="retail" style="cursor:pointer">
+    <td>"Tue, 27 Oct 2026"</td>
+    <td>"Aeroton Retail"</td>
+    <td class="num">"R 5 400,00"</td>
+    <td class="num">"R 4 900,00"</td>
+    <td class="num">
+      <b>"R 300,00"</b>
+    </td>
+    <td>
+      <span class="chip draft">"Not signed"</span>
+    </td>
+    <td class="nbbank" style="text-align:center">
+      <input type="checkbox" class="nbtick" data-i="3" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+    </td>
+  </tr>
+  <tr class="nbrow" data-d="2026-10-27" data-shop="retail" style="cursor:pointer">
+    <td>"Tue, 27 Oct 2026"</td>
+    <td>
+      "Aeroton Retail"
+      <div class="msg" style="font-size:.75rem">"Petty cash · R200 cleaning materials"</div>
+    </td>
+    <td class="num">"—"</td>
+    <td class="num">"—"</td>
+    <td class="num">
+      <b>"R 200,00"</b>
+    </td>
+    <td>
+      <span class="chip draft">"Not signed"</span>
+    </td>
+    <td class="nbbank" style="text-align:center">
+      <input type="checkbox" class="nbtick" data-i="4" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+    </td>
+  </tr>
+  <tr class="nbrow" data-d="2026-10-28" data-shop="citydeep" style="cursor:pointer">
+    <td>"Wed, 28 Oct 2026"</td>
+    <td>"City Deep Retail"</td>
+    <td class="num">"R 3 100,00"</td>
+    <td class="num">"R 3 000,00"</td>
+    <td class="num">
+      <b>"R 150,00"</b>
+    </td>
+    <td>
+      <span class="chip draft">"Not signed"</span>
+    </td>
+    <td class="nbbank" style="text-align:center">
+      <input type="checkbox" class="nbtick" data-i="5" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+      <div class="msg err" style="font-size:.75rem">"Amount changed after it was ticked. Tick again."</div>
+    </td>
+  </tr>
+  <tr class="nbrow" data-d="2026-10-28" data-shop="retail" style="cursor:pointer">
+    <td>"Wed, 28 Oct 2026"</td>
+    <td>"Aeroton Retail"</td>
+    <td class="num">"R 5 400,00"</td>
+    <td class="num">"R 4 900,00"</td>
+    <td class="num">
+      <b>"R 300,00"</b>
+    </td>
+    <td>
+      <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+    </td>
+    <td class="nbbank" style="text-align:center">
+      <input type="checkbox" class="nbtick" data-i="6" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+    </td>
+  </tr>
+  <tr class="nbrow" data-d="2026-10-28" data-shop="retail" style="cursor:pointer">
+    <td>"Wed, 28 Oct 2026"</td>
+    <td>
+      "Aeroton Retail"
+      <div class="msg" style="font-size:.75rem">"Petty cash · R200 cleaning materials"</div>
+    </td>
+    <td class="num">"—"</td>
+    <td class="num">"—"</td>
+    <td class="num">
+      <b>"R 200,00"</b>
+    </td>
+    <td>
+      <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+    </td>
+    <td class="nbbank" style="text-align:center">
+      <input type="checkbox" class="nbtick" data-i="7" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+    </td>
+  </tr>
+</tbody>
+`;
+
+exports[`report for a date range, hide banked, tick and untick 4`] = `
+## tick
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/banked/2026-10-28_retailpetty",
+    "data": {
+      "date": "2026-10-28",
+      "shop": "retailpetty",
+      "amount": 200,
+      "banked": true,
+      "by": "Ada Admin",
+      "at": "<serverTimestamp>",
+      "atIso": "2026-10-28T10:00:00.000Z"
+    }
+  }
+]
+`;
+
+exports[`report for a date range, hide banked, tick and untick 5`] = `
+## tick message
+Marked as banked: Aeroton Retail petty cash Wed, 28 Oct 2026 R 200,00.
+`;
+
+exports[`report for a date range, hide banked, tick and untick 6`] = `
+## untick cancelled
+{
+  "confirm": [
+    "Untick Banked for Aeroton Retail on Sat, 17 Oct 2026?\\n\\nR 300,00 will show as not banked again."
+  ],
+  "writes": [],
+  "checked": true
+}
+`;
+
+exports[`report for a date range, hide banked, tick and untick 7`] = `
+## untick
+[
+  {
+    "op": "set",
+    "path": "shops/TestShopKey0123456789abc/banked/2026-10-17_retail",
+    "data": {
+      "date": "2026-10-17",
+      "shop": "retail",
+      "amount": 300,
+      "banked": false,
+      "by": "Ada Admin",
+      "at": "<serverTimestamp>",
+      "atIso": "2026-10-28T10:00:00.000Z"
+    }
+  }
+]
+`;
+
+exports[`report for a date range, hide banked, tick and untick 8`] = `
+## tick refused
+[
+  "Not saved: the Firebase rules need updating (publish the new rules).",
+  false
+]
+`;
+
+exports[`report load errors 1`] = `
+## ticks and handovers missing
+<div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>"Date"</th>
+        <th>"Shop"</th>
+        <th>
+          "Per report"
+          <small>"CashGuard"</small>
+        </th>
+        <th>
+          "In Nedbank"
+          <small>"Deposited"</small>
+        </th>
+        <th>
+          "Not banked"
+          <small>"Retained / petty cash"</small>
+        </th>
+        <th>"Sheet"</th>
+        <th style="text-align:center">"Banked"</th>
+      </tr>
+    </thead>
+    " "
+    <tbody>
+      <tr class="nbrow" data-d="2026-10-17" data-shop="retail" style="cursor:pointer">
+        <td>"Sat, 17 Oct 2026"</td>
+        <td>"Aeroton Retail"</td>
+        <td class="num">"R 5 400,00"</td>
+        <td class="num">"R 4 900,00"</td>
+        <td class="num">
+          <b>"R 300,00"</b>
+        </td>
+        <td>
+          <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="0" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-17" data-shop="retail" style="cursor:pointer">
+        <td>"Sat, 17 Oct 2026"</td>
+        <td>
+          "Aeroton Retail"
+          <div class="msg" style="font-size:.75rem">"Petty cash · R200 cleaning materials"</div>
+        </td>
+        <td class="num">"—"</td>
+        <td class="num">"—"</td>
+        <td class="num">
+          <b>"R 200,00"</b>
+        </td>
+        <td>
+          <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="1" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-27" data-shop="citydeep" style="cursor:pointer">
+        <td>"Tue, 27 Oct 2026"</td>
+        <td>"City Deep Retail"</td>
+        <td class="num">"R 3 100,00"</td>
+        <td class="num">"R 3 000,00"</td>
+        <td class="num">
+          <b>"R 150,00"</b>
+        </td>
+        <td>
+          <span class="chip draft">"Not signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="2" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-27" data-shop="retail" style="cursor:pointer">
+        <td>"Tue, 27 Oct 2026"</td>
+        <td>"Aeroton Retail"</td>
+        <td class="num">"R 5 400,00"</td>
+        <td class="num">"R 4 900,00"</td>
+        <td class="num">
+          <b>"R 300,00"</b>
+        </td>
+        <td>
+          <span class="chip draft">"Not signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="3" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-27" data-shop="retail" style="cursor:pointer">
+        <td>"Tue, 27 Oct 2026"</td>
+        <td>
+          "Aeroton Retail"
+          <div class="msg" style="font-size:.75rem">"Petty cash · R200 cleaning materials"</div>
+        </td>
+        <td class="num">"—"</td>
+        <td class="num">"—"</td>
+        <td class="num">
+          <b>"R 200,00"</b>
+        </td>
+        <td>
+          <span class="chip draft">"Not signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="4" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-28" data-shop="citydeep" style="cursor:pointer">
+        <td>"Wed, 28 Oct 2026"</td>
+        <td>"City Deep Retail"</td>
+        <td class="num">"R 3 100,00"</td>
+        <td class="num">"R 3 000,00"</td>
+        <td class="num">
+          <b>"R 150,00"</b>
+        </td>
+        <td>
+          <span class="chip draft">"Not signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="5" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-28" data-shop="retail" style="cursor:pointer">
+        <td>"Wed, 28 Oct 2026"</td>
+        <td>"Aeroton Retail"</td>
+        <td class="num">"R 5 400,00"</td>
+        <td class="num">"R 4 900,00"</td>
+        <td class="num">
+          <b>"R 300,00"</b>
+        </td>
+        <td>
+          <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="6" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+        </td>
+      </tr>
+      <tr class="nbrow" data-d="2026-10-28" data-shop="retail" style="cursor:pointer">
+        <td>"Wed, 28 Oct 2026"</td>
+        <td>
+          "Aeroton Retail"
+          <div class="msg" style="font-size:.75rem">"Petty cash · R200 cleaning materials"</div>
+        </td>
+        <td class="num">"—"</td>
+        <td class="num">"—"</td>
+        <td class="num">
+          <b>"R 200,00"</b>
+        </td>
+        <td>
+          <span class="chip signed" title="Signed by Rita Retail">"Signed"</span>
+        </td>
+        <td class="nbbank" style="text-align:center">
+          <input type="checkbox" class="nbtick" data-i="7" aria-label="Banked" style="width:20px;height:20px;cursor:pointer">
+        </td>
+      </tr>
+    </tbody>
+    " "
+    <tfoot>
+      <tr>
+        <td colspan="4" style="font-weight:400">"Aeroton Retail CashGuard still not banked"</td>
+        <td class="num">"R 900,00"</td>
+        <td colspan="2"></td>
+      </tr>
+      <tr>
+        <td colspan="4" style="font-weight:400">"Aeroton Retail petty cash still not banked"</td>
+        <td class="num">"R 600,00"</td>
+        <td colspan="2"></td>
+      </tr>
+      <tr>
+        <td colspan="4" style="font-weight:400">"City Deep Retail CashGuard still not banked"</td>
+        <td class="num">"R 300,00"</td>
+        <td colspan="2"></td>
+      </tr>
+      " "
+      <tr>
+        <td colspan="4">"Still not banked · 8 of 8 lines"</td>
+        <td class="num">"R 1 800,00"</td>
+        <td colspan="2"></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+`;
+
+exports[`report load errors 2`] = `
+## failed
+<div class="sheet-body">
+  " "
+  <div class="msg">
+    "Cash counted from the CashGuard and kept back, not deposited in Nedbank, and Aeroton Retail petty cash, for each day in the period. When the money is banked, the administrator ticks "
+    <b>"Banked"</b>
+    " and it is taken off the total."
+  </div>
+  " "
+  <form id="nbform" class="fields" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:end" novalidate>
+    " "
+    <div class="field">
+      <label for="nbfrom">"From"</label>
+      <input type="date" id="nbfrom" value="2026-10-01" max="2026-10-28">
+    </div>
+    " "
+    <div class="field">
+      <label for="nbto">"To"</label>
+      <input type="date" id="nbto" value="2026-10-28" max="2026-10-28">
+    </div>
+    " "
+    <button class="btn primary" type="submit" id="nbgo">"Show report"</button>
+    " "
+  </form>
+  " "
+  <div class="msg err">"The report could not be loaded (unavailable). Check the connection and try again."</div>
+  " "
+</div>
+`;
