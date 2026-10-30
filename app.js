@@ -135,6 +135,12 @@ function timeStr(iso) {
     return "";
   }
 }
+// Show a status line (red when err); nothing happens if the element is not on screen
+function showMsg(el, text, err) {
+  if (!el) return;
+  el.className = "msg" + (err ? " err" : "");
+  el.textContent = text;
+}
 // Hand a file to the browser to save; returns its temporary blob: address
 function downloadBlob(blob, name) {
   const a = document.createElement("a");
@@ -1765,12 +1771,7 @@ async function makePdf() {
 }
 async function pdfAction(kind) {
   const msg = $("#csv-msg");
-  const say = (t, err) => {
-    if (msg) {
-      msg.className = "msg" + (err ? " err" : "");
-      msg.textContent = t;
-    }
-  };
+  const say = (t, err) => showMsg(msg, t, err);
   say("Preparing the PDF…");
   let r;
   try {
@@ -2059,13 +2060,7 @@ async function pdfToImages(file) {
   return { images: out, total: pdf.numPages };
 }
 async function attachFiles(files, dept) {
-  const say = (t, err) => {
-    const m = $("#scan-msg");
-    if (m) {
-      m.className = "msg" + (err ? " err" : "");
-      m.textContent = t;
-    }
-  };
+  const say = (t, err) => showMsg($("#scan-msg"), t, err);
   const imgs = [];
   let readIdx = 0,
     note = "";
@@ -2106,13 +2101,7 @@ async function attachFiles(files, dept) {
   }
 }
 async function scanPhoto(file, dept, read) {
-  const say = (t, err) => {
-    const m = $("#scan-msg");
-    if (m) {
-      m.className = "msg" + (err ? " err" : "");
-      m.textContent = t;
-    }
-  };
+  const say = (t, err) => showMsg($("#scan-msg"), t, err);
   say("Saving the photo and reading the report…");
   let keep, forAi;
   try {
@@ -2151,8 +2140,7 @@ async function readFigures(dataUrl, dept, lead, photoId) {
   const say = (t, err) => {
     const m = $("#scan-msg");
     if (!m) return;
-    m.className = "msg" + (err ? " err" : "");
-    m.textContent = t;
+    showMsg(m, t, err);
     if (state.lastAI) {
       const d = document.createElement("details");
       d.style.marginTop = "6px";
