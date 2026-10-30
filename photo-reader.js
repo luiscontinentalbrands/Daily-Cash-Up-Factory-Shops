@@ -101,9 +101,10 @@ export function explainReaderError(raw) {
     return "Firebase AI Logic is not fully set up for this project (Gemini Developer API link missing).";
   if (/not.?enabled|has not been used|SERVICE_DISABLED|enable the/i.test(raw))
     return "The AI reader is not switched on in Firebase yet.";
+  // before the model check: quota messages often name the model ("Quota exceeded for model …")
+  if (/quota|429|RESOURCE_EXHAUSTED/i.test(raw)) return "The free AI allowance for today is used up.";
   if (/not found|404|is not supported|model/i.test(raw))
     return "None of the AI models were accepted by your project. Check that AI Logic is set up with the Gemini Developer API.";
-  if (/quota|429|RESOURCE_EXHAUSTED/i.test(raw)) return "The free AI allowance for today is used up.";
   if (/API key|referer|referrer|blocked/i.test(raw)) return "The Firebase web key is not allowed to use the AI reader.";
   if (/Failed to fetch|network|import/i.test(raw)) return "The AI reader could not be reached (connection).";
   return "The AI reader refused the request.";

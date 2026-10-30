@@ -309,7 +309,7 @@ exports[`photo reader: remembered route first, fallbacks, and every error messag
     ]
   },
   "quota mentioning a model": {
-    "message": "Photo saved. The figures could not be read automatically. None of the AI models were accepted by your project. Check that AI Logic is set up with the Gemini Developer API. Type the report figures by hand. Details: 429 RESOURCE_EXHAUSTED: Quota exceeded for model gemini-3.5-flashShow what the reader sawERROR: 429 RESOURCE_EXHAUSTED: Quota exceeded for model gemini-3.5-flash",
+    "message": "Photo saved. The figures could not be read automatically. The free AI allowance for today is used up. Type the report figures by hand. Details: 429 RESOURCE_EXHAUSTED: Quota exceeded for model gemini-3.5-flashShow what the reader sawERROR: 429 RESOURCE_EXHAUSTED: Quota exceeded for model gemini-3.5-flash",
     "tried": [
       "vertex:global gemini-3.5-flash",
       "vertex:us-central1 gemini-3.5-flash",
