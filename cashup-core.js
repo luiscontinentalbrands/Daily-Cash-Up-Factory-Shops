@@ -253,13 +253,15 @@ export function dayInfo(date, W, Rt, M, C) {
 
 // A typed amount as stored: digits with a point for the cents. It may be typed with a comma or a point:
 // 1480,55 / 1480.55 / 1 480,55 / 1.480,55 / 1,480.55. The last comma or point is the decimal mark
-// (1 or 2 digits after it); 3 digits after it means a thousands separator.
+// (1 or 2 digits after it); 3 digits after it means a thousands separator. Amounts are never negative,
+// and the rand part is cut to MONEY_DIGITS digits.
+const MONEY_DIGITS = 12;
 export const money = v => {
   const t = String(v == null ? "" : v).replace(/[^0-9.,]/g, "");
   const last = Math.max(t.lastIndexOf("."), t.lastIndexOf(","));
-  if (last < 0) return t.slice(0, 12);
+  if (last < 0) return t.slice(0, MONEY_DIGITS);
   const whole = t.slice(0, last).replace(/[.,]/g, ""),
     dec = t.slice(last + 1).replace(/[.,]/g, "");
-  if (dec.length >= 3) return (whole + dec).slice(0, 12);
-  return (whole || "0") + "." + dec;
+  if (dec.length >= 3) return (whole + dec).slice(0, MONEY_DIGITS);
+  return (whole || "0").slice(0, MONEY_DIGITS) + "." + dec;
 };
