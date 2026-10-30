@@ -1,34 +1,26 @@
 // Builds the End of Day cash up report as a PDF.
 // Shared by the app (browser) and the 7 pm / 9 pm email job (Node), so both produce the same document.
-// Usage: buildReportPdf(jsPDF, {date, niceDate, W, Rt, M, C, CM, status, photos})  ->  jsPDF document
-//   W / Rt / M: the Wholesale, Retail and factory-shop Manager sheets; C / CM: City Deep and its manager (omit before City Deep started)
+// Usage: buildReportPdf(jsPDF, {date, niceDate, W, Rt, M, C, status, photos, handovers})  ->  jsPDF document
+//   W / Rt / M: the Wholesale, Aeroton Retail and Manager sheets; C: City Deep Retail (omit before City Deep started)
 //   photos: [{dept, data (jpeg data URL), by, takenAt}] (optional, removed photos already filtered out)
+import { METHODS, R as rand, RV as randVariance, hasSplit, methodLabel, methodsFor, num } from "./cashup-core.js?v=2026-10-30c";
 
-const METHODS = [
-  ["cash", "Cash / Coins (Retail shops)"], ["cashguard", "CashGuard"], ["card", "Credit card"], ["cardcbm", "Credit card CBM"], ["payfast", "PayFast card"],
-  ["eft", "EFT"], ["shop2shop", "Shop2Shop"], ["snapscan", "SnapScan"],
-  ["petty", "Petty cash (not banked)"],
-];
-const num = s => { if (s === "" || s == null) return 0; const n = parseFloat(String(s).replace(/[^0-9.\-]/g, "")); return isFinite(n) ? n : 0; };
-const fmt = new Intl.NumberFormat("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 // standard PDF fonts have no special spaces or minus signs: keep to plain characters
 const plain = s => String(s ?? "").replace(/[   ]/g, " ").replace(/−/g, "-").replace(/[^\x20-\x7e\xa0-\xff]/g, "");
-const R = v => plain("R " + fmt.format(v || 0));
-const RV = v => { const a = Math.round(v * 100) / 100; return a === 0 ? "R 0.00" : (a > 0 ? "+" : "-") + R(Math.abs(a)); };
+const R = v => plain(rand(v));
+const RV = v => plain(randVariance(v));
 const TZ = "Africa/Johannesburg";
 const when = iso => { if (!iso) return ""; try { return plain(new Date(iso).toLocaleString("en-ZA", { timeZone: TZ, day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })); } catch (e) { return ""; } };
 const line = (doc, k, f) => num(doc?.lines?.[k]?.[f]);
 const isPng = s => /^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(String(s || ""));
 const isJpg = s => /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(String(s || ""));
 
-// Which lines each shop uses: Retail has no EFT or Shop2Shop; Retail and City Deep split CashGuard (Nedbank + not banked)
-const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: ["cash", "cashguard", "card", "snapscan"] };
-const hasLine = (shop, k) => (k === "payfast" || k === "cardcbm") ? shop === "wholesale" : k === "petty" ? shop === "retail" : (!SHOP_LINES[shop] || SHOP_LINES[shop].includes(k));
-const splitShop = shop => shop === "retail" || shop === "citydeep";
-const depOf = (doc, shop, k) => line(doc, k, "deposited") + (splitShop(shop) ? line(doc, k, "retained") : 0);
+// Which lines each shop uses (see methodsFor in cashup-core.js); Retail and City Deep split CashGuard (Nedbank + not banked)
+const hasLine = (shop, k) => methodsFor(shop).some(m => m.k === k);
+const depOf = (doc, shop, k) => line(doc, k, "deposited") + (hasSplit(shop) ? line(doc, k, "retained") : 0);
 
 export function buildReportPdf(jsPDF, d) {
-  const { W, Rt, M, C, CM } = d;
+  const { W, Rt, M, C } = d;
   const shops = [["Wholesale", W, "wholesale"], ["Aeroton Retail", Rt, "retail"]];
   if (C) shops.push(["City Deep Retail", C, "citydeep"]);
   const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
@@ -68,7 +60,8 @@ export function buildReportPdf(jsPDF, d) {
   y += 12;
   pdf.setDrawColor(230, 225, 217); pdf.setLineWidth(0.2);
   const tot = shops.map(() => [0, 0]);
-  METHODS.forEach(([k, l]) => {
+  METHODS.forEach(m => {
+    const k = m.k, l = methodLabel(m, "combined");
     y += 6.5; ink(); pdf.setFont("helvetica", "normal"); pdf.setFontSize(fs);
     text(l, X + 2, y);
     let r = 0, dd = 0;
@@ -99,7 +92,7 @@ export function buildReportPdf(jsPDF, d) {
   if (C) { const fv = (tot[0][1] + tot[1][1]) - (tot[0][0] + tot[1][0]), cv = tot[2][1] - tot[2][0];
     row("Variance by shop", `Aeroton ${RV(fv)}    City Deep Retail ${RV(cv)}    All shops ${RV(gv)}`); }
   row("Cashed up by", shops.map(([l, doc]) => `${l}: ${doc?.cashier || "-"}`).join("    "));
-  shops.filter(([, , s]) => splitShop(s)).forEach(([l, doc]) =>
+  shops.filter(([, , s]) => hasSplit(s)).forEach(([l, doc]) =>
     row(l + " CashGuard", `Deposited in Nedbank ${R(line(doc, "cashguard", "deposited"))}    Counted & retained, not banked ${R(line(doc, "cashguard", "retained"))}`));
   if (line(Rt, "petty", "deposited") || Rt?.pettyNotes) row("Aeroton Retail petty cash", `${R(line(Rt, "petty", "deposited"))} not banked${Rt?.pettyNotes ? "  -  " + Rt.pettyNotes : ""}`);
   (d.handovers || []).forEach(h => row("Cash handed over", `${R(h.amount)} from ${h.givenBy || "-"} to ${h.receivedBy || "-"} (signed)${h.at ? "  -  " + when(h.at) : ""}`));
