@@ -145,3 +145,24 @@ test("changing the date and the minute refresh", async t => {
   await app.click("#today");
   assert.equal(app.$("#date").value, DAY);
 });
+
+const cashierShown = app => app.all(".field").find(f => f.textContent.startsWith("Person cashing up")).querySelector(".static").textContent;
+test("who is recorded as the person cashing up", async t => {
+  const seen = {};
+  for (const [me, tab] of [["u-whole", "wholesale"], ["u-mgr", "wholesale"], ["u-admin", "retail"], ["u-cd", "citydeep"]]) {
+    const app = await boot(t, { me });
+    await app.tab(tab);
+    const before = cashierShown(app);
+    await app.type(`#${tab}-cash-report`, "10");
+    await app.advance(700);
+    const w = app.writes().find(x => x.path.endsWith(`_${tab}`));
+    seen[`${me} on ${tab}`] = { shown: before, saved: w && w.data.cashier, shownAfter: cashierShown(app) };
+    t.mock.timers.reset();
+  }
+  const admin = await boot(t, { me: "u-admin" });
+  await admin.type("#wholesale-cash-report", "10");
+  await admin.draw("#pad");
+  await admin.click("#signbtn");
+  seen["admin signs an empty Wholesale sheet"] = admin.writes().filter(x => x.path.endsWith("_wholesale")).map(x => [x.data.status, x.data.cashier, x.data.signedBy]);
+  snap(t, seen);
+});

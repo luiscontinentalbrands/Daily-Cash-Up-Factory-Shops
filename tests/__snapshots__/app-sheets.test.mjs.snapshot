@@ -4441,3 +4441,35 @@ exports[`updates from another device: re-render, or patch while typing, or drop 
 ## status chip
 Signed off
 `;
+
+exports[`who is recorded as the person cashing up 1`] = `
+{
+  "u-whole on wholesale": {
+    "shown": "Wanda Wholesale",
+    "saved": "Wanda Wholesale",
+    "shownAfter": "Wanda Wholesale"
+  },
+  "u-mgr on wholesale": {
+    "shown": "Manny Manager",
+    "saved": "Manny Manager",
+    "shownAfter": "Manny Manager"
+  },
+  "u-admin on retail": {
+    "shown": "Ada Admin",
+    "saved": "Ada Admin",
+    "shownAfter": "Ada Admin"
+  },
+  "u-cd on citydeep": {
+    "shown": "Cindy Deep",
+    "saved": "Cindy Deep",
+    "shownAfter": "Cindy Deep"
+  },
+  "admin signs an empty Wholesale sheet": [
+    [
+      "signed",
+      "Ada Admin",
+      "Ada Admin"
+    ]
+  ]
+}
+`;
