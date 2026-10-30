@@ -28,7 +28,7 @@ import {
   SHEETS,
   cdOn,
   clone,
-  csvQuote,
+  csvCell,
   dayInfo,
   depositedTotal,
   esc,
@@ -1493,13 +1493,7 @@ function endOfDayCsv(shops, M, info) {
   });
   lines.push(["Manager signed by", M.signedBy, sastStamp(M.signedAt)]);
   lines.push(["Day status", info.label]);
-  // Prefix cells that start with = + - @ so spreadsheets do not run them as formulas
-  const cell = c => {
-    c = String(c == null ? "" : c);
-    if (/^[=+\-@]/.test(c) && !/^-?\d+(\.\d+)?$/.test(c)) c = "'" + c;
-    return csvQuote(c);
-  };
-  return toCsv(lines, cell);
+  return toCsv(lines, csvCell);
 }
 function renderCombined() {
   const W = current("wholesale"),
@@ -2223,7 +2217,6 @@ function notBankedBody(nb, all, rows, out, later, isAdmin) {
 }
 // The Not banked report as a CSV file
 function notBankedCsv(nb, all, out, later) {
-  const cell = c => csvQuote(String(c == null ? "" : c));
   const lines = [
     ["Money not banked - CashGuard (Aeroton Retail and City Deep Retail)"],
     ["From", nb.from, "To", nb.to],
@@ -2261,7 +2254,7 @@ function notBankedCsv(nb, all, out, later) {
       ["Banked later (ticked)", "", "", "", "", later.toFixed(2)],
     ],
   );
-  return toCsv(lines, cell);
+  return toCsv(lines, csvCell);
 }
 function renderNotBanked() {
   if (!isManagerOrAdmin()) {

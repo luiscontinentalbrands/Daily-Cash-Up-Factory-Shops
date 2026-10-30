@@ -135,6 +135,13 @@ export function sastStamp(iso) {
 // CSV: a cell with a comma, quote or line break goes in quotes; rows are joined with cell() applied to each cell
 export const csvQuote = c => (/[",\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c);
 export const toCsv = (rows, cell) => rows.map(r => r.map(cell).join(",")).join("\n");
+// A CSV cell; text that starts with = + - @ gets a ' in front so spreadsheets do not run it as a formula
+// (plain numbers such as -12.50 stay as they are)
+export const csvCell = c => {
+  c = String(c == null ? "" : c);
+  if (/^[=+\-@]/.test(c) && !/^-?\d+(\.\d+)?$/.test(c)) c = "'" + c;
+  return csvQuote(c);
+};
 export function clone(o) {
   return JSON.parse(JSON.stringify(o));
 }
