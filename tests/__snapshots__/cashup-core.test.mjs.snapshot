@@ -1,0 +1,494 @@
+exports[`dates 1`] = `
+{
+  "today": "2026-10-28",
+  "long": "Wednesday, 28 October 2026",
+  "short": "Wed, 28 Oct 2026",
+  "time": "28 Oct, 17:04",
+  "noTime": "",
+  "badTime": "Invalid Date",
+  "cdOn": [
+    false,
+    true,
+    true,
+    false,
+    false
+  ]
+}
+`;
+
+exports[`dayInfo through the day 1`] = `
+{
+  "open, morning": {
+    "kind": "open",
+    "label": "Due by 7 pm · 11h 0m left",
+    "cls": "draft",
+    "missing": [
+      "Aeroton Retail",
+      "Manager",
+      "City Deep Retail"
+    ]
+  },
+  "open, 7 days ahead": {
+    "kind": "open",
+    "label": "Due by 7 pm on Wed, 28 Oct 2026",
+    "cls": "draft",
+    "missing": [
+      "Wholesale",
+      "Aeroton Retail",
+      "Manager",
+      "City Deep Retail"
+    ]
+  },
+  "overdue": {
+    "kind": "overdue",
+    "label": "Overdue · missing Manager",
+    "cls": "bad",
+    "missing": [
+      "Manager"
+    ]
+  },
+  "done": {
+    "kind": "done",
+    "label": "Completed on time",
+    "cls": "signed",
+    "missing": []
+  },
+  "late": {
+    "kind": "done",
+    "label": "Completed on time",
+    "cls": "signed",
+    "missing": []
+  },
+  "late by a minute": {
+    "kind": "late",
+    "label": "Completed late · 28 Oct, 19:01",
+    "cls": "draft",
+    "missing": []
+  },
+  "before City Deep, no City Deep needed": {
+    "kind": "late",
+    "label": "Completed late · 28 Oct, 18:30",
+    "cls": "draft",
+    "missing": []
+  },
+  "Sunday": {
+    "kind": "sunday",
+    "label": "Sunday · not a trading day",
+    "cls": "",
+    "missing": []
+  }
+}
+`;
+
+exports[`esc, safeImg, savedAtIso, csvQuote, toCsv 1`] = `
+{
+  "esc": "&lt;a href=&quot;x&quot;&gt;Tom &amp; &#39;Jerry&#39;&lt;/a&gt;",
+  "escNull": [
+    "",
+    "",
+    "0"
+  ],
+  "safeImg": [
+    "data:image/png;base64,QUJD",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "savedAtIso": [
+    "2026-10-28T10:00:00.000Z",
+    "phone",
+    null
+  ],
+  "csv": "a,\\"b \\"\\"q\\"\\"\\",\\"c,d\\"\\n\\"line\\nbreak\\",,x"
+}
+`;
+
+exports[`money: what typed amounts become 1`] = `
+[
+  [
+    "",
+    ""
+  ],
+  [
+    null,
+    ""
+  ],
+  [
+    "12",
+    "12"
+  ],
+  [
+    "12.5",
+    "12.5"
+  ],
+  [
+    "12,5",
+    "12.5"
+  ],
+  [
+    "1 480,55",
+    "1480.55"
+  ],
+  [
+    "1.480,55",
+    "1480.55"
+  ],
+  [
+    "1,480.55",
+    "1480.55"
+  ],
+  [
+    "1.234",
+    "1234"
+  ],
+  [
+    "1,234",
+    "1234"
+  ],
+  [
+    "1.2.3",
+    "12.3"
+  ],
+  [
+    ",5",
+    "0.5"
+  ],
+  [
+    "5,",
+    "5."
+  ],
+  [
+    "R 99",
+    "99"
+  ],
+  [
+    "-12",
+    "12"
+  ],
+  [
+    "1234567890123",
+    "123456789012"
+  ],
+  [
+    "123456789012345.5",
+    "123456789012345.5"
+  ],
+  [
+    "abc",
+    ""
+  ]
+]
+`;
+
+exports[`normalize: blank sheets, older stored data, server signature time 1`] = `
+{
+  "blank": {
+    "date": "2026-10-28",
+    "dept": "wholesale",
+    "cashier": "",
+    "lines": {
+      "cash": {
+        "report": "",
+        "deposited": ""
+      },
+      "cashguard": {
+        "report": "",
+        "deposited": "",
+        "retained": ""
+      },
+      "card": {
+        "report": "",
+        "deposited": ""
+      },
+      "cardcbm": {
+        "report": "",
+        "deposited": ""
+      },
+      "payfast": {
+        "report": "",
+        "deposited": ""
+      },
+      "eft": {
+        "report": "",
+        "deposited": ""
+      },
+      "shop2shop": {
+        "report": "",
+        "deposited": ""
+      },
+      "snapscan": {
+        "report": "",
+        "deposited": ""
+      },
+      "petty": {
+        "report": "",
+        "deposited": ""
+      }
+    },
+    "damaged": "",
+    "damagedNotes": "",
+    "notes": "",
+    "status": "new",
+    "signature": "",
+    "signedBy": "",
+    "signedAt": "",
+    "updatedAt": ""
+  },
+  "retail": {
+    "date": "2026-10-28",
+    "dept": "retail",
+    "cashier": "",
+    "lines": {
+      "card": {
+        "report": "150.50",
+        "deposited": "90"
+      },
+      "eft": {
+        "report": "",
+        "deposited": ""
+      },
+      "shop2shop": {
+        "report": "",
+        "deposited": ""
+      },
+      "cashguard": {
+        "report": "10",
+        "deposited": "5",
+        "retained": "5"
+      },
+      "petty": {
+        "report": "",
+        "deposited": "3"
+      },
+      "cash": {
+        "report": "",
+        "deposited": ""
+      },
+      "cardcbm": {
+        "report": "",
+        "deposited": ""
+      },
+      "payfast": {
+        "report": "",
+        "deposited": ""
+      },
+      "snapscan": {
+        "report": "",
+        "deposited": ""
+      }
+    },
+    "damaged": "",
+    "damagedNotes": "",
+    "notes": "",
+    "status": "signed",
+    "signature": "data:image/png;base64,U0lHTkFUVVJF",
+    "signedBy": "Rita Retail",
+    "signedAt": "2026-10-28T09:00:05.000Z",
+    "updatedAt": "2026-10-28T08:00:00.000Z",
+    "extra": {
+      "kept": true
+    }
+  },
+  "wholesaleRetainedCleared": {
+    "report": "1",
+    "deposited": "2",
+    "retained": ""
+  },
+  "rawUntouched": {
+    "report": "50.5",
+    "deposited": ""
+  }
+}
+`;
+
+exports[`num, R, RV, vcls 1`] = `
+{
+  "num": [
+    [
+      "",
+      0
+    ],
+    [
+      "null",
+      0
+    ],
+    [
+      "undefined",
+      0
+    ],
+    [
+      "12.50",
+      12.5
+    ],
+    [
+      "1 234,56",
+      123456
+    ],
+    [
+      "1,234.56",
+      1234.56
+    ],
+    [
+      "-5",
+      -5
+    ],
+    [
+      "abc",
+      0
+    ],
+    [
+      "12abc3",
+      123
+    ],
+    [
+      "7",
+      7
+    ],
+    [
+      "NaN",
+      0
+    ]
+  ],
+  "R": [
+    [
+      0,
+      "R 0,00"
+    ],
+    [
+      1,
+      "R 1,00"
+    ],
+    [
+      1234.5,
+      "R 1 234,50"
+    ],
+    [
+      -1234.5,
+      "R -1 234,50"
+    ],
+    [
+      0.005,
+      "R 0,01"
+    ],
+    [
+      10000000,
+      "R 10 000 000,00"
+    ],
+    [
+      null,
+      "R 0,00"
+    ]
+  ],
+  "RV": [
+    [
+      0,
+      "R 0.00",
+      "var-zero"
+    ],
+    [
+      0.004,
+      "R 0.00",
+      "var-zero"
+    ],
+    [
+      -0.004,
+      "R 0.00",
+      "var-zero"
+    ],
+    [
+      0.005,
+      "+R 0,01",
+      "var-pos"
+    ],
+    [
+      12.3,
+      "+R 12,30",
+      "var-pos"
+    ],
+    [
+      -12.3,
+      "−R 12,30",
+      "var-neg"
+    ],
+    [
+      1234.5,
+      "+R 1 234,50",
+      "var-pos"
+    ]
+  ]
+}
+`;
+
+exports[`payment lines and labels per shop 1`] = `
+{
+  "wholesale": [
+    "cash: Cash",
+    "cashguard: CashGuard",
+    "card: Credit card",
+    "cardcbm: Credit card CBM",
+    "payfast: PayFast card",
+    "eft: EFT",
+    "shop2shop: Shop2Shop",
+    "snapscan: SnapScan"
+  ],
+  "retail": [
+    "cash: Coins",
+    "cashguard: CashGuard",
+    "card: Credit card",
+    "snapscan: SnapScan",
+    "petty: Petty cash (not banked)"
+  ],
+  "citydeep": [
+    "cash: Coins",
+    "cashguard: CashGuard",
+    "card: Credit card",
+    "snapscan: SnapScan"
+  ],
+  "manager": [
+    "cash: Cash / Coins (Retail shops)",
+    "cashguard: CashGuard",
+    "card: Credit card",
+    "eft: EFT",
+    "shop2shop: Shop2Shop",
+    "snapscan: SnapScan"
+  ],
+  "combined": [
+    "cash: Cash / Coins (Retail shops)",
+    "cashguard: CashGuard",
+    "card: Credit card",
+    "eft: EFT",
+    "shop2shop: Shop2Shop",
+    "snapscan: SnapScan"
+  ]
+}
+`;
+
+exports[`totals per shop 1`] = `
+{
+  "wholesale": {
+    "report": 8175.49,
+    "deposited": 8125.49,
+    "variance": -50,
+    "retained": 0,
+    "petty": 0,
+    "banked": 8125.49
+  },
+  "retail": {
+    "report": 8245.75,
+    "deposited": 8245.75,
+    "variance": 0,
+    "retained": 300,
+    "petty": 200,
+    "banked": 7745.75
+  },
+  "citydeep": {
+    "report": 5111.95,
+    "deposited": 5142,
+    "variance": 30.050000000000182,
+    "retained": 150,
+    "petty": 0,
+    "banked": 4992
+  }
+}
+`;
