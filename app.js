@@ -2465,39 +2465,26 @@ function renderUsers() {
   );
 }
 /* ---------- Not banked report: Retail CashGuard counted & retained, not banked, for a date range ---------- */
-function renderNotBanked() {
-  if (!isManagerOrAdmin()) {
-    main.innerHTML = '<div class="empty-state">Only a manager or the administrator can see this report.</div>';
-    return;
-  }
-  const t = todayStr();
-  state.nb = state.nb || { from: t.slice(0, 8) + "01", to: t, rows: null, hide: false };
-  const nb = state.nb;
-  const isAdmin = role() === "admin";
-  const all = nb.rows || [];
-  const rows = nb.hide ? all.filter(r => !r.done) : all;
-  const out = all.filter(r => !r.done).reduce((a, r) => a + r.retained, 0),
-    later = all.filter(r => r.done).reduce((a, r) => a + r.retained, 0);
-  const bankCell = r => {
-    const box = `<input type="checkbox" class="nbtick" data-i="${all.indexOf(r)}" ${r.done ? "checked" : ""} ${isAdmin ? "" : "disabled"} aria-label="Banked" style="width:20px;height:20px;cursor:${isAdmin ? "pointer" : "default"}">`;
-    const note = r.done
-      ? `<div class="msg" style="font-size:.72rem;line-height:1.2">${esc(r.doneBy)}${r.doneAt ? "<br>" + esc(timeStr(r.doneAt)) : ""}</div>`
-      : r.changed
-        ? `<div class="msg err" style="font-size:.75rem">Amount changed after it was ticked. Tick again.</div>`
-        : "";
-    return `<td class="nbbank" style="text-align:center">${box}${note}</td>`;
-  };
-  const table = nb.loading
-    ? '<div class="empty-state">Loading…</div>'
-    : nb.err
-      ? `<div class="msg err">${esc(nb.err)}</div>`
-      : nb.rows == null
-        ? '<div class="empty-state">Choose the dates and tap Show report.</div>'
-        : !all.length
-          ? `<div class="empty-state">No money was recorded as counted &amp; retained, not banked between ${shortDate(nb.from)} and ${shortDate(nb.to)}.</div>`
-          : `<label style="display:inline-flex;gap:8px;align-items:center;margin:4px 0 10px;cursor:pointer"><input type="checkbox" id="nbhide" ${nb.hide ? "checked" : ""}> Hide amounts already banked</label>
+// The Banked tick box (only the administrator can tick it) and who ticked it, for one line of the report
+function bankCell(r, all, isAdmin) {
+  const box = `<input type="checkbox" class="nbtick" data-i="${all.indexOf(r)}" ${r.done ? "checked" : ""} ${isAdmin ? "" : "disabled"} aria-label="Banked" style="width:20px;height:20px;cursor:${isAdmin ? "pointer" : "default"}">`;
+  const note = r.done
+    ? `<div class="msg" style="font-size:.72rem;line-height:1.2">${esc(r.doneBy)}${r.doneAt ? "<br>" + esc(timeStr(r.doneAt)) : ""}</div>`
+    : r.changed
+      ? `<div class="msg err" style="font-size:.75rem">Amount changed after it was ticked. Tick again.</div>`
+      : "";
+  return `<td class="nbbank" style="text-align:center">${box}${note}</td>`;
+}
+// What shows under the dates on the Not banked tab: where the report stands, or the report itself
+function notBankedBody(nb, all, rows, out, later, isAdmin) {
+  if (nb.loading) return '<div class="empty-state">Loading…</div>';
+  if (nb.err) return `<div class="msg err">${esc(nb.err)}</div>`;
+  if (nb.rows == null) return '<div class="empty-state">Choose the dates and tap Show report.</div>';
+  if (!all.length)
+    return `<div class="empty-state">No money was recorded as counted &amp; retained, not banked between ${shortDate(nb.from)} and ${shortDate(nb.to)}.</div>`;
+  return `<label style="display:inline-flex;gap:8px;align-items:center;margin:4px 0 10px;cursor:pointer"><input type="checkbox" id="nbhide" ${nb.hide ? "checked" : ""}> Hide amounts already banked</label>
     <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Shop</th><th>Per report<small>CashGuard</small></th><th>In Nedbank<small>Deposited</small></th><th>Not banked<small>Retained / petty cash</small></th><th>Sheet</th><th style="text-align:center">Banked</th></tr></thead>
-      <tbody>${rows.map(r => `<tr class="nbrow${r.done ? " nbdone" : ""}" data-d="${esc(r.date)}" data-shop="${esc(r.shop)}" style="cursor:pointer"><td>${shortDate(r.date)}</td><td>${DEPTS[r.shop]}${r.kind === "petty" ? `<div class="msg" style="font-size:.75rem">Petty cash${r.note ? " · " + esc(r.note) : ""}</div>` : ""}</td><td class="num">${r.kind === "petty" ? "—" : R(r.report)}</td><td class="num">${r.kind === "petty" ? "—" : R(r.nedbank)}</td><td class="num"><b>${R(r.retained)}</b></td><td>${r.signed ? `<span class="chip signed" title="Signed by ${esc(r.signedBy)}">Signed</span>` : '<span class="chip draft">Not signed</span>'}</td>${bankCell(r)}</tr>`).join("") || '<tr><td colspan="7" class="msg">Everything in this period has been banked.</td></tr>'}</tbody>
+      <tbody>${rows.map(r => `<tr class="nbrow${r.done ? " nbdone" : ""}" data-d="${esc(r.date)}" data-shop="${esc(r.shop)}" style="cursor:pointer"><td>${shortDate(r.date)}</td><td>${DEPTS[r.shop]}${r.kind === "petty" ? `<div class="msg" style="font-size:.75rem">Petty cash${r.note ? " · " + esc(r.note) : ""}</div>` : ""}</td><td class="num">${r.kind === "petty" ? "—" : R(r.report)}</td><td class="num">${r.kind === "petty" ? "—" : R(r.nedbank)}</td><td class="num"><b>${R(r.retained)}</b></td><td>${r.signed ? `<span class="chip signed" title="Signed by ${esc(r.signedBy)}">Signed</span>` : '<span class="chip draft">Not signed</span>'}</td>${bankCell(r, all, isAdmin)}</tr>`).join("") || '<tr><td colspan="7" class="msg">Everything in this period has been banked.</td></tr>'}</tbody>
       <tfoot>${[
         ["retail", "cg", "Aeroton Retail CashGuard"],
         ["retail", "petty", "Aeroton Retail petty cash"],
@@ -2519,6 +2506,63 @@ function renderNotBanked() {
         : ""
     }
     <div class="actions" style="margin-top:12px"><button class="btn primary" id="nb-pdf" type="button">Download PDF</button><button class="btn" id="nb-csv" type="button">Download CSV</button><span class="msg" id="nb-msg">Tap a day to open its End of Day.</span></div>`;
+}
+// The Not banked report as a CSV file
+function notBankedCsv(nb, all, out, later) {
+  const cell = c => csvQuote(String(c == null ? "" : c));
+  const lines = [
+    ["Money not banked - CashGuard (Aeroton Retail and City Deep Retail)"],
+    ["From", nb.from, "To", nb.to],
+    [],
+    [
+      "Date",
+      "Shop",
+      "Type",
+      "CashGuard per report",
+      "Deposited in Nedbank",
+      "Not banked",
+      "Details",
+      "Signed by",
+      "Banked later",
+      "Banked ticked by",
+      "Ticked at",
+    ],
+  ].concat(
+    all.map(r => [
+      r.date,
+      DEPTS[r.shop],
+      r.kind === "petty" ? "Petty cash" : "CashGuard retained",
+      r.kind === "petty" ? "" : r.report.toFixed(2),
+      r.kind === "petty" ? "" : r.nedbank.toFixed(2),
+      r.retained.toFixed(2),
+      r.note,
+      r.signed ? r.signedBy : "NOT SIGNED",
+      r.done ? "Yes" : "No",
+      r.done ? r.doneBy : "",
+      r.done ? r.doneAt : "",
+    ]),
+    [
+      [],
+      ["Still not banked", "", "", "", "", out.toFixed(2)],
+      ["Banked later (ticked)", "", "", "", "", later.toFixed(2)],
+    ],
+  );
+  return toCsv(lines, cell);
+}
+function renderNotBanked() {
+  if (!isManagerOrAdmin()) {
+    main.innerHTML = '<div class="empty-state">Only a manager or the administrator can see this report.</div>';
+    return;
+  }
+  const t = todayStr();
+  state.nb = state.nb || { from: t.slice(0, 8) + "01", to: t, rows: null, hide: false };
+  const nb = state.nb;
+  const isAdmin = role() === "admin";
+  const all = nb.rows || [];
+  const rows = nb.hide ? all.filter(r => !r.done) : all;
+  const out = all.filter(r => !r.done).reduce((a, r) => a + r.retained, 0),
+    later = all.filter(r => r.done).reduce((a, r) => a + r.retained, 0);
+  const table = notBankedBody(nb, all, rows, out, later, isAdmin);
   main.innerHTML = `<section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">CashGuard · Aeroton Retail and City Deep Retail</div><h2>Money not banked</h2></div>${nb.rows && all.length ? `<span class="chip ${out ? "draft" : "signed"}">Still not banked ${R(out)}</span>` : ""}</div>
     <div class="sheet-body">
@@ -2569,45 +2613,10 @@ function renderNotBanked() {
   const cb = $("#nb-csv");
   if (cb)
     cb.addEventListener("click", () => {
-      const cell = c => csvQuote(String(c == null ? "" : c));
-      const lines = [
-        ["Money not banked - CashGuard (Aeroton Retail and City Deep Retail)"],
-        ["From", nb.from, "To", nb.to],
-        [],
-        [
-          "Date",
-          "Shop",
-          "Type",
-          "CashGuard per report",
-          "Deposited in Nedbank",
-          "Not banked",
-          "Details",
-          "Signed by",
-          "Banked later",
-          "Banked ticked by",
-          "Ticked at",
-        ],
-      ].concat(
-        all.map(r => [
-          r.date,
-          DEPTS[r.shop],
-          r.kind === "petty" ? "Petty cash" : "CashGuard retained",
-          r.kind === "petty" ? "" : r.report.toFixed(2),
-          r.kind === "petty" ? "" : r.nedbank.toFixed(2),
-          r.retained.toFixed(2),
-          r.note,
-          r.signed ? r.signedBy : "NOT SIGNED",
-          r.done ? "Yes" : "No",
-          r.done ? r.doneBy : "",
-          r.done ? r.doneAt : "",
-        ]),
-        [
-          [],
-          ["Still not banked", "", "", "", "", out.toFixed(2)],
-          ["Banked later (ticked)", "", "", "", "", later.toFixed(2)],
-        ],
+      downloadBlob(
+        new Blob([notBankedCsv(nb, all, out, later)], { type: "text/csv" }),
+        `Not-banked-${nb.from}-to-${nb.to}.csv`,
       );
-      downloadBlob(new Blob([toCsv(lines, cell)], { type: "text/csv" }), `Not-banked-${nb.from}-to-${nb.to}.csv`);
     });
 }
 // Administrator only: mark a retained amount as banked (or undo). Kept in its own record, so signed sheets stay untouched.
