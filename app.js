@@ -2178,6 +2178,87 @@ async function scanPhoto(file, dept, read) {
   }
   await readFigures(forAi, dept, "Photo saved. ", ref.id);
 }
+// The instructions sent to the photo reader with the picture of the till report
+function readerPrompt(dept) {
+  return `This is a photo of the last page of a South African retail till cash-up / Z-report (amounts in Rand) for the ${DEPTS[dept]} department of a factory shop.
+Read the TOTAL amount per payment/tender type as printed on the report. Map tenders to these keys:
+- cash: Cash (notes and coins tender)
+- cashguard: CashGuard (cash recycler / CashGuard tender)
+- card: Credit card / debit card / speedpoint / card machine totals combined${isRetail(dept) ? " (in this shop, amounts printed as EFT are card-machine payments: include them here)" : ""}
+${dept === "wholesale" ? "- cardcbm: Credit card CBM (the CBM card machine; keep separate from card)\n- payfast: PayFast card payments (keep these separate from card)\n" : ""}- eft: EFT / bank transfer${isRetail(dept) ? " (always null for this shop: put EFT amounts under card)" : ""}
+- shop2shop: Shop2Shop
+- snapscan: SnapScan
+Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,${dept === "wholesale" ? '"cardcbm":number|null,"payfast":number|null,' : ""}"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
+Use null when a tender is not on the report. Give amounts as plain JSON numbers with a dot for decimals (e.g. 1234.56), without currency symbols, spaces or thousands separators, even if the slip prints them as "R 1 234,56". Set readable false if the photo is not a cash-up report or too blurry to read.`;
+}
+// The reader's reply as JSON (it sometimes wraps it in ``` fences)
+function parseReaderReply(text) {
+  return JSON.parse(
+    text
+      .trim()
+      .replace(/^\`\`\`(json)?/i, "")
+      .replace(/\`\`\`$/, ""),
+  );
+}
+// Why the photo reader failed, in words for the person at the till
+function explainReaderError(raw) {
+  if (/App Check/i.test(raw)) return "Google's App Check protection is not set up for this app yet.";
+  if (/genai|config not found/i.test(raw))
+    return "Firebase AI Logic is not fully set up for this project (Gemini Developer API link missing).";
+  if (/not.?enabled|has not been used|SERVICE_DISABLED|enable the/i.test(raw))
+    return "The AI reader is not switched on in Firebase yet.";
+  if (/not found|404|is not supported|model/i.test(raw))
+    return "None of the AI models were accepted by your project. Check that AI Logic is set up with the Gemini Developer API.";
+  if (/quota|429|RESOURCE_EXHAUSTED/i.test(raw)) return "The free AI allowance for today is used up.";
+  if (/API key|referer|referrer|blocked/i.test(raw)) return "The Firebase web key is not allowed to use the AI reader.";
+  if (/Failed to fetch|network|import/i.test(raw)) return "The AI reader could not be reached (connection).";
+  return "The AI reader refused the request.";
+}
+// An amount from the reader: a number, or text like "R 1 234,56" / "1,234.56"; null when it is neither
+function readerNumber(v) {
+  if (typeof v === "number") return isFinite(v) ? v : null;
+  if (typeof v !== "string") return null;
+  let t = v.replace(/[R\s\u00a0]/gi, "");
+  if (!t) return null;
+  if (t.includes(",") && !t.includes(".")) t = t.replace(/,(?=\d{1,2}$)/, ".").replace(/,/g, "");
+  else t = t.replace(/,/g, "");
+  const n = parseFloat(t);
+  return isFinite(n) ? n : null;
+}
+// The reader's own names for each payment type (compared in lower case, letters and digits only)
+const READER_ALIASES = {
+  cash: ["cash"],
+  cashguard: ["cashguard"],
+  card: ["card", "creditcard", "cards"],
+  payfast: ["payfast", "payfastcard"],
+  cardcbm: ["cardcbm", "creditcardcbm", "cbm"],
+  eft: ["eft"],
+  shop2shop: ["shop2shop", "shoptoshop"],
+  snapscan: ["snapscan"],
+};
+// The reader's reply turned into an amount (or null) per payment type, and the report total
+function readerValues(out, dept) {
+  const low = {};
+  Object.keys(out || {}).forEach(k => (low[k.toLowerCase().replace(/[^a-z0-9]/g, "")] = out[k]));
+  const total = readerNumber(low.total);
+  const vals = {};
+  METHODS.forEach(m => {
+    let v = null;
+    for (const k of READER_ALIASES[m.k] || []) {
+      if (low[k] != null) {
+        v = readerNumber(low[k]);
+        break;
+      }
+    }
+    vals[m.k] = v;
+  });
+  // Retail: slips marked EFT are credit card payments, so they are added to Credit card
+  if (isRetail(dept) && vals.eft != null) {
+    vals.card = (vals.card || 0) + vals.eft;
+    vals.eft = null;
+  }
+  return { vals, total };
+}
 async function readFigures(dataUrl, dept, lead, photoId) {
   lead = lead || "";
   state.lastAI = "";
@@ -2195,43 +2276,15 @@ async function readFigures(dataUrl, dept, lead, photoId) {
     }
   };
   say(lead + "Reading the report figures…");
-  const prompt = `This is a photo of the last page of a South African retail till cash-up / Z-report (amounts in Rand) for the ${DEPTS[dept]} department of a factory shop.
-Read the TOTAL amount per payment/tender type as printed on the report. Map tenders to these keys:
-- cash: Cash (notes and coins tender)
-- cashguard: CashGuard (cash recycler / CashGuard tender)
-- card: Credit card / debit card / speedpoint / card machine totals combined${isRetail(dept) ? " (in this shop, amounts printed as EFT are card-machine payments: include them here)" : ""}
-${dept === "wholesale" ? "- cardcbm: Credit card CBM (the CBM card machine; keep separate from card)\n- payfast: PayFast card payments (keep these separate from card)\n" : ""}- eft: EFT / bank transfer${isRetail(dept) ? " (always null for this shop: put EFT amounts under card)" : ""}
-- shop2shop: Shop2Shop
-- snapscan: SnapScan
-Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,${dept === "wholesale" ? '"cardcbm":number|null,"payfast":number|null,' : ""}"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
-Use null when a tender is not on the report. Give amounts as plain JSON numbers with a dot for decimals (e.g. 1234.56), without currency symbols, spaces or thousands separators, even if the slip prints them as "R 1 234,56". Set readable false if the photo is not a cash-up report or too blurry to read.`;
+  const prompt = readerPrompt(dept);
   let out = null;
   try {
     const r = await readWithAI([prompt, { inlineData: { data: dataUrl.split(",")[1], mimeType: "image/jpeg" } }]);
     state.lastAI = r.response.text();
-    let t = r.response
-      .text()
-      .trim()
-      .replace(/^\`\`\`(json)?/i, "")
-      .replace(/\`\`\`$/, "");
-    out = JSON.parse(t);
+    out = parseReaderReply(r.response.text());
   } catch (e) {
     const raw = String((e && (e.message || e.code)) || e || "");
-    const why = /App Check/i.test(raw)
-      ? "Google's App Check protection is not set up for this app yet."
-      : /genai|config not found/i.test(raw)
-        ? "Firebase AI Logic is not fully set up for this project (Gemini Developer API link missing)."
-        : /not.?enabled|has not been used|SERVICE_DISABLED|enable the/i.test(raw)
-          ? "The AI reader is not switched on in Firebase yet."
-          : /not found|404|is not supported|model/i.test(raw)
-            ? "None of the AI models were accepted by your project. Check that AI Logic is set up with the Gemini Developer API."
-            : /quota|429|RESOURCE_EXHAUSTED/i.test(raw)
-              ? "The free AI allowance for today is used up."
-              : /API key|referer|referrer|blocked/i.test(raw)
-                ? "The Firebase web key is not allowed to use the AI reader."
-                : /Failed to fetch|network|import/i.test(raw)
-                  ? "The AI reader could not be reached (connection)."
-                  : "The AI reader refused the request.";
+    const why = explainReaderError(raw);
     state.lastAI = "ERROR: " + raw;
     say(
       lead +
@@ -2254,46 +2307,7 @@ Use null when a tender is not on the report. Give amounts as plain JSON numbers 
   }
   const doc = local[dept];
   const filled = [];
-  // accept numbers or text like "R 1 234,56" / "1,234.56", and keys in any case
-  const toNum = v => {
-    if (typeof v === "number") return isFinite(v) ? v : null;
-    if (typeof v !== "string") return null;
-    let t = v.replace(/[R\s\u00a0]/gi, "");
-    if (!t) return null;
-    if (t.includes(",") && !t.includes(".")) t = t.replace(/,(?=\d{1,2}$)/, ".").replace(/,/g, "");
-    else t = t.replace(/,/g, "");
-    const n = parseFloat(t);
-    return isFinite(n) ? n : null;
-  };
-  const low = {};
-  Object.keys(out || {}).forEach(k => (low[k.toLowerCase().replace(/[^a-z0-9]/g, "")] = out[k]));
-  const alias = {
-    cash: ["cash"],
-    cashguard: ["cashguard"],
-    card: ["card", "creditcard", "cards"],
-    payfast: ["payfast", "payfastcard"],
-    cardcbm: ["cardcbm", "creditcardcbm", "cbm"],
-    eft: ["eft"],
-    shop2shop: ["shop2shop", "shoptoshop"],
-    snapscan: ["snapscan"],
-  };
-  out.total = toNum(low.total);
-  const vals = {};
-  METHODS.forEach(m => {
-    let v = null;
-    for (const k of alias[m.k] || []) {
-      if (low[k] != null) {
-        v = toNum(low[k]);
-        break;
-      }
-    }
-    vals[m.k] = v;
-  });
-  // Retail: slips marked EFT are credit card payments, so they are added to Credit card
-  if (isRetail(dept) && vals.eft != null) {
-    vals.card = (vals.card || 0) + vals.eft;
-    vals.eft = null;
-  }
+  const { vals, total } = readerValues(out, dept);
   const filledKeys = [];
   methodsFor(dept).forEach(m => {
     const v = vals[m.k];
@@ -2321,8 +2335,8 @@ Use null when a tender is not on the report. Give amounts as plain JSON numbers 
   if (filled.length) scheduleSave(dept);
   const t = totals(doc);
   let extra = "";
-  if (typeof out.total === "number" && Math.abs(out.total - t.report) > 0.009)
-    extra += ` The report total reads ${R(out.total)} but the lines add to ${R(t.report)}; check for a missed payment type.`;
+  if (typeof total === "number" && Math.abs(total - t.report) > 0.009)
+    extra += ` The report total reads ${R(total)} but the lines add to ${R(t.report)}; check for a missed payment type.`;
   if (out.date && out.date !== state.date)
     extra += ` The report appears to be dated ${shortDate(out.date)}, not ${shortDate(state.date)}.`;
   say(
