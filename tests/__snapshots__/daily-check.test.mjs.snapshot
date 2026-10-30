@@ -3491,12 +3491,12 @@ exports[`an older retail sheet with EFT figures (the app counts them as card) 1`
   "emailCreditCard": [
     "R 3 200,50",
     "R 3 200,50",
-    "R 2 750,25",
-    "R 2 750,25",
+    "R 2 800,75",
+    "R 2 800,75",
     "R 1 999,95",
     "R 1 980,00",
-    "R 7 950,70",
-    "R 7 930,75"
+    "R 8 001,20",
+    "R 7 981,25"
   ],
   "emailEft": [
     "R 800,00",
@@ -3512,22 +3512,22 @@ exports[`an older retail sheet with EFT figures (the app counts them as card) 1`
   "emailTotal": [
     "R 8 175,49",
     "R 8 125,49",
-    "R 8 245,75",
-    "R 8 245,75",
+    "R 8 296,25",
+    "R 8 296,25",
     "R 5 111,95",
     "R 5 142,00",
-    "R 21 533,19",
-    "R 21 513,24"
+    "R 21 583,69",
+    "R 21 563,74"
   ],
   "pdfCreditCard": [
     "R 3 200,50",
     "R 3 200,50",
-    "R 2 750,25",
-    "R 2 750,25",
+    "R 2 800,75",
+    "R 2 800,75",
     "R 1 999,95",
     "R 1 980,00",
-    "R 7 950,70",
-    "R 7 930,75",
+    "R 8 001,20",
+    "R 7 981,25",
     "-R 19,95"
   ]
 }

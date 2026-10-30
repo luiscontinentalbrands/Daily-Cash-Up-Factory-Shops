@@ -9,7 +9,7 @@ import nodemailer from "nodemailer";
 import { jsPDF } from "jspdf";
 import { buildReportPdf, reportFileName } from "../report-pdf.js";
 // the same address report-pdf.js uses, so Node loads the shared rules once
-import { CD_START, METHODS, R, RV, esc, hasSplit, methodLabel, methodsFor, num } from "../cashup-core.js?v=2026-10-30c";
+import { CD_START, METHODS, R, RV, esc, hasSplit, methodLabel, methodsFor, normalize, num } from "../cashup-core.js?v=2026-10-30c";
 
 const MODE = (process.argv[2] || "seven").toLowerCase();
 const TZ = "Africa/Johannesburg";
@@ -61,7 +61,8 @@ const signedTime = doc => doc?.signedAtServer?.toDate ? doc.signedAtServer.toDat
 // City Deep Retail is required from CD_START (cashup-core.js; firestore.rules has the same date)
 const ids = ["wholesale", "retail", "manager", "citydeep", "cdmanager"];
 const snaps = await Promise.all(ids.map(d => db.doc(`${base}/cashups/${DATE}_${d}`).get()));
-const [W, Rt, Mg, Cd0, Cm0] = snaps.map(s => (s.exists ? s.data() : null));
+// Tidied the same way the app does (e.g. older retail sheets: EFT counted as Credit card); signedAt becomes the server time
+const [W, Rt, Mg, Cd0, Cm0] = snaps.map((s, i) => (s.exists ? normalize(s.data(), DATE, ids[i]) : null));
 const withCD = DATE >= CD_START || !!Cd0;
 const Cd = withCD ? Cd0 : null, Cm = withCD ? Cm0 : null;
 const signedNow = d => !!d && d.status === "signed";
