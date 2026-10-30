@@ -303,7 +303,9 @@ const state = {
   lastAI: "", // what the photo reader returned, shown under its message
   nb: null, // Not banked report; set up on first visit (dates start at that day's month)
 };
-const local = {};
+// The sheets as they are being edited on this device, per dept. state.docs keeps the last copy from the
+// database; a draft is made from it (normalize) when first needed and replaced when the database sends a change.
+const drafts = {};
 let daySub = null,
   histSub = null,
   photoSub = null,
@@ -696,7 +698,7 @@ function startApp() {
   state.tab = r === "retail" ? "retail" : r === "citydeep" ? "citydeep" : r === "manager" ? "combined" : "wholesale";
   state.date = todayStr();
   $("#date").value = state.date;
-  Object.keys(local).forEach(k => delete local[k]);
+  Object.keys(drafts).forEach(k => delete drafts[k]);
   subscribeDay();
   subscribeHistory();
   setTab(state.tab);
@@ -722,7 +724,7 @@ function setDate(d) {
   flushAll();
   state.date = d;
   state.docs = noSheets();
-  Object.keys(DEPTS).forEach(k => delete local[k]);
+  Object.keys(DEPTS).forEach(k => delete drafts[k]);
   subscribeDay();
   render(true);
 }
@@ -755,8 +757,8 @@ function dayNow() {
   return dayInfo(state.date, current("wholesale"), current("retail"), current("manager"), current("citydeep"));
 }
 function current(dept) {
-  if (!local[dept]) local[dept] = normalize(state.docs[dept], state.date, dept);
-  return local[dept];
+  if (!drafts[dept]) drafts[dept] = normalize(state.docs[dept], state.date, dept);
+  return drafts[dept];
 }
 function statusOf(doc) {
   if (!doc) return "new";
@@ -771,7 +773,7 @@ function chip(st) {
 }
 function updateDots() {
   SHEETS.forEach(d => {
-    const st = statusOf(local[d] || state.docs[d]);
+    const st = statusOf(drafts[d] || state.docs[d]);
     $("#dot-" + d).className = "dot " + (st === "new" ? "" : st);
   });
 }
@@ -781,7 +783,7 @@ function idOf(dept, date) {
   return (date || state.date) + "_" + dept;
 }
 function scheduleSave(dept) {
-  const doc = local[dept];
+  const doc = drafts[dept];
   if (doc.status === "new") doc.status = "draft";
   if (!isMgr(dept) && !doc.cashier) doc.cashier = state.me.name;
   state.ver[dept] = (state.ver[dept] || 0) + 1;
@@ -810,7 +812,7 @@ function payload(doc, signing, reopening) {
 }
 async function save(dept, opts) {
   opts = opts || {};
-  const doc = local[dept];
+  const doc = drafts[dept];
   if (!doc) return false;
   const v = state.ver[dept] || 0;
   state.inflight[dept] = (state.inflight[dept] || 0) + 1;
@@ -929,15 +931,15 @@ function subscribeDay() {
         state.docs[dept] = got[dept];
         if (state.pending[dept]) {
           // someone signed this sheet while we had unsaved typing: drop our stale draft
-          if (got[dept] && got[dept].status === "signed" && local[dept] && local[dept].status !== "signed") {
+          if (got[dept] && got[dept].status === "signed" && drafts[dept] && drafts[dept].status !== "signed") {
             clearTimeout(timers[dept]);
             state.pending[dept] = false;
           } else return;
         }
         const fresh = normalize(got[dept], date, dept);
-        if (!local[dept] || JSON.stringify(fresh) !== JSON.stringify(local[dept])) {
-          const statusChanged = !local[dept] || local[dept].status !== fresh.status;
-          local[dept] = fresh;
+        if (!drafts[dept] || JSON.stringify(fresh) !== JSON.stringify(drafts[dept])) {
+          const statusChanged = !drafts[dept] || drafts[dept].status !== fresh.status;
+          drafts[dept] = fresh;
           if (state.tab === dept) {
             if (statusChanged || !main.contains(document.activeElement)) needRender = true;
             else patchInputs(dept);
@@ -1289,7 +1291,7 @@ function signBlock(doc, dept) {
 }
 
 function patchInputs(dept) {
-  const doc = local[dept];
+  const doc = drafts[dept];
   METHODS.forEach(m =>
     ["report", "deposited", "retained"].forEach(f => {
       const el = document.getElementById(dept + "-" + m.k + "-" + f);
@@ -1308,7 +1310,7 @@ function patchInputs(dept) {
   recalc(dept);
 }
 function recalc(dept) {
-  const doc = local[dept];
+  const doc = drafts[dept];
   METHODS.forEach(m => {
     const v = dep(doc.lines[m.k]) - num(doc.lines[m.k].report);
     const el = document.getElementById("v-" + m.k);
@@ -1406,7 +1408,7 @@ async function reopenSheet(rdept, ro) {
 }
 function bindDept(dept) {
   // always write into the CURRENT copy of the sheet: it is replaced whenever the database sends an update
-  const D = () => local[dept];
+  const D = () => drafts[dept];
   main.querySelectorAll("td.inp input").forEach(inp =>
     bindAmountBox(
       inp,
@@ -1519,7 +1521,7 @@ function bindPad(cv, dept) {
     if (state.deferred) render(true);
   });
   $("#signbtn").addEventListener("click", async () => {
-    const doc = local[dept];
+    const doc = drafts[dept];
     const msg = $("#sign-msg");
     msg.className = "msg err";
     const problem = signOffProblem(dept, doc);
@@ -1548,7 +1550,7 @@ function bindPad(cv, dept) {
     msg.textContent = "Signing…";
     const ok = await save(dept, { signing: true, action: "signed", by: who });
     if (!ok) {
-      local[dept] = before;
+      drafts[dept] = before;
       render(true);
       const m2 = $("#sign-msg");
       if (m2) {
@@ -2313,7 +2315,7 @@ async function readFigures(dataUrl, dept, lead, photoId) {
     );
     return;
   }
-  const doc = local[dept];
+  const doc = drafts[dept];
   const filled = [];
   const { vals, total } = readerValues(out, dept);
   const filledKeys = [];
