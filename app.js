@@ -355,7 +355,9 @@ function newSalt() {
 const role = () => state.me && state.me.role;
 const canEditDept = d => [d, "manager", "admin"].includes(role());
 const canSignDept = d => [d, "admin"].includes(role());
-const canSignManager = () => ["manager", "admin"].includes(role());
+// Managers and the administrator: sign off the day, reopen any sheet, see the Not banked report
+const isManagerOrAdmin = () => ["manager", "admin"].includes(role());
+const canSignManager = isManagerOrAdmin;
 
 if (!configured) {
   main.innerHTML = `<div class="login sheet" style="padding:22px"><h2>Setup needed</h2><div class="msg">Firebase is not connected yet. Fill in <b>firebase-config.js</b> with your Firebase project settings, as described in the README.</div></div>`;
@@ -653,7 +655,7 @@ function whoBar() {
     showChangePin(state.me, false);
   });
   $("#tab-users").hidden = role() !== "admin";
-  $("#tab-notbanked").hidden = !["manager", "admin"].includes(role());
+  $("#tab-notbanked").hidden = !isManagerOrAdmin();
 }
 function lockApp(msg) {
   flushAll();
@@ -731,7 +733,7 @@ function stopSubs() {
 function canReopen(dept) {
   if (isMgr(dept)) return canSignManager();
   const M = current("manager");
-  if (["manager", "admin"].includes(role())) return true;
+  if (isManagerOrAdmin()) return true;
   return current(dept).signedBy === state.me.name && M.status !== "signed";
 }
 function dayNow() {
@@ -1408,7 +1410,7 @@ function bindDept(dept) {
       const mk = "manager",
         M = current(mk);
       if (!isMgr(rdept) && M.status === "signed") {
-        if (!["manager", "admin"].includes(role())) {
+        if (!isManagerOrAdmin()) {
           ro.disabled = false;
           $("#reopen-msg").textContent = "The day is closed. Ask the manager to reopen it.";
           return;
@@ -2473,7 +2475,7 @@ function renderUsers() {
 }
 /* ---------- Not banked report: Retail CashGuard counted & retained, not banked, for a date range ---------- */
 function renderNotBanked() {
-  if (!["manager", "admin"].includes(role())) {
+  if (!isManagerOrAdmin()) {
     main.innerHTML = '<div class="empty-state">Only a manager or the administrator can see this report.</div>';
     return;
   }
