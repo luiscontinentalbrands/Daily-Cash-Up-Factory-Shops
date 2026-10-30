@@ -1179,11 +1179,9 @@ function bindHandover() {
   if (!cv) return;
   const pad = signaturePad(cv);
   const amt = $("#ho-amt");
-  amt.addEventListener("input", () => {
-    if (/[^0-9.,]/.test(amt.value)) amt.value = amt.value.replace(/[^0-9.,]/g, "");
-  });
+  amt.addEventListener("input", () => stripToAmount(amt));
   amt.addEventListener("blur", () => {
-    if (amt.value !== "") amt.value = num(money(amt.value)).toFixed(2);
+    if (amt.value !== "") amt.value = tidyAmount(amt.value);
   });
   $("#ho-clear").addEventListener("click", () => {
     pad.clear();
@@ -1320,41 +1318,57 @@ const money = v => {
   return (whole || "0") + "." + dec;
 };
 
+// Leave what the person types alone (comma or point); only strip letters
+function stripToAmount(inp) {
+  if (/[^0-9.,]/.test(inp.value)) inp.value = inp.value.replace(/[^0-9.,]/g, "");
+}
+const tidyAmount = v => num(money(v)).toFixed(2);
+// An amount box: clicking into it selects the amount, so typing simply replaces it; letters are stripped
+// while typing (onInput gets the amount) and it is tidied to 2 decimals on leaving the box (onLeave).
+function bindAmountBox(inp, onInput, onLeave) {
+  inp.addEventListener("focus", () => {
+    try {
+      inp.select();
+    } catch (e) {}
+  });
+  inp.addEventListener("mouseup", e => {
+    if (inp.dataset.sel !== "1") {
+      e.preventDefault();
+      inp.dataset.sel = "1";
+    }
+  });
+  inp.addEventListener("blur", () => {
+    inp.dataset.sel = "";
+  });
+  inp.addEventListener("input", () => {
+    stripToAmount(inp);
+    onInput(money(inp.value));
+  });
+  inp.addEventListener("blur", () => {
+    if (inp.value !== "") {
+      inp.value = tidyAmount(inp.value);
+      onLeave(inp.value);
+    }
+  });
+}
+
 function bindDept(dept) {
   // always write into the CURRENT copy of the sheet: it is replaced whenever the database sends an update
   const D = () => local[dept];
-  main.querySelectorAll("td.inp input").forEach(inp => {
-    // clicking into a box selects the amount, so typing simply replaces it
-    inp.addEventListener("focus", () => {
-      try {
-        inp.select();
-      } catch (e) {}
-    });
-    inp.addEventListener("mouseup", e => {
-      if (inp.dataset.sel !== "1") {
-        e.preventDefault();
-        inp.dataset.sel = "1";
-      }
-    });
-    inp.addEventListener("blur", () => {
-      inp.dataset.sel = "";
-    });
-    // leave what the person types alone (comma or point); only strip letters. Tidy to 2 decimals on leaving the box.
-    inp.addEventListener("input", () => {
-      if (/[^0-9.,]/.test(inp.value)) inp.value = inp.value.replace(/[^0-9.,]/g, "");
-      D().lines[inp.dataset.m][inp.dataset.f] = money(inp.value);
-      recalc(dept);
-      scheduleSave(dept);
-    });
-    inp.addEventListener("blur", () => {
-      if (inp.value !== "") {
-        const v = num(money(inp.value)).toFixed(2);
-        inp.value = v;
+  main.querySelectorAll("td.inp input").forEach(inp =>
+    bindAmountBox(
+      inp,
+      v => {
+        D().lines[inp.dataset.m][inp.dataset.f] = v;
+        recalc(dept);
+        scheduleSave(dept);
+      },
+      v => {
         D().lines[inp.dataset.m][inp.dataset.f] = v;
         scheduleSave(dept);
-      }
-    });
-  });
+      },
+    ),
+  );
   const n = document.getElementById(dept + "-notes");
   if (n)
     n.addEventListener("input", () => {
@@ -1363,32 +1377,11 @@ function bindDept(dept) {
     });
   const dm = document.getElementById(dept + "-damaged");
   if (dm) {
-    dm.addEventListener("focus", () => {
-      try {
-        dm.select();
-      } catch (e) {}
-    });
-    dm.addEventListener("mouseup", e => {
-      if (dm.dataset.sel !== "1") {
-        e.preventDefault();
-        dm.dataset.sel = "1";
-      }
-    });
-    dm.addEventListener("blur", () => {
-      dm.dataset.sel = "";
-    });
-    dm.addEventListener("input", () => {
-      if (/[^0-9.,]/.test(dm.value)) dm.value = dm.value.replace(/[^0-9.,]/g, "");
-      D().damaged = money(dm.value);
+    const setDamaged = v => {
+      D().damaged = v;
       scheduleSave(dept);
-    });
-    dm.addEventListener("blur", () => {
-      if (dm.value !== "") {
-        dm.value = num(money(dm.value)).toFixed(2);
-        D().damaged = dm.value;
-        scheduleSave(dept);
-      }
-    });
+    };
+    bindAmountBox(dm, setDamaged, setDamaged);
   }
   const dn = document.getElementById(dept + "-damagedNotes");
   if (dn)
