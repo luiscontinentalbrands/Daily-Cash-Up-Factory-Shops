@@ -19,31 +19,43 @@ import {
   onSnapshot,
   serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+import {
+  CD_START,
+  DEPTS,
+  METHODS,
+  R,
+  RV,
+  SHEETS,
+  cdOn,
+  clone,
+  csvQuote,
+  dayInfo,
+  depositedTotal,
+  esc,
+  hasSplit,
+  isMgr,
+  isRetail,
+  longDate,
+  methodLabel,
+  methodsFor,
+  money,
+  noSheets,
+  normalize,
+  num,
+  safeImg,
+  savedAtIso,
+  shortDate,
+  timeStr,
+  toCsv,
+  todayStr,
+  totals,
+  vcls,
+} from "./cashup-core.js?v=2026-10-30c";
 
 /* ---------- constants & helpers ---------- */
-const METHODS = [
-  { k: "cash", l: "Cash" },
-  { k: "cashguard", l: "CashGuard" },
-  { k: "card", l: "Credit card" },
-  { k: "cardcbm", l: "Credit card CBM" }, // Wholesale only
-  { k: "payfast", l: "PayFast card" }, // Wholesale only
-  { k: "eft", l: "EFT" },
-  { k: "shop2shop", l: "Shop2Shop" },
-  { k: "snapscan", l: "SnapScan" },
-  { k: "petty", l: "Petty cash (not banked)" }, // Aeroton Retail only: cash taken for petty cash, counted but not banked (no report figure)
-];
-const DEPTS = {
-  wholesale: "Wholesale",
-  retail: "Aeroton Retail",
-  citydeep: "City Deep Retail",
-  manager: "Manager",
-};
-// City Deep is a separate shop with its own cash up; it is required from this date
-const CD_START = "2026-10-20";
-// Version for cache-busting. Bump it together with the ?v= in index.html (twice) and in the first import above.
+// Version for cache-busting. Bump it together with the ?v= in index.html (twice) and in the imports above.
 const APP_VERSION = "2026-10-30c";
 // Timings and limits (the on-screen texts that mention them, e.g. "7 pm" or "15 minutes", are written out separately)
-const DEADLINE_HOUR = 19; // every sheet and the manager must be signed by 7 pm
 const SAVE_DELAY_MS = 700; // save this long after the last change
 const IDLE_LOCK_MS = 15 * 60000; // lock the app after this long without use
 const PIN_MAX_TRIES = 5; // wrong PINs allowed on this device…
@@ -54,96 +66,14 @@ const REFRESH_MS = 60000; // re-render this often to keep the deadline countdown
 const HISTORY_LIMIT = 240; // sheets loaded for the History tab
 const PDF_MAX_PAGES = 6; // pages kept from an attached PDF
 const PHOTO_MAX_CHARS = 850000; // a stored photo is shrunk until it fits; firestore.rules refuses 900000 and more
-const cdOn = date => String(date || "") >= CD_START;
-const SHEETS = ["wholesale", "retail", "citydeep"];
-// The stored sheets of one day, one per shop plus the manager's sign-off; null until loaded
-const noSheets = () => ({ wholesale: null, retail: null, manager: null, citydeep: null });
-const isMgr = d => d === "manager";
 // One manager signs off the whole day at End of Day (Wholesale, Aeroton Retail and, from CD_START, City Deep Retail)
 const sheetsOf = date => (cdOn(date || state.date) ? ["wholesale", "retail", "citydeep"] : ["wholesale", "retail"]);
-const hasSplit = d => d === "retail" || d === "citydeep"; // CashGuard: Nedbank + counted & retained, not banked
-// The two retail shops (Aeroton Retail, City Deep Retail): cash is coins, no EFT line (EFT slips are credit card payments), no Shop2Shop
-const isRetail = d => d === "retail" || d === "citydeep";
-const methodsFor = dept =>
-  METHODS.filter(m =>
-    m.k === "petty"
-      ? dept === "retail"
-      : m.k === "payfast" || m.k === "cardcbm"
-        ? dept === "wholesale"
-        : isRetail(dept)
-          ? m.k !== "eft" && m.k !== "shop2shop"
-          : true,
-  );
-const methodLabel = (m, dept) =>
-  m.k === "cash" ? (isRetail(dept) ? "Coins" : dept === "wholesale" ? "Cash" : "Cash / Coins (Retail shops)") : m.l;
-const fmt = new Intl.NumberFormat("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const R = v => "R " + fmt.format(v || 0);
-const RV = v => {
-  const a = Math.round(v * 100) / 100;
-  if (a === 0) return "R 0.00";
-  return (a > 0 ? "+" : "−") + "R " + fmt.format(Math.abs(a));
-};
-const vcls = v => {
-  const a = Math.round(v * 100) / 100;
-  return a === 0 ? "var-zero" : a > 0 ? "var-pos" : "var-neg";
-};
-const num = s => {
-  if (s === "" || s == null) return 0;
-  const n = parseFloat(String(s).replace(/[^0-9.\-]/g, ""));
-  return isFinite(n) ? n : 0;
-};
-const esc = s =>
-  String(s == null ? "" : s).replace(
-    /[&<>"']/g,
-    c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
-  );
-const safeImg = s => (/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(String(s || "")) ? s : "");
-function todayStr() {
-  const d = new Date();
-  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
-}
-function longDate(s) {
-  const [y, m, d] = s.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("en-ZA", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
-function shortDate(s) {
-  const [y, m, d] = s.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("en-ZA", {
-    weekday: "short",
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-}
-// When a record was saved: the server time once it has arrived, otherwise the time the phone noted
-const savedAtIso = x => (x.at && x.at.toDate ? x.at.toDate().toISOString() : x.atIso);
-function timeStr(iso) {
-  if (!iso) return "";
-  try {
-    return new Date(iso).toLocaleString("en-ZA", {
-      day: "numeric",
-      month: "short",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  } catch (e) {
-    return "";
-  }
-}
 // Show a status line (red when err); nothing happens if the element is not on screen
 function showMsg(el, text, err) {
   if (!el) return;
   el.className = "msg" + (err ? " err" : "");
   el.textContent = text;
 }
-// CSV: a cell with a comma, quote or line break goes in quotes; rows are joined with cell() applied to each cell
-const csvQuote = c => (/[",\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c);
-const toCsv = (rows, cell) => rows.map(r => r.map(cell).join(",")).join("\n");
 // Hand a file to the browser to save; returns its temporary blob: address
 function downloadBlob(blob, name) {
   const a = document.createElement("a");
@@ -153,113 +83,6 @@ function downloadBlob(blob, name) {
   a.click();
   a.remove();
   return a.href;
-}
-function clone(o) {
-  return JSON.parse(JSON.stringify(o));
-}
-
-// CashGuard has two "deposited" amounts: banked in Nedbank (deposited) and counted but retained, not yet banked (retained)
-const depositedTotal = ln => num(ln && ln.deposited) + num(ln && ln.retained);
-function blank(date, dept) {
-  const lines = {};
-  METHODS.forEach(
-    m =>
-      (lines[m.k] = m.k === "cashguard" ? { report: "", deposited: "", retained: "" } : { report: "", deposited: "" }),
-  );
-  return {
-    date,
-    dept,
-    cashier: "",
-    lines,
-    damaged: "",
-    damagedNotes: "",
-    notes: "",
-    status: "new",
-    signature: "",
-    signedBy: "",
-    signedAt: "",
-    updatedAt: "",
-  };
-}
-function normalize(raw, date, dept) {
-  const b = blank(date, dept);
-  if (!raw) return b;
-  const r = Object.assign({}, raw);
-  // trust the server clock for signature times, not the phone's
-  if (raw.signedAtServer && typeof raw.signedAtServer.toDate === "function")
-    r.signedAt = raw.signedAtServer.toDate().toISOString();
-  delete r.signedAtServer;
-  delete r.updatedAtServer;
-  delete r.reopenedAt;
-  const o = Object.assign(b, clone(r));
-  METHODS.forEach(m => {
-    o.lines[m.k] = Object.assign(
-      m.k === "cashguard" ? { report: "", deposited: "", retained: "" } : { report: "", deposited: "" },
-      (raw.lines || {})[m.k] || {},
-    );
-  });
-  if (!hasSplit(dept)) o.lines.cashguard.retained = ""; // the "retained, not banked" amount is only on Retail and City Deep
-  if (isRetail(dept)) {
-    o.lines.shop2shop = { report: "", deposited: "" };
-  }
-  if (isRetail(dept)) {
-    const e = o.lines.eft,
-      c = o.lines.card;
-    ["report", "deposited"].forEach(f => {
-      if (e[f] !== "" && e[f] != null) {
-        c[f] = (num(c[f]) + num(e[f])).toFixed(2);
-        e[f] = "";
-      }
-    });
-  }
-  return o;
-}
-function totals(doc) {
-  let r = 0,
-    d = 0;
-  methodsFor(doc.dept).forEach(m => {
-    r += num(doc.lines[m.k].report);
-    d += depositedTotal(doc.lines[m.k]);
-  });
-  const ret = num(doc.lines.cashguard && doc.lines.cashguard.retained);
-  const pet = doc.dept === "retail" ? num(doc.lines.petty && doc.lines.petty.deposited) : 0;
-  return { report: r, deposited: d, variance: d - r, retained: ret, petty: pet, banked: d - ret - pet };
-}
-
-/* Deadline: every trading day Mon–Sat, all three signatures by 19:00 */
-function dayInfo(date, W, Rt, M, C) {
-  const [y, m, d] = date.split("-").map(Number);
-  const dt = new Date(y, m - 1, d);
-  if (dt.getDay() === 0) return { kind: "sunday", label: "Sunday · not a trading day", cls: "", missing: [] };
-  const dl = new Date(y, m - 1, d, DEADLINE_HOUR, 0, 0);
-  const missing = [];
-  const all = [W, Rt, M];
-  if (!(W && W.status === "signed")) missing.push("Wholesale");
-  if (!(Rt && Rt.status === "signed")) missing.push("Aeroton Retail");
-  if (!(M && M.status === "signed")) missing.push("Manager");
-  if (cdOn(date)) {
-    all.push(C);
-    if (!(C && C.status === "signed")) missing.push("City Deep Retail");
-  }
-  if (!missing.length) {
-    const last = Math.max(...all.map(x => Date.parse(x.signedAt) || 0));
-    return last > dl.getTime()
-      ? { kind: "late", label: "Completed late · " + timeStr(new Date(last).toISOString()), cls: "draft", missing }
-      : { kind: "done", label: "Completed on time", cls: "signed", missing };
-  }
-  const now = Date.now();
-  if (now > dl.getTime())
-    return { kind: "overdue", label: "Overdue · missing " + missing.join(", "), cls: "bad", missing };
-  const mins = Math.round((dl.getTime() - now) / 60000);
-  return {
-    kind: "open",
-    label:
-      mins < 24 * 60
-        ? `Due by 7 pm · ${Math.floor(mins / 60)}h ${mins % 60}m left`
-        : "Due by 7 pm on " + shortDate(date),
-    cls: "draft",
-    missing,
-  };
 }
 
 /* ---------- Firebase ---------- */
@@ -1332,18 +1155,6 @@ function recalc(dept) {
   const g = $("#t-cg");
   if (g) g.innerHTML = cgNote(t);
 }
-// Amounts: accept a comma or a point as the decimal mark, keep at most 2 decimals
-// Amounts may be typed with a comma or a point for the cents: 1480,55 / 1480.55 / 1 480,55 / 1.480,55 / 1,480.55
-// The last comma or point is the decimal mark (1 or 2 digits after it); 3 digits after it means a thousands separator.
-const money = v => {
-  const t = String(v == null ? "" : v).replace(/[^0-9.,]/g, "");
-  const last = Math.max(t.lastIndexOf("."), t.lastIndexOf(","));
-  if (last < 0) return t.slice(0, 12);
-  const whole = t.slice(0, last).replace(/[.,]/g, ""),
-    dec = t.slice(last + 1).replace(/[.,]/g, "");
-  if (dec.length >= 3) return (whole + dec).slice(0, 12);
-  return (whole || "0") + "." + dec;
-};
 
 // Leave what the person types alone (comma or point); only strip letters
 function stripToAmount(inp) {
