@@ -18,6 +18,7 @@ export class Node {
   get parentElement() { return this.parentNode instanceof Element ? this.parentNode : null; }
   get isConnected() { let n = this; while (n) { if (n instanceof Document) return true; n = n.parentNode; } return false; }
   appendChild(c) { if (c.parentNode) c.remove(); c.parentNode = this; this.childNodes.push(c); this.ownerDocument?._appended(c); return c; }
+  insertBefore(c, ref) { if (!ref) return this.appendChild(c); if (c.parentNode) c.remove(); c.parentNode = this; this.childNodes.splice(this.childNodes.indexOf(ref), 0, c); this.ownerDocument?._appended(c); return c; }
   remove() { const p = this.parentNode; if (!p) return; p.childNodes.splice(p.childNodes.indexOf(this), 1); this.parentNode = null; }
   contains(n) { while (n) { if (n === this) return true; n = n.parentNode; } return false; }
   addEventListener(type, fn) { (this._listeners[type] ||= []).push(fn); }
@@ -164,6 +165,7 @@ export class Document extends Node {
   }
   _appended(n) { if (n instanceof Element && n.localName === "script" && n.isConnected) this._env.loadScript(n); }
   createElement(tag) { return new Element(this, tag); }
+  createTextNode(text) { return new Text(this, String(text)); }
   getElementById(id) { return walk(this.documentElement).find(e => e.getAttribute("id") === id) ?? null; }
   querySelectorAll(sel) { return selectAll(this.documentElement, sel, true); }
   querySelector(sel) { return this.querySelectorAll(sel)[0] ?? null; }

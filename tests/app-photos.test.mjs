@@ -119,6 +119,7 @@ test("attach files: PDF pages kept, figures read from the last page; other files
   app.env.pdfPages = 8;
   await app.files("#wholesale-file", [new File(["%PDF"], "z-report.pdf", { type: "application/pdf" })]);
   snap(t, { writes: app.writes().map(w => [w.path, w.data.takenAt, w.data.data.slice(0, 60)]), message: app.text("#scan-msg"), ai: globalThis.__fakeAI.attempts.length }, "pdf");
+  snap(t, app.html("#scan-msg"), "pdf message");
   await app.files("#wholesale-file", [new File(["x"], "notes.txt", { type: "text/plain" })]);
   snap(t, app.text("#scan-msg"), "text file");
   await app.files("#wholesale-file", [jpg("a.jpg"), new File(["%PDF"], "b.pdf", { type: "application/pdf" })]);

@@ -166,11 +166,16 @@ exports[`attach files: PDF pages kept, figures read from the last page; other fi
 `;
 
 exports[`attach files: PDF pages kept, figures read from the last page; other files refused 2`] = `
+## pdf message
+<div class="msg" id="scan-msg" style="flex-basis:100%">"Photo saved. Filled Cash from the report. Check each figure against the slip before signing.Show what the reader saw{\\"cash\\": 42, \\"readable\\": true} Only the first 6 pages of z-report.pdf were kept."</div>
+`;
+
+exports[`attach files: PDF pages kept, figures read from the last page; other files refused 3`] = `
 ## text file
 notes.txt is not a photo or PDF. Attach a photo (JPG, PNG) or a PDF.
 `;
 
-exports[`attach files: PDF pages kept, figures read from the last page; other files refused 3`] = `
+exports[`attach files: PDF pages kept, figures read from the last page; other files refused 4`] = `
 ## photo then pdf
 [
   "shops/TestShopKey0123456789abc/photos/auto007",
@@ -183,7 +188,7 @@ exports[`attach files: PDF pages kept, figures read from the last page; other fi
 ]
 `;
 
-exports[`attach files: PDF pages kept, figures read from the last page; other files refused 4`] = `
+exports[`attach files: PDF pages kept, figures read from the last page; other files refused 5`] = `
 ## pictures read
 [
   "1272x1800",
@@ -191,7 +196,7 @@ exports[`attach files: PDF pages kept, figures read from the last page; other fi
 ]
 `;
 
-exports[`attach files: PDF pages kept, figures read from the last page; other files refused 5`] = `
+exports[`attach files: PDF pages kept, figures read from the last page; other files refused 6`] = `
 ## pdf reader unavailable
 The PDF c.pdf could not be opened: PDF reader could not be downloaded
 `;
