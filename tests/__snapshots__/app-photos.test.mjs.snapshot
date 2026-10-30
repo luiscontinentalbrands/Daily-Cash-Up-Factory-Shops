@@ -160,14 +160,21 @@ exports[`attach files: PDF pages kept, figures read from the last page; other fi
       "data:image/jpeg;base64,aW1hZ2UvanBlZ3w5ODl4MTQwMHxvcHMgMnxxI"
     ]
   ],
-  "message": "Photo saved. Filled Cash from the report. Check each figure against the slip before signing.Show what the reader saw{\\"cash\\": 42, \\"readable\\": true} Only the first 6 pages of z-report.pdf were kept.",
+  "message": "Photo saved. Filled Cash from the report. Check each figure against the slip before signing. Only the first 6 pages of z-report.pdf were kept.Show what the reader saw{\\"cash\\": 42, \\"readable\\": true}",
   "ai": 1
 }
 `;
 
 exports[`attach files: PDF pages kept, figures read from the last page; other files refused 2`] = `
 ## pdf message
-<div class="msg" id="scan-msg" style="flex-basis:100%">"Photo saved. Filled Cash from the report. Check each figure against the slip before signing.Show what the reader saw{\\"cash\\": 42, \\"readable\\": true} Only the first 6 pages of z-report.pdf were kept."</div>
+<div class="msg" id="scan-msg" style="flex-basis:100%">
+  "Photo saved. Filled Cash from the report. Check each figure against the slip before signing."
+  " Only the first 6 pages of z-report.pdf were kept."
+  <details style="margin-top:6px">
+    <summary style="cursor:pointer">"Show what the reader saw"</summary>
+    <pre style="white-space:pre-wrap;font-size:.78rem;max-height:240px;overflow:auto;background:var(--bg);padding:8px;border-radius:8px">"{\\"cash\\": 42, \\"readable\\": true}"</pre>
+  </details>
+</div>
 `;
 
 exports[`attach files: PDF pages kept, figures read from the last page; other files refused 3`] = `

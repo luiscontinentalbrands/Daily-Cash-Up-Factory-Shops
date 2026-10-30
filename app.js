@@ -1910,8 +1910,9 @@ async function attachFiles(files, dept) {
   }
   await scanPhoto(imgs[readIdx], dept, true);
   if (note) {
+    // add the note to the message text, keeping the "Show what the reader saw" details after it
     const m = $("#scan-msg");
-    if (m) m.textContent += note;
+    if (m) m.insertBefore(document.createTextNode(note), m.querySelector("details"));
   }
 }
 async function scanPhoto(file, dept, read) {
