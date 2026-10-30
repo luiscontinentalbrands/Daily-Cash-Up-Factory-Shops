@@ -1872,6 +1872,7 @@ async function attachFiles(files, dept) {
   const say = (t, err) => showMsg($("#scan-msg"), t, err);
   const imgs = [];
   let readIdx = 0,
+    fromPdf = false,
     note = "";
   for (const f of files) {
     const isPdf = f.type === "application/pdf" || /\.pdf$/i.test(f.name);
@@ -1880,7 +1881,11 @@ async function attachFiles(files, dept) {
       try {
         const r = await pdfToImages(f);
         if (!r.images.length) continue;
-        if (!imgs.length) readIdx = r.images.length - 1; // the totals are on the last page
+        // the totals are on the last page of the (first) PDF, even when photos were attached before it
+        if (!fromPdf) {
+          readIdx = imgs.length + r.images.length - 1;
+          fromPdf = true;
+        }
         imgs.push(...r.images);
         if (r.total > r.images.length)
           note = " Only the first " + r.images.length + " pages of " + f.name + " were kept.";
@@ -1899,7 +1904,7 @@ async function attachFiles(files, dept) {
     say("Nothing to attach.", true);
     return;
   }
-  // save every page/photo; read the figures from one of them (the PDF's last page, or the first photo)
+  // save every page/photo; read the figures from one of them (the PDF's last page, otherwise the first photo)
   for (let i = 0; i < imgs.length; i++) {
     if (i !== readIdx) await scanPhoto(imgs[i], dept, false);
   }
