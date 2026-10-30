@@ -670,7 +670,13 @@ async function save(dept, opts) {
           at: serverTimestamp(),
           totals: isMgr(dept) ? null : totals(doc),
         });
-      } catch (e) {}
+      } catch (e) {
+        // the change itself is saved; say so, but make sure the missing audit entry is noticed
+        console.error("Audit trail:", e);
+        saveAlert(
+          `The ${opts.action === "signed" ? "signature" : "reopen"} was saved, but it could not be written to the audit trail (${(e && (e.code || e.message)) || "unknown"}). Tell the administrator.`,
+        );
+      }
     }
     return true;
   } catch (e) {

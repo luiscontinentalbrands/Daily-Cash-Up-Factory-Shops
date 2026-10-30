@@ -1622,6 +1622,6 @@ exports[`signing when the audit trail entry cannot be written 1`] = `
     ]
   ],
   "chip": "Signed off",
-  "alert": null
+  "alert": "The signature was saved, but it could not be written to the audit trail (permission-denied). Tell the administrator."
 }
 `;
