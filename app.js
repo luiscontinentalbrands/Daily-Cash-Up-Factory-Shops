@@ -1377,6 +1377,33 @@ function bindAmountBox(inp, onInput, onLeave) {
   });
 }
 
+// Reopen a signed sheet (ro: its Reopen button): the signature is removed and the reopen is recorded.
+// A shop sheet on a day the manager has closed reopens the day first, which only a manager or the
+// administrator may do.
+async function reopenSheet(rdept, ro) {
+  ro.disabled = true;
+  const mk = "manager",
+    M = current(mk);
+  if (!isMgr(rdept) && M.status === "signed") {
+    if (!isManagerOrAdmin()) {
+      ro.disabled = false;
+      $("#reopen-msg").textContent = "The day is closed. Ask the manager to reopen it.";
+      return;
+    }
+    Object.assign(M, { status: "draft", signature: "", signedBy: "", signedAt: "" });
+    state.pending[mk] = true;
+    if (!(await save(mk, { action: "reopened", by: state.me.name }))) {
+      ro.disabled = false;
+      $("#reopen-msg").textContent = "Could not reopen the day. Try again.";
+      return;
+    }
+  }
+  Object.assign(current(rdept), { status: "draft", signature: "", signedBy: "", signedAt: "" });
+  clearTimeout(timers[rdept]);
+  state.pending[rdept] = true;
+  await save(rdept, { action: "reopened", by: state.me.name });
+  render(true);
+}
 function bindDept(dept) {
   // always write into the CURRENT copy of the sheet: it is replaced whenever the database sends an update
   const D = () => local[dept];
@@ -1438,28 +1465,7 @@ function bindDept(dept) {
         }, ARMED_MS);
         return;
       }
-      ro.disabled = true;
-      const mk = "manager",
-        M = current(mk);
-      if (!isMgr(rdept) && M.status === "signed") {
-        if (!isManagerOrAdmin()) {
-          ro.disabled = false;
-          $("#reopen-msg").textContent = "The day is closed. Ask the manager to reopen it.";
-          return;
-        }
-        Object.assign(M, { status: "draft", signature: "", signedBy: "", signedAt: "" });
-        state.pending[mk] = true;
-        if (!(await save(mk, { action: "reopened", by: state.me.name }))) {
-          ro.disabled = false;
-          $("#reopen-msg").textContent = "Could not reopen the day. Try again.";
-          return;
-        }
-      }
-      Object.assign(current(rdept), { status: "draft", signature: "", signedBy: "", signedAt: "" });
-      clearTimeout(timers[rdept]);
-      state.pending[rdept] = true;
-      await save(rdept, { action: "reopened", by: state.me.name });
-      render(true);
+      await reopenSheet(rdept, ro);
     });
   }
   const pad = $("#pad");
