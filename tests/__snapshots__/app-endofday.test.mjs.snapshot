@@ -204,7 +204,7 @@ exports[`End of Day screen through the day 1`] = `
               <td class="num">
                 <b>"R 410,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"PayFast card"</td>
@@ -220,7 +220,7 @@ exports[`End of Day screen through the day 1`] = `
               <td class="num">
                 <b>"R 99,99"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"EFT"</td>
@@ -236,7 +236,7 @@ exports[`End of Day screen through the day 1`] = `
               <td class="num">
                 <b>"R 800,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Shop2Shop"</td>
@@ -252,7 +252,7 @@ exports[`End of Day screen through the day 1`] = `
               <td class="num">
                 <b>"R 120,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -268,7 +268,7 @@ exports[`End of Day screen through the day 1`] = `
               <td class="num">
                 <b>"R 105,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Petty cash (not banked)"</td>
@@ -591,7 +591,7 @@ exports[`End of Day screen through the day 2`] = `
               <td class="num">
                 <b>"R 410,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"PayFast card"</td>
@@ -607,7 +607,7 @@ exports[`End of Day screen through the day 2`] = `
               <td class="num">
                 <b>"R 99,99"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"EFT"</td>
@@ -623,7 +623,7 @@ exports[`End of Day screen through the day 2`] = `
               <td class="num">
                 <b>"R 800,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Shop2Shop"</td>
@@ -639,7 +639,7 @@ exports[`End of Day screen through the day 2`] = `
               <td class="num">
                 <b>"R 120,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -655,7 +655,7 @@ exports[`End of Day screen through the day 2`] = `
               <td class="num">
                 <b>"R 105,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Petty cash (not banked)"</td>
@@ -980,7 +980,7 @@ exports[`End of Day screen through the day 3`] = `
               <td class="num">
                 <b>"R 410,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"PayFast card"</td>
@@ -996,7 +996,7 @@ exports[`End of Day screen through the day 3`] = `
               <td class="num">
                 <b>"R 99,99"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"EFT"</td>
@@ -1012,7 +1012,7 @@ exports[`End of Day screen through the day 3`] = `
               <td class="num">
                 <b>"R 800,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Shop2Shop"</td>
@@ -1028,7 +1028,7 @@ exports[`End of Day screen through the day 3`] = `
               <td class="num">
                 <b>"R 120,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -1044,7 +1044,7 @@ exports[`End of Day screen through the day 3`] = `
               <td class="num">
                 <b>"R 105,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Petty cash (not banked)"</td>
@@ -1371,7 +1371,7 @@ exports[`End of Day screen through the day 4`] = `
               <td class="num">
                 <b>"R 410,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"PayFast card"</td>
@@ -1387,7 +1387,7 @@ exports[`End of Day screen through the day 4`] = `
               <td class="num">
                 <b>"R 99,99"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"EFT"</td>
@@ -1403,7 +1403,7 @@ exports[`End of Day screen through the day 4`] = `
               <td class="num">
                 <b>"R 800,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Shop2Shop"</td>
@@ -1419,7 +1419,7 @@ exports[`End of Day screen through the day 4`] = `
               <td class="num">
                 <b>"R 120,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -1435,7 +1435,7 @@ exports[`End of Day screen through the day 4`] = `
               <td class="num">
                 <b>"R 105,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Petty cash (not banked)"</td>
@@ -1788,7 +1788,7 @@ exports[`End of Day screen through the day 5`] = `
               <td class="num">
                 <b>"R 410,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"PayFast card"</td>
@@ -1804,7 +1804,7 @@ exports[`End of Day screen through the day 5`] = `
               <td class="num">
                 <b>"R 99,99"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"EFT"</td>
@@ -1820,7 +1820,7 @@ exports[`End of Day screen through the day 5`] = `
               <td class="num">
                 <b>"R 800,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Shop2Shop"</td>
@@ -1836,7 +1836,7 @@ exports[`End of Day screen through the day 5`] = `
               <td class="num">
                 <b>"R 120,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -1852,7 +1852,7 @@ exports[`End of Day screen through the day 5`] = `
               <td class="num">
                 <b>"R 105,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Petty cash (not banked)"</td>
@@ -2179,7 +2179,7 @@ exports[`End of Day screen through the day 6`] = `
               <td class="num">
                 <b>"R 5 950,75"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Credit card CBM"</td>
@@ -2193,7 +2193,7 @@ exports[`End of Day screen through the day 6`] = `
               <td class="num">
                 <b>"R 410,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"PayFast card"</td>
@@ -2207,7 +2207,7 @@ exports[`End of Day screen through the day 6`] = `
               <td class="num">
                 <b>"R 99,99"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"EFT"</td>
@@ -2221,7 +2221,7 @@ exports[`End of Day screen through the day 6`] = `
               <td class="num">
                 <b>"R 800,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Shop2Shop"</td>
@@ -2235,7 +2235,7 @@ exports[`End of Day screen through the day 6`] = `
               <td class="num">
                 <b>"R 120,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -2249,7 +2249,7 @@ exports[`End of Day screen through the day 6`] = `
               <td class="num">
                 <b>"R 105,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Petty cash (not banked)"</td>
@@ -2563,7 +2563,7 @@ exports[`End of Day screen through the day 7`] = `
               <td class="num">
                 <b>"R 410,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"PayFast card"</td>
@@ -2579,7 +2579,7 @@ exports[`End of Day screen through the day 7`] = `
               <td class="num">
                 <b>"R 99,99"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"EFT"</td>
@@ -2595,7 +2595,7 @@ exports[`End of Day screen through the day 7`] = `
               <td class="num">
                 <b>"R 800,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Shop2Shop"</td>
@@ -2611,7 +2611,7 @@ exports[`End of Day screen through the day 7`] = `
               <td class="num">
                 <b>"R 120,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -2627,7 +2627,7 @@ exports[`End of Day screen through the day 7`] = `
               <td class="num">
                 <b>"R 105,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Petty cash (not banked)"</td>
@@ -2950,7 +2950,7 @@ exports[`End of Day screen through the day 8`] = `
               <td class="num">
                 <b>"R 410,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"PayFast card"</td>
@@ -2966,7 +2966,7 @@ exports[`End of Day screen through the day 8`] = `
               <td class="num">
                 <b>"R 99,99"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"EFT"</td>
@@ -2982,7 +2982,7 @@ exports[`End of Day screen through the day 8`] = `
               <td class="num">
                 <b>"R 800,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Shop2Shop"</td>
@@ -2998,7 +2998,7 @@ exports[`End of Day screen through the day 8`] = `
               <td class="num">
                 <b>"R 120,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -3014,7 +3014,7 @@ exports[`End of Day screen through the day 8`] = `
               <td class="num">
                 <b>"R 105,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Petty cash (not banked)"</td>
@@ -3303,7 +3303,7 @@ exports[`download the PDF report 2`] = `
 ["text","R 410,00",230.6111111111111,70,{"align":"right"}]
 ["text","R 410,00",256.05555555555554,70,{"align":"right"}]
 ["setTextColor",47,107,58]
-["text","R 0.00",281.5,70,{"align":"right"}]
+["text","R 0,00",281.5,70,{"align":"right"}]
 ["line",14,72.2,283,72.2]
 ["setTextColor",31,28,24]
 ["setFont","helvetica","normal"]
@@ -3323,7 +3323,7 @@ exports[`download the PDF report 2`] = `
 ["text","R 99,99",230.6111111111111,76.5,{"align":"right"}]
 ["text","R 99,99",256.05555555555554,76.5,{"align":"right"}]
 ["setTextColor",47,107,58]
-["text","R 0.00",281.5,76.5,{"align":"right"}]
+["text","R 0,00",281.5,76.5,{"align":"right"}]
 ["line",14,78.7,283,78.7]
 ["setTextColor",31,28,24]
 ["setFont","helvetica","normal"]
@@ -3343,7 +3343,7 @@ exports[`download the PDF report 2`] = `
 ["text","R 800,00",230.6111111111111,83,{"align":"right"}]
 ["text","R 800,00",256.05555555555554,83,{"align":"right"}]
 ["setTextColor",47,107,58]
-["text","R 0.00",281.5,83,{"align":"right"}]
+["text","R 0,00",281.5,83,{"align":"right"}]
 ["line",14,85.2,283,85.2]
 ["setTextColor",31,28,24]
 ["setFont","helvetica","normal"]
@@ -3363,7 +3363,7 @@ exports[`download the PDF report 2`] = `
 ["text","R 120,00",230.6111111111111,89.5,{"align":"right"}]
 ["text","R 120,00",256.05555555555554,89.5,{"align":"right"}]
 ["setTextColor",47,107,58]
-["text","R 0.00",281.5,89.5,{"align":"right"}]
+["text","R 0,00",281.5,89.5,{"align":"right"}]
 ["line",14,91.7,283,91.7]
 ["setTextColor",31,28,24]
 ["setFont","helvetica","normal"]
@@ -3379,7 +3379,7 @@ exports[`download the PDF report 2`] = `
 ["text","R 105,00",230.6111111111111,96,{"align":"right"}]
 ["text","R 105,00",256.05555555555554,96,{"align":"right"}]
 ["setTextColor",47,107,58]
-["text","R 0.00",281.5,96,{"align":"right"}]
+["text","R 0,00",281.5,96,{"align":"right"}]
 ["line",14,98.2,283,98.2]
 ["setTextColor",31,28,24]
 ["setFont","helvetica","normal"]

@@ -690,7 +690,7 @@ exports[`scan a photo: saved, figures filled (Wholesale), checks against total a
       <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="EFT deposited">
     </td>
     " "
-    <td class="num var-zero" id="v-eft">"R 0.00"</td>
+    <td class="num var-zero" id="v-eft">"R 0,00"</td>
   </tr>
   <tr>
     <td>"Shop2Shop"</td>
@@ -716,7 +716,7 @@ exports[`scan a photo: saved, figures filled (Wholesale), checks against total a
       <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan deposited">
     </td>
     " "
-    <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+    <td class="num var-zero" id="v-snapscan">"R 0,00"</td>
   </tr>
 </tbody>
 `;

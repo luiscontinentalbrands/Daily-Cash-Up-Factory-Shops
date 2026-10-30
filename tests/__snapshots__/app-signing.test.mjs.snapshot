@@ -237,7 +237,7 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
                 <input id="wholesale-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="2000.00" disabled aria-label="CashGuard deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+              <td class="num var-zero" id="v-cashguard">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Credit card"</td>
@@ -250,7 +250,7 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
                 <input id="wholesale-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="3200.50" disabled aria-label="Credit card deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-card">"R 0.00"</td>
+              <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Credit card CBM"</td>
@@ -263,7 +263,7 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
                 <input id="wholesale-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="410.00" disabled aria-label="Credit card CBM deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-cardcbm">"R 0.00"</td>
+              <td class="num var-zero" id="v-cardcbm">"R 0,00"</td>
             </tr>
             <tr>
               <td>"PayFast card"</td>
@@ -276,7 +276,7 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
                 <input id="wholesale-payfast-deposited" data-m="payfast" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="99.99" disabled aria-label="PayFast card deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-payfast">"R 0.00"</td>
+              <td class="num var-zero" id="v-payfast">"R 0,00"</td>
             </tr>
             <tr>
               <td>"EFT"</td>
@@ -289,7 +289,7 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
                 <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="800.00" disabled aria-label="EFT deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-eft">"R 0.00"</td>
+              <td class="num var-zero" id="v-eft">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Shop2Shop"</td>
@@ -302,7 +302,7 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
                 <input id="wholesale-shop2shop-deposited" data-m="shop2shop" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="120.00" disabled aria-label="Shop2Shop deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-shop2shop">"R 0.00"</td>
+              <td class="num var-zero" id="v-shop2shop">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -315,7 +315,7 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
                 <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="45.00" disabled aria-label="SnapScan deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+              <td class="num var-zero" id="v-snapscan">"R 0,00"</td>
             </tr>
           </tbody>
           " "
@@ -924,7 +924,7 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
               <td class="num">
                 <b>"R 410,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"PayFast card"</td>
@@ -940,7 +940,7 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
               <td class="num">
                 <b>"R 99,99"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"EFT"</td>
@@ -956,7 +956,7 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
               <td class="num">
                 <b>"R 800,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Shop2Shop"</td>
@@ -972,7 +972,7 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
               <td class="num">
                 <b>"R 120,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -988,7 +988,7 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
               <td class="num">
                 <b>"R 105,00"</b>
               </td>
-              <td class="num var-zero">"R 0.00"</td>
+              <td class="num var-zero">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Petty cash (not banked)"</td>
@@ -1448,7 +1448,7 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
                 <input id="wholesale-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="CashGuard deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+              <td class="num var-zero" id="v-cashguard">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Credit card"</td>
@@ -1461,7 +1461,7 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
                 <input id="wholesale-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-card">"R 0.00"</td>
+              <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Credit card CBM"</td>
@@ -1474,7 +1474,7 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
                 <input id="wholesale-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card CBM deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-cardcbm">"R 0.00"</td>
+              <td class="num var-zero" id="v-cardcbm">"R 0,00"</td>
             </tr>
             <tr>
               <td>"PayFast card"</td>
@@ -1487,7 +1487,7 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
                 <input id="wholesale-payfast-deposited" data-m="payfast" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="PayFast card deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-payfast">"R 0.00"</td>
+              <td class="num var-zero" id="v-payfast">"R 0,00"</td>
             </tr>
             <tr>
               <td>"EFT"</td>
@@ -1500,7 +1500,7 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
                 <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="EFT deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-eft">"R 0.00"</td>
+              <td class="num var-zero" id="v-eft">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Shop2Shop"</td>
@@ -1513,7 +1513,7 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
                 <input id="wholesale-shop2shop-deposited" data-m="shop2shop" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Shop2Shop deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-shop2shop">"R 0.00"</td>
+              <td class="num var-zero" id="v-shop2shop">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -1526,7 +1526,7 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
                 <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="SnapScan deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+              <td class="num var-zero" id="v-snapscan">"R 0,00"</td>
             </tr>
           </tbody>
           " "

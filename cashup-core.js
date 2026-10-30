@@ -47,7 +47,7 @@ const fmt = new Intl.NumberFormat("en-ZA", { minimumFractionDigits: 2, maximumFr
 export const R = v => "R " + fmt.format(v || 0);
 export const RV = v => {
   const a = Math.round(v * 100) / 100;
-  if (a === 0) return "R 0.00";
+  if (a === 0) return R(0);
   return (a > 0 ? "+" : "−") + "R " + fmt.format(Math.abs(a));
 };
 export const vcls = v => {

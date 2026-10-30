@@ -367,7 +367,7 @@ exports[`first administrator 6`] = `
                 <input id="wholesale-cash-deposited" data-m="cash" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Cash deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-cash">"R 0.00"</td>
+              <td class="num var-zero" id="v-cash">"R 0,00"</td>
             </tr>
             <tr>
               <td>"CashGuard"</td>
@@ -380,7 +380,7 @@ exports[`first administrator 6`] = `
                 <input id="wholesale-cashguard-deposited" data-m="cashguard" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="CashGuard deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-cashguard">"R 0.00"</td>
+              <td class="num var-zero" id="v-cashguard">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Credit card"</td>
@@ -393,7 +393,7 @@ exports[`first administrator 6`] = `
                 <input id="wholesale-card-deposited" data-m="card" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-card">"R 0.00"</td>
+              <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Credit card CBM"</td>
@@ -406,7 +406,7 @@ exports[`first administrator 6`] = `
                 <input id="wholesale-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-cardcbm">"R 0.00"</td>
+              <td class="num var-zero" id="v-cardcbm">"R 0,00"</td>
             </tr>
             <tr>
               <td>"PayFast card"</td>
@@ -419,7 +419,7 @@ exports[`first administrator 6`] = `
                 <input id="wholesale-payfast-deposited" data-m="payfast" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="PayFast card deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-payfast">"R 0.00"</td>
+              <td class="num var-zero" id="v-payfast">"R 0,00"</td>
             </tr>
             <tr>
               <td>"EFT"</td>
@@ -432,7 +432,7 @@ exports[`first administrator 6`] = `
                 <input id="wholesale-eft-deposited" data-m="eft" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="EFT deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-eft">"R 0.00"</td>
+              <td class="num var-zero" id="v-eft">"R 0,00"</td>
             </tr>
             <tr>
               <td>"Shop2Shop"</td>
@@ -445,7 +445,7 @@ exports[`first administrator 6`] = `
                 <input id="wholesale-shop2shop-deposited" data-m="shop2shop" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Shop2Shop deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-shop2shop">"R 0.00"</td>
+              <td class="num var-zero" id="v-shop2shop">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -458,7 +458,7 @@ exports[`first administrator 6`] = `
                 <input id="wholesale-snapscan-deposited" data-m="snapscan" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="SnapScan deposited">
               </td>
               " "
-              <td class="num var-zero" id="v-snapscan">"R 0.00"</td>
+              <td class="num var-zero" id="v-snapscan">"R 0,00"</td>
             </tr>
           </tbody>
           " "
@@ -467,7 +467,7 @@ exports[`first administrator 6`] = `
               <td>"Total"</td>
               <td class="num" id="t-report">"R 0,00"</td>
               <td class="num" id="t-dep">"R 0,00"</td>
-              <td class="num var-zero" id="t-var">"R 0.00"</td>
+              <td class="num var-zero" id="t-var">"R 0,00"</td>
             </tr>
             " "
           </tfoot>
