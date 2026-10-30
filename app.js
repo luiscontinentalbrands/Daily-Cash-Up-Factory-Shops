@@ -74,7 +74,7 @@ const methodsFor = dept =>
           ? m.k !== "eft" && m.k !== "shop2shop"
           : true,
   );
-const lbl = (m, dept) =>
+const methodLabel = (m, dept) =>
   m.k === "cash" ? (isRetail(dept) ? "Coins" : dept === "wholesale" ? "Cash" : "Cash / Coins (Retail shops)") : m.l;
 const fmt = new Intl.NumberFormat("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const R = v => "R " + fmt.format(v || 0);
@@ -159,7 +159,7 @@ function clone(o) {
 }
 
 // CashGuard has two "deposited" amounts: banked in Nedbank (deposited) and counted but retained, not yet banked (retained)
-const dep = ln => num(ln && ln.deposited) + num(ln && ln.retained);
+const depositedTotal = ln => num(ln && ln.deposited) + num(ln && ln.retained);
 function blank(date, dept) {
   const lines = {};
   METHODS.forEach(
@@ -219,7 +219,7 @@ function totals(doc) {
     d = 0;
   methodsFor(doc.dept).forEach(m => {
     r += num(doc.lines[m.k].report);
-    d += dep(doc.lines[m.k]);
+    d += depositedTotal(doc.lines[m.k]);
   });
   const ret = num(doc.lines.cashguard && doc.lines.cashguard.retained);
   const pet = doc.dept === "retail" ? num(doc.lines.petty && doc.lines.petty.deposited) : 0;
@@ -1008,7 +1008,7 @@ function cgNote(t) {
 // CashGuard on the retail shops has two: deposited in Nedbank, and counted & retained (not banked).
 function sheetRow(dept, m, ln, dis) {
   const inA = `inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" ${dis}`;
-  const v = dep(ln) - num(ln.report);
+  const v = depositedTotal(ln) - num(ln.report);
   if (m.k === "petty")
     return `<tr class="petty"><td>${m.l}<div class="msg" style="font-size:.72rem;font-weight:400">Cash kept for petty cash</div></td>
       <td class="num muted">—</td>
@@ -1020,9 +1020,9 @@ function sheetRow(dept, m, ln, dis) {
       <td class="inp"><label class="sub" for="${dept}-cashguard-deposited">Deposited in Nedbank</label><input id="${dept}-cashguard-deposited" data-m="cashguard" data-f="deposited" ${inA} value="${esc(ln.deposited)}" aria-label="CashGuard deposited in Nedbank">
         <label class="sub" for="${dept}-cashguard-retained">Counted &amp; retained, not banked</label><input id="${dept}-cashguard-retained" data-m="cashguard" data-f="retained" ${inA} value="${esc(ln.retained)}" aria-label="CashGuard counted and retained, not banked"></td>
       <td class="num ${vcls(v)}" id="v-cashguard">${RV(v)}</td></tr>`;
-  return `<tr><td>${lbl(m, dept)}</td>
-      <td class="inp"><input id="${dept}-${m.k}-report" data-m="${m.k}" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.report)}" ${dis} aria-label="${lbl(m, dept)} per report"></td>
-      <td class="inp"><input id="${dept}-${m.k}-deposited" data-m="${m.k}" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="${lbl(m, dept)} deposited"></td>
+  return `<tr><td>${methodLabel(m, dept)}</td>
+      <td class="inp"><input id="${dept}-${m.k}-report" data-m="${m.k}" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.report)}" ${dis} aria-label="${methodLabel(m, dept)} per report"></td>
+      <td class="inp"><input id="${dept}-${m.k}-deposited" data-m="${m.k}" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="${methodLabel(m, dept)} deposited"></td>
       <td class="num ${vcls(v)}" id="v-${m.k}">${RV(v)}</td></tr>`;
 }
 // Above a signed sheet that this person could otherwise edit: it is locked, and how to reopen it
@@ -1312,7 +1312,7 @@ function patchInputs(dept) {
 function recalc(dept) {
   const doc = drafts[dept];
   METHODS.forEach(m => {
-    const v = dep(doc.lines[m.k]) - num(doc.lines[m.k].report);
+    const v = depositedTotal(doc.lines[m.k]) - num(doc.lines[m.k].report);
     const el = document.getElementById("v-" + m.k);
     if (el) {
       el.textContent = RV(v);
@@ -1571,7 +1571,7 @@ function combinedLine(m, shops) {
   const cells = shops.map(([d, doc]) => {
     if (!methodsFor(d).some(x => x.k === m.k)) return null;
     const a = num(doc.lines[m.k].report),
-      b = dep(doc.lines[m.k]);
+      b = depositedTotal(doc.lines[m.k]);
     report += a;
     deposited += b;
     return [a, b];
@@ -1619,7 +1619,7 @@ function endOfDayTable(shops, showCD, gr, gd, gv) {
       )
       .join("");
     const v = dd - r;
-    return `<tr><td>${lbl(m, "combined")}</td>${tds}<td class="num grp"><b>${R(r)}</b></td><td class="num"><b>${R(dd)}</b></td><td class="num ${vcls(v)}">${RV(v)}</td></tr>`;
+    return `<tr><td>${methodLabel(m, "combined")}</td>${tds}<td class="num grp"><b>${R(r)}</b></td><td class="num"><b>${R(dd)}</b></td><td class="num ${vcls(v)}">${RV(v)}</td></tr>`;
   }).join("");
   const foot = shops
     .map(([, , t]) => `<td class="num grp">${R(t.report)}</td><td class="num">${R(t.deposited)}</td>`)
@@ -1644,7 +1644,7 @@ function endOfDayCsv(shops, M, info) {
   const lines = [["Date", state.date], [], head];
   METHODS.forEach(m => {
     const { cells, report: r, deposited: dd } = combinedLine(m, shops);
-    const row = [lbl(m, "combined")];
+    const row = [methodLabel(m, "combined")];
     cells.forEach(c => row.push(...(c || [0, 0])));
     row.push(r, dd, dd - r);
     lines.push(row.map(f));
@@ -2323,7 +2323,7 @@ async function readFigures(dataUrl, dept, lead, photoId) {
     const v = vals[m.k];
     if (v != null) {
       doc.lines[m.k].report = v.toFixed(2);
-      filled.push(lbl(m, dept));
+      filled.push(methodLabel(m, dept));
       filledKeys.push(m.k);
       const el = document.getElementById(dept + "-" + m.k + "-report");
       if (el) {
