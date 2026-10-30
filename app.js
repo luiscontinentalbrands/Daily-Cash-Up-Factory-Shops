@@ -270,6 +270,15 @@ const state = {
   ready: false,
   users: [],
   me: null,
+  photos: [], // report photos of the open day
+  handovers: [], // cash handovers of the open day
+  tries: [], // times of recent wrong PINs on this device
+  ver: {}, // per sheet: number of changes made here
+  inflight: {}, // per sheet: saves on their way to the database
+  justCreated: null, // id of the administrator just created on this device
+  deferred: false, // a live update waited while a signature was being drawn
+  lastAI: "", // what the photo reader returned, shown under its message
+  nb: null, // Not banked report; set up on first visit (dates start at that day's month)
 };
 const local = {};
 let daySub = null,
@@ -277,7 +286,6 @@ let daySub = null,
   photoSub = null,
   hoSub = null,
   timers = {};
-state.photos = [];
 
 /* ---------- device access code ----------
    The shop's secret code is given once per device through a setup link (…/#join-CODE).
@@ -469,7 +477,7 @@ function askPin(u) {
     e.preventDefault();
     const m = $("#pinmsg");
     const now = Date.now();
-    state.tries = (state.tries || []).filter(t => now - t < PIN_WINDOW_MS);
+    state.tries = state.tries.filter(t => now - t < PIN_WINDOW_MS);
     if (state.tries.length >= PIN_MAX_TRIES) {
       m.className = "msg err";
       m.textContent = "Too many wrong PINs. Wait 5 minutes and try again.";
@@ -519,7 +527,7 @@ function showChangePin(u, forced) {
       b = $("#cp2").value;
     if (!forced) {
       const now = Date.now();
-      state.tries = (state.tries || []).filter(t => now - t < PIN_WINDOW_MS);
+      state.tries = state.tries.filter(t => now - t < PIN_WINDOW_MS);
       if (state.tries.length >= PIN_MAX_TRIES) {
         m.textContent = "Too many wrong PINs. Wait 5 minutes and try again.";
         return;
@@ -747,7 +755,6 @@ function scheduleSave(dept) {
   const doc = local[dept];
   if (doc.status === "new") doc.status = "draft";
   if (!isMgr(dept) && !doc.cashier) doc.cashier = state.me.name;
-  state.ver = state.ver || {};
   state.ver[dept] = (state.ver[dept] || 0) + 1;
   state.pending[dept] = true;
   clearTimeout(timers[dept]);
@@ -776,9 +783,7 @@ async function save(dept, opts) {
   opts = opts || {};
   const doc = local[dept];
   if (!doc) return false;
-  state.ver = state.ver || {};
   const v = state.ver[dept] || 0;
-  state.inflight = state.inflight || {};
   state.inflight[dept] = (state.inflight[dept] || 0) + 1;
   try {
     await setDoc(shopDoc(idOf(dept, doc.date)), payload(doc, !!opts.signing, opts.action === "reopened"));
@@ -1063,7 +1068,7 @@ function renderDept(dept) {
 const handoversCol = () => collection(db, "shops", state.key, "handovers");
 const HO_TO = "Candido";
 function handoverList() {
-  const hs = (state.handovers || []).filter(h => h.shop === "retail");
+  const hs = state.handovers.filter(h => h.shop === "retail");
   if (!hs.length) return '<div class="msg">No cash handed over yet for this day.</div>';
   return `<div class="hlist">${hs
     .map(h => {
@@ -1650,7 +1655,7 @@ function renderCombined() {
       ${notes ? `<div class="field"><label>Notes</label><div class="static" style="font-weight:400;white-space:pre-wrap">${notes}</div></div>` : ""}
       <div class="field"><label>CashGuard</label><div class="static num" style="font-weight:400">${splitShops.map(([d, doc, t]) => `<b>${DEPTS[d]}:</b> deposited in Nedbank ${R(num(doc.lines.cashguard.deposited))} · counted &amp; retained, not banked <b>${R(t.retained)}</b>`).join("<br>")}</div></div>
       ${tr.petty || Rt.pettyNotes ? `<div class="field"><label>Aeroton Retail petty cash (not banked)</label><div class="static num" style="font-weight:400"><b>${R(tr.petty)}</b>${Rt.pettyNotes ? " · " + esc(Rt.pettyNotes) : ""}</div></div>` : ""}
-      ${(state.handovers || []).length ? `<div class="field"><label>Cash handed over (signed for)</label><div class="static num" style="font-weight:400">${state.handovers.map(h => `${R(num(h.amount))} from ${esc(h.givenBy)} to <b>${esc(h.receivedBy)}</b> · ${esc(timeStr(h.at && h.at.toDate ? h.at.toDate().toISOString() : h.atIso))}`).join("<br>")}</div></div>` : ""}
+      ${state.handovers.length ? `<div class="field"><label>Cash handed over (signed for)</label><div class="static num" style="font-weight:400">${state.handovers.map(h => `${R(num(h.amount))} from ${esc(h.givenBy)} to <b>${esc(h.receivedBy)}</b> · ${esc(timeStr(h.at && h.at.toDate ? h.at.toDate().toISOString() : h.atIso))}`).join("<br>")}</div></div>` : ""}
       <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">${each(d => R(num(d.damaged)) + (d.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(S.reduce((a, [, d]) => a + num(d.damaged), 0))}</b></div></div>
       <div class="sigs">${sig(W, "wholesale")}${sig(Rt, "retail")}${showCD ? sig(C, "citydeep") : ""}${sig(M, "manager")}</div>
       <div class="actions"><button class="btn primary" id="pdf-mail" type="button">Email PDF report</button><button class="btn" id="pdf-dl" type="button">Download PDF</button><button class="btn" id="csv">Download day as CSV</button><span class="msg" id="csv-msg"></span></div>
@@ -1763,7 +1768,7 @@ async function makePdf() {
     C: showCD ? C : null,
     status: info.label,
     photos: [],
-    handovers: (state.handovers || []).map(h => ({
+    handovers: state.handovers.map(h => ({
       amount: num(h.amount),
       givenBy: h.givenBy,
       receivedBy: h.receivedBy,
