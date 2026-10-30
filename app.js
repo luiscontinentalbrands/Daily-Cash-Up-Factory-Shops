@@ -118,6 +118,8 @@ function shortDate(s) {
     year: "numeric",
   });
 }
+// When a record was saved: the server time once it has arrived, otherwise the time the phone noted
+const savedAtIso = x => (x.at && x.at.toDate ? x.at.toDate().toISOString() : x.atIso);
 function timeStr(iso) {
   if (!iso) return "";
   try {
@@ -1073,7 +1075,7 @@ function handoverList() {
   return `<div class="hlist">${hs
     .map(h => {
       const img = safeImg(h.signature);
-      return `<div class="sigbox"><div class="eyebrow">${R(num(h.amount))} · received by ${esc(h.receivedBy)}</div><div class="sig-img">${img ? `<img src="${img}" alt="Signature of ${esc(h.receivedBy)}">` : ""}</div><div class="who">Given by ${esc(h.givenBy)} · ${esc(timeStr(h.at && h.at.toDate ? h.at.toDate().toISOString() : h.atIso))}${h.note ? " · " + esc(h.note) : ""}</div></div>`;
+      return `<div class="sigbox"><div class="eyebrow">${R(num(h.amount))} · received by ${esc(h.receivedBy)}</div><div class="sig-img">${img ? `<img src="${img}" alt="Signature of ${esc(h.receivedBy)}">` : ""}</div><div class="who">Given by ${esc(h.givenBy)} · ${esc(timeStr(savedAtIso(h)))}${h.note ? " · " + esc(h.note) : ""}</div></div>`;
     })
     .join("")}</div>`;
 }
@@ -1655,7 +1657,7 @@ function renderCombined() {
       ${notes ? `<div class="field"><label>Notes</label><div class="static" style="font-weight:400;white-space:pre-wrap">${notes}</div></div>` : ""}
       <div class="field"><label>CashGuard</label><div class="static num" style="font-weight:400">${splitShops.map(([d, doc, t]) => `<b>${DEPTS[d]}:</b> deposited in Nedbank ${R(num(doc.lines.cashguard.deposited))} · counted &amp; retained, not banked <b>${R(t.retained)}</b>`).join("<br>")}</div></div>
       ${tr.petty || Rt.pettyNotes ? `<div class="field"><label>Aeroton Retail petty cash (not banked)</label><div class="static num" style="font-weight:400"><b>${R(tr.petty)}</b>${Rt.pettyNotes ? " · " + esc(Rt.pettyNotes) : ""}</div></div>` : ""}
-      ${state.handovers.length ? `<div class="field"><label>Cash handed over (signed for)</label><div class="static num" style="font-weight:400">${state.handovers.map(h => `${R(num(h.amount))} from ${esc(h.givenBy)} to <b>${esc(h.receivedBy)}</b> · ${esc(timeStr(h.at && h.at.toDate ? h.at.toDate().toISOString() : h.atIso))}`).join("<br>")}</div></div>` : ""}
+      ${state.handovers.length ? `<div class="field"><label>Cash handed over (signed for)</label><div class="static num" style="font-weight:400">${state.handovers.map(h => `${R(num(h.amount))} from ${esc(h.givenBy)} to <b>${esc(h.receivedBy)}</b> · ${esc(timeStr(savedAtIso(h)))}`).join("<br>")}</div></div>` : ""}
       <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">${each(d => R(num(d.damaged)) + (d.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(S.reduce((a, [, d]) => a + num(d.damaged), 0))}</b></div></div>
       <div class="sigs">${sig(W, "wholesale")}${sig(Rt, "retail")}${showCD ? sig(C, "citydeep") : ""}${sig(M, "manager")}</div>
       <div class="actions"><button class="btn primary" id="pdf-mail" type="button">Email PDF report</button><button class="btn" id="pdf-dl" type="button">Download PDF</button><button class="btn" id="csv">Download day as CSV</button><span class="msg" id="csv-msg"></span></div>
@@ -1772,7 +1774,7 @@ async function makePdf() {
       amount: num(h.amount),
       givenBy: h.givenBy,
       receivedBy: h.receivedBy,
-      at: h.at && h.at.toDate ? h.at.toDate().toISOString() : h.atIso,
+      at: savedAtIso(h),
     })),
   });
   return { blob: pdf.output("blob"), name: reportFileName(state.date), info };
@@ -2730,7 +2732,7 @@ async function loadNotBanked(from, to) {
         done: same,
         changed: ticked && !same,
         doneBy: b ? b.by || "" : "",
-        doneAt: b ? (b.at && b.at.toDate ? b.at.toDate().toISOString() : b.atIso || "") : "",
+        doneAt: b ? savedAtIso(b) || "" : "",
         note: kind === "petty" ? n.pettyNotes || "" : "",
       };
     };
