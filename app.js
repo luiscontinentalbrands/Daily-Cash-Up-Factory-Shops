@@ -1002,52 +1002,35 @@ function cgNote(t) {
     ? `Includes CashGuard counted &amp; retained, not banked: <b>${R(t.retained)}</b>${p}. Banked total: ${R(t.banked)}.`
     : "Nothing kept back: everything counted was banked.";
 }
-function renderDept(dept) {
-  const doc = current(dept),
-    signed = doc.status === "signed",
-    editable = !signed && canEditDept(dept),
-    dis = editable ? "" : "disabled";
-  const t = totals(doc);
+// One payment line of a shop sheet: per report, deposited and variance. Petty cash has only a deposited box;
+// CashGuard on the retail shops has two: deposited in Nedbank, and counted & retained (not banked).
+function sheetRow(dept, m, ln, dis) {
   const inA = `inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" ${dis}`;
-  const rows = methodsFor(dept)
-    .map(m => {
-      const ln = doc.lines[m.k];
-      const v = dep(ln) - num(ln.report);
-      if (m.k === "petty")
-        return `<tr class="petty"><td>${m.l}<div class="msg" style="font-size:.72rem;font-weight:400">Cash kept for petty cash</div></td>
+  const v = dep(ln) - num(ln.report);
+  if (m.k === "petty")
+    return `<tr class="petty"><td>${m.l}<div class="msg" style="font-size:.72rem;font-weight:400">Cash kept for petty cash</div></td>
       <td class="num muted">—</td>
       <td class="inp"><input id="${dept}-petty-deposited" data-m="petty" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="Petty cash, not banked"></td>
       <td class="num muted">—</td></tr>`;
-      if (m.k === "cashguard" && hasSplit(dept))
-        return `<tr class="cg"><td>${m.l}</td>
+  if (m.k === "cashguard" && hasSplit(dept))
+    return `<tr class="cg"><td>${m.l}</td>
       <td class="inp"><input id="${dept}-cashguard-report" data-m="cashguard" data-f="report" ${inA} value="${esc(ln.report)}" aria-label="CashGuard per report"></td>
       <td class="inp"><label class="sub" for="${dept}-cashguard-deposited">Deposited in Nedbank</label><input id="${dept}-cashguard-deposited" data-m="cashguard" data-f="deposited" ${inA} value="${esc(ln.deposited)}" aria-label="CashGuard deposited in Nedbank">
         <label class="sub" for="${dept}-cashguard-retained">Counted &amp; retained, not banked</label><input id="${dept}-cashguard-retained" data-m="cashguard" data-f="retained" ${inA} value="${esc(ln.retained)}" aria-label="CashGuard counted and retained, not banked"></td>
       <td class="num ${vcls(v)}" id="v-cashguard">${RV(v)}</td></tr>`;
-      return `<tr><td>${lbl(m, dept)}</td>
+  return `<tr><td>${lbl(m, dept)}</td>
       <td class="inp"><input id="${dept}-${m.k}-report" data-m="${m.k}" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.report)}" ${dis} aria-label="${lbl(m, dept)} per report"></td>
       <td class="inp"><input id="${dept}-${m.k}-deposited" data-m="${m.k}" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="${lbl(m, dept)} deposited"></td>
       <td class="num ${vcls(v)}" id="v-${m.k}">${RV(v)}</td></tr>`;
-    })
-    .join("");
-  const di = dayNow();
-  const lockNote =
-    signed && canEditDept(dept)
-      ? `<div class="notice" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>This sheet is <b>signed and locked</b>, so the figures can't be changed. ${canReopen(dept) ? "To correct it, reopen it first: the signature is removed and it must be signed again." : "Ask the manager or administrator to reopen it."}</span>${canReopen(dept) ? '<button class="btn" type="button" id="goreopen">Reopen to correct</button>' : ""}</div>`
-      : "";
-  main.innerHTML = `${lockNote}${!canEditDept(dept) ? `<div class="notice">You are signed in as ${esc(ROLE_LABEL[role()])}, so the ${DEPTS[dept]} sheet is view-only for you.</div>` : ""}${banner(di)}
-  <div class="deptband ${dept}" role="heading" aria-level="2"><div><div class="big">${DEPTS[dept]} cash up</div><div class="small">${longDate(state.date)}</div></div><div class="small">You are filling in the <b>${DEPTS[dept]}</b> sheet</div></div>
-  <section class="sheet ${dept}">
-    <div class="sheet-head"><div><div class="eyebrow">${DEPTS[dept]} department</div><h2>${longDate(state.date)}</h2></div>${chip(statusOf(doc))}</div>
-    <div class="sheet-body">
-      <div class="fields">
-        <div class="field"><label>Date</label><div class="static">${shortDate(state.date)}</div></div>
-        <div class="field"><label>Person cashing up</label><div class="static">${esc(doc.cashier) || (editable ? esc(state.me.name) : "—")}</div></div>
-        <div class="field"><label>Department</label><div class="static">${DEPTS[dept]}</div></div>
-      </div>
-      ${
-        editable
-          ? `<div class="scan">
+}
+// Above a signed sheet that this person could otherwise edit: it is locked, and how to reopen it
+function lockNotice(dept, signed) {
+  if (!(signed && canEditDept(dept))) return "";
+  return `<div class="notice" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>This sheet is <b>signed and locked</b>, so the figures can't be changed. ${canReopen(dept) ? "To correct it, reopen it first: the signature is removed and it must be signed again." : "Ask the manager or administrator to reopen it."}</span>${canReopen(dept) ? '<button class="btn" type="button" id="goreopen">Reopen to correct</button>' : ""}</div>`;
+}
+// "Fill from photo": scan the till report, add another photo, or attach a photo or PDF
+function scanPanel(dept) {
+  return `<div class="scan">
         <div style="min-width:0"><div class="eyebrow">Fill from photo</div><div class="msg">Take a photo of the last page of the cash up report, or attach a saved photo or PDF. The report figures are filled in for you to check, and a copy is kept with this cash up.</div></div>
         <div class="actions">
           <label class="btn primary" for="${dept}-photo" style="display:inline-flex;align-items:center;gap:8px">Scan report photo</label>
@@ -1058,9 +1041,36 @@ function renderDept(dept) {
         <input type="file" id="${dept}-photo2" accept="image/*" capture="environment" hidden>
         <input type="file" id="${dept}-file" accept="image/*,application/pdf,.pdf" multiple hidden>
         <div class="msg" id="scan-msg" style="flex-basis:100%"></div>
-      </div>`
-          : ""
-      }
+      </div>`;
+}
+// The sign-off box under a shop sheet
+function sheetSignOff(doc, dept, signed) {
+  if (signed) return signedBlock(doc, dept);
+  if (canSignDept(dept)) return signBlock(doc, dept);
+  return `<div class="msg">Only the ${DEPTS[dept]} ${dept === "wholesale" ? "cashier" : "manager"} can sign this sheet.</div>`;
+}
+function renderDept(dept) {
+  const doc = current(dept),
+    signed = doc.status === "signed",
+    editable = !signed && canEditDept(dept),
+    dis = editable ? "" : "disabled";
+  const t = totals(doc);
+  const rows = methodsFor(dept)
+    .map(m => sheetRow(dept, m, doc.lines[m.k], dis))
+    .join("");
+  const di = dayNow();
+  const lockNote = lockNotice(dept, signed);
+  main.innerHTML = `${lockNote}${!canEditDept(dept) ? `<div class="notice">You are signed in as ${esc(ROLE_LABEL[role()])}, so the ${DEPTS[dept]} sheet is view-only for you.</div>` : ""}${banner(di)}
+  <div class="deptband ${dept}" role="heading" aria-level="2"><div><div class="big">${DEPTS[dept]} cash up</div><div class="small">${longDate(state.date)}</div></div><div class="small">You are filling in the <b>${DEPTS[dept]}</b> sheet</div></div>
+  <section class="sheet ${dept}">
+    <div class="sheet-head"><div><div class="eyebrow">${DEPTS[dept]} department</div><h2>${longDate(state.date)}</h2></div>${chip(statusOf(doc))}</div>
+    <div class="sheet-body">
+      <div class="fields">
+        <div class="field"><label>Date</label><div class="static">${shortDate(state.date)}</div></div>
+        <div class="field"><label>Person cashing up</label><div class="static">${esc(doc.cashier) || (editable ? esc(state.me.name) : "—")}</div></div>
+        <div class="field"><label>Department</label><div class="static">${DEPTS[dept]}</div></div>
+      </div>
+      ${editable ? scanPanel(dept) : ""}
       <div class="field"><label>Report photos</label><div data-photos="${dept}">${photoStrip(dept)}</div></div>
       <div class="tbl-wrap"><table>
         <thead><tr><th>Payment type</th><th>Per report<small>Till / Z-report</small></th><th>Deposited<small>Actual counted</small></th><th>Variance<small>Deposited − report</small></th></tr></thead>
@@ -1079,7 +1089,7 @@ function renderDept(dept) {
   </section>
   <section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">Sign-off</div><h2>${DEPTS[dept]} signature</h2></div></div>
-    <div class="sheet-body">${signed ? signedBlock(doc, dept) : canSignDept(dept) ? signBlock(doc, dept) : `<div class="msg">Only the ${DEPTS[dept]} ${dept === "wholesale" ? "cashier" : "manager"} can sign this sheet.</div>`}</div>
+    <div class="sheet-body">${sheetSignOff(doc, dept, signed)}</div>
   </section>${dept === "retail" ? handoverSection(doc, canEditDept(dept)) : ""}`;
   bindDept(dept);
   if (dept === "retail") bindHandover();
