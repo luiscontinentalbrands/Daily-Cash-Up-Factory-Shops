@@ -1,9 +1,9 @@
 exports[`History with more sheets than it loads: the oldest day is not shown half loaded 1`] = `
 {
-  "days": 77,
+  "days": 76,
   "oldest": [
-    "Fri, 14 Aug 2026Closed on timeWholesaleSigned off R 8 125,49Aeroton RetailSigned off R 8 245,75R 16 371,24−R 50,00",
-    "Thu, 13 Aug 2026OverdueWholesaleNot startedAeroton RetailSigned off R 8 245,75R 8 245,75R 0.00"
+    "Sat, 15 Aug 2026Closed on timeWholesaleSigned off R 8 125,49Aeroton RetailSigned off R 8 245,75R 16 371,24−R 50,00",
+    "Fri, 14 Aug 2026Closed on timeWholesaleSigned off R 8 125,49Aeroton RetailSigned off R 8 245,75R 16 371,24−R 50,00"
   ]
 }
 `;

@@ -798,7 +798,13 @@ function subscribeHistory() {
   histSub = onSnapshot(
     query(shopCol(), orderBy("date", "desc"), limit(HISTORY_LIMIT)),
     snap => {
-      state.history = snap.docs.map(d => d.data());
+      let docs = snap.docs.map(d => d.data());
+      // a full load can stop part-way through the oldest day: leave that day out rather than show it half loaded
+      if (docs.length >= HISTORY_LIMIT) {
+        const oldest = docs[docs.length - 1].date;
+        docs = docs.filter(d => d.date !== oldest);
+      }
+      state.history = docs;
       if (state.tab === "history") render();
     },
     () => {},
