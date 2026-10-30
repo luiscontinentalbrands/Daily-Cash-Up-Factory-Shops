@@ -1642,7 +1642,14 @@ async function makePdf() {
     M,
     C: showCD ? C : null,
     status: info.label,
-    photos: [],
+    // the till report photos, one per page at the end, in the same order as the emailed PDF
+    photos: state.photos
+      .filter(p => p.removed !== true && safeJpg(p.data))
+      .sort(
+        (a, b) =>
+          String(a.dept).localeCompare(String(b.dept)) ||
+          String(a.takenAt || "").localeCompare(String(b.takenAt || "")),
+      ),
     handovers: state.handovers.map(h => ({
       amount: num(h.amount),
       givenBy: h.givenBy,

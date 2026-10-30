@@ -3547,6 +3547,17 @@ exports[`download the PDF report 2`] = `
 ["setFontSize",8]
 ["setTextColor",122,114,104]
 ["text","Variance = deposited - report. Negative (red) is short; positive (amber) is over. Signature times come from the server clock (SAST).",14,62,null]
+["addPage","a4","portrait"]
+["setFont","helvetica","bold"]
+["setFontSize",12]
+["setTextColor",31,28,24]
+["text","Aeroton Retail till report photo",14,16,null]
+["setFont","helvetica","normal"]
+["setFontSize",9]
+["setTextColor",122,114,104]
+["text","Wednesday, 28 October 2026  -  added by Rita Retail  -  28 Oct 2026, 16:00",14,21,null]
+["getImageProperties","data:image/jpeg;base64,UA==…"]
+["addImage","data:image/jpeg;base64,UA==…","JPEG",14,26,182,242.66666666666669,null,"FAST"]
 `;
 
 exports[`download the day as CSV 1`] = `
