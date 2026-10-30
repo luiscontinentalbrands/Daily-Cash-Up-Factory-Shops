@@ -1,4 +1,4 @@
-import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-22a";
+import { firebaseConfig, AI_MODEL, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-30a";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app-check.js";
 import { getFirestore, doc as fdoc, getDocs, setDoc, updateDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
@@ -240,7 +240,7 @@ function resetIdle(){clearTimeout(idleT);if(state.me)idleT=setTimeout(()=>lockAp
 /* ---------- app start ---------- */
 function startApp(){
   $("#tabs").hidden=false;$("#datebox").hidden=false;whoBar();state.ready=true;resetIdle();
-  $("#foot").textContent="Live sync active · shared by all users · App version 2026-10-22a";
+  $("#foot").textContent="Live sync active · shared by all users · App version 2026-10-30a";
   const r=role();state.tab=r==="retail"?"retail":r==="citydeep"?"citydeep":r==="manager"?"combined":"wholesale";
   if(state.tab==="users"&&r!=="admin")state.tab="wholesale";
   state.date=todayStr();$("#date").value=state.date;
@@ -342,7 +342,10 @@ function render(force){if(!state.ready)return;updateDots();
 function banner(di){if(di.kind==="sunday")return "";
   return `<div class="banner ${di.kind==="done"?"ok":di.kind==="overdue"?"bad":"wait"}" style="font-weight:500">${di.kind==="overdue"?"Past the 7 pm deadline. Missing: "+di.missing.join(", ")+".":di.kind==="open"?di.label+". "+(cdOn(state.date)?"Wholesale, Aeroton Retail, City Deep Retail and the manager":"Wholesale, Aeroton Retail and the manager")+" must all sign.":di.label+"."}</div>`;}
 
-function cgNote(t){const p=t.petty?` · petty cash, not banked: <b>${R(t.petty)}</b>`:"";return (t.retained||t.petty)?`Includes CashGuard counted &amp; retained, not banked: <b>${R(t.retained)}</b>${p}. Banked total: ${R(t.banked)}.`:"Nothing kept back: everything counted was banked.";}
+function cgNote(t){
+  // the same money typed twice (CashGuard retained and petty cash) is counted twice as not banked
+  if(t.petty>0&&Math.abs(t.petty-t.retained)<0.005)return `<span style="color:var(--bad);font-weight:600">Check: the same amount (${R(t.petty)}) is entered as CashGuard retained AND as petty cash, so it counts twice as not banked. Keep it in one box only.</span>`;
+  const p=t.petty?` · petty cash, not banked: <b>${R(t.petty)}</b>`:"";return (t.retained||t.petty)?`Includes CashGuard counted &amp; retained, not banked: <b>${R(t.retained)}</b>${p}. Banked total: ${R(t.banked)}.`:"Nothing kept back: everything counted was banked.";}
 function renderDept(dept){
   const doc=current(dept),signed=doc.status==="signed",editable=!signed&&canEditDept(dept),dis=editable?"":"disabled";
   const t=totals(doc);
@@ -631,7 +634,7 @@ let jsPDFlib=null;
 function loadJsPDF(){if(jsPDFlib)return Promise.resolve(jsPDFlib);
   return new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     sc.onload=()=>{jsPDFlib=window.jspdf&&window.jspdf.jsPDF;jsPDFlib?res(jsPDFlib):rej(new Error("PDF tool did not load"));};sc.onerror=()=>rej(new Error("PDF tool could not be downloaded"));document.head.appendChild(sc);});}
-async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-22a"),loadJsPDF()]);
+async function makePdf(){const [{buildReportPdf,reportFileName},jsPDF]=await Promise.all([import("./report-pdf.js?v=2026-10-30a"),loadJsPDF()]);
   const W=current("wholesale"),Rt=current("retail"),M=current("manager"),C=current("citydeep"),CM=current("cdmanager");const info=dayNow();
   const showCD=cdOn(state.date)||statusOf(C)!=="new";
   const photos=state.photos.filter(p=>p.removed!==true&&safeJpg(p.data)).sort((a,b)=>a.dept.localeCompare(b.dept)||String(a.takenAt||"").localeCompare(String(b.takenAt||"")));
