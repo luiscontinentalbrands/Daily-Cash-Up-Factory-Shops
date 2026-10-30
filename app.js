@@ -1384,8 +1384,7 @@ function bindAmountBox(inp, onInput, onLeave) {
 // administrator may do.
 async function reopenSheet(rdept, ro) {
   ro.disabled = true;
-  const mk = "manager",
-    M = current(mk);
+  const M = current("manager");
   if (!isMgr(rdept) && M.status === "signed") {
     if (!isManagerOrAdmin()) {
       ro.disabled = false;
@@ -1393,8 +1392,8 @@ async function reopenSheet(rdept, ro) {
       return;
     }
     Object.assign(M, { status: "draft", signature: "", signedBy: "", signedAt: "" });
-    state.pending[mk] = true;
-    if (!(await save(mk, { action: "reopened", by: state.me.name }))) {
+    state.pending.manager = true;
+    if (!(await save("manager", { action: "reopened", by: state.me.name }))) {
       ro.disabled = false;
       $("#reopen-msg").textContent = "Could not reopen the day. Try again.";
       return;
@@ -1408,17 +1407,17 @@ async function reopenSheet(rdept, ro) {
 }
 function bindDept(dept) {
   // always write into the CURRENT copy of the sheet: it is replaced whenever the database sends an update
-  const D = () => drafts[dept];
+  const sheet = () => drafts[dept];
   main.querySelectorAll("td.inp input").forEach(inp =>
     bindAmountBox(
       inp,
       v => {
-        D().lines[inp.dataset.m][inp.dataset.f] = v;
+        sheet().lines[inp.dataset.m][inp.dataset.f] = v;
         recalc(dept);
         scheduleSave(dept);
       },
       v => {
-        D().lines[inp.dataset.m][inp.dataset.f] = v;
+        sheet().lines[inp.dataset.m][inp.dataset.f] = v;
         scheduleSave(dept);
       },
     ),
@@ -1426,13 +1425,13 @@ function bindDept(dept) {
   const n = document.getElementById(dept + "-notes");
   if (n)
     n.addEventListener("input", () => {
-      D().notes = n.value;
+      sheet().notes = n.value;
       scheduleSave(dept);
     });
   const dm = document.getElementById(dept + "-damaged");
   if (dm) {
     const setDamaged = v => {
-      D().damaged = v;
+      sheet().damaged = v;
       scheduleSave(dept);
     };
     bindAmountBox(dm, setDamaged, setDamaged);
@@ -1440,13 +1439,13 @@ function bindDept(dept) {
   const dn = document.getElementById(dept + "-damagedNotes");
   if (dn)
     dn.addEventListener("input", () => {
-      D().damagedNotes = dn.value;
+      sheet().damagedNotes = dn.value;
       scheduleSave(dept);
     });
   const pn = document.getElementById(dept + "-pettyNotes");
   if (pn)
     pn.addEventListener("input", () => {
-      D().pettyNotes = pn.value;
+      sheet().pettyNotes = pn.value;
       scheduleSave(dept);
     });
   const ro = $("#reopen");
@@ -1604,7 +1603,7 @@ function signatureBox(doc, dept) {
   return `<div class="sigbox"><div class="eyebrow">${DEPTS[dept]}</div>${doc.status === "signed" ? `<div class="sig-img">${img ? `<img src="${img}" alt="${DEPTS[dept]} signature">` : ""}</div><div class="who">${esc(doc.signedBy)} · ${timeStr(doc.signedAt)}</div>` : `<div class="empty">Awaiting signature</div><div class="who">${isMgr(dept) ? "signed below" : (doc.cashier ? esc(doc.cashier) + " · " : "") + (statusOf(doc) === "draft" ? "in progress" : "not started")}</div>`}</div>`;
 }
 // The End of Day table: each payment type per shop, then all shops together (shops: [dept, sheet, totals])
-function endOfDayTable(shops, showCD, gr, gd, gv) {
+function endOfDayTable(shops, showCD, grandReport, grandDeposited, grandVariance) {
   const shopCols = shops
     .map(([d]) => `<th colspan="2" class="grp" style="text-align:center">${DEPTS[d]}</th>`)
     .join("");
@@ -1628,15 +1627,15 @@ function endOfDayTable(shops, showCD, gr, gd, gv) {
         <thead><tr><th rowspan="2">Payment type</th>${shopCols}<th colspan="3" class="grp" style="text-align:center">${showCD ? "All shops" : "Combined"}</th></tr>
         <tr>${shopSub}<th class="grp">Report</th><th>Deposited</th><th>Variance</th></tr></thead>
         <tbody>${rows}</tbody>
-        <tfoot><tr><td>Total</td>${foot}<td class="num grp">${R(gr)}</td><td class="num">${R(gd)}</td><td class="num ${vcls(gv)}">${RV(gv)}</td></tr></tfoot>
+        <tfoot><tr><td>Total</td>${foot}<td class="num grp">${R(grandReport)}</td><td class="num">${R(grandDeposited)}</td><td class="num ${vcls(grandVariance)}">${RV(grandVariance)}</td></tr></tfoot>
       </table></div>`;
 }
 // The End of Day as a CSV file (shops: [dept, sheet, totals] in column order)
 function endOfDayCsv(shops, M, info) {
   const sum = f => shops.reduce((a, [, , t]) => a + t[f], 0);
-  const gr = sum("report"),
-    gd = sum("deposited"),
-    gv = gd - gr;
+  const grandReport = sum("report"),
+    grandDeposited = sum("deposited"),
+    grandVariance = grandDeposited - grandReport;
   const f = x => (typeof x === "number" ? x.toFixed(2) : x);
   const head = ["Payment type"];
   shops.forEach(([d]) => head.push(DEPTS[d] + " report", DEPTS[d] + " deposited"));
@@ -1651,7 +1650,7 @@ function endOfDayCsv(shops, M, info) {
   });
   const tot = ["Total"];
   shops.forEach(([, , t]) => tot.push(t.report, t.deposited));
-  tot.push(gr, gd, gv);
+  tot.push(grandReport, grandDeposited, grandVariance);
   lines.push(tot.map(f));
   lines.push([]);
   shops.forEach(([d, doc, t]) => {
@@ -1688,7 +1687,7 @@ function renderCombined() {
     tc = totals(C);
   const showCD = cdOn(state.date) || statusOf(C) !== "new";
   const info = dayNow();
-  const S = showCD
+  const shops = showCD
     ? [
         ["wholesale", W, tw],
         ["retail", Rt, tr],
@@ -1698,47 +1697,48 @@ function renderCombined() {
         ["wholesale", W, tw],
         ["retail", Rt, tr],
       ];
-  const sum = f => S.reduce((a, [, , t]) => a + t[f], 0);
-  const gr = sum("report"),
-    gd = sum("deposited"),
-    gv = gd - gr,
+  const sum = f => shops.reduce((a, [, , t]) => a + t[f], 0);
+  const grandReport = sum("report"),
+    grandDeposited = sum("deposited"),
+    grandVariance = grandDeposited - grandReport,
     gret = sum("retained");
-  const banked = S.reduce(
+  const banked = shops.reduce(
     (a, [, d]) => a + ["cash", "cashguard"].reduce((x, k) => x + num(d.lines[k].deposited), 0),
     0,
   );
-  const waiting = S.filter(([, doc]) => doc.status !== "signed").map(([d]) => DEPTS[d]);
+  const waiting = shops.filter(([, doc]) => doc.status !== "signed").map(([d]) => DEPTS[d]);
   const [bannerCls, bannerText] = endOfDayBanner(info);
   const stat = (d, l) =>
     chip(statusOf(d))
       .replace("Signed off", l + " signed")
       .replace("In progress", l + " in progress")
       .replace("Not started", l + " not started");
-  const each = f => S.map(([d, doc]) => `<b>${DEPTS[d]}:</b> ${f(doc, d)}`).join(" · ");
-  const notes = S.filter(([, d]) => d.notes)
+  const each = f => shops.map(([d, doc]) => `<b>${DEPTS[d]}:</b> ${f(doc, d)}`).join(" · ");
+  const notes = shops
+    .filter(([, d]) => d.notes)
     .map(([d, doc]) => `<b>${DEPTS[d]}:</b> ${esc(doc.notes)}`)
     .join("\n");
-  const splitShops = S.filter(([d]) => hasSplit(d));
+  const splitShops = shops.filter(([d]) => hasSplit(d));
   main.innerHTML = `
   <div class="banner ${bannerCls}">${bannerText}</div>
   <div class="eyebrow" style="margin:4px 0 8px">${showCD ? "All shops together · Aeroton (Wholesale + Aeroton Retail) and City Deep Retail" : "Aeroton · Wholesale + Aeroton Retail"}</div>
   <div class="summary">
-    <div class="stat"><div class="k">Per reports</div><div class="v num">${R(gr)}</div></div>
-    <div class="stat"><div class="k">Deposited</div><div class="v num">${R(gd)}</div></div>
-    <div class="stat"><div class="k">Variance</div><div class="v num ${vcls(gv)}">${RV(gv)}</div></div>
+    <div class="stat"><div class="k">Per reports</div><div class="v num">${R(grandReport)}</div></div>
+    <div class="stat"><div class="k">Deposited</div><div class="v num">${R(grandDeposited)}</div></div>
+    <div class="stat"><div class="k">Variance</div><div class="v num ${vcls(grandVariance)}">${RV(grandVariance)}</div></div>
     <div class="stat"><div class="k">Not banked<br><span style="font-weight:400;text-transform:none;letter-spacing:0">CashGuard retained + petty cash</span></div><div class="v num">${R(gret + sum("petty"))}</div></div>
     <div class="stat"><div class="k">Cash + CashGuard banked</div><div class="v num">${R(banked)}</div></div>
   </div>
   <section class="sheet">
-    <div class="sheet-head"><div><div class="eyebrow">Combined end-of-day cash up</div><h2>${longDate(state.date)}</h2></div><div class="actions">${S.map(([d, doc]) => stat(doc, DEPTS[d])).join("")}</div></div>
+    <div class="sheet-head"><div><div class="eyebrow">Combined end-of-day cash up</div><h2>${longDate(state.date)}</h2></div><div class="actions">${shops.map(([d, doc]) => stat(doc, DEPTS[d])).join("")}</div></div>
     <div class="sheet-body">
-      ${endOfDayTable(S, showCD, gr, gd, gv)}
+      ${endOfDayTable(shops, showCD, grandReport, grandDeposited, grandVariance)}
       ${
         showCD
           ? `<div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
         <div class="field"><label>Aeroton variance</label><div class="static num ${vcls(tw.variance + tr.variance)}">${RV(tw.variance + tr.variance)}</div></div>
         <div class="field"><label>City Deep Retail variance</label><div class="static num ${vcls(tc.variance)}">${RV(tc.variance)}</div></div>
-        <div class="field"><label>All shops variance</label><div class="static num ${vcls(gv)}">${RV(gv)}</div></div></div>`
+        <div class="field"><label>All shops variance</label><div class="static num ${vcls(grandVariance)}">${RV(grandVariance)}</div></div></div>`
           : ""
       }
       <div class="field"><label>Cashed up by</label><div class="static" style="font-weight:400">${each(d => esc(d.cashier) || "—")}</div></div>
@@ -1746,7 +1746,7 @@ function renderCombined() {
       <div class="field"><label>CashGuard</label><div class="static num" style="font-weight:400">${splitShops.map(([d, doc, t]) => `<b>${DEPTS[d]}:</b> deposited in Nedbank ${R(num(doc.lines.cashguard.deposited))} · counted &amp; retained, not banked <b>${R(t.retained)}</b>`).join("<br>")}</div></div>
       ${tr.petty || Rt.pettyNotes ? `<div class="field"><label>Aeroton Retail petty cash (not banked)</label><div class="static num" style="font-weight:400"><b>${R(tr.petty)}</b>${Rt.pettyNotes ? " · " + esc(Rt.pettyNotes) : ""}</div></div>` : ""}
       ${state.handovers.length ? `<div class="field"><label>Cash handed over (signed for)</label><div class="static num" style="font-weight:400">${state.handovers.map(h => `${R(num(h.amount))} from ${esc(h.givenBy)} to <b>${esc(h.receivedBy)}</b> · ${esc(timeStr(savedAtIso(h)))}`).join("<br>")}</div></div>` : ""}
-      <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">${each(d => R(num(d.damaged)) + (d.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(S.reduce((a, [, d]) => a + num(d.damaged), 0))}</b></div></div>
+      <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">${each(d => R(num(d.damaged)) + (d.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(shops.reduce((a, [, d]) => a + num(d.damaged), 0))}</b></div></div>
       <div class="sigs">${signatureBox(W, "wholesale")}${signatureBox(Rt, "retail")}${showCD ? signatureBox(C, "citydeep") : ""}${signatureBox(M, "manager")}</div>
       <div class="actions"><button class="btn primary" id="pdf-mail" type="button">Email PDF report</button><button class="btn" id="pdf-dl" type="button">Download PDF</button><button class="btn" id="csv">Download day as CSV</button><span class="msg" id="csv-msg"></span></div>
     </div>
@@ -1760,7 +1760,7 @@ function renderCombined() {
   $("#pdf-dl").addEventListener("click", () => pdfAction("download"));
   $("#pdf-mail").addEventListener("click", () => pdfAction("email"));
   $("#csv").addEventListener("click", () => {
-    downloadBlob(new Blob([endOfDayCsv(S, M, info)], { type: "text/csv" }), "cash-up-" + state.date + ".csv");
+    downloadBlob(new Blob([endOfDayCsv(shops, M, info)], { type: "text/csv" }), "cash-up-" + state.date + ".csv");
     $("#csv-msg").textContent = "Downloaded.";
   });
 }
@@ -2717,7 +2717,7 @@ async function setBanked(r, on, cb) {
 // The lines of the Not banked report: per day, CashGuard counted & retained for each retail shop, plus
 // Aeroton Retail petty cash; lines with nothing kept back are left out. ticks: the Banked records by id.
 function notBankedRows(sheets, ticks, from, to) {
-  const mk = (n, shop, key, kind, report, nedbank, retained) => {
+  const line = (n, shop, key, kind, report, nedbank, retained) => {
     const b = ticks[n.date + "_" + key];
     const ticked = !!(b && b.banked === true);
     const same = ticked && Math.abs(num(b.amount) - retained) < 0.005;
@@ -2744,9 +2744,9 @@ function notBankedRows(sheets, ticks, from, to) {
     .forEach(d => {
       const n = normalize(d, d.date, d.dept);
       const cg = n.lines.cashguard;
-      out.push(mk(n, d.dept, d.dept, "cg", num(cg.report), num(cg.deposited), num(cg.retained)));
+      out.push(line(n, d.dept, d.dept, "cg", num(cg.report), num(cg.deposited), num(cg.retained)));
       if (d.dept === "retail")
-        out.push(mk(n, "retail", "retailpetty", "petty", null, null, num(n.lines.petty && n.lines.petty.deposited)));
+        out.push(line(n, "retail", "retailpetty", "petty", null, null, num(n.lines.petty && n.lines.petty.deposited)));
     });
   return out
     .filter(r => r.retained !== 0)
@@ -2767,9 +2767,9 @@ async function loadNotBanked(from, to) {
         return { docs: [] };
       }),
     ]);
-    const bk = {};
+    const ticks = {};
     bsnap.docs.forEach(d => {
-      bk[d.id] = d.data();
+      ticks[d.id] = d.data();
     });
     try {
       const hs = await getDocs(query(handoversCol(), where("date", ">=", from), where("date", "<=", to)));
@@ -2783,7 +2783,7 @@ async function loadNotBanked(from, to) {
     }
     nb.rows = notBankedRows(
       snap.docs.map(d => d.data()),
-      bk,
+      ticks,
       from,
       to,
     );
