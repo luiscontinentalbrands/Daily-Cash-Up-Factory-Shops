@@ -138,6 +138,7 @@ const state = {
   lastAI: "", // what the photo reader returned, shown under its message
   nb: null, // Not banked report; set up on first visit (dates start at that day's month)
   bigChecked: {}, // per sheet: the large differences the person was already sent back to check
+  eodView: "all", // End of Day: the table shows all shops together, or one shop
 };
 // The sheets as they are being edited on this device, per dept. state.docs keeps the last copy from the
 // database; a draft is made from it (normalize) when first needed and replaced when the database sends a change.
@@ -1498,32 +1499,42 @@ function signatureBox(doc, dept) {
   const img = safeImg(doc.signature);
   return `<div class="sigbox"><div class="eyebrow">${DEPTS[dept]}</div>${doc.status === "signed" ? `<div class="sig-img">${img ? `<img src="${img}" alt="${DEPTS[dept]} signature">` : ""}</div><div class="who">${esc(doc.signedBy)} · ${timeStr(doc.signedAt)}</div>` : `<div class="empty">Awaiting signature</div><div class="who">${isMgr(dept) ? "signed below" : (doc.cashier ? esc(doc.cashier) + " · " : "") + (statusOf(doc) === "draft" ? "in progress" : "not started")}</div>`}</div>`;
 }
-// The End of Day table: each payment type per shop, then all shops together (shops: [dept, sheet, totals])
+// The End of Day table, one view at a time so it fits any screen without scrolling sideways: all shops together,
+// or one shop (shops: [dept, sheet, totals]). The buttons above it switch view and show each view's total variance.
 function endOfDayTable(shops, showCD, grandReport, grandDeposited, grandVariance) {
-  const shopCols = shops
-    .map(([d]) => `<th colspan="2" class="grp" style="text-align:center">${DEPTS[d]}</th>`)
-    .join("");
-  const shopSub = shops.map(() => `<th class="grp">Report</th><th>Deposited</th>`).join("");
-  const rows = METHODS.map(m => {
-    const { cells, report: r, deposited: dd } = combinedLine(m, shops);
-    const tds = cells
-      .map(c =>
-        c
-          ? `<td class="num grp">${R(c[0])}</td><td class="num">${R(c[1])}</td>`
-          : `<td class="num grp muted">—</td><td class="num muted">—</td>`,
-      )
-      .join("");
+  const view = shops.some(([d]) => d === state.eodView) ? state.eodView : "all";
+  const views = [
+    ["all", showCD ? "All shops" : "Combined", grandVariance],
+    ...shops.map(([d, , t]) => [d, DEPTS[d], t.variance]),
+  ];
+  const switcher = `<div class="eodviews" role="group" aria-label="Show the figures of">${views
+    .map(
+      ([v, label, vr]) =>
+        `<button type="button" class="eodview${v === view ? " on" : ""}" data-eod="${v}" aria-pressed="${v === view}"><span>${label}</span><span class="num ${vcls(vr)}">${RV(vr)}</span></button>`,
+    )
+    .join("")}</div>`;
+  const row = (label, r, dd) => {
     const v = dd - r;
-    return `<tr><td>${methodLabel(m, "combined")}</td>${tds}<td class="num grp"><b>${R(r)}</b></td><td class="num"><b>${R(dd)}</b></td><td class="num ${vcls(v)}">${RV(v)}</td></tr>`;
-  }).join("");
-  const foot = shops
-    .map(([, , t]) => `<td class="num grp">${R(t.report)}</td><td class="num">${R(t.deposited)}</td>`)
-    .join("");
-  return `<div class="tbl-wrap"><table style="min-width:${showCD ? 1040 : 820}px">
-        <thead><tr><th rowspan="2">Payment type</th>${shopCols}<th colspan="3" class="grp" style="text-align:center">${showCD ? "All shops" : "Combined"}</th></tr>
-        <tr>${shopSub}<th class="grp">Report</th><th>Deposited</th><th>Variance</th></tr></thead>
+    return `<tr${isBigVariance(v) ? ' class="bigvar"' : ""}><td>${label}</td><td class="num" data-l="Report">${R(r)}</td><td class="num" data-l="Deposited">${R(dd)}</td><td class="num ${vcls(v)}" data-l="Variance">${RV(v)}</td></tr>`;
+  };
+  let rows, foot;
+  if (view === "all") {
+    rows = METHODS.map(m => {
+      const { report, deposited } = combinedLine(m, shops);
+      return row(methodLabel(m, "combined"), report, deposited);
+    }).join("");
+    foot = [grandReport, grandDeposited, grandVariance];
+  } else {
+    const [d, doc, t] = shops.find(([x]) => x === view);
+    rows = methodsFor(d)
+      .map(m => row(methodLabel(m, d), num(doc.lines[m.k].report), depositedTotal(doc.lines[m.k])))
+      .join("");
+    foot = [t.report, t.deposited, t.variance];
+  }
+  return `${switcher}<div class="tbl-wrap"><table class="eod">
+        <thead><tr><th>Payment type</th><th>Report</th><th>Deposited</th><th>Variance</th></tr></thead>
         <tbody>${rows}</tbody>
-        <tfoot><tr><td>Total</td>${foot}<td class="num grp">${R(grandReport)}</td><td class="num">${R(grandDeposited)}</td><td class="num ${vcls(grandVariance)}">${RV(grandVariance)}</td></tr></tfoot>
+        <tfoot><tr><td>Total</td><td class="num" data-l="Report">${R(foot[0])}</td><td class="num" data-l="Deposited">${R(foot[1])}</td><td class="num ${vcls(foot[2])}" data-l="Variance">${RV(foot[2])}</td></tr></tfoot>
       </table></div>`;
 }
 // The End of Day as a CSV file (shops: [dept, sheet, totals] in column order)
@@ -1622,7 +1633,7 @@ function renderCombined() {
   <section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">Combined end-of-day cash up</div><h2>${longDate(state.date)}</h2></div><div class="actions">${shops.map(([d, doc]) => stat(doc, DEPTS[d])).join("")}</div></div>
     <div class="sheet-body">
-      ${endOfDayTable(shops, showCD, grandReport, grandDeposited, grandVariance)}
+      <div id="eod-table">${endOfDayTable(shops, showCD, grandReport, grandDeposited, grandVariance)}</div>
       ${
         showCD
           ? `<div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
@@ -1647,6 +1658,16 @@ function renderCombined() {
   </section>
 `;
   bindDept("manager");
+  // switching the table's view redraws only the table (a manager's signature being drawn is kept)
+  const bindViews = () =>
+    main.querySelectorAll("[data-eod]").forEach(b =>
+      b.addEventListener("click", () => {
+        state.eodView = b.dataset.eod;
+        $("#eod-table").innerHTML = endOfDayTable(shops, showCD, grandReport, grandDeposited, grandVariance);
+        bindViews();
+      }),
+    );
+  bindViews();
   $("#pdf-dl").addEventListener("click", () => pdfAction("download"));
   $("#pdf-mail").addEventListener("click", () => pdfAction("email"));
   $("#csv").addEventListener("click", () => {

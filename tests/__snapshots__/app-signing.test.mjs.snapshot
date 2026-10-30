@@ -836,194 +836,105 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
     " "
     <div class="sheet-body">
       " "
-      <div class="tbl-wrap">
-        <table style="min-width:1040px">
-          " "
-          <thead>
-            <tr>
-              <th rowspan="2">"Payment type"</th>
-              <th colspan="2" class="grp" style="text-align:center">"Wholesale"</th>
-              <th colspan="2" class="grp" style="text-align:center">"Aeroton Retail"</th>
-              <th colspan="2" class="grp" style="text-align:center">"City Deep Retail"</th>
-              <th colspan="3" class="grp" style="text-align:center">"All shops"</th>
-            </tr>
+      <div id="eod-table">
+        <div class="eodviews" role="group" aria-label="Show the figures of">
+          <button type="button" class="eodview on" data-eod="all" aria-pressed="true">
+            <span>"All shops"</span>
+            <span class="num var-neg">"−R 19,95"</span>
+          </button>
+          <button type="button" class="eodview" data-eod="wholesale" aria-pressed="false">
+            <span>"Wholesale"</span>
+            <span class="num var-neg">"−R 50,00"</span>
+          </button>
+          <button type="button" class="eodview" data-eod="retail" aria-pressed="false">
+            <span>"Aeroton Retail"</span>
+            <span class="num var-zero">"R 0,00"</span>
+          </button>
+          <button type="button" class="eodview" data-eod="citydeep" aria-pressed="false">
+            <span>"City Deep Retail"</span>
+            <span class="num var-pos">"+R 30,05"</span>
+          </button>
+        </div>
+        <div class="tbl-wrap">
+          <table class="eod">
             " "
-            <tr>
-              <th class="grp">"Report"</th>
-              <th>"Deposited"</th>
-              <th class="grp">"Report"</th>
-              <th>"Deposited"</th>
-              <th class="grp">"Report"</th>
-              <th>"Deposited"</th>
-              <th class="grp">"Report"</th>
-              <th>"Deposited"</th>
-              <th>"Variance"</th>
-            </tr>
-          </thead>
-          " "
-          <tbody>
-            <tr>
-              <td>"Cash / Coins (Retail shops)"</td>
-              <td class="num grp">"R 1 500,00"</td>
-              <td class="num">"R 1 450,00"</td>
-              <td class="num grp">"R 35,50"</td>
-              <td class="num">"R 35,50"</td>
-              <td class="num grp">"R 12,00"</td>
-              <td class="num">"R 12,00"</td>
-              <td class="num grp">
-                <b>"R 1 547,50"</b>
-              </td>
-              <td class="num">
-                <b>"R 1 497,50"</b>
-              </td>
-              <td class="num var-neg">"−R 50,00"</td>
-            </tr>
-            <tr>
-              <td>"CashGuard"</td>
-              <td class="num grp">"R 2 000,00"</td>
-              <td class="num">"R 2 000,00"</td>
-              <td class="num grp">"R 5 400,00"</td>
-              <td class="num">"R 5 200,00"</td>
-              <td class="num grp">"R 3 100,00"</td>
-              <td class="num">"R 3 150,00"</td>
-              <td class="num grp">
-                <b>"R 10 500,00"</b>
-              </td>
-              <td class="num">
-                <b>"R 10 350,00"</b>
-              </td>
-              <td class="num var-neg">"−R 150,00"</td>
-            </tr>
-            <tr>
-              <td>"Credit card"</td>
-              <td class="num grp">"R 3 200,50"</td>
-              <td class="num">"R 3 200,50"</td>
-              <td class="num grp">"R 2 750,25"</td>
-              <td class="num">"R 2 750,25"</td>
-              <td class="num grp">"R 1 999,95"</td>
-              <td class="num">"R 1 980,00"</td>
-              <td class="num grp">
-                <b>"R 7 950,70"</b>
-              </td>
-              <td class="num">
-                <b>"R 7 930,75"</b>
-              </td>
-              <td class="num var-neg">"−R 19,95"</td>
-            </tr>
-            <tr>
-              <td>"Credit card CBM"</td>
-              <td class="num grp">"R 410,00"</td>
-              <td class="num">"R 410,00"</td>
-              <td class="num grp muted">"—"</td>
-              <td class="num muted">"—"</td>
-              <td class="num grp muted">"—"</td>
-              <td class="num muted">"—"</td>
-              <td class="num grp">
-                <b>"R 410,00"</b>
-              </td>
-              <td class="num">
-                <b>"R 410,00"</b>
-              </td>
-              <td class="num var-zero">"R 0,00"</td>
-            </tr>
-            <tr>
-              <td>"PayFast card"</td>
-              <td class="num grp">"R 99,99"</td>
-              <td class="num">"R 99,99"</td>
-              <td class="num grp muted">"—"</td>
-              <td class="num muted">"—"</td>
-              <td class="num grp muted">"—"</td>
-              <td class="num muted">"—"</td>
-              <td class="num grp">
-                <b>"R 99,99"</b>
-              </td>
-              <td class="num">
-                <b>"R 99,99"</b>
-              </td>
-              <td class="num var-zero">"R 0,00"</td>
-            </tr>
-            <tr>
-              <td>"EFT"</td>
-              <td class="num grp">"R 800,00"</td>
-              <td class="num">"R 800,00"</td>
-              <td class="num grp muted">"—"</td>
-              <td class="num muted">"—"</td>
-              <td class="num grp muted">"—"</td>
-              <td class="num muted">"—"</td>
-              <td class="num grp">
-                <b>"R 800,00"</b>
-              </td>
-              <td class="num">
-                <b>"R 800,00"</b>
-              </td>
-              <td class="num var-zero">"R 0,00"</td>
-            </tr>
-            <tr>
-              <td>"Shop2Shop"</td>
-              <td class="num grp">"R 120,00"</td>
-              <td class="num">"R 120,00"</td>
-              <td class="num grp muted">"—"</td>
-              <td class="num muted">"—"</td>
-              <td class="num grp muted">"—"</td>
-              <td class="num muted">"—"</td>
-              <td class="num grp">
-                <b>"R 120,00"</b>
-              </td>
-              <td class="num">
-                <b>"R 120,00"</b>
-              </td>
-              <td class="num var-zero">"R 0,00"</td>
-            </tr>
-            <tr>
-              <td>"SnapScan"</td>
-              <td class="num grp">"R 45,00"</td>
-              <td class="num">"R 45,00"</td>
-              <td class="num grp">"R 60,00"</td>
-              <td class="num">"R 60,00"</td>
-              <td class="num grp">"R 0,00"</td>
-              <td class="num">"R 0,00"</td>
-              <td class="num grp">
-                <b>"R 105,00"</b>
-              </td>
-              <td class="num">
-                <b>"R 105,00"</b>
-              </td>
-              <td class="num var-zero">"R 0,00"</td>
-            </tr>
-            <tr>
-              <td>"Petty cash (not banked)"</td>
-              <td class="num grp muted">"—"</td>
-              <td class="num muted">"—"</td>
-              <td class="num grp">"R 0,00"</td>
-              <td class="num">"R 200,00"</td>
-              <td class="num grp muted">"—"</td>
-              <td class="num muted">"—"</td>
-              <td class="num grp">
-                <b>"R 0,00"</b>
-              </td>
-              <td class="num">
-                <b>"R 200,00"</b>
-              </td>
-              <td class="num var-pos">"+R 200,00"</td>
-            </tr>
-          </tbody>
-          " "
-          <tfoot>
-            <tr>
-              <td>"Total"</td>
-              <td class="num grp">"R 8 175,49"</td>
-              <td class="num">"R 8 125,49"</td>
-              <td class="num grp">"R 8 245,75"</td>
-              <td class="num">"R 8 245,75"</td>
-              <td class="num grp">"R 5 111,95"</td>
-              <td class="num">"R 5 142,00"</td>
-              <td class="num grp">"R 21 533,19"</td>
-              <td class="num">"R 21 513,24"</td>
-              <td class="num var-neg">"−R 19,95"</td>
-            </tr>
-          </tfoot>
-          " "
-        </table>
+            <thead>
+              <tr>
+                <th>"Payment type"</th>
+                <th>"Report"</th>
+                <th>"Deposited"</th>
+                <th>"Variance"</th>
+              </tr>
+            </thead>
+            " "
+            <tbody>
+              <tr>
+                <td>"Cash / Coins (Retail shops)"</td>
+                <td class="num" data-l="Report">"R 1 547,50"</td>
+                <td class="num" data-l="Deposited">"R 1 497,50"</td>
+                <td class="num var-neg" data-l="Variance">"−R 50,00"</td>
+              </tr>
+              <tr>
+                <td>"CashGuard"</td>
+                <td class="num" data-l="Report">"R 10 500,00"</td>
+                <td class="num" data-l="Deposited">"R 10 350,00"</td>
+                <td class="num var-neg" data-l="Variance">"−R 150,00"</td>
+              </tr>
+              <tr>
+                <td>"Credit card"</td>
+                <td class="num" data-l="Report">"R 7 950,70"</td>
+                <td class="num" data-l="Deposited">"R 7 930,75"</td>
+                <td class="num var-neg" data-l="Variance">"−R 19,95"</td>
+              </tr>
+              <tr>
+                <td>"Credit card CBM"</td>
+                <td class="num" data-l="Report">"R 410,00"</td>
+                <td class="num" data-l="Deposited">"R 410,00"</td>
+                <td class="num var-zero" data-l="Variance">"R 0,00"</td>
+              </tr>
+              <tr>
+                <td>"PayFast card"</td>
+                <td class="num" data-l="Report">"R 99,99"</td>
+                <td class="num" data-l="Deposited">"R 99,99"</td>
+                <td class="num var-zero" data-l="Variance">"R 0,00"</td>
+              </tr>
+              <tr>
+                <td>"EFT"</td>
+                <td class="num" data-l="Report">"R 800,00"</td>
+                <td class="num" data-l="Deposited">"R 800,00"</td>
+                <td class="num var-zero" data-l="Variance">"R 0,00"</td>
+              </tr>
+              <tr>
+                <td>"Shop2Shop"</td>
+                <td class="num" data-l="Report">"R 120,00"</td>
+                <td class="num" data-l="Deposited">"R 120,00"</td>
+                <td class="num var-zero" data-l="Variance">"R 0,00"</td>
+              </tr>
+              <tr>
+                <td>"SnapScan"</td>
+                <td class="num" data-l="Report">"R 105,00"</td>
+                <td class="num" data-l="Deposited">"R 105,00"</td>
+                <td class="num var-zero" data-l="Variance">"R 0,00"</td>
+              </tr>
+              <tr>
+                <td>"Petty cash (not banked)"</td>
+                <td class="num" data-l="Report">"R 0,00"</td>
+                <td class="num" data-l="Deposited">"R 200,00"</td>
+                <td class="num var-pos" data-l="Variance">"+R 200,00"</td>
+              </tr>
+            </tbody>
+            " "
+            <tfoot>
+              <tr>
+                <td>"Total"</td>
+                <td class="num" data-l="Report">"R 21 533,19"</td>
+                <td class="num" data-l="Deposited">"R 21 513,24"</td>
+                <td class="num var-neg" data-l="Variance">"−R 19,95"</td>
+              </tr>
+            </tfoot>
+            " "
+          </table>
+        </div>
       </div>
       " "
       <div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">

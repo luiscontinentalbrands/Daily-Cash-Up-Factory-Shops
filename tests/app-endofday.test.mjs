@@ -90,3 +90,27 @@ test("email the PDF: share sheet, cancelled share, or download plus mailto", asy
   await broken.click("#pdf-dl");
   snap(t, broken.text("#csv-msg"), "PDF tool unavailable");
 });
+
+test("End of Day table: one view at a time, switched with the shop buttons", async t => {
+  const docs = dayDocs(DAY, { signed: ["wholesale", "retail", "citydeep"] });
+  docs[`cashups/${DAY}_citydeep`].lines.card = { report: "2500.00", deposited: "1000.00" };
+  const app = await boot(t, { me: "u-mgr", now: `${DAY}T18:00:00+02:00`, docs });
+  snap(t, app.html(".eodviews"), "buttons");
+  const views = {};
+  for (const v of ["all", "wholesale", "retail", "citydeep"]) {
+    await app.click(`[data-eod="${v}"]`);
+    views[v] = app.all("table.eod tr").map(r => r.children.map(c => c.textContent.trim()).join(" | ") + (r.className ? `  [${r.className}]` : ""));
+  }
+  snap(t, views, "views");
+  assert.equal(app.$('[data-eod="citydeep"]').getAttribute("aria-pressed"), "true");
+  // the chosen view stays when the screen is redrawn, and switching keeps a signature being drawn
+  await app.draw("#pad");
+  await app.click('[data-eod="retail"]');
+  assert.equal(app.$("#pad").dataset.inked, "1");
+  await app.advance(60000);
+  assert.equal(app.$('[data-eod="retail"]').getAttribute("aria-pressed"), "true");
+  t.mock.timers.reset();
+  const pre = await boot(t, { me: "u-mgr", now: `${PRE}T18:00:00+02:00`, docs: dayDocs(PRE) });
+  await pre.date(PRE);
+  snap(t, pre.all(".eodview").map(b => b.textContent.trim()), "before City Deep");
+});
