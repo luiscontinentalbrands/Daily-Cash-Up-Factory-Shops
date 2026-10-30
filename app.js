@@ -1114,9 +1114,9 @@ function handoverSection(doc, can) {
       }
     </div></section>`;
 }
-function bindHandover() {
-  const cv = $("#hpad");
-  if (!cv) return;
+// A signature pad on a canvas, drawn on with finger or mouse.
+// While it has ink, cv.dataset.inked is "1" (render() then waits, so the signature is not lost).
+function signaturePad(cv) {
   const ctx = cv.getContext("2d");
   let drawing = false,
     inked = false,
@@ -1154,6 +1154,30 @@ function bindHandover() {
   };
   cv.addEventListener("pointerup", end);
   cv.addEventListener("pointercancel", end);
+  return {
+    isInked: () => inked,
+    clear() {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      inked = false;
+      delete cv.dataset.inked;
+    },
+    // the signature as it is stored: a 600 × 200 PNG on white
+    png() {
+      const out = document.createElement("canvas");
+      out.width = 600;
+      out.height = 200;
+      const o = out.getContext("2d");
+      o.fillStyle = "#fff";
+      o.fillRect(0, 0, 600, 200);
+      o.drawImage(cv, 0, 0, 600, 200);
+      return out.toDataURL("image/png");
+    },
+  };
+}
+function bindHandover() {
+  const cv = $("#hpad");
+  if (!cv) return;
+  const pad = signaturePad(cv);
   const amt = $("#ho-amt");
   amt.addEventListener("input", () => {
     if (/[^0-9.,]/.test(amt.value)) amt.value = amt.value.replace(/[^0-9.,]/g, "");
@@ -1162,9 +1186,7 @@ function bindHandover() {
     if (amt.value !== "") amt.value = num(money(amt.value)).toFixed(2);
   });
   $("#ho-clear").addEventListener("click", () => {
-    ctx.clearRect(0, 0, cv.width, cv.height);
-    inked = false;
-    delete cv.dataset.inked;
+    pad.clear();
     $("#ho-msg").textContent = "";
     if (state.deferred) render(true);
   });
@@ -1186,17 +1208,11 @@ function bindHandover() {
       m.textContent = "The person receiving the cash must be someone else.";
       return;
     }
-    if (!inked) {
+    if (!pad.isInked()) {
       m.textContent = to + " must sign in the box first.";
       return;
     }
-    const out = document.createElement("canvas");
-    out.width = 600;
-    out.height = 200;
-    const o = out.getContext("2d");
-    o.fillStyle = "#fff";
-    o.fillRect(0, 0, 600, 200);
-    o.drawImage(cv, 0, 0, 600, 200);
+    const signature = pad.png();
     $("#ho-sign").disabled = true;
     m.className = "msg";
     m.textContent = "Saving…";
@@ -1208,13 +1224,11 @@ function bindHandover() {
         givenBy: state.me.name,
         receivedBy: to,
         note,
-        signature: out.toDataURL("image/png"),
+        signature,
         at: serverTimestamp(),
         atIso: new Date().toISOString(),
       });
-      ctx.clearRect(0, 0, cv.width, cv.height);
-      inked = false;
-      delete cv.dataset.inked;
+      pad.clear();
       $("#ho-note").value = "";
       m.textContent = `Saved: ${R(a)} handed to ${to}.`;
       $("#ho-sign").disabled = false;
@@ -1456,47 +1470,9 @@ function bindDept(dept) {
   document.querySelectorAll("[data-photos]").forEach(bindThumbs);
 }
 function bindPad(cv, dept) {
-  const ctx = cv.getContext("2d");
-  let drawing = false,
-    inked = false,
-    last = null;
-  ctx.lineWidth = 3.2;
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  ctx.strokeStyle = "#1f2a44";
-  ctx.fillStyle = "#1f2a44";
-  const pt = e => {
-    const r = cv.getBoundingClientRect();
-    return { x: ((e.clientX - r.left) * cv.width) / r.width, y: ((e.clientY - r.top) * cv.height) / r.height };
-  };
-  cv.addEventListener("pointerdown", e => {
-    cv.dataset.inked = "1";
-    drawing = true;
-    last = pt(e);
-    cv.setPointerCapture(e.pointerId);
-    ctx.beginPath();
-    ctx.arc(last.x, last.y, 1.5, 0, Math.PI * 2);
-    ctx.fill();
-    inked = true;
-  });
-  cv.addEventListener("pointermove", e => {
-    if (!drawing) return;
-    const p = pt(e);
-    ctx.beginPath();
-    ctx.moveTo(last.x, last.y);
-    ctx.lineTo(p.x, p.y);
-    ctx.stroke();
-    last = p;
-  });
-  const end = () => {
-    drawing = false;
-  };
-  cv.addEventListener("pointerup", end);
-  cv.addEventListener("pointercancel", end);
+  const pad = signaturePad(cv);
   $("#clear").addEventListener("click", () => {
-    ctx.clearRect(0, 0, cv.width, cv.height);
-    inked = false;
-    delete cv.dataset.inked;
+    pad.clear();
     $("#sign-msg").textContent = "";
     if (state.deferred) render(true);
   });
@@ -1526,20 +1502,14 @@ function bindPad(cv, dept) {
       }
     }
     const who = state.me.name;
-    if (!inked) {
+    if (!pad.isInked()) {
       msg.textContent = "Draw the signature in the box first.";
       return;
     }
-    const out = document.createElement("canvas");
-    out.width = 600;
-    out.height = 200;
-    const o = out.getContext("2d");
-    o.fillStyle = "#fff";
-    o.fillRect(0, 0, 600, 200);
-    o.drawImage(cv, 0, 0, 600, 200);
+    const signature = pad.png();
     const before = clone(doc);
     Object.assign(doc, {
-      signature: out.toDataURL("image/png"),
+      signature,
       signedBy: who,
       signedAt: new Date().toISOString(),
       status: "signed",
