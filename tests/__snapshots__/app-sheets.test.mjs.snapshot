@@ -4450,14 +4450,14 @@ exports[`who is recorded as the person cashing up 1`] = `
     "shownAfter": "Wanda Wholesale"
   },
   "u-mgr on wholesale": {
-    "shown": "Manny Manager",
-    "saved": "Manny Manager",
-    "shownAfter": "Manny Manager"
+    "shown": "—",
+    "saved": "",
+    "shownAfter": "—"
   },
   "u-admin on retail": {
-    "shown": "Ada Admin",
-    "saved": "Ada Admin",
-    "shownAfter": "Ada Admin"
+    "shown": "—",
+    "saved": "",
+    "shownAfter": "—"
   },
   "u-cd on citydeep": {
     "shown": "Cindy Deep",
@@ -4467,7 +4467,7 @@ exports[`who is recorded as the person cashing up 1`] = `
   "admin signs an empty Wholesale sheet": [
     [
       "signed",
-      "Ada Admin",
+      "",
       "Ada Admin"
     ]
   ]

@@ -200,6 +200,8 @@ function newSalt() {
 const role = () => state.me && state.me.role;
 const canEditDept = d => [d, "manager", "admin"].includes(role());
 const canSignDept = d => [d, "admin"].includes(role());
+// A shop sheet's own user (its cashier or shop manager): only they are recorded as the person cashing up
+const isOwnSheet = dept => !isMgr(dept) && role() === dept;
 // Managers and the administrator: sign off the day, reopen any sheet, see the Not banked report
 const isManagerOrAdmin = () => ["manager", "admin"].includes(role());
 const canSignManager = isManagerOrAdmin;
@@ -621,7 +623,7 @@ function idOf(dept, date) {
 function scheduleSave(dept) {
   const doc = drafts[dept];
   if (doc.status === "new") doc.status = "draft";
-  if (!isMgr(dept) && !doc.cashier) doc.cashier = state.me.name;
+  if (isOwnSheet(dept) && !doc.cashier) doc.cashier = state.me.name;
   state.ver[dept] = (state.ver[dept] || 0) + 1;
   state.pending[dept] = true;
   clearTimeout(timers[dept]);
@@ -917,7 +919,7 @@ function renderDept(dept) {
     <div class="sheet-body">
       <div class="fields">
         <div class="field"><label>Date</label><div class="static">${shortDate(state.date)}</div></div>
-        <div class="field"><label>Person cashing up</label><div class="static">${esc(doc.cashier) || (editable ? esc(state.me.name) : "—")}</div></div>
+        <div class="field"><label>Person cashing up</label><div class="static">${esc(doc.cashier) || (editable && isOwnSheet(dept) ? esc(state.me.name) : "—")}</div></div>
         <div class="field"><label>Department</label><div class="static">${DEPTS[dept]}</div></div>
       </div>
       ${editable ? scanPanel(dept) : ""}
@@ -1377,7 +1379,7 @@ function bindPad(cv, dept) {
       signedAt: new Date().toISOString(),
       status: "signed",
     });
-    if (!isMgr(dept) && !doc.cashier) doc.cashier = who;
+    if (isOwnSheet(dept) && !doc.cashier) doc.cashier = who;
     clearTimeout(timers[dept]);
     state.pending[dept] = true;
     $("#signbtn").disabled = true;

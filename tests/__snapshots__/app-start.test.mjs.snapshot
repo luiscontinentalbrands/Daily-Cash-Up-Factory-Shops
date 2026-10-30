@@ -290,7 +290,7 @@ exports[`first administrator 6`] = `
         " "
         <div class="field">
           <label>"Person cashing up"</label>
-          <div class="static">"Alex Owner"</div>
+          <div class="static">"—"</div>
         </div>
         " "
         <div class="field">
