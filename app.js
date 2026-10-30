@@ -1540,6 +1540,21 @@ function bindPad(cv, dept) {
   });
 }
 
+// One payment type across the shops of End of Day: per shop [report, deposited], or null where that
+// shop has no such line, and the totals over the shops
+function combinedLine(m, shops) {
+  let report = 0,
+    deposited = 0;
+  const cells = shops.map(([d, doc]) => {
+    if (!methodsFor(d).some(x => x.k === m.k)) return null;
+    const a = num(doc.lines[m.k].report),
+      b = dep(doc.lines[m.k]);
+    report += a;
+    deposited += b;
+    return [a, b];
+  });
+  return { cells, report, deposited };
+}
 function renderCombined() {
   const W = current("wholesale"),
     Rt = current("retail"),
@@ -1581,20 +1596,16 @@ function renderCombined() {
   const shopCols = S.map(([d]) => `<th colspan="2" class="grp" style="text-align:center">${DEPTS[d]}</th>`).join("");
   const shopSub = S.map(() => `<th class="grp">Report</th><th>Deposited</th>`).join("");
   const rows = METHODS.map(m => {
-    let r = 0,
-      dd = 0;
-    const cells = S.map(([d, doc]) => {
-      const on = methodsFor(d).some(x => x.k === m.k);
-      const a = on ? num(doc.lines[m.k].report) : 0,
-        b = on ? dep(doc.lines[m.k]) : 0;
-      r += a;
-      dd += b;
-      return on
-        ? `<td class="num grp">${R(a)}</td><td class="num">${R(b)}</td>`
-        : `<td class="num grp muted">—</td><td class="num muted">—</td>`;
-    }).join("");
+    const { cells, report: r, deposited: dd } = combinedLine(m, S);
+    const tds = cells
+      .map(c =>
+        c
+          ? `<td class="num grp">${R(c[0])}</td><td class="num">${R(c[1])}</td>`
+          : `<td class="num grp muted">—</td><td class="num muted">—</td>`,
+      )
+      .join("");
     const v = dd - r;
-    return `<tr><td>${lbl(m, "combined")}</td>${cells}<td class="num grp"><b>${R(r)}</b></td><td class="num"><b>${R(dd)}</b></td><td class="num ${vcls(v)}">${RV(v)}</td></tr>`;
+    return `<tr><td>${lbl(m, "combined")}</td>${tds}<td class="num grp"><b>${R(r)}</b></td><td class="num"><b>${R(dd)}</b></td><td class="num ${vcls(v)}">${RV(v)}</td></tr>`;
   }).join("");
   const foot = S.map(([, , t]) => `<td class="num grp">${R(t.report)}</td><td class="num">${R(t.deposited)}</td>`).join(
     "",
@@ -1665,17 +1676,9 @@ function renderCombined() {
     head.push("All shops report", "All shops deposited", "Variance");
     const lines = [["Date", state.date], [], head];
     METHODS.forEach(m => {
-      let r = 0,
-        dd = 0;
+      const { cells, report: r, deposited: dd } = combinedLine(m, S);
       const row = [lbl(m, "combined")];
-      S.forEach(([d, doc]) => {
-        const on = methodsFor(d).some(x => x.k === m.k);
-        const a = on ? num(doc.lines[m.k].report) : 0,
-          b = on ? dep(doc.lines[m.k]) : 0;
-        r += a;
-        dd += b;
-        row.push(a, b);
-      });
+      cells.forEach(c => row.push(...(c || [0, 0])));
       row.push(r, dd, dd - r);
       lines.push(row.map(f));
     });
