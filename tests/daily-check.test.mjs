@@ -75,3 +75,22 @@ test("photos are attached to the emailed PDF, removed ones left out", t => {
   const r = run("seven", { docs });
   snap(t, r.mails.map(m => m.attachments.map(a => a.content.filter(l => /till report photo|addImage/.test(l)))));
 });
+
+test("an older retail sheet with EFT figures (the app counts them as card)", t => {
+  const docs = dayDocs(DAY, { signed: ALL });
+  const rt = docs[`cashups/${DAY}_retail`];
+  rt.lines.eft = { report: "50.50", deposited: "50.50" };
+  rt.lines.shop2shop = { report: "20.00", deposited: "20.00" };
+  const r = run("seven", { docs });
+  const report = r.mails.find(m => m.to === "martie@tastytreats.co.za");
+  const html = report.html.join(" ");
+  const cells = row => [...(html.match(new RegExp(`>${row}</td>(.*?)</tr>`)) || ["", ""])[1].matchAll(/>(R [^<]*|—)</g)].map(m => m[1]);
+  snap(t, {
+    emailCreditCard: cells("Credit card"),
+    emailEft: cells("EFT"),
+    emailTotal: cells("<b>Total</b>"),
+    pdfCreditCard: (pdf => pdf.slice(pdf.indexOf("Credit card") + 1, pdf.indexOf("Credit card") + 10))(
+      report.attachments[0].content.filter(l => l.startsWith('["text"')).map(l => JSON.parse(l)[1]),
+    ),
+  });
+});
