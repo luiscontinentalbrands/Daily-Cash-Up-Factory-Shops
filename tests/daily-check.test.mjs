@@ -94,3 +94,22 @@ test("an older retail sheet with EFT figures (the app counts them as card)", t =
     ),
   });
 });
+
+// ---------- every 15 minutes: a shop sheet signed with a payment type more than R1000 out ----------
+const bigRetail = (signed = ["retail"], signedAt) => {
+  const docs = dayDocs(DAY, { signed });
+  const rt = docs[`cashups/${DAY}_retail`];
+  rt.lines.cashguard = { report: "5400.00", deposited: "3000.00", retained: "300.00" }; // R3 000 + R300 - R200 petty = R3 100: R2 300 short
+  rt.lines.card = { report: "2750.25", deposited: "4000.00" }; // R1 249,75 over
+  if (signedAt) { rt.signedAt = signedAt; delete rt.signedAtServer; }
+  return docs;
+};
+const bigCases = [
+  ["large difference: a signed sheet is emailed to Ulla and Luis", "bigvar", { docs: bigRetail(), now: `${DAY}T17:15:00+02:00` }],
+  ["large difference: already emailed for this signature", "bigvar", { docs: bigRetail(), log: { bigVarianceSent: { retail: "2026-10-28T15:05:00.000Z" } }, now: `${DAY}T17:30:00+02:00` }],
+  ["large difference: signed again after a reopen is emailed again", "bigvar", { docs: bigRetail(["retail"], at(DAY, "18:40")), log: { bigVarianceSent: { retail: "2026-10-28T15:05:00.000Z" } }, now: `${DAY}T18:45:00+02:00` }],
+  ["large difference: not signed yet, nothing sent", "bigvar", { docs: bigRetail([]), now: `${DAY}T17:15:00+02:00` }],
+  ["large difference: signed sheets without one, nothing sent", "bigvar", { docs: dayDocs(DAY, { signed: ALL }), now: `${DAY}T20:00:00+02:00` }],
+  ["large difference: Sunday", "bigvar", { date: SUN, now: `${SUN}T12:00:00+02:00` }],
+];
+for (const [label, mode, opts] of bigCases) test(label, t => snap(t, run(mode, opts)));

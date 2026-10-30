@@ -4587,6 +4587,206 @@ exports[`delayed 9 pm run after midnight checks the day before 1`] = `
 }
 `;
 
+exports[`large difference: Sunday 1`] = `
+{
+  "exit": 0,
+  "stdout": [
+    "2026-10-25 is a Sunday, not a trading day. Nothing to do."
+  ],
+  "stderr": "",
+  "mails": [],
+  "writes": [],
+  "transports": [
+    {
+      "host": "smtp.gmail.com",
+      "port": 465,
+      "secure": true,
+      "auth": {
+        "user": "cashup@example.test",
+        "pass": "app-password"
+      }
+    }
+  ]
+}
+`;
+
+exports[`large difference: a signed sheet is emailed to Ulla and Luis 1`] = `
+{
+  "exit": 0,
+  "stdout": [
+    "Sent \\"Large difference signed – Aeroton Retail – Wed, 28 Oct 2026\\" to ulla@tastytreats.co.za, luis@tastytreats.co.za"
+  ],
+  "stderr": "",
+  "mails": [
+    {
+      "from": "Factory Shop Cash Up <cashup@example.test>",
+      "to": "ulla@tastytreats.co.za, luis@tastytreats.co.za",
+      "subject": "Large difference signed – Aeroton Retail – Wed, 28 Oct 2026",
+      "html": [
+        "<div style=\\"font-family:Arial,Helvetica,sans-serif;color:#1f1c18\\">",
+        "  <p>The <b>Aeroton Retail</b> cash up for <b>Wed, 28 Oct 2026</b> was signed with payment types more than R 1 000,00 out.</p>",
+        "  <table style=\\"border-collapse:collapse;font-size:14px\\">",
+        "    <thead><tr style=\\"background:#f7f4ef\\"><th style=\\"padding:6px 10px;text-align:left\\">Payment type</th><th style=\\"padding:6px 10px;text-align:right\\">Per report</th><th style=\\"padding:6px 10px;text-align:right\\">Deposited</th><th style=\\"padding:6px 10px;text-align:right\\">Variance</th></tr></thead>",
+        "    <tbody><tr><td style=\\"padding:6px 10px;border-bottom:1px solid #eee\\">CashGuard</td><td style=\\"padding:6px 10px;text-align:right;border-bottom:1px solid #eee\\">R 5 400,00</td><td style=\\"padding:6px 10px;text-align:right;border-bottom:1px solid #eee\\">R 3 100,00</td><td style=\\"padding:6px 10px;text-align:right;border-bottom:1px solid #eee;color:#b03a2a\\"><b>−R 2 300,00</b></td></tr><tr><td style=\\"padding:6px 10px;border-bottom:1px solid #eee\\">Credit card</td><td style=\\"padding:6px 10px;text-align:right;border-bottom:1px solid #eee\\">R 2 750,25</td><td style=\\"padding:6px 10px;text-align:right;border-bottom:1px solid #eee\\">R 4 000,00</td><td style=\\"padding:6px 10px;text-align:right;border-bottom:1px solid #eee;color:#9a6a12\\"><b>+R 1 249,75</b></td></tr></tbody>",
+        "  </table>",
+        "  <p><b>Signed by:</b> Rita Retail · 28 Oct, 17:05<br><b>Cashed up by:</b> Rita Retail</p>",
+        "  ",
+        "  <p style=\\"color:#7a7268\\">Before signing, the app asked them to check these figures and they confirmed they are correct.</p></div>"
+      ],
+      "attachments": []
+    }
+  ],
+  "writes": [
+    {
+      "path": "shops/TestShopKey0123456789abc/emaillog/2026-10-28",
+      "data": {
+        "date": "2026-10-28",
+        "bigVarianceSent": {
+          "retail": "2026-10-28T15:05:00.000Z"
+        }
+      },
+      "opts": {
+        "merge": true
+      }
+    }
+  ],
+  "transports": [
+    {
+      "host": "smtp.gmail.com",
+      "port": 465,
+      "secure": true,
+      "auth": {
+        "user": "cashup@example.test",
+        "pass": "app-password"
+      }
+    }
+  ]
+}
+`;
+
+exports[`large difference: already emailed for this signature 1`] = `
+{
+  "exit": 0,
+  "stdout": [
+    "No new sheet signed with a difference over R1000."
+  ],
+  "stderr": "",
+  "mails": [],
+  "writes": [],
+  "transports": [
+    {
+      "host": "smtp.gmail.com",
+      "port": 465,
+      "secure": true,
+      "auth": {
+        "user": "cashup@example.test",
+        "pass": "app-password"
+      }
+    }
+  ]
+}
+`;
+
+exports[`large difference: not signed yet, nothing sent 1`] = `
+{
+  "exit": 0,
+  "stdout": [
+    "No new sheet signed with a difference over R1000."
+  ],
+  "stderr": "",
+  "mails": [],
+  "writes": [],
+  "transports": [
+    {
+      "host": "smtp.gmail.com",
+      "port": 465,
+      "secure": true,
+      "auth": {
+        "user": "cashup@example.test",
+        "pass": "app-password"
+      }
+    }
+  ]
+}
+`;
+
+exports[`large difference: signed again after a reopen is emailed again 1`] = `
+{
+  "exit": 0,
+  "stdout": [
+    "Sent \\"Large difference signed – Aeroton Retail – Wed, 28 Oct 2026\\" to ulla@tastytreats.co.za, luis@tastytreats.co.za"
+  ],
+  "stderr": "",
+  "mails": [
+    {
+      "from": "Factory Shop Cash Up <cashup@example.test>",
+      "to": "ulla@tastytreats.co.za, luis@tastytreats.co.za",
+      "subject": "Large difference signed – Aeroton Retail – Wed, 28 Oct 2026",
+      "html": [
+        "<div style=\\"font-family:Arial,Helvetica,sans-serif;color:#1f1c18\\">",
+        "  <p>The <b>Aeroton Retail</b> cash up for <b>Wed, 28 Oct 2026</b> was signed with payment types more than R 1 000,00 out.</p>",
+        "  <table style=\\"border-collapse:collapse;font-size:14px\\">",
+        "    <thead><tr style=\\"background:#f7f4ef\\"><th style=\\"padding:6px 10px;text-align:left\\">Payment type</th><th style=\\"padding:6px 10px;text-align:right\\">Per report</th><th style=\\"padding:6px 10px;text-align:right\\">Deposited</th><th style=\\"padding:6px 10px;text-align:right\\">Variance</th></tr></thead>",
+        "    <tbody><tr><td style=\\"padding:6px 10px;border-bottom:1px solid #eee\\">CashGuard</td><td style=\\"padding:6px 10px;text-align:right;border-bottom:1px solid #eee\\">R 5 400,00</td><td style=\\"padding:6px 10px;text-align:right;border-bottom:1px solid #eee\\">R 3 100,00</td><td style=\\"padding:6px 10px;text-align:right;border-bottom:1px solid #eee;color:#b03a2a\\"><b>−R 2 300,00</b></td></tr><tr><td style=\\"padding:6px 10px;border-bottom:1px solid #eee\\">Credit card</td><td style=\\"padding:6px 10px;text-align:right;border-bottom:1px solid #eee\\">R 2 750,25</td><td style=\\"padding:6px 10px;text-align:right;border-bottom:1px solid #eee\\">R 4 000,00</td><td style=\\"padding:6px 10px;text-align:right;border-bottom:1px solid #eee;color:#9a6a12\\"><b>+R 1 249,75</b></td></tr></tbody>",
+        "  </table>",
+        "  <p><b>Signed by:</b> Rita Retail · 28 Oct, 18:40<br><b>Cashed up by:</b> Rita Retail</p>",
+        "  ",
+        "  <p style=\\"color:#7a7268\\">Before signing, the app asked them to check these figures and they confirmed they are correct.</p></div>"
+      ],
+      "attachments": []
+    }
+  ],
+  "writes": [
+    {
+      "path": "shops/TestShopKey0123456789abc/emaillog/2026-10-28",
+      "data": {
+        "date": "2026-10-28",
+        "bigVarianceSent": {
+          "retail": "2026-10-28T16:40:00.000Z"
+        }
+      },
+      "opts": {
+        "merge": true
+      }
+    }
+  ],
+  "transports": [
+    {
+      "host": "smtp.gmail.com",
+      "port": 465,
+      "secure": true,
+      "auth": {
+        "user": "cashup@example.test",
+        "pass": "app-password"
+      }
+    }
+  ]
+}
+`;
+
+exports[`large difference: signed sheets without one, nothing sent 1`] = `
+{
+  "exit": 0,
+  "stdout": [
+    "No new sheet signed with a difference over R1000."
+  ],
+  "stderr": "",
+  "mails": [],
+  "writes": [],
+  "transports": [
+    {
+      "host": "smtp.gmail.com",
+      "port": 465,
+      "secure": true,
+      "auth": {
+        "user": "cashup@example.test",
+        "pass": "app-password"
+      }
+    }
+  ]
+}
+`;
+
 exports[`missing secret 1`] = `
 {
   "exit": 1,
@@ -5015,7 +5215,7 @@ exports[`unknown mode 1`] = `
   "stdout": [
     ""
   ],
-  "stderr": "Use \\"seven\\" or \\"nine\\".",
+  "stderr": "Use \\"seven\\", \\"nine\\" or \\"bigvar\\".",
   "mails": [],
   "writes": [],
   "transports": [

@@ -2,6 +2,8 @@
 //   node daily-check.mjs seven   → 19:05: alert Ulla if a signature is missing, send Martie the report
 //   node daily-check.mjs nine    → 21:00: if the day was incomplete at 7 pm, send Martie the final report
 //                                  once it is complete, otherwise remind Ulla it is still missing.
+//   node daily-check.mjs bigvar  → every 15 minutes (cashup-big-variance.yml): email Ulla and Luis once for each
+//                                  shop sheet signed with a payment type more than R1000 out.
 // Secrets come from GitHub repository secrets; nothing secret is stored in this file.
 
 import admin from "firebase-admin";
@@ -9,12 +11,13 @@ import nodemailer from "nodemailer";
 import { jsPDF } from "jspdf";
 import { buildReportPdf, reportFileName } from "../report-pdf.js";
 // the same address report-pdf.js uses, so Node loads the shared rules once
-import { CD_START, PAYMENT_METHODS, R, RV, countedTotal, esc, hasSplit, methodLabel, methodsFor, normalize, num } from "../cashup-core.js?v=2026-10-30c";
+import { BIG_VARIANCE, CD_START, DEPTS, PAYMENT_METHODS, R, RV, bigVariances, countedTotal, esc, hasSplit, methodLabel, methodsFor, normalize, num } from "../cashup-core.js?v=2026-10-30c";
 
 const MODE = (process.argv[2] || "seven").toLowerCase();
 const TZ = "Africa/Johannesburg";
 const ALERT_TO = process.env.ALERT_TO || "ulla@tastytreats.co.za";
 const REPORT_TO = process.env.REPORT_TO || "martie@tastytreats.co.za";
+const BIG_VARIANCE_TO = process.env.BIG_VARIANCE_TO || "ulla@tastytreats.co.za, luis@tastytreats.co.za";
 
 function need(name) {
   const v = process.env[name];
@@ -137,6 +140,19 @@ function alertHtml(lead) {
   ${done ? `<p><b>Already signed:</b></p><ul>${done}</ul>` : "<p>Nothing has been signed yet.</p>"}
   <p style="color:#7a7268">The cash up must be completed and signed by Wholesale, Aeroton Retail${withCD ? ", City Deep Retail" : ""} and the Manager by 7 pm every trading day (Monday to Saturday).</p></div>`;
 }
+// A shop sheet signed with payment types more than R1000 out (big: from bigVariances)
+function bigVarianceHtml(dept, doc, big) {
+  const th = 'style="padding:6px 10px;text-align:right"', td = 'style="padding:6px 10px;text-align:right;border-bottom:1px solid #eee"';
+  return `<div style="font-family:Arial,Helvetica,sans-serif;color:#1f1c18">
+  <p>The <b>${DEPTS[dept]}</b> cash up for <b>${esc(niceDate)}</b> was signed with ${big.length === 1 ? "a payment type" : "payment types"} more than ${R(BIG_VARIANCE)} out.</p>
+  <table style="border-collapse:collapse;font-size:14px">
+    <thead><tr style="background:#f7f4ef"><th style="padding:6px 10px;text-align:left">Payment type</th><th ${th}>Per report</th><th ${th}>Deposited</th><th ${th}>Variance</th></tr></thead>
+    <tbody>${big.map(({ m, variance }) => `<tr><td style="padding:6px 10px;border-bottom:1px solid #eee">${methodLabel(m, dept)}</td><td ${td}>${R(line(doc, m.k, "report"))}</td><td ${td}>${R(countedTotal(doc, m.k))}</td><td style="padding:6px 10px;text-align:right;border-bottom:1px solid #eee;color:${vcolor(variance)}"><b>${RV(variance)}</b></td></tr>`).join("")}</tbody>
+  </table>
+  <p><b>Signed by:</b> ${esc(doc.signedBy)} · ${when(doc)}<br><b>Cashed up by:</b> ${esc(doc.cashier || "—")}</p>
+  ${doc.notes ? `<p><b>Notes:</b> ${esc(doc.notes)}</p>` : ""}
+  <p style="color:#7a7268">Before signing, the app asked them to check these figures and they confirmed they are correct.</p></div>`;
+}
 // ---------- PDF attachment (same layout as the app's "Download PDF") ----------
 async function reportPdf(status) {
   const iso = doc => doc ? Object.assign({}, doc, { signedAt: signedTime(doc)?.toISOString() || "" }) : null;
@@ -194,7 +210,20 @@ if (MODE === "seven") {
     await send(ALERT_TO, `Still missing at 9 pm – cash up ${niceDate}`, alertHtml(`The factory shop cash up for <b>${esc(niceDate)}</b> is still not fully signed at 9 pm.`));
     await logRef.set({ date: DATE, missingAt9pm: missing, checkedAt9pm: now }, { merge: true });
   }
+} else if (MODE === "bigvar") {
+  // once per signature: a sheet reopened and signed again with a big difference is emailed again
+  const sent = log.bigVarianceSent || {};
+  let emailed = 0;
+  for (const [dept, doc] of [["wholesale", W], ["retail", Rt], ...(withCD ? [["citydeep", Cd]] : [])]) {
+    if (!signedNow(doc) || sent[dept] === doc.signedAt) continue;
+    const big = bigVariances(doc);
+    if (!big.length) continue;
+    await send(BIG_VARIANCE_TO, `Large difference signed – ${DEPTS[dept]} – ${niceDate}`, bigVarianceHtml(dept, doc, big));
+    await logRef.set({ date: DATE, bigVarianceSent: { [dept]: doc.signedAt } }, { merge: true });
+    emailed++;
+  }
+  if (!emailed) console.log("No new sheet signed with a difference over R1000.");
 } else {
-  console.error('Use "seven" or "nine".'); process.exit(1);
+  console.error('Use "seven", "nine" or "bigvar".'); process.exit(1);
 }
 process.exit(0);
