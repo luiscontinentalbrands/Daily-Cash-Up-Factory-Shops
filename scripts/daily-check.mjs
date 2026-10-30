@@ -15,7 +15,7 @@ const ALERT_TO = process.env.ALERT_TO || "ulla@tastytreats.co.za";
 const REPORT_TO = process.env.REPORT_TO || "martie@tastytreats.co.za";
 
 const METHODS = [
-  ["cash", "Cash / Coins (Retail shops)"], ["cashguard", "CashGuard"], ["card", "Credit card"], ["payfast", "PayFast card"],
+  ["cash", "Cash / Coins (Retail shops)"], ["cashguard", "CashGuard"], ["card", "Credit card"], ["cardcbm", "Credit card CBM"], ["payfast", "PayFast card"],
   ["eft", "EFT"], ["shop2shop", "Shop2Shop"], ["snapscan", "SnapScan"],
   ["petty", "Petty cash (not banked)"],
 ];
@@ -94,7 +94,7 @@ const log = logSnap.exists ? logSnap.data() : {};
 function line(doc, k, f) { return num(doc?.lines?.[k]?.[f]); }
 // Lines per shop: Retail has no EFT or Shop2Shop; Retail and City Deep split CashGuard (Nedbank + counted & retained, not banked)
 const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: ["cash", "cashguard", "card", "snapscan"] };
-const hasLine = (shop, k) => k === "payfast" ? shop === "wholesale" : k === "petty" ? shop === "retail" : (!SHOP_LINES[shop] || SHOP_LINES[shop].includes(k));
+const hasLine = (shop, k) => (k === "payfast" || k === "cardcbm") ? shop === "wholesale" : k === "petty" ? shop === "retail" : (!SHOP_LINES[shop] || SHOP_LINES[shop].includes(k));
 const splitShop = shop => shop === "retail" || shop === "citydeep";
 function reportHtml(title, note) {
   const shops = [["Wholesale", W, "wholesale"], ["Aeroton Retail", Rt, "retail"]];

@@ -5,7 +5,7 @@
 //   photos: [{dept, data (jpeg data URL), by, takenAt}] (optional, removed photos already filtered out)
 
 const METHODS = [
-  ["cash", "Cash / Coins (Retail shops)"], ["cashguard", "CashGuard"], ["card", "Credit card"], ["payfast", "PayFast card"],
+  ["cash", "Cash / Coins (Retail shops)"], ["cashguard", "CashGuard"], ["card", "Credit card"], ["cardcbm", "Credit card CBM"], ["payfast", "PayFast card"],
   ["eft", "EFT"], ["shop2shop", "Shop2Shop"], ["snapscan", "SnapScan"],
   ["petty", "Petty cash (not banked)"],
 ];
@@ -23,7 +23,7 @@ const isJpg = s => /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(String(s || 
 
 // Which lines each shop uses: Retail has no EFT or Shop2Shop; Retail and City Deep split CashGuard (Nedbank + not banked)
 const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: ["cash", "cashguard", "card", "snapscan"] };
-const hasLine = (shop, k) => k === "payfast" ? shop === "wholesale" : k === "petty" ? shop === "retail" : (!SHOP_LINES[shop] || SHOP_LINES[shop].includes(k));
+const hasLine = (shop, k) => (k === "payfast" || k === "cardcbm") ? shop === "wholesale" : k === "petty" ? shop === "retail" : (!SHOP_LINES[shop] || SHOP_LINES[shop].includes(k));
 const splitShop = shop => shop === "retail" || shop === "citydeep";
 const depOf = (doc, shop, k) => line(doc, k, "deposited") + (splitShop(shop) ? line(doc, k, "retained") : 0);
 
