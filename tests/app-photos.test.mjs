@@ -123,6 +123,8 @@ test("attach files: PDF pages kept, figures read from the last page; other files
   snap(t, app.text("#scan-msg"), "text file");
   await app.files("#wholesale-file", [jpg("a.jpg"), new File(["%PDF"], "b.pdf", { type: "application/pdf" })]);
   snap(t, app.writes().map(w => w.path), "photo then pdf");
+  // a photo is 1200 x 1600; a PDF page comes out 1272 x 1800: the figures are read from the PDF's last page
+  snap(t, globalThis.__fakeAI.images, "pictures read");
   app.env.loadScript = sc => queueMicrotask(() => sc.onerror());
   app.env.window.pdfjsLib = null;
   t.mock.timers.reset();

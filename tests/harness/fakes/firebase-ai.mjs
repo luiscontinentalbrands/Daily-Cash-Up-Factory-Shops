@@ -9,6 +9,8 @@ export function getGenerativeModel(ai, { model, generationConfig }) {
       const ctl = globalThis.__fakeAI, attempt = { route: ai.backend.route, model, generationConfig };
       ctl.attempts.push(attempt);
       ctl.prompts.push(parts[0]);
+      // the picture sent, decoded from the fake canvas ("image/jpeg|WxH|…")
+      (ctl.images ||= []).push(Buffer.from(parts[1].inlineData.data, "base64").toString().split("|")[1]);
       const text = await ctl.reply(attempt, parts);
       return { response: { text: () => text } };
     },

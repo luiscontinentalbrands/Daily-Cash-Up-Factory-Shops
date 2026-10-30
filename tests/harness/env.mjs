@@ -75,8 +75,12 @@ export function installBrowser({ hash = "" } = {}) {
     get src() { return this._src; }
     set src(u) {
       this._src = u;
-      queueMicrotask(() => {
-        const f = env.blobs.get(u), meta = (f && f.__img) || { w: 1200, h: 1600 };
+      // size: from the test (file.__img), else from a fake canvas's "image/…|WxH|…" contents, else 1200 x 1600
+      const f = env.blobs.get(u);
+      const sized = f && !f.__img && typeof f.text === "function" ? f.text() : Promise.resolve("");
+      sized.then(text => {
+        const m = /^image\/\w+\|(\d+)x(\d+)/.exec(text);
+        const meta = (f && f.__img) || (m ? { w: +m[1], h: +m[2] } : { w: 1200, h: 1600 });
         if (meta.broken) return this.onerror && this.onerror();
         this.width = meta.w; this.height = meta.h;
         if (this.onload) this.onload();
