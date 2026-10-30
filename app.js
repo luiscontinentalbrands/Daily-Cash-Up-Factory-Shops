@@ -2704,6 +2704,44 @@ async function setBanked(r, on, cb) {
     }
   }
 }
+// The lines of the Not banked report: per day, CashGuard counted & retained for each retail shop, plus
+// Aeroton Retail petty cash; lines with nothing kept back are left out. ticks: the Banked records by id.
+function notBankedRows(sheets, ticks, from, to) {
+  const mk = (n, shop, key, kind, report, nedbank, retained) => {
+    const b = ticks[n.date + "_" + key];
+    const ticked = !!(b && b.banked === true);
+    const same = ticked && Math.abs(num(b.amount) - retained) < 0.005;
+    return {
+      date: n.date,
+      shop,
+      key,
+      kind,
+      report,
+      nedbank,
+      retained,
+      signed: n.status === "signed",
+      signedBy: n.signedBy || "",
+      done: same,
+      changed: ticked && !same,
+      doneBy: b ? b.by || "" : "",
+      doneAt: b ? savedAtIso(b) || "" : "",
+      note: kind === "petty" ? n.pettyNotes || "" : "",
+    };
+  };
+  const out = [];
+  sheets
+    .filter(d => d && hasSplit(d.dept) && d.date >= from && d.date <= to)
+    .forEach(d => {
+      const n = normalize(d, d.date, d.dept);
+      const cg = n.lines.cashguard;
+      out.push(mk(n, d.dept, d.dept, "cg", num(cg.report), num(cg.deposited), num(cg.retained)));
+      if (d.dept === "retail")
+        out.push(mk(n, "retail", "retailpetty", "petty", null, null, num(n.lines.petty && n.lines.petty.deposited)));
+    });
+  return out
+    .filter(r => r.retained !== 0)
+    .sort((a, b) => a.date.localeCompare(b.date) || a.shop.localeCompare(b.shop) || a.kind.localeCompare(b.kind));
+}
 async function loadNotBanked(from, to) {
   const nb = state.nb;
   nb.from = from;
@@ -2733,42 +2771,12 @@ async function loadNotBanked(from, to) {
       console.error("Handovers:", e);
       nb.hand = [];
     }
-    // one line per shop per day for CashGuard retained, plus a line for Aeroton Retail petty cash
-    const mk = (n, shop, key, kind, report, nedbank, retained) => {
-      const b = bk[n.date + "_" + key];
-      const ticked = !!(b && b.banked === true);
-      const same = ticked && Math.abs(num(b.amount) - retained) < 0.005;
-      return {
-        date: n.date,
-        shop,
-        key,
-        kind,
-        report,
-        nedbank,
-        retained,
-        signed: n.status === "signed",
-        signedBy: n.signedBy || "",
-        done: same,
-        changed: ticked && !same,
-        doneBy: b ? b.by || "" : "",
-        doneAt: b ? savedAtIso(b) || "" : "",
-        note: kind === "petty" ? n.pettyNotes || "" : "",
-      };
-    };
-    const out = [];
-    snap.docs
-      .map(d => d.data())
-      .filter(d => d && hasSplit(d.dept) && d.date >= from && d.date <= to)
-      .forEach(d => {
-        const n = normalize(d, d.date, d.dept);
-        const cg = n.lines.cashguard;
-        out.push(mk(n, d.dept, d.dept, "cg", num(cg.report), num(cg.deposited), num(cg.retained)));
-        if (d.dept === "retail")
-          out.push(mk(n, "retail", "retailpetty", "petty", null, null, num(n.lines.petty && n.lines.petty.deposited)));
-      });
-    nb.rows = out
-      .filter(r => r.retained !== 0)
-      .sort((a, b) => a.date.localeCompare(b.date) || a.shop.localeCompare(b.shop) || a.kind.localeCompare(b.kind));
+    nb.rows = notBankedRows(
+      snap.docs.map(d => d.data()),
+      bk,
+      from,
+      to,
+    );
   } catch (e) {
     console.error("Not banked:", e);
     nb.rows = null;
