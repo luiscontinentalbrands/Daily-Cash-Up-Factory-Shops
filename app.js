@@ -45,9 +45,7 @@ const cdOn = date => String(date || "") >= CD_START;
 const SHEETS = ["wholesale", "retail", "citydeep"];
 const isMgr = d => d === "manager" || d === "cdmanager";
 // One manager signs off the whole day at End of Day (Wholesale, Aeroton Retail and, from CD_START, City Deep Retail)
-const mgrOf = d => "manager";
-const sheetsOf = (m, date) =>
-  cdOn(date || state.date) ? ["wholesale", "retail", "citydeep"] : ["wholesale", "retail"];
+const sheetsOf = date => (cdOn(date || state.date) ? ["wholesale", "retail", "citydeep"] : ["wholesale", "retail"]);
 const hasSplit = d => d === "retail" || d === "citydeep"; // CashGuard: Nedbank + counted & retained, not banked
 // The two retail shops (Aeroton Retail, City Deep Retail): cash is coins, no EFT line (EFT slips are credit card payments), no Shop2Shop
 const isRetail = d => d === "retail" || d === "citydeep";
@@ -646,7 +644,6 @@ function startApp() {
   $("#foot").textContent = "Live sync active · shared by all users · App version 2026-10-30c";
   const r = role();
   state.tab = r === "retail" ? "retail" : r === "citydeep" ? "citydeep" : r === "manager" ? "combined" : "wholesale";
-  if (state.tab === "users" && r !== "admin") state.tab = "wholesale";
   state.date = todayStr();
   $("#date").value = state.date;
   Object.keys(local).forEach(k => delete local[k]);
@@ -700,7 +697,7 @@ function stopSubs() {
 
 function canReopen(dept) {
   if (isMgr(dept)) return canSignManager();
-  const M = current(mgrOf(dept));
+  const M = current("manager");
   if (["manager", "admin"].includes(role())) return true;
   return current(dept).signedBy === state.me.name && M.status !== "signed";
 }
@@ -1043,7 +1040,7 @@ function renderDept(dept) {
   <section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">Sign-off</div><h2>${DEPTS[dept]} signature</h2></div></div>
     <div class="sheet-body">${signed ? signedBlock(doc, dept) : canSignDept(dept) ? signBlock(doc, dept) : `<div class="msg">Only the ${DEPTS[dept]} ${dept === "wholesale" ? "cashier" : "manager"} can sign this sheet.</div>`}</div>
-  </section>${dept === "retail" ? handoverSection(doc, editable || canEditDept(dept)) : ""}`;
+  </section>${dept === "retail" ? handoverSection(doc, canEditDept(dept)) : ""}`;
   bindDept(dept);
   if (dept === "retail") bindHandover();
   const gr = $("#goreopen");
@@ -1385,7 +1382,7 @@ function bindDept(dept) {
         return;
       }
       ro.disabled = true;
-      const mk = mgrOf(rdept),
+      const mk = "manager",
         M = current(mk);
       if (!isMgr(rdept) && M.status === "signed") {
         if (!["manager", "admin"].includes(role())) {
@@ -1483,7 +1480,7 @@ function bindPad(cv, dept) {
     const msg = $("#sign-msg");
     msg.className = "msg err";
     if (isMgr(dept)) {
-      const sh = sheetsOf(dept).map(current);
+      const sh = sheetsOf().map(current);
       if (!sh.every(x => x.status === "signed")) {
         msg.textContent = cdOn(state.date)
           ? "Wholesale, Aeroton Retail and City Deep Retail must all sign first."
@@ -1554,7 +1551,6 @@ function renderCombined() {
     tc = totals(C);
   const showCD = cdOn(state.date) || statusOf(C) !== "new";
   const info = dayNow();
-  const both = W.status === "signed" && Rt.status === "signed";
   const S = showCD
     ? [
         ["wholesale", W, tw],
@@ -1574,8 +1570,7 @@ function renderCombined() {
     (a, [, d]) => a + ["cash", "cashguard"].reduce((x, k) => x + num(d.lines[k].deposited), 0),
     0,
   );
-  const need = S.map(([d, doc]) => [d, doc]);
-  const waiting = need.filter(([, doc]) => doc.status !== "signed").map(([d]) => DEPTS[d]);
+  const waiting = S.filter(([, doc]) => doc.status !== "signed").map(([d]) => DEPTS[d]);
   const mgrBlock =
     M.status === "signed"
       ? signedBlock(M, "manager")
@@ -1614,7 +1609,7 @@ function renderCombined() {
       .replace("Signed off", l + " signed")
       .replace("In progress", l + " in progress")
       .replace("Not started", l + " not started");
-  const each = (f, label) => S.map(([d, doc]) => `<b>${DEPTS[d]}:</b> ${f(doc, d)}`).join(" · ");
+  const each = f => S.map(([d, doc]) => `<b>${DEPTS[d]}:</b> ${f(doc, d)}`).join(" · ");
   const notes = S.filter(([, d]) => d.notes)
     .map(([d, doc]) => `<b>${DEPTS[d]}:</b> ${esc(doc.notes)}`)
     .join("\n");
@@ -1661,7 +1656,6 @@ function renderCombined() {
     <div class="sheet-body">${mgrBlock}</div>
   </section>
 `;
-  local.manager = M;
   bindDept("manager");
   $("#pdf-dl").addEventListener("click", () => pdfAction("download"));
   $("#pdf-mail").addEventListener("click", () => pdfAction("email"));
@@ -1756,9 +1750,6 @@ async function makePdf() {
     CM = current("cdmanager");
   const info = dayNow();
   const showCD = cdOn(state.date) || statusOf(C) !== "new";
-  const photos = state.photos
-    .filter(p => p.removed !== true && safeJpg(p.data))
-    .sort((a, b) => a.dept.localeCompare(b.dept) || String(a.takenAt || "").localeCompare(String(b.takenAt || "")));
   const pdf = buildReportPdf(jsPDF, {
     date: state.date,
     niceDate: longDate(state.date),
@@ -2133,7 +2124,6 @@ async function attachFiles(files, dept) {
   }
 }
 async function scanPhoto(file, dept, read) {
-  const msg = $("#scan-msg");
   const say = (t, err) => {
     const m = $("#scan-msg");
     if (m) {
@@ -2153,7 +2143,6 @@ async function scanPhoto(file, dept, read) {
     return;
   }
   // 1. keep a copy of the photo with this cash up
-  let saved = false;
   const ref = fdoc(photosCol());
   try {
     await setDoc(ref, {
@@ -2164,7 +2153,6 @@ async function scanPhoto(file, dept, read) {
       at: serverTimestamp(),
       takenAt: new Date().toISOString(),
     });
-    saved = true;
   } catch (e) {
     say("The photo could not be saved. Check the connection and try again.", true);
     return;
