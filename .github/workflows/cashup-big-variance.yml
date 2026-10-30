@@ -1,0 +1,44 @@
+name: Cash up large difference check
+
+# Every 15 minutes, Monday to Saturday, 06:00 to 21:45 South African time (UTC+2 all year):
+# emails Ulla and Luis once for each shop sheet signed with a payment type more than R1000 out.
+# GitHub can start scheduled runs a few minutes late.
+on:
+  schedule:
+    - cron: "*/15 4-19 * * 1-6"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Date to check, YYYY-MM-DD (leave empty for today)"
+        required: false
+
+permissions:
+  contents: read
+
+# a slow run is never overlapped by the next one (so nobody is emailed twice)
+concurrency:
+  group: cashup-big-variance
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: scripts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-audit --no-fund
+      - name: Run check
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SHOP_KEY: ${{ secrets.SHOP_KEY }}
+          BIG_VARIANCE_TO: ulla@tastytreats.co.za, luis@tastytreats.co.za
+          CASHUP_DATE: ${{ github.event.inputs.date }}
+        run: node daily-check.mjs bigvar
