@@ -115,3 +115,10 @@ test("manager reopens the day from End of Day", async t => {
   await fail.click("#reopen");
   snap(t, [fail.text("#reopen-msg"), fail.text("#savealert")], "could not reopen the day");
 });
+
+test("signing when the audit trail entry cannot be written", async t => {
+  const app = await boot(t, { me: "u-whole", docs: dayDocs(DAY), before: (env, db) => { db.rejectWrite = (op, path) => (path.includes("/history/") ? { code: "permission-denied" } : null); } });
+  await app.draw("#pad");
+  await app.click("#signbtn");
+  snap(t, { writes: app.writes().map(w => [w.op, w.path, w.rejected || "ok"]), chip: app.text(".sheet.wholesale .chip"), alert: app.has("#savealert") && !app.$("#savealert").hidden ? app.text("#savealert") : null });
+});

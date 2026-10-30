@@ -1606,3 +1606,22 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
   </section>
 </main>
 `;
+
+exports[`signing when the audit trail entry cannot be written 1`] = `
+{
+  "writes": [
+    [
+      "set",
+      "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale",
+      "ok"
+    ],
+    [
+      "add",
+      "shops/TestShopKey0123456789abc/cashups/2026-10-28_wholesale/history/auto001",
+      "permission-denied"
+    ]
+  ],
+  "chip": "Signed off",
+  "alert": null
+}
+`;
