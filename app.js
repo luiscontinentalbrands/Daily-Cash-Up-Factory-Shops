@@ -1487,6 +1487,24 @@ function bindDept(dept) {
     });
   document.querySelectorAll("[data-photos]").forEach(bindThumbs);
 }
+// Why this sheet cannot be signed yet ("" when it can). The manager's sign-off needs every shop signed,
+// by other people; a shop sheet needs figures.
+function signOffProblem(dept, doc) {
+  if (isMgr(dept)) {
+    const sh = sheetsOf().map(current);
+    if (!sh.every(x => x.status === "signed"))
+      return cdOn(state.date)
+        ? "Wholesale, Aeroton Retail and City Deep Retail must all sign first."
+        : "Wholesale and Aeroton Retail must both sign first.";
+    const nm = state.me.name.trim().toLowerCase();
+    if (nm && sh.some(x => nm === String(x.signedBy).trim().toLowerCase()))
+      return "The manager sign-off must be done by a different person from the people who signed the shop sheets.";
+    return "";
+  }
+  const t = totals(doc);
+  if (t.report === 0 && t.deposited === 0) return "Enter the report and deposited amounts before signing.";
+  return "";
+}
 function bindPad(cv, dept) {
   const pad = signaturePad(cv);
   $("#clear").addEventListener("click", () => {
@@ -1498,26 +1516,10 @@ function bindPad(cv, dept) {
     const doc = local[dept];
     const msg = $("#sign-msg");
     msg.className = "msg err";
-    if (isMgr(dept)) {
-      const sh = sheetsOf().map(current);
-      if (!sh.every(x => x.status === "signed")) {
-        msg.textContent = cdOn(state.date)
-          ? "Wholesale, Aeroton Retail and City Deep Retail must all sign first."
-          : "Wholesale and Aeroton Retail must both sign first.";
-        return;
-      }
-      const nm = state.me.name.trim().toLowerCase();
-      if (nm && sh.some(x => nm === String(x.signedBy).trim().toLowerCase())) {
-        msg.textContent =
-          "The manager sign-off must be done by a different person from the people who signed the shop sheets.";
-        return;
-      }
-    } else {
-      const t = totals(doc);
-      if (t.report === 0 && t.deposited === 0) {
-        msg.textContent = "Enter the report and deposited amounts before signing.";
-        return;
-      }
+    const problem = signOffProblem(dept, doc);
+    if (problem) {
+      msg.textContent = problem;
+      return;
     }
     const who = state.me.name;
     if (!pad.isInked()) {
