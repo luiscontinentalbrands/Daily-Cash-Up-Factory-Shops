@@ -141,6 +141,9 @@ function showMsg(el, text, err) {
   el.className = "msg" + (err ? " err" : "");
   el.textContent = text;
 }
+// CSV: a cell with a comma, quote or line break goes in quotes; rows are joined with cell() applied to each cell
+const csvQuote = c => (/[",\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c);
+const toCsv = (rows, cell) => rows.map(r => r.map(cell).join(",")).join("\n");
 // Hand a file to the browser to save; returns its temporary blob: address
 function downloadBlob(blob, name) {
   const a = document.createElement("a");
@@ -1707,10 +1710,9 @@ function renderCombined() {
     const cell = c => {
       c = String(c == null ? "" : c);
       if (/^[=+\-@]/.test(c) && !/^-?\d+(\.\d+)?$/.test(c)) c = "'" + c;
-      return /[",\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c;
+      return csvQuote(c);
     };
-    const csv = lines.map(r => r.map(cell).join(",")).join("\n");
-    downloadBlob(new Blob([csv], { type: "text/csv" }), "cash-up-" + state.date + ".csv");
+    downloadBlob(new Blob([toCsv(lines, cell)], { type: "text/csv" }), "cash-up-" + state.date + ".csv");
     $("#csv-msg").textContent = "Downloaded.";
   });
 }
@@ -2538,10 +2540,7 @@ function renderNotBanked() {
   const cb = $("#nb-csv");
   if (cb)
     cb.addEventListener("click", () => {
-      const cell = c => {
-        c = String(c == null ? "" : c);
-        return /[",\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c;
-      };
+      const cell = c => csvQuote(String(c == null ? "" : c));
       const lines = [
         ["Money not banked - CashGuard (Aeroton Retail and City Deep Retail)"],
         ["From", nb.from, "To", nb.to],
@@ -2580,7 +2579,7 @@ function renderNotBanked() {
         ],
       );
       downloadBlob(
-        new Blob([lines.map(l => l.map(cell).join(",")).join("\n")], { type: "text/csv" }),
+        new Blob([toCsv(lines, cell)], { type: "text/csv" }),
         `Not-banked-${nb.from}-to-${nb.to}.csv`,
       );
     });
