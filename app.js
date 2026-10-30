@@ -1558,6 +1558,106 @@ function combinedLine(m, shops) {
   });
   return { cells, report, deposited };
 }
+// The banner at the top of End of Day: [class, text]
+function endOfDayBanner(info) {
+  if (info.kind === "done") return ["ok", "Day closed on time. All cash ups and the manager have signed."];
+  if (info.kind === "late") return ["wait", "Day closed, but after the 7 pm deadline. " + info.label + "."];
+  if (info.kind === "overdue")
+    return [
+      "bad",
+      "Past the 7 pm deadline. Missing signature: " + info.missing.join(", ") + ". Ulla is notified by email.",
+    ];
+  if (info.kind === "sunday") return ["wait", "Sunday is not a trading day."];
+  return ["wait", "Day still open. " + info.label + ". Still to sign: " + info.missing.join(", ") + "."];
+}
+// The manager's sign-off on End of Day; waiting: the shops that have not signed yet
+function managerSignOff(M, waiting) {
+  if (M.status === "signed") return signedBlock(M, "manager");
+  if (!canSignManager())
+    return `<div class="msg">Only a manager can sign off the day. ${waiting.length ? "Still waiting for: " + waiting.join(", ") + "." : "Waiting for the manager."}</div>`;
+  if (!waiting.length) return signBlock(M, "manager");
+  return `<div class="msg">You can sign here once all shops have signed. Still waiting for: ${waiting.join(", ")}.</div>`;
+}
+// One signature box in the row of signatures on End of Day
+function signatureBox(doc, dept) {
+  const img = safeImg(doc.signature);
+  return `<div class="sigbox"><div class="eyebrow">${DEPTS[dept]}</div>${doc.status === "signed" ? `<div class="sig-img">${img ? `<img src="${img}" alt="${DEPTS[dept]} signature">` : ""}</div><div class="who">${esc(doc.signedBy)} · ${timeStr(doc.signedAt)}</div>` : `<div class="empty">Awaiting signature</div><div class="who">${isMgr(dept) ? "signed below" : (doc.cashier ? esc(doc.cashier) + " · " : "") + (statusOf(doc) === "draft" ? "in progress" : "not started")}</div>`}</div>`;
+}
+// The End of Day table: each payment type per shop, then all shops together (shops: [dept, sheet, totals])
+function endOfDayTable(shops, showCD, gr, gd, gv) {
+  const shopCols = shops
+    .map(([d]) => `<th colspan="2" class="grp" style="text-align:center">${DEPTS[d]}</th>`)
+    .join("");
+  const shopSub = shops.map(() => `<th class="grp">Report</th><th>Deposited</th>`).join("");
+  const rows = METHODS.map(m => {
+    const { cells, report: r, deposited: dd } = combinedLine(m, shops);
+    const tds = cells
+      .map(c =>
+        c
+          ? `<td class="num grp">${R(c[0])}</td><td class="num">${R(c[1])}</td>`
+          : `<td class="num grp muted">—</td><td class="num muted">—</td>`,
+      )
+      .join("");
+    const v = dd - r;
+    return `<tr><td>${lbl(m, "combined")}</td>${tds}<td class="num grp"><b>${R(r)}</b></td><td class="num"><b>${R(dd)}</b></td><td class="num ${vcls(v)}">${RV(v)}</td></tr>`;
+  }).join("");
+  const foot = shops
+    .map(([, , t]) => `<td class="num grp">${R(t.report)}</td><td class="num">${R(t.deposited)}</td>`)
+    .join("");
+  return `<div class="tbl-wrap"><table style="min-width:${showCD ? 1040 : 820}px">
+        <thead><tr><th rowspan="2">Payment type</th>${shopCols}<th colspan="3" class="grp" style="text-align:center">${showCD ? "All shops" : "Combined"}</th></tr>
+        <tr>${shopSub}<th class="grp">Report</th><th>Deposited</th><th>Variance</th></tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr><td>Total</td>${foot}<td class="num grp">${R(gr)}</td><td class="num">${R(gd)}</td><td class="num ${vcls(gv)}">${RV(gv)}</td></tr></tfoot>
+      </table></div>`;
+}
+// The End of Day as a CSV file (shops: [dept, sheet, totals] in column order)
+function endOfDayCsv(shops, M, info) {
+  const sum = f => shops.reduce((a, [, , t]) => a + t[f], 0);
+  const gr = sum("report"),
+    gd = sum("deposited"),
+    gv = gd - gr;
+  const f = x => (typeof x === "number" ? x.toFixed(2) : x);
+  const head = ["Payment type"];
+  shops.forEach(([d]) => head.push(DEPTS[d] + " report", DEPTS[d] + " deposited"));
+  head.push("All shops report", "All shops deposited", "Variance");
+  const lines = [["Date", state.date], [], head];
+  METHODS.forEach(m => {
+    const { cells, report: r, deposited: dd } = combinedLine(m, shops);
+    const row = [lbl(m, "combined")];
+    cells.forEach(c => row.push(...(c || [0, 0])));
+    row.push(r, dd, dd - r);
+    lines.push(row.map(f));
+  });
+  const tot = ["Total"];
+  shops.forEach(([, , t]) => tot.push(t.report, t.deposited));
+  tot.push(gr, gd, gv);
+  lines.push(tot.map(f));
+  lines.push([]);
+  shops.forEach(([d, doc, t]) => {
+    lines.push(
+      [DEPTS[d] + " cashed up by", doc.cashier, "Signed by", doc.signedBy, doc.signedAt],
+      [DEPTS[d] + " notes", doc.notes],
+      ["Damaged notes & coins - " + DEPTS[d], num(doc.damaged).toFixed(2), doc.damagedNotes],
+    );
+    if (d === "retail")
+      lines.push(["Aeroton Retail petty cash (not banked)", t.petty.toFixed(2), doc.pettyNotes || ""]);
+    if (hasSplit(d))
+      lines.push(
+        [DEPTS[d] + " CashGuard deposited in Nedbank", num(doc.lines.cashguard.deposited).toFixed(2)],
+        [DEPTS[d] + " CashGuard counted & retained, not banked", t.retained.toFixed(2)],
+      );
+  });
+  lines.push(["Manager signed by", M.signedBy, M.signedAt]);
+  lines.push(["Day status", info.label]);
+  // Prefix cells that start with = + - @ so spreadsheets do not run them as formulas
+  const cell = c => {
+    c = String(c == null ? "" : c);
+    if (/^[=+\-@]/.test(c) && !/^-?\d+(\.\d+)?$/.test(c)) c = "'" + c;
+    return csvQuote(c);
+  };
+  return toCsv(lines, cell);
+}
 function renderCombined() {
   const W = current("wholesale"),
     Rt = current("retail"),
@@ -1588,35 +1688,7 @@ function renderCombined() {
     0,
   );
   const waiting = S.filter(([, doc]) => doc.status !== "signed").map(([d]) => DEPTS[d]);
-  const mgrBlock =
-    M.status === "signed"
-      ? signedBlock(M, "manager")
-      : !canSignManager()
-        ? `<div class="msg">Only a manager can sign off the day. ${waiting.length ? "Still waiting for: " + waiting.join(", ") + "." : "Waiting for the manager."}</div>`
-        : !waiting.length
-          ? signBlock(M, "manager")
-          : `<div class="msg">You can sign here once all shops have signed. Still waiting for: ${waiting.join(", ")}.</div>`;
-  const shopCols = S.map(([d]) => `<th colspan="2" class="grp" style="text-align:center">${DEPTS[d]}</th>`).join("");
-  const shopSub = S.map(() => `<th class="grp">Report</th><th>Deposited</th>`).join("");
-  const rows = METHODS.map(m => {
-    const { cells, report: r, deposited: dd } = combinedLine(m, S);
-    const tds = cells
-      .map(c =>
-        c
-          ? `<td class="num grp">${R(c[0])}</td><td class="num">${R(c[1])}</td>`
-          : `<td class="num grp muted">—</td><td class="num muted">—</td>`,
-      )
-      .join("");
-    const v = dd - r;
-    return `<tr><td>${lbl(m, "combined")}</td>${tds}<td class="num grp"><b>${R(r)}</b></td><td class="num"><b>${R(dd)}</b></td><td class="num ${vcls(v)}">${RV(v)}</td></tr>`;
-  }).join("");
-  const foot = S.map(([, , t]) => `<td class="num grp">${R(t.report)}</td><td class="num">${R(t.deposited)}</td>`).join(
-    "",
-  );
-  const sig = (doc, dept) => {
-    const img = safeImg(doc.signature);
-    return `<div class="sigbox"><div class="eyebrow">${DEPTS[dept]}</div>${doc.status === "signed" ? `<div class="sig-img">${img ? `<img src="${img}" alt="${DEPTS[dept]} signature">` : ""}</div><div class="who">${esc(doc.signedBy)} · ${timeStr(doc.signedAt)}</div>` : `<div class="empty">Awaiting signature</div><div class="who">${isMgr(dept) ? "signed below" : (doc.cashier ? esc(doc.cashier) + " · " : "") + (statusOf(doc) === "draft" ? "in progress" : "not started")}</div>`}</div>`;
-  };
+  const [bannerCls, bannerText] = endOfDayBanner(info);
   const stat = (d, l) =>
     chip(statusOf(d))
       .replace("Signed off", l + " signed")
@@ -1628,7 +1700,7 @@ function renderCombined() {
     .join("\n");
   const splitShops = S.filter(([d]) => hasSplit(d));
   main.innerHTML = `
-  <div class="banner ${info.kind === "done" ? "ok" : info.kind === "overdue" ? "bad" : "wait"}">${info.kind === "done" ? "Day closed on time. All cash ups and the manager have signed." : info.kind === "late" ? "Day closed, but after the 7 pm deadline. " + info.label + "." : info.kind === "overdue" ? "Past the 7 pm deadline. Missing signature: " + info.missing.join(", ") + ". Ulla is notified by email." : info.kind === "sunday" ? "Sunday is not a trading day." : "Day still open. " + info.label + ". Still to sign: " + info.missing.join(", ") + "."}</div>
+  <div class="banner ${bannerCls}">${bannerText}</div>
   <div class="eyebrow" style="margin:4px 0 8px">${showCD ? "All shops together · Aeroton (Wholesale + Aeroton Retail) and City Deep Retail" : "Aeroton · Wholesale + Aeroton Retail"}</div>
   <div class="summary">
     <div class="stat"><div class="k">Per reports</div><div class="v num">${R(gr)}</div></div>
@@ -1640,12 +1712,7 @@ function renderCombined() {
   <section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">Combined end-of-day cash up</div><h2>${longDate(state.date)}</h2></div><div class="actions">${S.map(([d, doc]) => stat(doc, DEPTS[d])).join("")}</div></div>
     <div class="sheet-body">
-      <div class="tbl-wrap"><table style="min-width:${showCD ? 1040 : 820}px">
-        <thead><tr><th rowspan="2">Payment type</th>${shopCols}<th colspan="3" class="grp" style="text-align:center">${showCD ? "All shops" : "Combined"}</th></tr>
-        <tr>${shopSub}<th class="grp">Report</th><th>Deposited</th><th>Variance</th></tr></thead>
-        <tbody>${rows}</tbody>
-        <tfoot><tr><td>Total</td>${foot}<td class="num grp">${R(gr)}</td><td class="num">${R(gd)}</td><td class="num ${vcls(gv)}">${RV(gv)}</td></tr></tfoot>
-      </table></div>
+      ${endOfDayTable(S, showCD, gr, gd, gv)}
       ${
         showCD
           ? `<div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
@@ -1660,59 +1727,20 @@ function renderCombined() {
       ${tr.petty || Rt.pettyNotes ? `<div class="field"><label>Aeroton Retail petty cash (not banked)</label><div class="static num" style="font-weight:400"><b>${R(tr.petty)}</b>${Rt.pettyNotes ? " · " + esc(Rt.pettyNotes) : ""}</div></div>` : ""}
       ${state.handovers.length ? `<div class="field"><label>Cash handed over (signed for)</label><div class="static num" style="font-weight:400">${state.handovers.map(h => `${R(num(h.amount))} from ${esc(h.givenBy)} to <b>${esc(h.receivedBy)}</b> · ${esc(timeStr(savedAtIso(h)))}`).join("<br>")}</div></div>` : ""}
       <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">${each(d => R(num(d.damaged)) + (d.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(S.reduce((a, [, d]) => a + num(d.damaged), 0))}</b></div></div>
-      <div class="sigs">${sig(W, "wholesale")}${sig(Rt, "retail")}${showCD ? sig(C, "citydeep") : ""}${sig(M, "manager")}</div>
+      <div class="sigs">${signatureBox(W, "wholesale")}${signatureBox(Rt, "retail")}${showCD ? signatureBox(C, "citydeep") : ""}${signatureBox(M, "manager")}</div>
       <div class="actions"><button class="btn primary" id="pdf-mail" type="button">Email PDF report</button><button class="btn" id="pdf-dl" type="button">Download PDF</button><button class="btn" id="csv">Download day as CSV</button><span class="msg" id="csv-msg"></span></div>
     </div>
   </section>
   <section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">End-of-day sign-off · ${showCD ? "all shops" : "Wholesale + Aeroton Retail"} · due by 7 pm</div><h2>Manager signature</h2></div>${M.status === "signed" ? '<span class="chip signed">Signed off</span>' : '<span class="chip">Not signed</span>'}</div>
-    <div class="sheet-body">${mgrBlock}</div>
+    <div class="sheet-body">${managerSignOff(M, waiting)}</div>
   </section>
 `;
   bindDept("manager");
   $("#pdf-dl").addEventListener("click", () => pdfAction("download"));
   $("#pdf-mail").addEventListener("click", () => pdfAction("email"));
   $("#csv").addEventListener("click", () => {
-    const f = x => (typeof x === "number" ? x.toFixed(2) : x);
-    const head = ["Payment type"];
-    S.forEach(([d]) => head.push(DEPTS[d] + " report", DEPTS[d] + " deposited"));
-    head.push("All shops report", "All shops deposited", "Variance");
-    const lines = [["Date", state.date], [], head];
-    METHODS.forEach(m => {
-      const { cells, report: r, deposited: dd } = combinedLine(m, S);
-      const row = [lbl(m, "combined")];
-      cells.forEach(c => row.push(...(c || [0, 0])));
-      row.push(r, dd, dd - r);
-      lines.push(row.map(f));
-    });
-    const tot = ["Total"];
-    S.forEach(([, , t]) => tot.push(t.report, t.deposited));
-    tot.push(gr, gd, gv);
-    lines.push(tot.map(f));
-    lines.push([]);
-    S.forEach(([d, doc, t]) => {
-      lines.push(
-        [DEPTS[d] + " cashed up by", doc.cashier, "Signed by", doc.signedBy, doc.signedAt],
-        [DEPTS[d] + " notes", doc.notes],
-        ["Damaged notes & coins - " + DEPTS[d], num(doc.damaged).toFixed(2), doc.damagedNotes],
-      );
-      if (d === "retail")
-        lines.push(["Aeroton Retail petty cash (not banked)", t.petty.toFixed(2), doc.pettyNotes || ""]);
-      if (hasSplit(d))
-        lines.push(
-          [DEPTS[d] + " CashGuard deposited in Nedbank", num(doc.lines.cashguard.deposited).toFixed(2)],
-          [DEPTS[d] + " CashGuard counted & retained, not banked", t.retained.toFixed(2)],
-        );
-    });
-    lines.push(["Manager signed by", M.signedBy, M.signedAt]);
-    lines.push(["Day status", info.label]);
-    // Prefix cells that start with = + - @ so spreadsheets do not run them as formulas
-    const cell = c => {
-      c = String(c == null ? "" : c);
-      if (/^[=+\-@]/.test(c) && !/^-?\d+(\.\d+)?$/.test(c)) c = "'" + c;
-      return csvQuote(c);
-    };
-    downloadBlob(new Blob([toCsv(lines, cell)], { type: "text/csv" }), "cash-up-" + state.date + ".csv");
+    downloadBlob(new Blob([endOfDayCsv(S, M, info)], { type: "text/csv" }), "cash-up-" + state.date + ".csv");
     $("#csv-msg").textContent = "Downloaded.";
   });
 }
@@ -2031,7 +2059,8 @@ function loadPdfJs() {
   return loadScript("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js", "PDF reader", () => {
     pdfjsLib = window.pdfjsLib;
     if (pdfjsLib)
-      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
     return pdfjsLib;
   });
 }
@@ -2578,10 +2607,7 @@ function renderNotBanked() {
           ["Banked later (ticked)", "", "", "", "", later.toFixed(2)],
         ],
       );
-      downloadBlob(
-        new Blob([toCsv(lines, cell)], { type: "text/csv" }),
-        `Not-banked-${nb.from}-to-${nb.to}.csv`,
-      );
+      downloadBlob(new Blob([toCsv(lines, cell)], { type: "text/csv" }), `Not-banked-${nb.from}-to-${nb.to}.csv`);
     });
 }
 // Administrator only: mark a retained amount as banked (or undo). Kept in its own record, so signed sheets stay untouched.
