@@ -109,13 +109,19 @@ export function explainReaderError(raw) {
   if (/Failed to fetch|network|import/i.test(raw)) return "The AI reader could not be reached (connection).";
   return "The AI reader refused the request.";
 }
-// An amount from the reader: a number, or text like "R 1 234,56" / "1,234.56"; null when it is neither
-function readerNumber(v) {
+// An amount from the reader: a number, or text like "R 1 234,56" / "1.234,56" / "1,234.56"; null when it is neither
+export function readerNumber(v) {
   if (typeof v === "number") return isFinite(v) ? v : null;
   if (typeof v !== "string") return null;
   let t = v.replace(/[R\s\u00a0]/gi, "");
   if (!t) return null;
-  if (t.includes(",") && !t.includes(".")) t = t.replace(/,(?=\d{1,2}$)/, ".").replace(/,/g, "");
+  // a comma after the last point: points are thousands separators, and the comma is the decimal mark when
+  // 1 or 2 digits follow it; otherwise commas are thousands separators
+  if (t.lastIndexOf(",") > t.lastIndexOf("."))
+    t = t
+      .replace(/\./g, "")
+      .replace(/,(?=\d{1,2}$)/, ".")
+      .replace(/,/g, "");
   else t = t.replace(/,/g, "");
   const n = parseFloat(t);
   return isFinite(n) ? n : null;

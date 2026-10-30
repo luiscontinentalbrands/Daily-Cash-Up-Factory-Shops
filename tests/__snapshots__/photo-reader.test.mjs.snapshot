@@ -1,0 +1,146 @@
+exports[`explainReaderError: which message for which error 1`] = `
+[
+  [
+    "AppCheck token invalid",
+    "The AI reader refused the request."
+  ],
+  [
+    "genai config not found",
+    "Firebase AI Logic is not fully set up for this project (Gemini Developer API link missing)."
+  ],
+  [
+    "SERVICE_DISABLED",
+    "The AI reader is not switched on in Firebase yet."
+  ],
+  [
+    "404 model not found",
+    "None of the AI models were accepted by your project. Check that AI Logic is set up with the Gemini Developer API."
+  ],
+  [
+    "429 Quota exceeded for model x",
+    "The free AI allowance for today is used up."
+  ],
+  [
+    "API key blocked",
+    "The Firebase web key is not allowed to use the AI reader."
+  ],
+  [
+    "Failed to fetch",
+    "The AI reader could not be reached (connection)."
+  ],
+  [
+    "odd",
+    "The AI reader refused the request."
+  ]
+]
+`;
+
+exports[`readerNumber: the ways a slip prints an amount 1`] = `
+[
+  [
+    "1234.56",
+    1234.56
+  ],
+  [
+    "NaN",
+    null
+  ],
+  [
+    "null",
+    null
+  ],
+  [
+    "true",
+    null
+  ],
+  [
+    "",
+    null
+  ],
+  [
+    "R",
+    null
+  ],
+  [
+    "1234.56",
+    1234.56
+  ],
+  [
+    "1234,56",
+    1234.56
+  ],
+  [
+    "R 1 234,56",
+    1234.56
+  ],
+  [
+    "1 234,56",
+    1234.56
+  ],
+  [
+    "1.234,56",
+    1234.56
+  ],
+  [
+    "1.234.567,8",
+    1234567.8
+  ],
+  [
+    "1,234.56",
+    1234.56
+  ],
+  [
+    "1,234",
+    1234
+  ],
+  [
+    "1.234",
+    1.234
+  ],
+  [
+    "99,9",
+    99.9
+  ],
+  [
+    "R1 234,5",
+    1234.5
+  ],
+  [
+    "abc",
+    null
+  ]
+]
+`;
+
+exports[`readerValues: keys in any spelling, retail EFT counted as card 1`] = `
+{
+  "wholesale": {
+    "vals": {
+      "cash": 10,
+      "cashguard": null,
+      "card": 100,
+      "cardcbm": 5,
+      "payfast": null,
+      "eft": 50.5,
+      "shop2shop": 2,
+      "snapscan": null,
+      "petty": null
+    },
+    "total": 1234.56
+  },
+  "retail": {
+    "vals": {
+      "cash": 10,
+      "cashguard": null,
+      "card": 150.5,
+      "cardcbm": 5,
+      "payfast": null,
+      "eft": null,
+      "shop2shop": 2,
+      "snapscan": null,
+      "petty": null
+    },
+    "total": 1234.56
+  }
+}
+`;
