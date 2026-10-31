@@ -1,4 +1,4 @@
-import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-31a";
+import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-31b";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import {
   initializeAppCheck,
@@ -55,19 +55,19 @@ import {
   todayStr,
   totals,
   vcls,
-} from "./cashup-core.js?v=2026-10-31a";
+} from "./cashup-core.js?v=2026-10-31b";
 import {
   explainReaderError,
   parseReaderReply,
   readWithAI,
   readerPrompt,
   readerValues,
-} from "./photo-reader.js?v=2026-10-31a";
+} from "./photo-reader.js?v=2026-10-31b";
 
 /* ---------- constants & helpers ---------- */
 // Version for cache-busting. When releasing, change it everywhere it is written: index.html (twice), the imports
 // above, and the imports in photo-reader.js, report-pdf.js and scripts/daily-check.mjs (search for the value).
-const APP_VERSION = "2026-10-31a";
+const APP_VERSION = "2026-10-31b";
 // Timings and limits (the on-screen texts that mention them, e.g. "7 pm" or "15 minutes", are written out separately)
 const SAVE_DELAY_MS = 700; // save this long after the last change
 const IDLE_LOCK_MS = 15 * 60000; // lock the app after this long without use

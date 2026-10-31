@@ -220,11 +220,17 @@ table.eod{min-width:0}
   table.lines tbody td:nth-child(4)::before{content:"Variance ";color:var(--muted);font-size:.75rem}
   table.lines td.inp input{min-width:0}
   table.lines td.inp label.sub{text-align:left}
-  table.lines tfoot tr{grid-template-columns:1fr 1fr 1fr;border-bottom:0;border-top:2px solid var(--fg)}
-  table.lines tfoot td:first-child{grid-column:1/-1}
-  table.lines tfoot td:nth-child(2)::before{content:"Report";display:block;font-size:.68rem;color:var(--muted);font-weight:600}
-  table.lines tfoot td:nth-child(3)::before{content:"Deposited";display:block;font-size:.68rem;color:var(--muted);font-weight:600}
-  table.lines tfoot td:nth-child(4)::before{content:"Variance";display:block;font-size:.68rem;color:var(--muted);font-weight:600}
+  /* total: same two columns as the boxes above, variance on its own line, in the body font */
+  table.lines tfoot tr{grid-template-columns:1fr 1fr;border-bottom:0;border-top:2px solid var(--fg);padding-top:10px}
+  table.lines tfoot td{font-family:var(--body);font-weight:700;font-size:1rem;font-variant-numeric:tabular-nums}
+  table.lines tfoot td:first-child{grid-column:1/-1;font-size:.95rem}
+  table.lines tfoot td:nth-child(2),table.lines tfoot td:nth-child(3){text-align:right;padding:7px 10px!important;border:1px solid var(--line-2);border-radius:7px;background:var(--bg)}
+  table.lines tfoot td:nth-child(2)::before,table.lines tfoot td:nth-child(3)::before{display:block;text-align:left;font-size:.68rem;color:var(--muted);font-weight:600;margin-bottom:2px}
+  table.lines tfoot td:nth-child(2)::before{content:"Total per report"}
+  table.lines tfoot td:nth-child(3)::before{content:"Total deposited"}
+  table.lines tfoot td:nth-child(4){grid-column:1/-1;text-align:right;font-size:1.05rem}
+  table.lines tfoot td:nth-child(4)::before{content:"Variance ";color:var(--muted);font-size:.75rem;font-weight:600}
+  table.lines tfoot tr.cgnote td{font-family:var(--body);font-weight:400;font-size:.82rem;text-align:left;border:0;background:none;padding:0!important}
   table.lines tfoot tr.cgnote{display:block;border-top:0}
   table.lines tfoot tr.cgnote td::before{content:none}
   /* lists (Not banked, handovers): one card per line */
@@ -236,4 +242,8 @@ table.eod{min-width:0}
   table.stack td.nbbank{text-align:left!important}
   table.stack tfoot td{grid-column:1/-1}
   table.stack tfoot td:empty{display:none}
+}
+@media (max-width:560px){
+  table.eod tfoot td{font-family:var(--body);font-weight:700;font-variant-numeric:tabular-nums}
+  table.eod td{font-variant-numeric:tabular-nums}
 }
