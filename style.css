@@ -200,3 +200,40 @@ table.eod{min-width:0}
   table.eod tr.bigvar{background:var(--bad-soft);box-shadow:inset 4px 0 0 var(--bad)}
   table.eod tr.bigvar td{background:transparent;box-shadow:none}
 }
+
+/* ---------- Phones: shop sheets and lists without sideways scrolling ---------- */
+@media (max-width:640px){
+  nav.tabs{flex-wrap:wrap;overflow:visible;gap:4px}
+  nav.tabs button{border-radius:999px;padding:7px 12px;font-size:.85rem}
+  .fields{grid-template-columns:1fr!important}
+  .sheet-head{flex-wrap:wrap;gap:8px}
+  .tbl-wrap:has(table.lines),.tbl-wrap:has(table.stack){overflow:visible;border:0}
+  /* shop sheet: one card per payment type, Report and Deposited side by side */
+  table.lines,table.lines tbody,table.lines tfoot{display:block;min-width:0}
+  table.lines thead{display:none}
+  table.lines tr{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;padding:10px 2px;border-bottom:1px solid var(--line-2)}
+  table.lines td{display:block;border:0;padding:0;white-space:normal}
+  table.lines td:first-child{grid-column:1/-1;font-weight:600;text-align:left}
+  table.lines tbody td:nth-child(2)::before{content:"Per report";display:block;font-size:.68rem;color:var(--muted);text-align:left;margin-bottom:2px;font-weight:600}
+  table.lines tbody td:nth-child(3)::before{content:"Deposited";display:block;font-size:.68rem;color:var(--muted);text-align:left;margin-bottom:2px;font-weight:600}
+  table.lines tbody td:nth-child(4){grid-column:1/-1;text-align:right;font-size:.9rem}
+  table.lines tbody td:nth-child(4)::before{content:"Variance ";color:var(--muted);font-size:.75rem}
+  table.lines td.inp input{min-width:0}
+  table.lines td.inp label.sub{text-align:left}
+  table.lines tfoot tr{grid-template-columns:1fr 1fr 1fr;border-bottom:0;border-top:2px solid var(--fg)}
+  table.lines tfoot td:first-child{grid-column:1/-1}
+  table.lines tfoot td:nth-child(2)::before{content:"Report";display:block;font-size:.68rem;color:var(--muted);font-weight:600}
+  table.lines tfoot td:nth-child(3)::before{content:"Deposited";display:block;font-size:.68rem;color:var(--muted);font-weight:600}
+  table.lines tfoot td:nth-child(4)::before{content:"Variance";display:block;font-size:.68rem;color:var(--muted);font-weight:600}
+  table.lines tfoot tr.cgnote{display:block;border-top:0}
+  table.lines tfoot tr.cgnote td::before{content:none}
+  /* lists (Not banked, handovers): one card per line */
+  table.stack,table.stack tbody,table.stack tfoot{display:block;min-width:0}
+  table.stack thead{display:none}
+  table.stack tr{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;padding:10px 4px;border-bottom:1px solid var(--line-2)}
+  table.stack td{display:block;border:0;padding:0;text-align:left;white-space:normal}
+  table.stack td[data-l]::before{content:attr(data-l);display:block;font-size:.68rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+  table.stack td.nbbank{text-align:left!important}
+  table.stack tfoot td{grid-column:1/-1}
+  table.stack tfoot td:empty{display:none}
+}

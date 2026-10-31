@@ -192,7 +192,7 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -1308,7 +1308,7 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>

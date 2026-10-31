@@ -1,4 +1,4 @@
-import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-30d";
+import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-31a";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import {
   initializeAppCheck,
@@ -55,19 +55,19 @@ import {
   todayStr,
   totals,
   vcls,
-} from "./cashup-core.js?v=2026-10-30d";
+} from "./cashup-core.js?v=2026-10-31a";
 import {
   explainReaderError,
   parseReaderReply,
   readWithAI,
   readerPrompt,
   readerValues,
-} from "./photo-reader.js?v=2026-10-30d";
+} from "./photo-reader.js?v=2026-10-31a";
 
 /* ---------- constants & helpers ---------- */
 // Version for cache-busting. When releasing, change it everywhere it is written: index.html (twice), the imports
 // above, and the imports in photo-reader.js, report-pdf.js and scripts/daily-check.mjs (search for the value).
-const APP_VERSION = "2026-10-30d";
+const APP_VERSION = "2026-10-31a";
 // Timings and limits (the on-screen texts that mention them, e.g. "7 pm" or "15 minutes", are written out separately)
 const SAVE_DELAY_MS = 700; // save this long after the last change
 const IDLE_LOCK_MS = 15 * 60000; // lock the app after this long without use
@@ -932,7 +932,7 @@ function renderDept(dept) {
       </div>
       ${editable ? scanPanel(dept) : ""}
       <div class="field"><label>Report photos</label><div data-photos="${dept}">${photoStrip(dept)}</div></div>
-      <div class="tbl-wrap"><table>
+      <div class="tbl-wrap"><table class="lines">
         <thead><tr><th>Payment type</th><th>Per report<small>Till / Z-report</small></th><th>Deposited<small>Actual counted</small></th><th>Variance<small>Deposited − report</small></th></tr></thead>
         <tbody>${rows}</tbody>
         <tfoot><tr><td>Total</td><td class="num" id="t-report">${R(t.report)}</td><td class="num" id="t-dep">${R(t.deposited)}</td><td class="num ${vcls(t.variance)}" id="t-var">${RV(t.variance)}</td></tr>
@@ -2283,7 +2283,7 @@ function bankCell(r, all, isAdmin) {
     : r.changed
       ? `<div class="msg err" style="font-size:.75rem">Amount changed after it was ticked. Tick again.</div>`
       : "";
-  return `<td class="nbbank" style="text-align:center">${box}${note}</td>`;
+  return `<td class="nbbank" data-l="Banked" style="text-align:center">${box}${note}</td>`;
 }
 // What shows under the dates on the Not banked tab: where the report stands, or the report itself
 function notBankedBody(nb, all, rows, out, later, isAdmin) {
@@ -2293,8 +2293,8 @@ function notBankedBody(nb, all, rows, out, later, isAdmin) {
   if (!all.length)
     return `<div class="empty-state">No money was recorded as counted &amp; retained, not banked between ${shortDate(nb.from)} and ${shortDate(nb.to)}.</div>`;
   return `<label style="display:inline-flex;gap:8px;align-items:center;margin:4px 0 10px;cursor:pointer"><input type="checkbox" id="nbhide" ${nb.hide ? "checked" : ""}> Hide amounts already banked</label>
-    <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Shop</th><th>Per report<small>CashGuard</small></th><th>In Nedbank<small>Deposited</small></th><th>Not banked<small>Retained / petty cash</small></th><th>Sheet</th><th style="text-align:center">Banked</th></tr></thead>
-      <tbody>${rows.map(r => `<tr class="nbrow${r.done ? " nbdone" : ""}" data-d="${esc(r.date)}" data-shop="${esc(r.shop)}" style="cursor:pointer"><td>${shortDate(r.date)}</td><td>${DEPTS[r.shop]}${r.kind === "petty" ? `<div class="msg" style="font-size:.75rem">Petty cash${r.note ? " · " + esc(r.note) : ""}</div>` : ""}</td><td class="num">${r.kind === "petty" ? "—" : R(r.report)}</td><td class="num">${r.kind === "petty" ? "—" : R(r.nedbank)}</td><td class="num"><b>${R(r.retained)}</b></td><td>${r.signed ? `<span class="chip signed" title="Signed by ${esc(r.signedBy)}">Signed</span>` : '<span class="chip draft">Not signed</span>'}</td>${bankCell(r, all, isAdmin)}</tr>`).join("") || '<tr><td colspan="7" class="msg">Everything in this period has been banked.</td></tr>'}</tbody>
+    <div class="tbl-wrap"><table class="stack"><thead><tr><th>Date</th><th>Shop</th><th>Per report<small>CashGuard</small></th><th>In Nedbank<small>Deposited</small></th><th>Not banked<small>Retained / petty cash</small></th><th>Sheet</th><th style="text-align:center">Banked</th></tr></thead>
+      <tbody>${rows.map(r => `<tr class="nbrow${r.done ? " nbdone" : ""}" data-d="${esc(r.date)}" data-shop="${esc(r.shop)}" style="cursor:pointer"><td data-l="Date">${shortDate(r.date)}</td><td data-l="Shop">${DEPTS[r.shop]}${r.kind === "petty" ? `<div class="msg" style="font-size:.75rem">Petty cash${r.note ? " · " + esc(r.note) : ""}</div>` : ""}</td><td data-l="Per report" class="num">${r.kind === "petty" ? "—" : R(r.report)}</td><td data-l="In Nedbank" class="num">${r.kind === "petty" ? "—" : R(r.nedbank)}</td><td data-l="Not banked" class="num"><b>${R(r.retained)}</b></td><td data-l="Sheet">${r.signed ? `<span class="chip signed" title="Signed by ${esc(r.signedBy)}">Signed</span>` : '<span class="chip draft">Not signed</span>'}</td>${bankCell(r, all, isAdmin)}</tr>`).join("") || '<tr><td colspan="7" class="msg">Everything in this period has been banked.</td></tr>'}</tbody>
       <tfoot>${[
         ["retail", "cg", "Aeroton Retail CashGuard"],
         ["retail", "petty", "Aeroton Retail petty cash"],
@@ -2310,8 +2310,8 @@ function notBankedBody(nb, all, rows, out, later, isAdmin) {
       <tr><td colspan="4">Still not banked · ${all.filter(r => !r.done).length} of ${all.length} line${all.length > 1 ? "s" : ""}</td><td class="num">${R(out)}</td><td colspan="2"></td></tr></tfoot></table></div>
     ${
       (nb.hand || []).length
-        ? `<h3 style="margin:18px 0 6px;font-size:1rem">Cash handed over and signed for</h3><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Amount</th><th>Given by</th><th>Received by</th><th>Signed</th></tr></thead>
-      <tbody>${nb.hand.map(h => `<tr><td>${shortDate(h.date)}</td><td class="num">${R(num(h.amount))}</td><td>${esc(h.givenBy)}</td><td>${esc(h.receivedBy)}</td><td>${safeImg(h.signature) ? `<img src="${safeImg(h.signature)}" alt="Signature" style="height:34px;background:#fff;border-radius:4px">` : ""}</td></tr>`).join("")}</tbody>
+        ? `<h3 style="margin:18px 0 6px;font-size:1rem">Cash handed over and signed for</h3><div class="tbl-wrap"><table class="stack"><thead><tr><th>Date</th><th>Amount</th><th>Given by</th><th>Received by</th><th>Signed</th></tr></thead>
+      <tbody>${nb.hand.map(h => `<tr><td data-l="Date">${shortDate(h.date)}</td><td class="num" data-l="Amount">${R(num(h.amount))}</td><td data-l="Given by">${esc(h.givenBy)}</td><td data-l="Received by">${esc(h.receivedBy)}</td><td data-l="Signed">${safeImg(h.signature) ? `<img src="${safeImg(h.signature)}" alt="Signature" style="height:34px;background:#fff;border-radius:4px">` : ""}</td></tr>`).join("")}</tbody>
       <tfoot><tr><td>Total handed over</td><td class="num">${R(nb.hand.reduce((a, h) => a + num(h.amount), 0))}</td><td colspan="3"></td></tr></tfoot></table></div>`
         : ""
     }

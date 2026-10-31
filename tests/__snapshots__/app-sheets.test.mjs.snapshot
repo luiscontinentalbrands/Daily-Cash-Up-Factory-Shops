@@ -80,7 +80,7 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -423,7 +423,7 @@ exports[`empty sheets, as their own cashier/manager 1`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -713,7 +713,7 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -1025,7 +1025,7 @@ exports[`empty sheets, as their own cashier/manager 3`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -1342,7 +1342,7 @@ exports[`notes, damaged notes and coins, petty cash details 3`] = `
     </div>
     " "
     <div class="tbl-wrap">
-      <table>
+      <table class="lines">
         " "
         <thead>
           <tr>
@@ -1766,7 +1766,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 1`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -2056,7 +2056,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -2374,7 +2374,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 3`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -2604,7 +2604,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 4`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -2872,7 +2872,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -3168,7 +3168,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 6`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -3388,7 +3388,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 7`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -3627,7 +3627,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
@@ -3877,7 +3877,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
       </div>
       " "
       <div class="tbl-wrap">
-        <table>
+        <table class="lines">
           " "
           <thead>
             <tr>
