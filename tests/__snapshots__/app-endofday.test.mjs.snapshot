@@ -273,6 +273,38 @@ exports[`End of Day screen through the day 1`] = `
       </div>
       " "
       <div class="field">
+        <label>"Store manager sign-off (card transactions)"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"Aeroton Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+        </div>
+      </div>
+      " "
+      <div class="field">
         <label>"Damaged bank notes & coins"</label>
         <div class="static num" style="font-weight:400">
           <b>"Wholesale:"</b>
@@ -561,6 +593,38 @@ exports[`End of Day screen through the day 2`] = `
           "R 200,50 from Rita Retail to "
           <b>"Candido"</b>
           " · 28 Oct, 17:45"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Store manager sign-off (card transactions)"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"Aeroton Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
         </div>
       </div>
       " "
@@ -859,6 +923,38 @@ exports[`End of Day screen through the day 3`] = `
       </div>
       " "
       <div class="field">
+        <label>"Store manager sign-off (card transactions)"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"Aeroton Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+        </div>
+      </div>
+      " "
+      <div class="field">
         <label>"Damaged bank notes & coins"</label>
         <div class="static num" style="font-weight:400">
           <b>"Wholesale:"</b>
@@ -1151,6 +1247,38 @@ exports[`End of Day screen through the day 4`] = `
           "R 200,50 from Rita Retail to "
           <b>"Candido"</b>
           " · 28 Oct, 17:45"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Store manager sign-off (card transactions)"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"Aeroton Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
         </div>
       </div>
       " "
@@ -1477,6 +1605,38 @@ exports[`End of Day screen through the day 5`] = `
       </div>
       " "
       <div class="field">
+        <label>"Store manager sign-off (card transactions)"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"Aeroton Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+        </div>
+      </div>
+      " "
+      <div class="field">
         <label>"Damaged bank notes & coins"</label>
         <div class="static num" style="font-weight:400">
           <b>"Wholesale:"</b>
@@ -1764,6 +1924,29 @@ exports[`End of Day screen through the day 6`] = `
           "R 200,50 from Rita Retail to "
           <b>"Candido"</b>
           " · 17 Oct, 17:45"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Store manager sign-off (card transactions)"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"Aeroton Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
         </div>
       </div>
       " "
@@ -2081,6 +2264,38 @@ exports[`End of Day screen through the day 7`] = `
       </div>
       " "
       <div class="field">
+        <label>"Store manager sign-off (card transactions)"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"Aeroton Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+        </div>
+      </div>
+      " "
+      <div class="field">
         <label>"Damaged bank notes & coins"</label>
         <div class="static num" style="font-weight:400">
           <b>"Wholesale:"</b>
@@ -2369,6 +2584,38 @@ exports[`End of Day screen through the day 8`] = `
           "R 200,50 from Rita Retail to "
           <b>"Candido"</b>
           " · 29 Oct, 17:45"
+        </div>
+      </div>
+      " "
+      <div class="field">
+        <label>"Store manager sign-off (card transactions)"</label>
+        <div class="static" style="font-weight:400">
+          <b>"Wholesale:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"Aeroton Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
+          <br>
+          <b>"City Deep Retail:"</b>
+          " "
+          <span class="var-neg">"not complete"</span>
+          <br>
+          <span class="msg">
+            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
+            <span class="var-zero">"difference R 0,00"</span>
+          </span>
         </div>
       </div>
       " "
@@ -2765,22 +3012,40 @@ exports[`download the PDF report 2`] = `
 ["text",["R 200,50 from Rita Retail to Candido (signed)  -  28 Oct 2026, 17:45"],72,150]
 ["setFont","helvetica","bold"]
 ["setTextColor",31,28,24]
-["text","Damaged notes & coins",14,156,null]
+["text","Wholesale card sign-off",14,156,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","NOT COMPLETE.  Till -: 0 transactions, 0 slips, machine R 0.00, Palladium R 0.00, difference R 0.00",211]
+["text",["NOT COMPLETE.  Till -: 0 transactions, 0 slips, machine R 0.00, Palladium R 0.00, difference R 0.00"],72,156]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Aeroton Retail card sign-off",14,162,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","NOT COMPLETE.  Till -: 0 transactions, 0 slips, machine R 0.00, Palladium R 0.00, difference R 0.00",211]
+["text",["NOT COMPLETE.  Till -: 0 transactions, 0 slips, machine R 0.00, Palladium R 0.00, difference R 0.00"],72,162]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","City Deep Retail card sign-off",14,168,null]
+["setFont","helvetica","normal"]
+["splitTextToSize","NOT COMPLETE.  Till -: 0 transactions, 0 slips, machine R 0.00, Palladium R 0.00, difference R 0.00",211]
+["text",["NOT COMPLETE.  Till -: 0 transactions, 0 slips, machine R 0.00, Palladium R 0.00, difference R 0.00"],72,168]
+["setFont","helvetica","bold"]
+["setTextColor",31,28,24]
+["text","Damaged notes & coins",14,174,null]
 ["setFont","helvetica","normal"]
 ["splitTextToSize","Wholesale R 100,00 (1 x R100 torn)    Aeroton Retail R 0,00    City Deep Retail R 0,00    Total R 100,00",211]
-["text",["Wholesale R 100,00 (1 x R100 torn)    Aeroton Retail R 0,00    City Deep Retail R 0,00    Total R 100,00"],72,156]
+["text",["Wholesale R 100,00 (1 x R100 torn)    Aeroton Retail R 0,00    City Deep Retail R 0,00    Total R 100,00"],72,174]
 ["setFont","helvetica","bold"]
 ["setTextColor",31,28,24]
-["text","Wholesale notes",14,162,null]
+["text","Wholesale notes",14,180,null]
 ["setFont","helvetica","normal"]
 ["splitTextToSize","R50 short, float counted twice",211]
-["text",["R50 short, float counted twice"],72,162]
+["text",["R50 short, float counted twice"],72,180]
 ["setFont","helvetica","bold"]
 ["setTextColor",31,28,24]
-["text","City Deep Retail notes",14,168,null]
+["text","City Deep Retail notes",14,186,null]
 ["setFont","helvetica","normal"]
 ["splitTextToSize","Card machine offline 10 minutes",211]
-["text",["Card machine offline 10 minutes"],72,168]
+["text",["Card machine offline 10 minutes"],72,186]
 ["addPage",null,null]
 ["setDrawColor",230,225,217]
 ["setLineWidth",0.3]

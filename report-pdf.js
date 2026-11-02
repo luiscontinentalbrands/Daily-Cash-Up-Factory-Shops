@@ -3,7 +3,7 @@
 // Usage: buildReportPdf(jsPDF, {date, niceDate, W, Rt, M, C, status, photos, handovers})  ->  jsPDF document
 //   W / Rt / M: the Wholesale, Aeroton Retail and Manager sheets; C: City Deep Retail (omit before City Deep started)
 //   photos: [{dept, data (jpeg data URL), by, takenAt}] (optional, removed photos already filtered out)
-import { PAYMENT_METHODS, R as rand, RV as randVariance, countedTotal, hasSplit, methodLabel, methodsFor, num } from "./cashup-core.js?v=2026-10-31b";
+import { PAYMENT_METHODS, R as rand, RV as randVariance, countedTotal, declarationProblem, declarationSummary, hasSplit, methodLabel, methodsFor, num } from "./cashup-core.js?v=2026-11-02a";
 
 // standard PDF fonts have no special spaces or minus signs: keep to plain characters
 const plain = s => String(s ?? "").replace(/[   ]/g, " ").replace(/−/g, "-").replace(/[^\x20-\x7e\xa0-\xff]/g, "");
@@ -95,6 +95,7 @@ export function buildReportPdf(jsPDF, d) {
     row(l + " CashGuard", `Deposited in Nedbank ${R(line(doc, "cashguard", "deposited"))}    Counted & retained, not banked ${R(line(doc, "cashguard", "retained"))}`));
   if (line(Rt, "petty", "deposited") || Rt?.pettyNotes) row("Aeroton Retail petty cash", `${R(line(Rt, "petty", "deposited"))} not banked${Rt?.pettyNotes ? "  -  " + Rt.pettyNotes : ""}`);
   (d.handovers || []).forEach(h => row("Cash handed over", `${R(h.amount)} from ${h.givenBy || "-"} to ${h.receivedBy || "-"} (signed)${h.at ? "  -  " + when(h.at) : ""}`));
+  shops.forEach(([l, doc, sh]) => { const dd = Object.assign({}, doc || {}, { dept: sh }); row(l + " card sign-off", (declarationProblem(dd) ? "NOT COMPLETE.  " : "Declared.  ") + declarationSummary(dd).join("    ")); });
   row("Damaged notes & coins", shops.map(([l, doc]) => `${l} ${R(num(doc?.damaged))}${doc?.damagedNotes ? " (" + doc.damagedNotes + ")" : ""}`).join("    ") + `    Total ${R(shops.reduce((a, [, doc]) => a + num(doc?.damaged), 0))}`);
   shops.forEach(([l, doc]) => { if (doc?.notes) row(l + " notes", doc.notes); });
 

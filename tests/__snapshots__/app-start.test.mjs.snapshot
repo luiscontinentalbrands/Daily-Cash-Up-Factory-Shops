@@ -145,42 +145,42 @@ exports[`default tab and visible tabs per role 1`] = `
     "users": true,
     "notBanked": true,
     "header": "bar dept-wholesale",
-    "foot": "Live sync active · shared by all users · App version 2026-10-31b"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02a"
   },
   "wholesale Wanda Wholesale": {
     "tab": "wholesale",
     "users": false,
     "notBanked": false,
     "header": "bar dept-wholesale",
-    "foot": "Live sync active · shared by all users · App version 2026-10-31b"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02a"
   },
   "retail Rita Retail": {
     "tab": "retail",
     "users": false,
     "notBanked": false,
     "header": "bar dept-retail",
-    "foot": "Live sync active · shared by all users · App version 2026-10-31b"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02a"
   },
   "citydeep Cindy Deep": {
     "tab": "citydeep",
     "users": false,
     "notBanked": false,
     "header": "bar dept-citydeep",
-    "foot": "Live sync active · shared by all users · App version 2026-10-31b"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02a"
   },
   "manager Manny Manager": {
     "tab": "combined",
     "users": false,
     "notBanked": true,
     "header": "bar",
-    "foot": "Live sync active · shared by all users · App version 2026-10-31b"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02a"
   },
   "manager Mona Second": {
     "tab": "combined",
     "users": false,
     "notBanked": true,
     "header": "bar",
-    "foot": "Live sync active · shared by all users · App version 2026-10-31b"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02a"
   }
 }
 `;
@@ -510,6 +510,89 @@ exports[`first administrator 6`] = `
     </div>
     " "
     <div class="sheet-body">
+      <div class="decl" id="decl-wholesale">
+        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
+        " "
+        <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
+        " "
+        <div class="dtill">
+          " "
+          <div class="dtill-head">
+            <b>"Till "</b>
+          </div>
+          " "
+          <div class="dgrid">
+            " "
+            <div class="field">
+              <label for="dt-wholesale-0-till">"Till"</label>
+              <input id="dt-wholesale-0-till" data-till="0" data-f="till" autocomplete="off" value>
+            </div>
+            " "
+            <div class="field">
+              <label>"Cashier"</label>
+              <div class="static">"Alex Owner"</div>
+            </div>
+            " "
+            <div class="field">
+              <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+              <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+            </div>
+            " "
+            <div class="field">
+              <label for="dt-wholesale-0-slips">"Slips counted"</label>
+              <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+            </div>
+            " "
+            <div class="field">
+              <label for="dt-wholesale-0-machine">"Machine total (R)"</label>
+              <input id="dt-wholesale-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
+            </div>
+            " "
+            <div class="field">
+              <label for="dt-wholesale-0-palladium">"Palladium card total (R)"</label>
+              <input id="dt-wholesale-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          " "
+          <div class="ddiff var-zero" id="dd-wholesale-0">"Difference: R 0,00"</div>
+          " "
+          <div class="field">
+            <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
+            <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
+          </div>
+          " "
+        </div>
+        " "
+        <button class="btn" type="button" id="dt-add-wholesale">"Add another till"</button>
+        " "
+        <div class="eyebrow" id="dcount-wholesale" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
+        " "
+        <label class="declitem">
+          <input type="checkbox" data-decl="slipcount">
+          <span>"Number of slips equals number of transactions on the machine total"</span>
+        </label>
+        <label class="declitem">
+          <input type="checkbox" data-decl="stapled">
+          <span>"Every card slip has its till slip stapled to it"</span>
+        </label>
+        <label class="declitem">
+          <input type="checkbox" data-decl="amounts">
+          <span>"Amount on each card slip matches its till slip"</span>
+        </label>
+        <label class="declitem">
+          <input type="checkbox" data-decl="splits">
+          <span>"Every split payment is initialled by me"</span>
+        </label>
+        <label class="declitem">
+          <input type="checkbox" data-decl="totals">
+          <span>"Machine total equals Palladium card total, or the difference is explained"</span>
+        </label>
+        <label class="declitem">
+          <input type="checkbox" data-decl="filed">
+          <span>"Slips and signed total are punched and filed together for the day"</span>
+        </label>
+      </div>
       <div class="sign">
         " "
         <div class="pad">

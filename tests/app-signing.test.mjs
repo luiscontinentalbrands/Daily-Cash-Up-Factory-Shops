@@ -122,3 +122,33 @@ test("signing when the audit trail entry cannot be written", async t => {
   await app.click("#signbtn");
   snap(t, { writes: app.writes().map(w => [w.op, w.path, w.rejected || "ok"]), chip: app.text(".sheet.wholesale .chip"), alert: app.has("#savealert") && !app.$("#savealert").hidden ? app.text("#savealert") : null });
 });
+
+test("store manager sign-off must be complete before a shop sheet can be signed", async t => {
+  const app = await boot(t, { me: "u-whole", now: `${DAY}T16:00:00+02:00` });
+  app.autoDeclare = false;
+  await app.type("#wholesale-cash-report", "100");
+  await app.draw("#pad");
+  const tries = [];
+  const attempt = async () => { await app.click("#signbtn"); tries.push(app.text("#sign-msg")); };
+  await attempt();
+  await app.type("#dt-wholesale-0-till", "2");
+  await app.type("#dt-wholesale-0-tx", "5");
+  await app.type("#dt-wholesale-0-slips", "4");
+  await app.type("#dt-wholesale-0-machine", "500");
+  await app.type("#dt-wholesale-0-palladium", "450");
+  await attempt();
+  await app.type("#dt-wholesale-0-reason", "One slip lost, R50 refund keyed twice");
+  await attempt();
+  assert.notEqual(app.text(".sheet.wholesale .chip"), "Signed off");
+  assert.match(app.text("#dd-wholesale-0"), /Difference: \+R 50[.,]00/);
+  await app.declare();
+  await app.click("#signbtn");
+  assert.equal(app.text(".sheet.wholesale .chip"), "Signed off");
+  assert.deepEqual(tries, [
+    "Store manager sign-off: enter the till.",
+    "Store manager sign-off: give the reason for the difference.",
+    "Store manager sign-off: tick every point of the checklist (6 still to tick).",
+  ]);
+  const saved = app.stored(`cashups/${DAY}_wholesale`);
+  assert.match(JSON.stringify(saved), /One slip lost/);
+});

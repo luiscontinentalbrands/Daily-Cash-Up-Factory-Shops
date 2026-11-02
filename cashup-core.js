@@ -287,3 +287,61 @@ export const money = v => {
   if (dec.length >= 3) return (whole + dec).slice(0, MONEY_DIGITS);
   return (whole || "0").slice(0, MONEY_DIGITS) + "." + dec;
 };
+
+// ---------- End-of-day store manager sign-off (card transactions) ----------
+// From the store manager sign-off procedure: written for each till, checked and ticked before the sheet is signed.
+// Used on Wholesale, Aeroton Retail and City Deep Retail (the market store). The app, the PDF and the email all use this.
+export const DECL_STATEMENT =
+  "I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.";
+const DECL_CHECKS = [
+  ["slipcount", "Number of slips equals number of transactions on the machine total"],
+  ["stapled", "Every card slip has its till slip stapled to it"],
+  ["amounts", "Amount on each card slip matches its till slip"],
+  ["splits", "Every split payment is initialled by me"],
+  ["totals", "Machine total equals Palladium card total, or the difference is explained"],
+  ["filed", "Slips and signed total are punched and filed together for the day"],
+];
+const DECL_SHOPS = ["wholesale", "retail", "citydeep"];
+export function declarationItems(dept) {
+  return DECL_SHOPS.includes(dept) ? DECL_CHECKS.map(([k, t]) => ({ k, t })) : [];
+}
+export function blankTill() {
+  return { till: "", tx: "", slips: "", machine: "", palladium: "", reason: "" };
+}
+// one till's difference: machine total - Palladium card total
+export function tillDifference(t) {
+  return Math.round((num(t && t.machine) - num(t && t.palladium)) * 100) / 100;
+}
+export function declarationTills(doc) {
+  const t = doc && doc.declaration && Array.isArray(doc.declaration.tills) ? doc.declaration.tills : [];
+  return t.length ? t : [blankTill()];
+}
+// Checklist points still to tick
+export function declarationMissing(doc) {
+  const d = (doc && doc.declaration && doc.declaration.items) || {};
+  return declarationItems(doc && doc.dept).filter(x => d[x.k] !== true);
+}
+// What stops the sheet being signed, or "" when the sign-off is complete
+export function declarationProblem(doc) {
+  if (!declarationItems(doc && doc.dept).length) return "";
+  const tills = declarationTills(doc);
+  for (let i = 0; i < tills.length; i++) {
+    const t = tills[i], n = tills.length > 1 ? ` (till ${i + 1})` : "";
+    if (!String(t.till || "").trim()) return `Store manager sign-off: enter the till${n}.`;
+    for (const [f, l] of [["tx", "transactions on machine"], ["slips", "slips counted"], ["machine", "machine total"], ["palladium", "Palladium card total"]])
+      if (String(t[f] ?? "").trim() === "") return `Store manager sign-off: enter the ${l}${n}.`;
+    const off = num(t.tx) !== num(t.slips) || tillDifference(t) !== 0;
+    if (off && String(t.reason || "").trim().length < 3) return `Store manager sign-off: give the reason for the difference${n}.`;
+  }
+  const left = declarationMissing(doc);
+  if (left.length) return `Store manager sign-off: tick every point of the checklist (${left.length} still to tick).`;
+  return "";
+}
+// One line per till for reports
+export function declarationSummary(doc) {
+  if (!declarationItems(doc && doc.dept).length) return [];
+  return declarationTills(doc).map(t => {
+    const d = tillDifference(t);
+    return `Till ${t.till || "-"}: ${t.tx || 0} transactions, ${t.slips || 0} slips, machine R ${num(t.machine).toFixed(2)}, Palladium R ${num(t.palladium).toFixed(2)}, difference R ${d.toFixed(2)}${t.reason ? " - " + t.reason : ""}`;
+  });
+}

@@ -42,7 +42,24 @@ function driver(t, env, db) {
     all: sel => doc.querySelectorAll(sel),
     html: (sel = "#main") => pretty($(sel)).join("\n"),
     text: (sel = "#main") => $(sel).textContent.replace(/[ \t\n\r]+/g, " ").trim(),
-    async click(sel) { env.userClick($(sel)); await settle(); },
+    async click(sel) {
+      // The end-of-day manager declaration must be ticked before a shop sheet can be signed. Tests written before
+      // it existed sign straight away, so tick it first unless the test turned this off to test the declaration.
+      if (sel === "#signbtn" && d.autoDeclare !== false) await d.declare();
+      env.userClick($(sel)); await settle();
+    },
+    // tick every point of the end-of-day manager declaration on screen
+    async declare() {
+      // one till that balances: 3 transactions, 3 slips, machine = Palladium
+      const fill = { till: "1", tx: "3", slips: "3", machine: "100.00", palladium: "100.00" };
+      for (const el of doc.querySelectorAll(".decl input[data-till]")) {
+        if (!el.disabled && el.value === "" && fill[el.dataset.f] != null) { el.value = fill[el.dataset.f]; fire(el, "input"); }
+      }
+      for (const cb of doc.querySelectorAll(".decl input[data-decl]")) {
+        if (!cb.checked && !cb.disabled) { cb.checked = true; fire(cb, "change"); }
+      }
+      await settle();
+    },
     async type(sel, value) {
       const el = $(sel);
       if (doc.activeElement !== el) doc._focus(el);

@@ -1,4 +1,4 @@
-import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-10-31b";
+import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-11-02a";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import {
   initializeAppCheck,
@@ -55,19 +55,26 @@ import {
   todayStr,
   totals,
   vcls,
-} from "./cashup-core.js?v=2026-10-31b";
+  declarationItems,
+  declarationMissing,
+  declarationProblem,
+  declarationTills,
+  tillDifference,
+  blankTill,
+  DECL_STATEMENT,
+} from "./cashup-core.js?v=2026-11-02a";
 import {
   explainReaderError,
   parseReaderReply,
   readWithAI,
   readerPrompt,
   readerValues,
-} from "./photo-reader.js?v=2026-10-31b";
+} from "./photo-reader.js?v=2026-11-02a";
 
 /* ---------- constants & helpers ---------- */
 // Version for cache-busting. When releasing, change it everywhere it is written: index.html (twice), the imports
 // above, and the imports in photo-reader.js, report-pdf.js and scripts/daily-check.mjs (search for the value).
-const APP_VERSION = "2026-10-31b";
+const APP_VERSION = "2026-11-02a";
 // Timings and limits (the on-screen texts that mention them, e.g. "7 pm" or "15 minutes", are written out separately)
 const SAVE_DELAY_MS = 700; // save this long after the last change
 const IDLE_LOCK_MS = 15 * 60000; // lock the app after this long without use
@@ -1129,7 +1136,7 @@ function bindHandover() {
 }
 function signedBlock(doc, dept) {
   const img = safeImg(doc.signature);
-  return `<div class="sign">
+  return `${isMgr(dept) ? "" : declarationBlock(doc, dept, false)}<div class="sign">
   <div class="sig-img">${img ? `<img src="${img}" alt="Signature of ${esc(doc.signedBy)}">` : ""}</div>
   <div style="display:flex;flex-direction:column;gap:10px">
     <div><div class="eyebrow">Signed by</div><div class="signer-static">${esc(doc.signedBy)}</div><div class="msg">${timeStr(doc.signedAt)}</div></div>
@@ -1137,8 +1144,88 @@ function signedBlock(doc, dept) {
     ${canReopen(dept) ? `<div class="actions"><button class="btn danger" id="reopen" data-dept="${dept}">Reopen to correct</button><span class="msg" id="reopen-msg"></span></div>` : ""}
   </div></div>`;
 }
+// Store manager sign-off (card transactions): statement, per-till figures and checklist; read-only once signed
+function declarationInner(doc, dept, editable) {
+  const items = declarationItems(dept);
+  const got = (doc.declaration && doc.declaration.items) || {};
+  const tills = declarationTills(doc);
+  const dis = editable ? "" : "disabled";
+  const inp = (i, f, label, mode) => `<div class="field"><label for="dt-${dept}-${i}-${f}">${label}</label><input id="dt-${dept}-${i}-${f}" data-till="${i}" data-f="${f}" ${mode === "text" ? "" : `inputmode="${mode}" class="num" style="text-align:right"`} autocomplete="off" value="${esc(tills[i][f] ?? "")}" ${dis}></div>`;
+  const tillBox = (t, i) => {
+    const diff = tillDifference(t), off = num(t.tx) !== num(t.slips) || diff !== 0;
+    return `<div class="dtill">
+      <div class="dtill-head"><b>Till ${tills.length > 1 ? i + 1 : ""}</b>${editable && tills.length > 1 ? `<button class="linkbtn" type="button" data-rmtill="${i}" style="color:var(--bad)">Remove till</button>` : ""}</div>
+      <div class="dgrid">
+        ${inp(i, "till", "Till", "text")}
+        <div class="field"><label>Cashier</label><div class="static">${esc(doc.cashier || (editable ? state.me.name : "") || "—")}</div></div>
+        ${inp(i, "tx", "Transactions on machine", "numeric")}
+        ${inp(i, "slips", "Slips counted", "numeric")}
+        ${inp(i, "machine", "Machine total (R)", "decimal")}
+        ${inp(i, "palladium", "Palladium card total (R)", "decimal")}
+      </div>
+      <div class="ddiff ${vcls(diff)}" id="dd-${dept}-${i}">Difference: ${RV(diff)}${num(t.tx) !== num(t.slips) ? ` · slips (${num(t.slips)}) do not match transactions (${num(t.tx)})` : ""}</div>
+      <div class="field"><label for="dt-${dept}-${i}-reason">Reason for any difference${off ? " (required)" : ""}</label><input id="dt-${dept}-${i}-reason" data-till="${i}" data-f="reason" maxlength="300" autocomplete="off" value="${esc(t.reason || "")}" ${dis}></div>
+    </div>`;
+  };
+  const done = items.filter(x => got[x.k] === true).length;
+  return `<div class="eyebrow">Store manager sign-off · card transactions · ${shortDate(state.date)}</div>
+    <blockquote class="dstate">“${esc(DECL_STATEMENT)}”</blockquote>
+    ${tills.map(tillBox).join("")}
+    ${editable ? `<button class="btn" type="button" id="dt-add-${dept}">Add another till</button>` : ""}
+    <div class="eyebrow" id="dcount-${dept}" style="margin-top:6px">Manager's checklist before signing · ${done} of ${items.length} ticked</div>
+    ${items.map(x => `<label class="declitem"><input type="checkbox" data-decl="${x.k}" ${got[x.k] === true ? "checked" : ""} ${dis}><span>${esc(x.t)}</span></label>`).join("")}`;
+}
+function declarationBlock(doc, dept, editable) {
+  if (!declarationItems(dept).length) return "";
+  return `<div class="decl" id="decl-${dept}">${declarationInner(doc, dept, editable)}</div>`;
+}
+function bindDeclaration(dept) {
+  const box = document.getElementById("decl-" + dept);
+  if (!box) return;
+  const D = () => drafts[dept];
+  const ensure = () => {
+    const d = D();
+    if (!d.declaration || typeof d.declaration !== "object") d.declaration = {};
+    if (!d.declaration.items) d.declaration.items = {};
+    if (!Array.isArray(d.declaration.tills) || !d.declaration.tills.length) d.declaration.tills = [blankTill()];
+    return d.declaration;
+  };
+  const redraw = () => { box.innerHTML = declarationInner(D(), dept, true); wire(); };
+  const wire = () => {
+    box.querySelectorAll("input[data-decl]").forEach(cb =>
+      cb.addEventListener("change", () => {
+        ensure().items[cb.dataset.decl] = cb.checked;
+        const n = declarationItems(dept).filter(x => ensure().items[x.k] === true).length;
+        $("#dcount-" + dept).textContent = `Manager's checklist before signing · ${n} of ${declarationItems(dept).length} ticked`;
+        scheduleSave(dept);
+      }),
+    );
+    box.querySelectorAll("input[data-till]").forEach(el =>
+      el.addEventListener("input", () => {
+        const i = +el.dataset.till, f = el.dataset.f;
+        let v = el.value;
+        if (f === "tx" || f === "slips") v = v.replace(/[^0-9]/g, "");
+        if (f === "machine" || f === "palladium") v = money(v);
+        if (v !== el.value && (f === "tx" || f === "slips")) el.value = v;
+        ensure().tills[i][f] = v;
+        const t = ensure().tills[i], diff = tillDifference(t), dd = $("#dd-" + dept + "-" + i);
+        if (dd) { dd.className = "ddiff " + vcls(diff); dd.textContent = `Difference: ${RV(diff)}${num(t.tx) !== num(t.slips) ? ` · slips (${num(t.slips)}) do not match transactions (${num(t.tx)})` : ""}`; }
+        scheduleSave(dept);
+      }),
+    );
+    box.querySelectorAll('input[data-f="machine"],input[data-f="palladium"]').forEach(el =>
+      el.addEventListener("blur", () => { if (el.value !== "") { el.value = num(money(el.value)).toFixed(2); ensure().tills[+el.dataset.till][el.dataset.f] = el.value; scheduleSave(dept); } }),
+    );
+    const add = $("#dt-add-" + dept);
+    if (add) add.addEventListener("click", () => { ensure().tills.push(blankTill()); scheduleSave(dept); redraw(); });
+    box.querySelectorAll("button[data-rmtill]").forEach(b =>
+      b.addEventListener("click", () => { ensure().tills.splice(+b.dataset.rmtill, 1); scheduleSave(dept); redraw(); }),
+    );
+  };
+  wire();
+}
 function signBlock(doc, dept) {
-  return `<div class="sign">
+  return `${isMgr(dept) ? "" : declarationBlock(doc, dept, true)}<div class="sign">
   <div class="pad"><canvas id="pad" data-dept="${dept}" width="900" height="300" aria-label="Signature pad"></canvas><div class="base"></div><div class="hint">Sign above the line with finger or mouse</div></div>
   <div style="display:flex;flex-direction:column;gap:10px">
     <div class="msg">${dept === "manager" ? `By signing, I confirm I have checked the ${cdOn(state.date) ? "Wholesale, Aeroton Retail and City Deep Retail" : "Wholesale and Aeroton Retail"} cash ups for ${shortDate(state.date)} and the combined totals are correct.` : `By signing, I confirm the amounts deposited for ${DEPTS[dept]} on ${shortDate(state.date)} are correct.`}</div>
@@ -1357,7 +1444,7 @@ function signOffProblem(dept, doc) {
   }
   const t = totals(doc);
   if (t.report === 0 && t.deposited === 0) return "Enter the report and deposited amounts before signing.";
-  return "";
+  return declarationProblem(doc);
 }
 // Before a shop sheet is signed: a big red alert for every payment line more than BIG_VARIANCE out. The first
 // time, it sends the person back to check those figures. If they sign again with the same differences, it asks
@@ -1408,6 +1495,7 @@ function confirmBigVariances(dept, doc) {
   });
 }
 function bindPad(cv, dept) {
+  bindDeclaration(dept);
   const pad = signaturePad(cv);
   $("#clear").addEventListener("click", () => {
     pad.clear();
@@ -1649,6 +1737,7 @@ function renderCombined() {
       <div class="field"><label>CashGuard</label><div class="static num" style="font-weight:400">${splitShops.map(([d, doc, t]) => `<b>${DEPTS[d]}:</b> deposited in Nedbank ${R(num(doc.lines.cashguard.deposited))} · counted &amp; retained, not banked <b>${R(t.retained)}</b>`).join("<br>")}</div></div>
       ${tr.petty || Rt.pettyNotes ? `<div class="field"><label>Aeroton Retail petty cash (not banked)</label><div class="static num" style="font-weight:400"><b>${R(tr.petty)}</b>${Rt.pettyNotes ? " · " + esc(Rt.pettyNotes) : ""}</div></div>` : ""}
       ${state.handovers.length ? `<div class="field"><label>Cash handed over (signed for)</label><div class="static num" style="font-weight:400">${state.handovers.map(h => `${R(num(h.amount))} from ${esc(h.givenBy)} to <b>${esc(h.receivedBy)}</b> · ${esc(timeStr(savedAtIso(h)))}`).join("<br>")}</div></div>` : ""}
+      <div class="field"><label>Store manager sign-off (card transactions)</label><div class="static" style="font-weight:400">${shops.map(([d, doc]) => { const p = declarationProblem(Object.assign({}, doc, { dept: d })); return `<b>${DEPTS[d]}:</b> ${p ? `<span class="var-neg">not complete</span>` : `declared${doc.status === "signed" ? " by " + esc(doc.signedBy) : ""}`}<br>${declarationTills(doc).map(t => `<span class="msg">Till ${esc(t.till || "-")}: ${esc(t.tx || "0")} transactions · ${esc(t.slips || "0")} slips · machine ${R(num(t.machine))} · Palladium ${R(num(t.palladium))} · <span class="${vcls(tillDifference(t))}">difference ${RV(tillDifference(t))}</span>${t.reason ? " · " + esc(t.reason) : ""}</span>`).join("<br>")}`; }).join("<br>")}</div></div>
       <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">${each(d => R(num(d.damaged)) + (d.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(shops.reduce((a, [, d]) => a + num(d.damaged), 0))}</b></div></div>
       <div class="sigs">${signatureBox(W, "wholesale")}${signatureBox(Rt, "retail")}${showCD ? signatureBox(C, "citydeep") : ""}${signatureBox(M, "manager")}</div>
       <div class="actions"><button class="btn primary" id="pdf-mail" type="button">Email PDF report</button><button class="btn" id="pdf-dl" type="button">Download PDF</button><button class="btn" id="csv">Download day as CSV</button><span class="msg" id="csv-msg"></span></div>

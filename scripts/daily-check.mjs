@@ -11,7 +11,7 @@ import nodemailer from "nodemailer";
 import { jsPDF } from "jspdf";
 import { buildReportPdf, reportFileName } from "../report-pdf.js";
 // the same address report-pdf.js uses, so Node loads the shared rules once
-import { BIG_VARIANCE, CD_START, DEPTS, PAYMENT_METHODS, R, RV, bigVariances, countedTotal, esc, hasSplit, methodLabel, methodsFor, normalize, num } from "../cashup-core.js?v=2026-10-31b";
+import { BIG_VARIANCE, CD_START, DEPTS, PAYMENT_METHODS, R, RV, bigVariances, countedTotal, declarationProblem, declarationSummary, esc, hasSplit, methodLabel, methodsFor, normalize, num } from "../cashup-core.js?v=2026-11-02a";
 
 const MODE = (process.argv[2] || "seven").toLowerCase();
 const TZ = "Africa/Johannesburg";
@@ -125,6 +125,7 @@ function reportHtml(title, note) {
   ${withCD ? `<p style="margin:14px 0 4px"><b>Variance by shop:</b> Aeroton ${RV((tot[0][1] + tot[1][1]) - (tot[0][0] + tot[1][0]))} · City Deep Retail ${RV(tot[2][1] - tot[2][0])} · <b>All shops ${RV(gv)}</b></p>` : ""}
   ${shops.filter(([, , sh]) => hasSplit(sh)).map(([l, doc]) => `<p style="margin:4px 0"><b>${l} CashGuard:</b> deposited in Nedbank ${R(line(doc, "cashguard", "deposited"))} · counted &amp; retained, not banked <b>${R(line(doc, "cashguard", "retained"))}</b></p>`).join("")}
   ${line(Rt, "petty", "deposited") || Rt?.pettyNotes ? `<p style="margin:4px 0"><b>Aeroton Retail petty cash (not banked):</b> ${R(line(Rt, "petty", "deposited"))}${Rt?.pettyNotes ? " · " + esc(Rt.pettyNotes) : ""}</p>` : ""}
+  ${shops.map(([l, d, sh]) => { const dd = Object.assign({}, d || {}, { dept: sh }); return `<p style="margin:4px 0"><b>${l} card sign-off:</b> ${declarationProblem(dd) ? '<span style="color:#b03a2a">not complete</span>' : "declared"}<br>${declarationSummary(dd).map(esc).join("<br>")}</p>`; }).join("")}
   <p style="margin:4px 0"><b>Damaged bank notes &amp; coins:</b> ${each(d => R(num(d?.damaged)) + (d?.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(shops.reduce((a, [, d]) => a + num(d?.damaged), 0))}</b></p>
   <p style="margin:4px 0"><b>Cashed up by:</b> ${each(d => esc(d?.cashier || "—"))}</p>
   ${shops.map(([l, d]) => d?.notes ? `<p style="margin:4px 0"><b>${l} notes:</b> ${esc(d.notes)}</p>` : "").join("")}
