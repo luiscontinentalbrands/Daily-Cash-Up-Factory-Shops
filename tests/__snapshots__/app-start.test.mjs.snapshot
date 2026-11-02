@@ -145,42 +145,42 @@ exports[`default tab and visible tabs per role 1`] = `
     "users": true,
     "notBanked": true,
     "header": "bar dept-wholesale",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02c"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02d"
   },
   "wholesale Wanda Wholesale": {
     "tab": "wholesale",
     "users": false,
     "notBanked": false,
     "header": "bar dept-wholesale",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02c"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02d"
   },
   "retail Rita Retail": {
     "tab": "retail",
     "users": false,
     "notBanked": false,
     "header": "bar dept-retail",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02c"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02d"
   },
   "citydeep Cindy Deep": {
     "tab": "citydeep",
     "users": false,
     "notBanked": false,
     "header": "bar dept-citydeep",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02c"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02d"
   },
   "manager Manny Manager": {
     "tab": "combined",
     "users": false,
     "notBanked": true,
     "header": "bar",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02c"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02d"
   },
   "manager Mona Second": {
     "tab": "combined",
     "users": false,
     "notBanked": true,
     "header": "bar",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02c"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02d"
   }
 }
 `;

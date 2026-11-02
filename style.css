@@ -267,3 +267,9 @@ table.eod{min-width:0}
 .declhead .chip{margin-left:auto}
 .declicon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.14);display:grid;place-items:center;font-size:1.3rem}
 .declsec .decl{border:0;padding:0;background:none}
+
+/* Line up boxes side by side: when one label wraps to two lines, the boxes still sit on the same line */
+.fields,.dgrid,.dmg{align-items:end}
+.field label{line-height:1.25}
+.dgrid .field label,.dmg .field label{min-height:2.5em;display:flex;align-items:flex-end}
+.dgrid input{height:42px}
