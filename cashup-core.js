@@ -217,7 +217,8 @@ export function normalize(raw, date, dept) {
   }
   return o;
 }
-// Credit card CBM is shown as its own line (with its own variance) but is always left out of the totals
+// Credit card CBM: a head office invoice paid on the factory shop card machine. Shown as its own line (with its own
+// variance) but always left out of the totals, so the totals are the real shop sales.
 export const inTotal = k => k !== "cardcbm";
 export function totals(doc) {
   let r = 0,

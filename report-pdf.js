@@ -3,7 +3,7 @@
 // Usage: buildReportPdf(jsPDF, {date, niceDate, W, Rt, M, C, status, photos, handovers})  ->  jsPDF document
 //   W / Rt / M: the Wholesale, Aeroton Retail and Manager sheets; C: City Deep Retail (omit before City Deep started)
 //   photos: [{dept, data (jpeg data URL), by, takenAt}] (optional, removed photos already filtered out)
-import { PAYMENT_METHODS, R as rand, RV as randVariance, countedTotal, inTotal, declarationProblem, declarationSummary, hasSplit, methodLabel, methodsFor, num } from "./cashup-core.js?v=2026-11-03a";
+import { PAYMENT_METHODS, R as rand, RV as randVariance, countedTotal, inTotal, declarationProblem, declarationSummary, hasSplit, methodLabel, methodsFor, num } from "./cashup-core.js?v=2026-11-03b";
 
 // standard PDF fonts have no special spaces or minus signs: keep to plain characters
 const plain = s => String(s ?? "").replace(/[   ]/g, " ").replace(/−/g, "-").replace(/[^\x20-\x7e\xa0-\xff]/g, "");

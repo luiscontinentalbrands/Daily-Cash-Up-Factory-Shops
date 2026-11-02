@@ -145,42 +145,42 @@ exports[`default tab and visible tabs per role 1`] = `
     "users": true,
     "notBanked": true,
     "header": "bar dept-wholesale",
-    "foot": "Live sync active · shared by all users · App version 2026-11-03a"
+    "foot": "Live sync active · shared by all users · App version 2026-11-03b"
   },
   "wholesale Wanda Wholesale": {
     "tab": "wholesale",
     "users": false,
     "notBanked": false,
     "header": "bar dept-wholesale",
-    "foot": "Live sync active · shared by all users · App version 2026-11-03a"
+    "foot": "Live sync active · shared by all users · App version 2026-11-03b"
   },
   "retail Rita Retail": {
     "tab": "retail",
     "users": false,
     "notBanked": false,
     "header": "bar dept-retail",
-    "foot": "Live sync active · shared by all users · App version 2026-11-03a"
+    "foot": "Live sync active · shared by all users · App version 2026-11-03b"
   },
   "citydeep Cindy Deep": {
     "tab": "citydeep",
     "users": false,
     "notBanked": false,
     "header": "bar dept-citydeep",
-    "foot": "Live sync active · shared by all users · App version 2026-11-03a"
+    "foot": "Live sync active · shared by all users · App version 2026-11-03b"
   },
   "manager Manny Manager": {
     "tab": "combined",
     "users": false,
     "notBanked": true,
     "header": "bar",
-    "foot": "Live sync active · shared by all users · App version 2026-11-03a"
+    "foot": "Live sync active · shared by all users · App version 2026-11-03b"
   },
   "manager Mona Second": {
     "tab": "combined",
     "users": false,
     "notBanked": true,
     "header": "bar",
-    "foot": "Live sync active · shared by all users · App version 2026-11-03a"
+    "foot": "Live sync active · shared by all users · App version 2026-11-03b"
   }
 }
 `;
@@ -398,7 +398,7 @@ exports[`first administrator 6`] = `
             <tr>
               <td>
                 "Credit card CBM"
-                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Head office invoice paid on the shop machine · not shop sales, not in the total"</div>
               </td>
               " "
               <td class="inp">
@@ -469,7 +469,7 @@ exports[`first administrator 6`] = `
             <tr>
               <td>
                 "Total"
-                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Real shop sales: Credit card CBM (head office) not included"</div>
               </td>
               <td class="num" id="t-report">"R 0,00"</td>
               <td class="num" id="t-dep">"R 0,00"</td>

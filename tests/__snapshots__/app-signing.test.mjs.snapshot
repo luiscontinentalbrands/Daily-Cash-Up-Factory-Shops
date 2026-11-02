@@ -255,7 +255,7 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
             <tr>
               <td>
                 "Credit card CBM"
-                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Head office invoice paid on the shop machine · not shop sales, not in the total"</div>
               </td>
               " "
               <td class="inp">
@@ -326,7 +326,7 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
             <tr>
               <td>
                 "Total"
-                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Real shop sales: Credit card CBM (head office) not included"</div>
               </td>
               <td class="num" id="t-report">"R 7 765,49"</td>
               <td class="num" id="t-dep">"R 7 715,49"</td>
@@ -1504,7 +1504,7 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
             <tr>
               <td>
                 "Credit card CBM"
-                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Head office invoice paid on the shop machine · not shop sales, not in the total"</div>
               </td>
               " "
               <td class="inp">
@@ -1575,7 +1575,7 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
             <tr>
               <td>
                 "Total"
-                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Real shop sales: Credit card CBM (head office) not included"</div>
               </td>
               <td class="num" id="t-report">"R 100,00"</td>
               <td class="num" id="t-dep">"R 0,00"</td>
