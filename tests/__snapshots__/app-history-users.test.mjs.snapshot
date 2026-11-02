@@ -2,8 +2,8 @@ exports[`History with more sheets than it loads: the oldest day is not shown hal
 {
   "days": 76,
   "oldest": [
-    "Sat, 15 Aug 2026Closed on timeWholesaleSigned off R 8 125,49Aeroton RetailSigned off R 7 845,75R 15 971,24−R 450,00",
-    "Fri, 14 Aug 2026Closed on timeWholesaleSigned off R 8 125,49Aeroton RetailSigned off R 7 845,75R 15 971,24−R 450,00"
+    "Sat, 15 Aug 2026Closed on timeWholesaleSigned off R 7 715,49Aeroton RetailSigned off R 7 845,75R 15 561,24−R 450,00",
+    "Fri, 14 Aug 2026Closed on timeWholesaleSigned off R 7 715,49Aeroton RetailSigned off R 7 845,75R 15 561,24−R 450,00"
   ]
 }
 `;
@@ -29,7 +29,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
           <div class="eyebrow">"Wholesale"</div>
           <span class="chip draft">"In progress"</span>
           " "
-          <span class="num msg">"R 8 125,49"</span>
+          <span class="num msg">"R 7 715,49"</span>
         </div>
         <div>
           <div class="eyebrow">"Aeroton Retail"</div>
@@ -45,7 +45,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
         </div>
         <div class="r">
           <div class="num">
-            <b>"R 21 113,24"</b>
+            <b>"R 20 703,24"</b>
           </div>
           <div class="num msg var-neg">"−R 419,95"</div>
         </div>
@@ -59,7 +59,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
           <div class="eyebrow">"Wholesale"</div>
           <span class="chip signed">"Signed off"</span>
           " "
-          <span class="num msg">"R 8 125,49"</span>
+          <span class="num msg">"R 7 715,49"</span>
         </div>
         <div>
           <div class="eyebrow">"Aeroton Retail"</div>
@@ -75,7 +75,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
         </div>
         <div class="r">
           <div class="num">
-            <b>"R 21 113,24"</b>
+            <b>"R 20 703,24"</b>
           </div>
           <div class="num msg var-neg">"−R 419,95"</div>
         </div>
@@ -89,7 +89,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
           <div class="eyebrow">"Wholesale"</div>
           <span class="chip signed">"Signed off"</span>
           " "
-          <span class="num msg">"R 8 125,49"</span>
+          <span class="num msg">"R 7 715,49"</span>
         </div>
         <div>
           <div class="eyebrow">"Aeroton Retail"</div>
@@ -105,7 +105,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
         </div>
         <div class="r">
           <div class="num">
-            <b>"R 21 113,24"</b>
+            <b>"R 20 703,24"</b>
           </div>
           <div class="num msg var-neg">"−R 419,95"</div>
         </div>
@@ -119,7 +119,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
           <div class="eyebrow">"Wholesale"</div>
           <span class="chip draft">"In progress"</span>
           " "
-          <span class="num msg">"R 8 125,49"</span>
+          <span class="num msg">"R 7 715,49"</span>
         </div>
         <div>
           <div class="eyebrow">"Aeroton Retail"</div>
@@ -131,7 +131,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
         </div>
         <div class="r">
           <div class="num">
-            <b>"R 8 125,49"</b>
+            <b>"R 7 715,49"</b>
           </div>
           <div class="num msg var-neg">"−R 50,00"</div>
         </div>
@@ -145,7 +145,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
           <div class="eyebrow">"Wholesale"</div>
           <span class="chip signed">"Signed off"</span>
           " "
-          <span class="num msg">"R 8 125,49"</span>
+          <span class="num msg">"R 7 715,49"</span>
         </div>
         <div>
           <div class="eyebrow">"Aeroton Retail"</div>
@@ -155,7 +155,7 @@ exports[`History: days newest first, status and totals; tap a day to open End of
         </div>
         <div class="r">
           <div class="num">
-            <b>"R 15 971,24"</b>
+            <b>"R 15 561,24"</b>
           </div>
           <div class="num msg var-neg">"−R 450,00"</div>
         </div>

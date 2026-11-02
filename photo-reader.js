@@ -1,7 +1,7 @@
 // The photo reader: sends the photo of a till report to Gemini (Firebase AI Logic) and turns its reply
 // into an amount per payment type. app.js shows the messages and fills in the sheet.
-import { AI_MODEL } from "./firebase-config.js?v=2026-11-02f";
-import { DEPTS, METHODS, isRetail } from "./cashup-core.js?v=2026-11-02f";
+import { AI_MODEL } from "./firebase-config.js?v=2026-11-03a";
+import { DEPTS, METHODS, isRetail } from "./cashup-core.js?v=2026-11-03a";
 
 // Model names change over time: try the configured one first, then current fallbacks, and remember what worked.
 const AI_MODELS = [

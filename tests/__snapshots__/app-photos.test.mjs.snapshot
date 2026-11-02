@@ -655,7 +655,10 @@ exports[`scan a photo: saved, figures filled (Wholesale), checks against total a
     <td class="num var-neg" id="v-card">"−R 1 480,50"</td>
   </tr>
   <tr>
-    <td>"Credit card CBM"</td>
+    <td>
+      "Credit card CBM"
+      <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+    </td>
     " "
     <td class="inp">
       <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="10.00" aria-label="Credit card CBM per report" style="background:var(--accent-soft)">

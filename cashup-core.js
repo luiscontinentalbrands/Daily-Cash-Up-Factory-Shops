@@ -217,10 +217,12 @@ export function normalize(raw, date, dept) {
   }
   return o;
 }
+// Credit card CBM is shown as its own line (with its own variance) but is always left out of the totals
+export const inTotal = k => k !== "cardcbm";
 export function totals(doc) {
   let r = 0,
     d = 0;
-  methodsFor(doc.dept).forEach(m => {
+  methodsFor(doc.dept).filter(m => inTotal(m.k)).forEach(m => {
     r += num(doc.lines[m.k].report);
     d += countedTotal(doc, m.k);
   });

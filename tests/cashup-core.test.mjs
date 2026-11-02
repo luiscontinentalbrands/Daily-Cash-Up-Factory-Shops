@@ -133,3 +133,13 @@ test("bigVariances: lines more than R1000 out, short or over; petty cash never c
     eftOnRetailIsCard: pick(s("citydeep", { card: ["0", "600"], eft: ["0", "600"] })),
   });
 });
+
+test("Credit card CBM has its own line but is always left out of the totals", () => {
+  for (const shop of ["wholesale", "retail"]) {
+    const d = core.normalize(sheet(DAY, shop, { lines: { card: ["10000", "10000"], cardcbm: ["2000", "1990"] } }), DAY, shop);
+    const t = core.totals(d);
+    assert.equal(t.report, 10000, shop);
+    assert.equal(t.deposited, 10000, shop);
+    assert.equal(t.variance, 0, shop);
+  }
+});

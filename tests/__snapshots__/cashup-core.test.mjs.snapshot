@@ -500,12 +500,12 @@ exports[`payment lines and labels per shop 1`] = `
 exports[`totals per shop 1`] = `
 {
   "wholesale": {
-    "report": 8175.49,
-    "deposited": 8125.49,
+    "report": 7765.49,
+    "deposited": 7715.49,
     "variance": -50,
     "retained": 0,
     "petty": 0,
-    "banked": 8125.49
+    "banked": 7715.49
   },
   "retail": {
     "report": 8245.75,

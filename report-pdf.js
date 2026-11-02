@@ -3,7 +3,7 @@
 // Usage: buildReportPdf(jsPDF, {date, niceDate, W, Rt, M, C, status, photos, handovers})  ->  jsPDF document
 //   W / Rt / M: the Wholesale, Aeroton Retail and Manager sheets; C: City Deep Retail (omit before City Deep started)
 //   photos: [{dept, data (jpeg data URL), by, takenAt}] (optional, removed photos already filtered out)
-import { PAYMENT_METHODS, R as rand, RV as randVariance, countedTotal, declarationProblem, declarationSummary, hasSplit, methodLabel, methodsFor, num } from "./cashup-core.js?v=2026-11-02f";
+import { PAYMENT_METHODS, R as rand, RV as randVariance, countedTotal, inTotal, declarationProblem, declarationSummary, hasSplit, methodLabel, methodsFor, num } from "./cashup-core.js?v=2026-11-03a";
 
 // standard PDF fonts have no special spaces or minus signs: keep to plain characters
 const plain = s => String(s ?? "").replace(/[   ]/g, " ").replace(/−/g, "-").replace(/[^\x20-\x7e\xa0-\xff]/g, "");
@@ -66,7 +66,7 @@ export function buildReportPdf(jsPDF, d) {
     let r = 0, dd = 0;
     shops.forEach(([, doc, shop], i) => {
       if (!hasLine(shop, k)) { grey(); text("-", right(1 + 2 * i), y, { align: "right" }); text("-", right(2 + 2 * i), y, { align: "right" }); ink(); return; }
-      const a = line(doc, k, "report"), b = countedTotal(doc, k); r += a; dd += b; tot[i][0] += a; tot[i][1] += b;
+      const a = line(doc, k, "report"), b = countedTotal(doc, k); r += a; dd += b; if (inTotal(k)) { tot[i][0] += a; tot[i][1] += b; }
       text(R(a), right(1 + 2 * i), y, { align: "right" }); text(R(b), right(2 + 2 * i), y, { align: "right" });
     });
     const v = dd - r, base = 2 * shops.length;

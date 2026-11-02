@@ -14,7 +14,7 @@ exports[`rows more than R1000 out are marked red while typing; exactly R1000 is 
   "bigvar Cash",
   "- CashGuard",
   "bigvar Credit card",
-  "- Credit card CBM",
+  "- Credit card CBMNot included in the total",
   "- PayFast card",
   "- EFT",
   "- Shop2Shop",

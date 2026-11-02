@@ -4,12 +4,12 @@ exports[`City Deep before its start date shows once it has figures 1`] = `
   " "
   <div class="stat">
     <div class="k">"Per reports"</div>
-    <div class="v num">"R 21 533,19"</div>
+    <div class="v num">"R 21 123,19"</div>
   </div>
   " "
   <div class="stat">
     <div class="k">"Deposited"</div>
-    <div class="v num">"R 21 113,24"</div>
+    <div class="v num">"R 20 703,24"</div>
   </div>
   " "
   <div class="stat">
@@ -58,12 +58,12 @@ exports[`End of Day screen through the day 1`] = `
     " "
     <div class="stat">
       <div class="k">"Per reports"</div>
-      <div class="v num">"R 21 533,19"</div>
+      <div class="v num">"R 21 123,19"</div>
     </div>
     " "
     <div class="stat">
       <div class="k">"Deposited"</div>
-      <div class="v num">"R 21 113,24"</div>
+      <div class="v num">"R 20 703,24"</div>
     </div>
     " "
     <div class="stat">
@@ -188,8 +188,8 @@ exports[`End of Day screen through the day 1`] = `
             <tfoot>
               <tr>
                 <td>"Total"</td>
-                <td class="num" data-l="Report">"R 21 533,19"</td>
-                <td class="num" data-l="Deposited">"R 21 113,24"</td>
+                <td class="num" data-l="Report">"R 21 123,19"</td>
+                <td class="num" data-l="Deposited">"R 20 703,24"</td>
                 <td class="num var-neg" data-l="Variance">"−R 419,95"</td>
               </tr>
             </tfoot>
@@ -367,12 +367,12 @@ exports[`End of Day screen through the day 2`] = `
     " "
     <div class="stat">
       <div class="k">"Per reports"</div>
-      <div class="v num">"R 21 533,19"</div>
+      <div class="v num">"R 21 123,19"</div>
     </div>
     " "
     <div class="stat">
       <div class="k">"Deposited"</div>
-      <div class="v num">"R 21 113,24"</div>
+      <div class="v num">"R 20 703,24"</div>
     </div>
     " "
     <div class="stat">
@@ -497,8 +497,8 @@ exports[`End of Day screen through the day 2`] = `
             <tfoot>
               <tr>
                 <td>"Total"</td>
-                <td class="num" data-l="Report">"R 21 533,19"</td>
-                <td class="num" data-l="Deposited">"R 21 113,24"</td>
+                <td class="num" data-l="Report">"R 21 123,19"</td>
+                <td class="num" data-l="Deposited">"R 20 703,24"</td>
                 <td class="num var-neg" data-l="Variance">"−R 419,95"</td>
               </tr>
             </tfoot>
@@ -678,12 +678,12 @@ exports[`End of Day screen through the day 3`] = `
     " "
     <div class="stat">
       <div class="k">"Per reports"</div>
-      <div class="v num">"R 21 533,19"</div>
+      <div class="v num">"R 21 123,19"</div>
     </div>
     " "
     <div class="stat">
       <div class="k">"Deposited"</div>
-      <div class="v num">"R 21 113,24"</div>
+      <div class="v num">"R 20 703,24"</div>
     </div>
     " "
     <div class="stat">
@@ -808,8 +808,8 @@ exports[`End of Day screen through the day 3`] = `
             <tfoot>
               <tr>
                 <td>"Total"</td>
-                <td class="num" data-l="Report">"R 21 533,19"</td>
-                <td class="num" data-l="Deposited">"R 21 113,24"</td>
+                <td class="num" data-l="Report">"R 21 123,19"</td>
+                <td class="num" data-l="Deposited">"R 20 703,24"</td>
                 <td class="num var-neg" data-l="Variance">"−R 419,95"</td>
               </tr>
             </tfoot>
@@ -991,12 +991,12 @@ exports[`End of Day screen through the day 4`] = `
     " "
     <div class="stat">
       <div class="k">"Per reports"</div>
-      <div class="v num">"R 21 533,19"</div>
+      <div class="v num">"R 21 123,19"</div>
     </div>
     " "
     <div class="stat">
       <div class="k">"Deposited"</div>
-      <div class="v num">"R 21 113,24"</div>
+      <div class="v num">"R 20 703,24"</div>
     </div>
     " "
     <div class="stat">
@@ -1121,8 +1121,8 @@ exports[`End of Day screen through the day 4`] = `
             <tfoot>
               <tr>
                 <td>"Total"</td>
-                <td class="num" data-l="Report">"R 21 533,19"</td>
-                <td class="num" data-l="Deposited">"R 21 113,24"</td>
+                <td class="num" data-l="Report">"R 21 123,19"</td>
+                <td class="num" data-l="Deposited">"R 20 703,24"</td>
                 <td class="num var-neg" data-l="Variance">"−R 419,95"</td>
               </tr>
             </tfoot>
@@ -1330,12 +1330,12 @@ exports[`End of Day screen through the day 5`] = `
     " "
     <div class="stat">
       <div class="k">"Per reports"</div>
-      <div class="v num">"R 21 533,19"</div>
+      <div class="v num">"R 21 123,19"</div>
     </div>
     " "
     <div class="stat">
       <div class="k">"Deposited"</div>
-      <div class="v num">"R 21 113,24"</div>
+      <div class="v num">"R 20 703,24"</div>
     </div>
     " "
     <div class="stat">
@@ -1460,8 +1460,8 @@ exports[`End of Day screen through the day 5`] = `
             <tfoot>
               <tr>
                 <td>"Total"</td>
-                <td class="num" data-l="Report">"R 21 533,19"</td>
-                <td class="num" data-l="Deposited">"R 21 113,24"</td>
+                <td class="num" data-l="Report">"R 21 123,19"</td>
+                <td class="num" data-l="Deposited">"R 20 703,24"</td>
                 <td class="num var-neg" data-l="Variance">"−R 419,95"</td>
               </tr>
             </tfoot>
@@ -1669,12 +1669,12 @@ exports[`End of Day screen through the day 6`] = `
     " "
     <div class="stat">
       <div class="k">"Per reports"</div>
-      <div class="v num">"R 16 421,24"</div>
+      <div class="v num">"R 16 011,24"</div>
     </div>
     " "
     <div class="stat">
       <div class="k">"Deposited"</div>
-      <div class="v num">"R 15 971,24"</div>
+      <div class="v num">"R 15 561,24"</div>
     </div>
     " "
     <div class="stat">
@@ -1794,8 +1794,8 @@ exports[`End of Day screen through the day 6`] = `
             <tfoot>
               <tr>
                 <td>"Total"</td>
-                <td class="num" data-l="Report">"R 16 421,24"</td>
-                <td class="num" data-l="Deposited">"R 15 971,24"</td>
+                <td class="num" data-l="Report">"R 16 011,24"</td>
+                <td class="num" data-l="Deposited">"R 15 561,24"</td>
                 <td class="num var-neg" data-l="Variance">"−R 450,00"</td>
               </tr>
             </tfoot>
@@ -1964,12 +1964,12 @@ exports[`End of Day screen through the day 7`] = `
     " "
     <div class="stat">
       <div class="k">"Per reports"</div>
-      <div class="v num">"R 21 533,19"</div>
+      <div class="v num">"R 21 123,19"</div>
     </div>
     " "
     <div class="stat">
       <div class="k">"Deposited"</div>
-      <div class="v num">"R 21 113,24"</div>
+      <div class="v num">"R 20 703,24"</div>
     </div>
     " "
     <div class="stat">
@@ -2094,8 +2094,8 @@ exports[`End of Day screen through the day 7`] = `
             <tfoot>
               <tr>
                 <td>"Total"</td>
-                <td class="num" data-l="Report">"R 21 533,19"</td>
-                <td class="num" data-l="Deposited">"R 21 113,24"</td>
+                <td class="num" data-l="Report">"R 21 123,19"</td>
+                <td class="num" data-l="Deposited">"R 20 703,24"</td>
                 <td class="num var-neg" data-l="Variance">"−R 419,95"</td>
               </tr>
             </tfoot>
@@ -2273,12 +2273,12 @@ exports[`End of Day screen through the day 8`] = `
     " "
     <div class="stat">
       <div class="k">"Per reports"</div>
-      <div class="v num">"R 21 533,19"</div>
+      <div class="v num">"R 21 123,19"</div>
     </div>
     " "
     <div class="stat">
       <div class="k">"Deposited"</div>
-      <div class="v num">"R 21 113,24"</div>
+      <div class="v num">"R 20 703,24"</div>
     </div>
     " "
     <div class="stat">
@@ -2403,8 +2403,8 @@ exports[`End of Day screen through the day 8`] = `
             <tfoot>
               <tr>
                 <td>"Total"</td>
-                <td class="num" data-l="Report">"R 21 533,19"</td>
-                <td class="num" data-l="Deposited">"R 21 113,24"</td>
+                <td class="num" data-l="Report">"R 21 123,19"</td>
+                <td class="num" data-l="Deposited">"R 20 703,24"</td>
                 <td class="num var-neg" data-l="Variance">"−R 419,95"</td>
               </tr>
             </tfoot>
@@ -2605,7 +2605,7 @@ exports[`End of Day table: one view at a time, switched with the shop buttons 2`
     "EFT | R 800,00 | R 800,00 | R 0,00",
     "Shop2Shop | R 120,00 | R 120,00 | R 0,00",
     "SnapScan | R 105,00 | R 105,00 | R 0,00",
-    "Total | R 22 033,24 | R 20 133,24 | −R 1 900,00"
+    "Total | R 21 623,24 | R 19 723,24 | −R 1 900,00"
   ],
   "wholesale": [
     "Payment type | Report | Deposited | Variance",
@@ -2617,7 +2617,7 @@ exports[`End of Day table: one view at a time, switched with the shop buttons 2`
     "EFT | R 800,00 | R 800,00 | R 0,00",
     "Shop2Shop | R 120,00 | R 120,00 | R 0,00",
     "SnapScan | R 45,00 | R 45,00 | R 0,00",
-    "Total | R 8 175,49 | R 8 125,49 | −R 50,00"
+    "Total | R 7 765,49 | R 7 715,49 | −R 50,00"
   ],
   "retail": [
     "Payment type | Report | Deposited | Variance",
@@ -2841,14 +2841,14 @@ exports[`download the PDF report 2`] = `
 ["setFont","helvetica","bold"]
 ["setTextColor",31,28,24]
 ["text","Total",16,104,null]
-["text","R 8 175,49",77.94444444444444,104,{"align":"right"}]
-["text","R 8 125,49",103.38888888888889,104,{"align":"right"}]
+["text","R 7 765,49",77.94444444444444,104,{"align":"right"}]
+["text","R 7 715,49",103.38888888888889,104,{"align":"right"}]
 ["text","R 8 245,75",128.83333333333331,104,{"align":"right"}]
 ["text","R 7 845,75",154.27777777777777,104,{"align":"right"}]
 ["text","R 5 111,95",179.72222222222223,104,{"align":"right"}]
 ["text","R 5 142,00",205.16666666666666,104,{"align":"right"}]
-["text","R 21 533,19",230.6111111111111,104,{"align":"right"}]
-["text","R 21 113,24",256.05555555555554,104,{"align":"right"}]
+["text","R 21 123,19",230.6111111111111,104,{"align":"right"}]
+["text","R 20 703,24",256.05555555555554,104,{"align":"right"}]
 ["setTextColor",176,58,42]
 ["text","-R 419,95",281.5,104,{"align":"right"}]
 ["setFontSize",10]
@@ -3025,7 +3025,7 @@ PayFast card,99.99,99.99,0.00,0.00,0.00,0.00,99.99,99.99,0.00
 EFT,800.00,800.00,0.00,0.00,0.00,0.00,800.00,800.00,0.00
 Shop2Shop,120.00,120.00,0.00,0.00,0.00,0.00,120.00,120.00,0.00
 SnapScan,45.00,45.00,60.00,60.00,0.00,0.00,105.00,105.00,0.00
-Total,8175.49,8125.49,8245.75,7845.75,5111.95,5142.00,21533.19,21113.24,-419.95
+Total,7765.49,7715.49,8245.75,7845.75,5111.95,5142.00,21123.19,20703.24,-419.95
 
 Wholesale cashed up by,Wanda Wholesale,Signed by,Wanda Wholesale,2026-10-28 17:00
 Wholesale notes,"'=SUM(A1) ""quoted"", with comma
@@ -3064,7 +3064,7 @@ PayFast card,99.99,99.99,0.00,0.00,99.99,99.99,0.00
 EFT,800.00,800.00,0.00,0.00,800.00,800.00,0.00
 Shop2Shop,120.00,120.00,0.00,0.00,120.00,120.00,0.00
 SnapScan,45.00,45.00,60.00,60.00,105.00,105.00,0.00
-Total,8175.49,8125.49,8245.75,7845.75,16421.24,15971.24,-450.00
+Total,7765.49,7715.49,8245.75,7845.75,16011.24,15561.24,-450.00
 
 Wholesale cashed up by,Wanda Wholesale,Signed by,,
 Wholesale notes,"R50 short, float counted twice"

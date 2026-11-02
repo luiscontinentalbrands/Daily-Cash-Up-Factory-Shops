@@ -3,7 +3,7 @@ import { test } from "node:test";
 import "./harness/hooks.mjs";
 import { snap } from "./harness/boot.mjs";
 
-const { readerNumber, readerValues, explainReaderError } = await import("../photo-reader.js?v=2026-11-02f");
+const { readerNumber, readerValues, explainReaderError } = await import("../photo-reader.js?v=2026-11-03a");
 
 test("readerNumber: the ways a slip prints an amount", t => {
   const cases = [1234.56, NaN, null, true, "", "R", "1234.56", "1234,56", "R 1 234,56", "1 234,56", "1.234,56", "1.234.567,8", "1,234.56", "1,234", "1.234", "99,9", "R1 234,5", "abc"];

@@ -11,7 +11,7 @@ import nodemailer from "nodemailer";
 import { jsPDF } from "jspdf";
 import { buildReportPdf, reportFileName } from "../report-pdf.js";
 // the same address report-pdf.js uses, so Node loads the shared rules once
-import { BIG_VARIANCE, CD_START, DEPTS, PAYMENT_METHODS, R, RV, bigVariances, countedTotal, declarationProblem, declarationSummary, esc, hasSplit, methodLabel, methodsFor, normalize, num } from "../cashup-core.js?v=2026-11-02f";
+import { BIG_VARIANCE, CD_START, DEPTS, PAYMENT_METHODS, R, RV, bigVariances, countedTotal, inTotal, declarationProblem, declarationSummary, esc, hasSplit, methodLabel, methodsFor, normalize, num } from "../cashup-core.js?v=2026-11-03a";
 
 const MODE = (process.argv[2] || "seven").toLowerCase();
 const TZ = "Africa/Johannesburg";
@@ -99,7 +99,7 @@ function reportHtml(title, note) {
     const cells = shops.map(([, doc, shop], i) => {
       if (!hasLine(shop, k)) return `<td ${td}>—</td><td ${td}>—</td>`;
       const a = line(doc, k, "report"), b = countedTotal(doc, k);
-      r += a; dd += b; tot[i][0] += a; tot[i][1] += b;
+      r += a; dd += b; if (inTotal(k)) { tot[i][0] += a; tot[i][1] += b; }
       return `<td ${td}>${R(a)}</td><td ${td}>${R(b)}</td>`;
     }).join("");
     const v = dd - r;

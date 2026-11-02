@@ -148,7 +148,10 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
-              <td>"Credit card CBM"</td>
+              <td>
+                "Credit card CBM"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+              </td>
               " "
               <td class="inp">
                 <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
@@ -177,7 +180,10 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
           " "
           <tfoot>
             <tr>
-              <td>"Total"</td>
+              <td>
+                "Total"
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+              </td>
               <td class="num" id="t-report">"R 8 245,75"</td>
               <td class="num" id="t-dep">"R 7 845,75"</td>
               <td class="num var-neg" id="t-var">"−R 400,00"</td>
@@ -698,7 +704,10 @@ exports[`empty sheets, as their own cashier/manager 1`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
-              <td>"Credit card CBM"</td>
+              <td>
+                "Credit card CBM"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+              </td>
               " "
               <td class="inp">
                 <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
@@ -766,7 +775,10 @@ exports[`empty sheets, as their own cashier/manager 1`] = `
           " "
           <tfoot>
             <tr>
-              <td>"Total"</td>
+              <td>
+                "Total"
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+              </td>
               <td class="num" id="t-report">"R 0,00"</td>
               <td class="num" id="t-dep">"R 0,00"</td>
               <td class="num var-zero" id="t-var">"R 0,00"</td>
@@ -1071,7 +1083,10 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
-              <td>"Credit card CBM"</td>
+              <td>
+                "Credit card CBM"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+              </td>
               " "
               <td class="inp">
                 <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
@@ -1100,7 +1115,10 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
           " "
           <tfoot>
             <tr>
-              <td>"Total"</td>
+              <td>
+                "Total"
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+              </td>
               <td class="num" id="t-report">"R 0,00"</td>
               <td class="num" id="t-dep">"R 0,00"</td>
               <td class="num var-zero" id="t-var">"R 0,00"</td>
@@ -2015,7 +2033,10 @@ exports[`notes, damaged notes and coins, petty cash details 3`] = `
             <td class="num var-zero" id="v-card">"R 0,00"</td>
           </tr>
           <tr>
-            <td>"Credit card CBM"</td>
+            <td>
+              "Credit card CBM"
+              <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+            </td>
             " "
             <td class="inp">
               <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
@@ -2044,7 +2065,10 @@ exports[`notes, damaged notes and coins, petty cash details 3`] = `
         " "
         <tfoot>
           <tr>
-            <td>"Total"</td>
+            <td>
+              "Total"
+              <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+            </td>
             <td class="num" id="t-report">"R 0,00"</td>
             <td class="num" id="t-dep">"R 0,00"</td>
             <td class="num var-zero" id="t-var">"R 0,00"</td>
@@ -2134,7 +2158,10 @@ exports[`older stored data is tidied on load (Retail EFT into card, no Shop2Shop
     <td class="num var-zero" id="v-card">"R 0,00"</td>
   </tr>
   <tr>
-    <td>"Credit card CBM"</td>
+    <td>
+      "Credit card CBM"
+      <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+    </td>
     " "
     <td class="inp">
       <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
@@ -2251,7 +2278,10 @@ exports[`older stored data is tidied on load (Retail EFT into card, no Shop2Shop
     <td class="num var-neg" id="v-card">"−R 10,00"</td>
   </tr>
   <tr>
-    <td>"Credit card CBM"</td>
+    <td>
+      "Credit card CBM"
+      <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+    </td>
     " "
     <td class="inp">
       <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
@@ -2283,7 +2313,10 @@ exports[`older stored data is tidied on load (Retail EFT into card, no Shop2Shop
 ## retail totals
 <tfoot>
   <tr>
-    <td>"Total"</td>
+    <td>
+      "Total"
+      <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+    </td>
     <td class="num" id="t-report">"R 160,50"</td>
     <td class="num" id="t-dep">"R 150,50"</td>
     <td class="num var-neg" id="t-var">"−R 10,00"</td>
@@ -2458,7 +2491,10 @@ exports[`sheets with figures, draft and signed, seen by different roles 1`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
-              <td>"Credit card CBM"</td>
+              <td>
+                "Credit card CBM"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+              </td>
               " "
               <td class="inp">
                 <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="410.00" aria-label="Credit card CBM per report">
@@ -2526,9 +2562,12 @@ exports[`sheets with figures, draft and signed, seen by different roles 1`] = `
           " "
           <tfoot>
             <tr>
-              <td>"Total"</td>
-              <td class="num" id="t-report">"R 8 175,49"</td>
-              <td class="num" id="t-dep">"R 8 125,49"</td>
+              <td>
+                "Total"
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+              </td>
+              <td class="num" id="t-report">"R 7 765,49"</td>
+              <td class="num" id="t-dep">"R 7 715,49"</td>
               <td class="num var-neg" id="t-var">"−R 50,00"</td>
             </tr>
             " "
@@ -2831,7 +2870,10 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
-              <td>"Credit card CBM"</td>
+              <td>
+                "Credit card CBM"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+              </td>
               " "
               <td class="inp">
                 <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
@@ -2860,7 +2902,10 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
           " "
           <tfoot>
             <tr>
-              <td>"Total"</td>
+              <td>
+                "Total"
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+              </td>
               <td class="num" id="t-report">"R 8 245,75"</td>
               <td class="num" id="t-dep">"R 7 845,75"</td>
               <td class="num var-neg" id="t-var">"−R 400,00"</td>
@@ -3687,7 +3732,10 @@ exports[`sheets with figures, draft and signed, seen by different roles 4`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
-              <td>"Credit card CBM"</td>
+              <td>
+                "Credit card CBM"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+              </td>
               " "
               <td class="inp">
                 <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="410.00" disabled aria-label="Credit card CBM per report">
@@ -3755,9 +3803,12 @@ exports[`sheets with figures, draft and signed, seen by different roles 4`] = `
           " "
           <tfoot>
             <tr>
-              <td>"Total"</td>
-              <td class="num" id="t-report">"R 8 175,49"</td>
-              <td class="num" id="t-dep">"R 8 125,49"</td>
+              <td>
+                "Total"
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+              </td>
+              <td class="num" id="t-report">"R 7 765,49"</td>
+              <td class="num" id="t-dep">"R 7 715,49"</td>
               <td class="num var-neg" id="t-var">"−R 50,00"</td>
             </tr>
             " "
@@ -4038,7 +4089,10 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
-              <td>"Credit card CBM"</td>
+              <td>
+                "Credit card CBM"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+              </td>
               " "
               <td class="inp">
                 <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card CBM per report">
@@ -4067,7 +4121,10 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
           " "
           <tfoot>
             <tr>
-              <td>"Total"</td>
+              <td>
+                "Total"
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+              </td>
               <td class="num" id="t-report">"R 8 245,75"</td>
               <td class="num" id="t-dep">"R 7 845,75"</td>
               <td class="num var-neg" id="t-var">"−R 400,00"</td>
@@ -4862,7 +4919,10 @@ exports[`sheets with figures, draft and signed, seen by different roles 7`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
-              <td>"Credit card CBM"</td>
+              <td>
+                "Credit card CBM"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+              </td>
               " "
               <td class="inp">
                 <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="410.00" disabled aria-label="Credit card CBM per report">
@@ -4930,9 +4990,12 @@ exports[`sheets with figures, draft and signed, seen by different roles 7`] = `
           " "
           <tfoot>
             <tr>
-              <td>"Total"</td>
-              <td class="num" id="t-report">"R 8 175,49"</td>
-              <td class="num" id="t-dep">"R 8 125,49"</td>
+              <td>
+                "Total"
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+              </td>
+              <td class="num" id="t-report">"R 7 765,49"</td>
+              <td class="num" id="t-dep">"R 7 715,49"</td>
               <td class="num var-neg" id="t-var">"−R 50,00"</td>
             </tr>
             " "
@@ -5184,7 +5247,10 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
-              <td>"Credit card CBM"</td>
+              <td>
+                "Credit card CBM"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+              </td>
               " "
               <td class="inp">
                 <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card CBM per report">
@@ -5213,7 +5279,10 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
           " "
           <tfoot>
             <tr>
-              <td>"Total"</td>
+              <td>
+                "Total"
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+              </td>
               <td class="num" id="t-report">"R 8 245,75"</td>
               <td class="num" id="t-dep">"R 7 845,75"</td>
               <td class="num var-neg" id="t-var">"−R 400,00"</td>
@@ -5648,7 +5717,10 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
-              <td>"Credit card CBM"</td>
+              <td>
+                "Credit card CBM"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+              </td>
               " "
               <td class="inp">
                 <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card CBM per report">
@@ -5677,7 +5749,10 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
           " "
           <tfoot>
             <tr>
-              <td>"Total"</td>
+              <td>
+                "Total"
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+              </td>
               <td class="num" id="t-report">"R 8 245,75"</td>
               <td class="num" id="t-dep">"R 7 845,75"</td>
               <td class="num var-neg" id="t-var">"−R 400,00"</td>

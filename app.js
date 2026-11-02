@@ -1,4 +1,4 @@
-import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-11-02f";
+import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-11-03a";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import {
   initializeAppCheck,
@@ -62,19 +62,19 @@ import {
   declarationTills,
   blankTill,
   DECL_STATEMENT,
-} from "./cashup-core.js?v=2026-11-02f";
+} from "./cashup-core.js?v=2026-11-03a";
 import {
   explainReaderError,
   parseReaderReply,
   readWithAI,
   readerPrompt,
   readerValues,
-} from "./photo-reader.js?v=2026-11-02f";
+} from "./photo-reader.js?v=2026-11-03a";
 
 /* ---------- constants & helpers ---------- */
 // Version for cache-busting. When releasing, change it everywhere it is written: index.html (twice), the imports
 // above, and the imports in photo-reader.js, report-pdf.js and scripts/daily-check.mjs (search for the value).
-const APP_VERSION = "2026-11-02f";
+const APP_VERSION = "2026-11-03a";
 // Timings and limits (the on-screen texts that mention them, e.g. "7 pm" or "15 minutes", are written out separately)
 const SAVE_DELAY_MS = 700; // save this long after the last change
 const IDLE_LOCK_MS = 15 * 60000; // lock the app after this long without use
@@ -885,7 +885,7 @@ function sheetRow(dept, m, doc, dis) {
             : ""
         }</td>
       <td class="num ${vcls(v)}" id="v-cashguard">${RV(v)}</td></tr>`;
-  return `<tr${big ? ' class="bigvar"' : ""}><td>${methodLabel(m, dept)}</td>
+  return `<tr${big ? ' class="bigvar"' : ""}><td>${methodLabel(m, dept)}${m.k === "cardcbm" ? '<div class="msg" style="font-size:.72rem;font-weight:400">Not included in the total</div>' : ""}</td>
       <td class="inp"><input id="${dept}-${m.k}-report" data-m="${m.k}" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.report)}" ${dis} aria-label="${methodLabel(m, dept)} per report"></td>
       <td class="inp"><input id="${dept}-${m.k}-deposited" data-m="${m.k}" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value="${esc(ln.deposited)}" ${dis} aria-label="${methodLabel(m, dept)} deposited"></td>
       <td class="num ${vcls(v)}" id="v-${m.k}">${RV(v)}</td></tr>`;
@@ -942,7 +942,7 @@ function renderDept(dept) {
       <div class="tbl-wrap"><table class="lines">
         <thead><tr><th>Payment type</th><th>Per report<small>Till / Z-report</small></th><th>Deposited<small>Actual counted</small></th><th>Variance<small>Deposited − report</small></th></tr></thead>
         <tbody>${rows}</tbody>
-        <tfoot><tr><td>Total</td><td class="num" id="t-report">${R(t.report)}</td><td class="num" id="t-dep">${R(t.deposited)}</td><td class="num ${vcls(t.variance)}" id="t-var">${RV(t.variance)}</td></tr>
+        <tfoot><tr><td>Total${methodsFor(dept).some(m => m.k === "cardcbm") ? '<div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">Credit card CBM not included</div>' : ""}</td><td class="num" id="t-report">${R(t.report)}</td><td class="num" id="t-dep">${R(t.deposited)}</td><td class="num ${vcls(t.variance)}" id="t-var">${RV(t.variance)}</td></tr>
         ${hasSplit(dept) ? `<tr class="cgnote"><td colspan="4" id="t-cg">${cgNote(t)}</td></tr>` : ""}</tfoot>
       </table></div>
       <div class="dmg">
@@ -2193,10 +2193,12 @@ async function readFigures(dataUrl, dept, lead, photoId) {
   }
   recalc(dept);
   if (filled.length) scheduleSave(dept);
+  // the till report's printed total includes Credit card CBM, so compare it with CBM added back
   const t = totals(doc);
+  const lineSum = t.report + (methodsFor(dept).some(m => m.k === "cardcbm") ? num(doc.lines.cardcbm && doc.lines.cardcbm.report) : 0);
   let extra = "";
-  if (typeof total === "number" && Math.abs(total - t.report) > 0.009)
-    extra += ` The report total reads ${R(total)} but the lines add to ${R(t.report)}; check for a missed payment type.`;
+  if (typeof total === "number" && Math.abs(total - lineSum) > 0.009)
+    extra += ` The report total reads ${R(total)} but the lines add to ${R(lineSum)}; check for a missed payment type.`;
   if (out.date && out.date !== state.date)
     extra += ` The report appears to be dated ${shortDate(out.date)}, not ${shortDate(state.date)}.`;
   say(

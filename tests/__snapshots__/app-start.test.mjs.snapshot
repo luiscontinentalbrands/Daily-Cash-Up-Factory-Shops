@@ -145,42 +145,42 @@ exports[`default tab and visible tabs per role 1`] = `
     "users": true,
     "notBanked": true,
     "header": "bar dept-wholesale",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02f"
+    "foot": "Live sync active · shared by all users · App version 2026-11-03a"
   },
   "wholesale Wanda Wholesale": {
     "tab": "wholesale",
     "users": false,
     "notBanked": false,
     "header": "bar dept-wholesale",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02f"
+    "foot": "Live sync active · shared by all users · App version 2026-11-03a"
   },
   "retail Rita Retail": {
     "tab": "retail",
     "users": false,
     "notBanked": false,
     "header": "bar dept-retail",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02f"
+    "foot": "Live sync active · shared by all users · App version 2026-11-03a"
   },
   "citydeep Cindy Deep": {
     "tab": "citydeep",
     "users": false,
     "notBanked": false,
     "header": "bar dept-citydeep",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02f"
+    "foot": "Live sync active · shared by all users · App version 2026-11-03a"
   },
   "manager Manny Manager": {
     "tab": "combined",
     "users": false,
     "notBanked": true,
     "header": "bar",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02f"
+    "foot": "Live sync active · shared by all users · App version 2026-11-03a"
   },
   "manager Mona Second": {
     "tab": "combined",
     "users": false,
     "notBanked": true,
     "header": "bar",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02f"
+    "foot": "Live sync active · shared by all users · App version 2026-11-03a"
   }
 }
 `;
@@ -396,7 +396,10 @@ exports[`first administrator 6`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
-              <td>"Credit card CBM"</td>
+              <td>
+                "Credit card CBM"
+                <div class="msg" style="font-size:.72rem;font-weight:400">"Not included in the total"</div>
+              </td>
               " "
               <td class="inp">
                 <input id="wholesale-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
@@ -464,7 +467,10 @@ exports[`first administrator 6`] = `
           " "
           <tfoot>
             <tr>
-              <td>"Total"</td>
+              <td>
+                "Total"
+                <div class="msg" style="font-size:.72rem;font-weight:400;font-family:var(--body)">"Credit card CBM not included"</div>
+              </td>
               <td class="num" id="t-report">"R 0,00"</td>
               <td class="num" id="t-dep">"R 0,00"</td>
               <td class="num var-zero" id="t-var">"R 0,00"</td>
