@@ -258,3 +258,10 @@ table.eod{min-width:0}
 .dgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}
 .ddiff{font-weight:600;font-size:.9rem}
 @media (max-width:640px){.dgrid{grid-template-columns:1fr 1fr!important}}
+.declsec{overflow:hidden}
+.declhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#1f3560;color:#fff;padding:14px 18px}
+.declhead h2{color:#fff;margin:0;font-size:1.25rem}
+.declhead .small{opacity:.85;font-size:.82rem}
+.declhead .chip{margin-left:auto}
+.declicon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.14);display:grid;place-items:center;font-size:1.3rem}
+.declsec .decl{border:0;padding:0;background:none}

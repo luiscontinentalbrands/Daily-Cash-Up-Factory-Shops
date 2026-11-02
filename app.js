@@ -1,4 +1,4 @@
-import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-11-02a";
+import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-11-02b";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import {
   initializeAppCheck,
@@ -62,19 +62,19 @@ import {
   tillDifference,
   blankTill,
   DECL_STATEMENT,
-} from "./cashup-core.js?v=2026-11-02a";
+} from "./cashup-core.js?v=2026-11-02b";
 import {
   explainReaderError,
   parseReaderReply,
   readWithAI,
   readerPrompt,
   readerValues,
-} from "./photo-reader.js?v=2026-11-02a";
+} from "./photo-reader.js?v=2026-11-02b";
 
 /* ---------- constants & helpers ---------- */
 // Version for cache-busting. When releasing, change it everywhere it is written: index.html (twice), the imports
 // above, and the imports in photo-reader.js, report-pdf.js and scripts/daily-check.mjs (search for the value).
-const APP_VERSION = "2026-11-02a";
+const APP_VERSION = "2026-11-02b";
 // Timings and limits (the on-screen texts that mention them, e.g. "7 pm" or "15 minutes", are written out separately)
 const SAVE_DELAY_MS = 700; // save this long after the last change
 const IDLE_LOCK_MS = 15 * 60000; // lock the app after this long without use
@@ -954,11 +954,13 @@ function renderDept(dept) {
       <div class="saved" id="saved-${dept}">${doc.updatedAt ? "Last saved " + timeStr(doc.updatedAt) : editable ? "Saves automatically as you type" : ""}</div>
     </div>
   </section>
+  ${declarationSection(doc, dept, editable)}
   <section class="sheet">
     <div class="sheet-head"><div><div class="eyebrow">Sign-off</div><h2>${DEPTS[dept]} signature</h2></div></div>
     <div class="sheet-body">${sheetSignOff(doc, dept, signed)}</div>
   </section>${dept === "retail" ? handoverSection(doc, canEditDept(dept)) : ""}`;
   bindDept(dept);
+  if (editable) bindDeclaration(dept);
   if (dept === "retail") bindHandover();
   const gr = $("#goreopen");
   if (gr)
@@ -1136,7 +1138,7 @@ function bindHandover() {
 }
 function signedBlock(doc, dept) {
   const img = safeImg(doc.signature);
-  return `${isMgr(dept) ? "" : declarationBlock(doc, dept, false)}<div class="sign">
+  return `<div class="sign">
   <div class="sig-img">${img ? `<img src="${img}" alt="Signature of ${esc(doc.signedBy)}">` : ""}</div>
   <div style="display:flex;flex-direction:column;gap:10px">
     <div><div class="eyebrow">Signed by</div><div class="signer-static">${esc(doc.signedBy)}</div><div class="msg">${timeStr(doc.signedAt)}</div></div>
@@ -1174,6 +1176,15 @@ function declarationInner(doc, dept, editable) {
     ${editable ? `<button class="btn" type="button" id="dt-add-${dept}">Add another till</button>` : ""}
     <div class="eyebrow" id="dcount-${dept}" style="margin-top:6px">Manager's checklist before signing · ${done} of ${items.length} ticked</div>
     ${items.map(x => `<label class="declitem"><input type="checkbox" data-decl="${x.k}" ${got[x.k] === true ? "checked" : ""} ${dis}><span>${esc(x.t)}</span></label>`).join("")}`;
+}
+// Its own section on every shop tab, between the sheet and the signature (like the paper "Store manager sign-off")
+function declarationSection(doc, dept, editable) {
+  if (!declarationItems(dept).length) return "";
+  const p = declarationProblem(doc);
+  return `<section class="sheet declsec">
+    <div class="declhead"><div class="declicon" aria-hidden="true">✍</div><div><h2>Store manager sign-off</h2><div class="small">Card transactions · one block per till · must be complete before ${DEPTS[dept]} can sign</div></div>
+      <span class="chip ${p ? "draft" : "signed"}">${p ? "Not complete" : "Complete"}</span></div>
+    <div class="sheet-body">${declarationBlock(doc, dept, editable)}</div></section>`;
 }
 function declarationBlock(doc, dept, editable) {
   if (!declarationItems(dept).length) return "";
@@ -1225,7 +1236,7 @@ function bindDeclaration(dept) {
   wire();
 }
 function signBlock(doc, dept) {
-  return `${isMgr(dept) ? "" : declarationBlock(doc, dept, true)}<div class="sign">
+  return `<div class="sign">
   <div class="pad"><canvas id="pad" data-dept="${dept}" width="900" height="300" aria-label="Signature pad"></canvas><div class="base"></div><div class="hint">Sign above the line with finger or mouse</div></div>
   <div style="display:flex;flex-direction:column;gap:10px">
     <div class="msg">${dept === "manager" ? `By signing, I confirm I have checked the ${cdOn(state.date) ? "Wholesale, Aeroton Retail and City Deep Retail" : "Wholesale and Aeroton Retail"} cash ups for ${shortDate(state.date)} and the combined totals are correct.` : `By signing, I confirm the amounts deposited for ${DEPTS[dept]} on ${shortDate(state.date)} are correct.`}</div>
@@ -1495,7 +1506,6 @@ function confirmBigVariances(dept, doc) {
   });
 }
 function bindPad(cv, dept) {
-  bindDeclaration(dept);
   const pad = signaturePad(cv);
   $("#clear").addEventListener("click", () => {
     pad.clear();

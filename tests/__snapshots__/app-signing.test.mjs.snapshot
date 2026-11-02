@@ -357,13 +357,16 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"Wholesale signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -448,6 +451,19 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="sig-img">
@@ -1626,13 +1642,16 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"Wholesale signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
       </div>
+      " "
+      <span class="chip signed">"Complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -1717,6 +1736,19 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="sig-img">

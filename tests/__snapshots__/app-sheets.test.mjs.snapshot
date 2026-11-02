@@ -214,13 +214,16 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"Aeroton Retail signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Aeroton Retail can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -307,6 +310,19 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Aeroton Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="pad">
@@ -671,13 +687,16 @@ exports[`empty sheets, as their own cashier/manager 1`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"Wholesale signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -764,6 +783,19 @@ exports[`empty sheets, as their own cashier/manager 1`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="pad">
@@ -1007,13 +1039,16 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"Aeroton Retail signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Aeroton Retail can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -1100,6 +1135,19 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Aeroton Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="pad">
@@ -1394,13 +1442,16 @@ exports[`empty sheets, as their own cashier/manager 3`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"City Deep Retail signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before City Deep Retail can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -1487,6 +1538,19 @@ exports[`empty sheets, as their own cashier/manager 3`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"City Deep Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="pad">
@@ -2263,13 +2327,16 @@ exports[`sheets with figures, draft and signed, seen by different roles 1`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"Wholesale signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -2356,6 +2423,19 @@ exports[`sheets with figures, draft and signed, seen by different roles 1`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="pad">
@@ -2605,13 +2685,16 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"Aeroton Retail signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Aeroton Retail can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -2698,6 +2781,19 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Aeroton Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="pad">
@@ -2996,13 +3092,16 @@ exports[`sheets with figures, draft and signed, seen by different roles 3`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"City Deep Retail signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before City Deep Retail can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -3089,6 +3188,19 @@ exports[`sheets with figures, draft and signed, seen by different roles 3`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"City Deep Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="pad">
@@ -3350,13 +3462,16 @@ exports[`sheets with figures, draft and signed, seen by different roles 4`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"Wholesale signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -3441,6 +3556,19 @@ exports[`sheets with figures, draft and signed, seen by different roles 4`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="sig-img">
@@ -3668,13 +3796,16 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"Aeroton Retail signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Aeroton Retail can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -3759,6 +3890,19 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Aeroton Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="sig-img">
@@ -4035,13 +4179,16 @@ exports[`sheets with figures, draft and signed, seen by different roles 6`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"City Deep Retail signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before City Deep Retail can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -4126,6 +4273,19 @@ exports[`sheets with figures, draft and signed, seen by different roles 6`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"City Deep Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="sig-img">
@@ -4377,6 +4537,103 @@ exports[`sheets with figures, draft and signed, seen by different roles 7`] = `
     " "
   </section>
   " "
+  <section class="sheet declsec">
+    " "
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
+      <div>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
+      </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
+    </div>
+    " "
+    <div class="sheet-body">
+      <div class="decl" id="decl-wholesale">
+        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
+        " "
+        <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
+        " "
+        <div class="dtill">
+          " "
+          <div class="dtill-head">
+            <b>"Till "</b>
+          </div>
+          " "
+          <div class="dgrid">
+            " "
+            <div class="field">
+              <label for="dt-wholesale-0-till">"Till"</label>
+              <input id="dt-wholesale-0-till" data-till="0" data-f="till" autocomplete="off" value disabled>
+            </div>
+            " "
+            <div class="field">
+              <label>"Cashier"</label>
+              <div class="static">"Wanda Wholesale"</div>
+            </div>
+            " "
+            <div class="field">
+              <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+              <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+            </div>
+            " "
+            <div class="field">
+              <label for="dt-wholesale-0-slips">"Slips counted"</label>
+              <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+            </div>
+            " "
+            <div class="field">
+              <label for="dt-wholesale-0-machine">"Machine total (R)"</label>
+              <input id="dt-wholesale-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
+            </div>
+            " "
+            <div class="field">
+              <label for="dt-wholesale-0-palladium">"Palladium card total (R)"</label>
+              <input id="dt-wholesale-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
+          " "
+          <div class="ddiff var-zero" id="dd-wholesale-0">"Difference: R 0,00"</div>
+          " "
+          <div class="field">
+            <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
+            <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+          </div>
+          " "
+        </div>
+        " "
+        <div class="eyebrow" id="dcount-wholesale" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
+        " "
+        <label class="declitem">
+          <input type="checkbox" data-decl="slipcount" disabled>
+          <span>"Number of slips equals number of transactions on the machine total"</span>
+        </label>
+        <label class="declitem">
+          <input type="checkbox" data-decl="stapled" disabled>
+          <span>"Every card slip has its till slip stapled to it"</span>
+        </label>
+        <label class="declitem">
+          <input type="checkbox" data-decl="amounts" disabled>
+          <span>"Amount on each card slip matches its till slip"</span>
+        </label>
+        <label class="declitem">
+          <input type="checkbox" data-decl="splits" disabled>
+          <span>"Every split payment is initialled by me"</span>
+        </label>
+        <label class="declitem">
+          <input type="checkbox" data-decl="totals" disabled>
+          <span>"Machine total equals Palladium card total, or the difference is explained"</span>
+        </label>
+        <label class="declitem">
+          <input type="checkbox" data-decl="filed" disabled>
+          <span>"Slips and signed total are punched and filed together for the day"</span>
+        </label>
+      </div>
+    </div>
+  </section>
+  " "
   <section class="sheet">
     " "
     <div class="sheet-head">
@@ -4585,13 +4842,16 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"Aeroton Retail signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Aeroton Retail can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -4676,6 +4936,19 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Aeroton Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="sig-img">
@@ -4916,13 +5189,16 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"Aeroton Retail signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Aeroton Retail can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -5007,6 +5283,19 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Aeroton Retail signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="sig-img">

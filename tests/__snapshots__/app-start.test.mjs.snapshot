@@ -145,42 +145,42 @@ exports[`default tab and visible tabs per role 1`] = `
     "users": true,
     "notBanked": true,
     "header": "bar dept-wholesale",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02a"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02b"
   },
   "wholesale Wanda Wholesale": {
     "tab": "wholesale",
     "users": false,
     "notBanked": false,
     "header": "bar dept-wholesale",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02a"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02b"
   },
   "retail Rita Retail": {
     "tab": "retail",
     "users": false,
     "notBanked": false,
     "header": "bar dept-retail",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02a"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02b"
   },
   "citydeep Cindy Deep": {
     "tab": "citydeep",
     "users": false,
     "notBanked": false,
     "header": "bar dept-citydeep",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02a"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02b"
   },
   "manager Manny Manager": {
     "tab": "combined",
     "users": false,
     "notBanked": true,
     "header": "bar",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02a"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02b"
   },
   "manager Mona Second": {
     "tab": "combined",
     "users": false,
     "notBanked": true,
     "header": "bar",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02a"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02b"
   }
 }
 `;
@@ -500,13 +500,16 @@ exports[`first administrator 6`] = `
     " "
   </section>
   " "
-  <section class="sheet">
+  <section class="sheet declsec">
     " "
-    <div class="sheet-head">
+    <div class="declhead">
+      <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
-        <div class="eyebrow">"Sign-off"</div>
-        <h2>"Wholesale signature"</h2>
+        <h2>"Store manager sign-off"</h2>
+        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
       </div>
+      " "
+      <span class="chip draft">"Not complete"</span>
     </div>
     " "
     <div class="sheet-body">
@@ -593,6 +596,19 @@ exports[`first administrator 6`] = `
           <span>"Slips and signed total are punched and filed together for the day"</span>
         </label>
       </div>
+    </div>
+  </section>
+  " "
+  <section class="sheet">
+    " "
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">"Sign-off"</div>
+        <h2>"Wholesale signature"</h2>
+      </div>
+    </div>
+    " "
+    <div class="sheet-body">
       <div class="sign">
         " "
         <div class="pad">
