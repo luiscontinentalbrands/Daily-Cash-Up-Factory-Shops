@@ -384,7 +384,7 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <label for="dt-wholesale-0-tx">"Transactions"</label>
                 <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -1627,7 +1627,7 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <label for="dt-wholesale-0-tx">"Transactions"</label>
                 <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value="3" disabled>
               </div>
               <div class="field">

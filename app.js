@@ -1,4 +1,4 @@
-import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-11-02d";
+import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-11-02e";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import {
   initializeAppCheck,
@@ -62,19 +62,19 @@ import {
   declarationTills,
   blankTill,
   DECL_STATEMENT,
-} from "./cashup-core.js?v=2026-11-02d";
+} from "./cashup-core.js?v=2026-11-02e";
 import {
   explainReaderError,
   parseReaderReply,
   readWithAI,
   readerPrompt,
   readerValues,
-} from "./photo-reader.js?v=2026-11-02d";
+} from "./photo-reader.js?v=2026-11-02e";
 
 /* ---------- constants & helpers ---------- */
 // Version for cache-busting. When releasing, change it everywhere it is written: index.html (twice), the imports
 // above, and the imports in photo-reader.js, report-pdf.js and scripts/daily-check.mjs (search for the value).
-const APP_VERSION = "2026-11-02d";
+const APP_VERSION = "2026-11-02e";
 // Timings and limits (the on-screen texts that mention them, e.g. "7 pm" or "15 minutes", are written out separately)
 const SAVE_DELAY_MS = 700; // save this long after the last change
 const IDLE_LOCK_MS = 15 * 60000; // lock the app after this long without use
@@ -1155,7 +1155,7 @@ function declarationInner(doc, dept, editable) {
   const inp = (i, f, label) => `<div class="field"><label for="dt-${dept}-${i}-${f}">${label}</label><input id="dt-${dept}-${i}-${f}" data-till="${i}" data-f="${f}" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value="${esc(tills[i][f] ?? "")}" ${dis}></div>`;
   const tillBox = (t, i) => `<div class="dtill">
       <div class="dtill-head"><b>Till ${i + 1}</b></div>
-      <div class="dgrid">${inp(i, "tx", "Transactions on machine")}${inp(i, "slips", "Slips counted")}</div>
+      <div class="dgrid">${inp(i, "tx", "Transactions")}${inp(i, "slips", "Slips counted")}</div>
       <div class="ddiff var-neg" id="dd-${dept}-${i}">${num(t.tx) !== num(t.slips) ? `Slips (${num(t.slips)}) do not match transactions (${num(t.tx)})` : ""}</div>
       <div class="field"><label for="dt-${dept}-${i}-reason">Reason for any difference</label><input id="dt-${dept}-${i}-reason" data-till="${i}" data-f="reason" maxlength="300" autocomplete="off" value="${esc(t.reason || "")}" ${dis}></div>
     </div>`;

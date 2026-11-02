@@ -241,7 +241,7 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-0-tx">"Transactions on machine"</label>
+                <label for="dt-retail-0-tx">"Transactions"</label>
                 <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -266,7 +266,7 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-1-tx">"Transactions on machine"</label>
+                <label for="dt-retail-1-tx">"Transactions"</label>
                 <input id="dt-retail-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -291,7 +291,7 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-2-tx">"Transactions on machine"</label>
+                <label for="dt-retail-2-tx">"Transactions"</label>
                 <input id="dt-retail-2-tx" data-till="2" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -316,7 +316,7 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-3-tx">"Transactions on machine"</label>
+                <label for="dt-retail-3-tx">"Transactions"</label>
                 <input id="dt-retail-3-tx" data-till="3" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -341,7 +341,7 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-4-tx">"Transactions on machine"</label>
+                <label for="dt-retail-4-tx">"Transactions"</label>
                 <input id="dt-retail-4-tx" data-till="4" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -366,7 +366,7 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-5-tx">"Transactions on machine"</label>
+                <label for="dt-retail-5-tx">"Transactions"</label>
                 <input id="dt-retail-5-tx" data-till="5" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -816,7 +816,7 @@ exports[`empty sheets, as their own cashier/manager 1`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <label for="dt-wholesale-0-tx">"Transactions"</label>
                 <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -1145,7 +1145,7 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-0-tx">"Transactions on machine"</label>
+                <label for="dt-retail-0-tx">"Transactions"</label>
                 <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -1170,7 +1170,7 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-1-tx">"Transactions on machine"</label>
+                <label for="dt-retail-1-tx">"Transactions"</label>
                 <input id="dt-retail-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -1195,7 +1195,7 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-2-tx">"Transactions on machine"</label>
+                <label for="dt-retail-2-tx">"Transactions"</label>
                 <input id="dt-retail-2-tx" data-till="2" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -1220,7 +1220,7 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-3-tx">"Transactions on machine"</label>
+                <label for="dt-retail-3-tx">"Transactions"</label>
                 <input id="dt-retail-3-tx" data-till="3" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -1245,7 +1245,7 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-4-tx">"Transactions on machine"</label>
+                <label for="dt-retail-4-tx">"Transactions"</label>
                 <input id="dt-retail-4-tx" data-till="4" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -1270,7 +1270,7 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-5-tx">"Transactions on machine"</label>
+                <label for="dt-retail-5-tx">"Transactions"</label>
                 <input id="dt-retail-5-tx" data-till="5" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -1650,7 +1650,7 @@ exports[`empty sheets, as their own cashier/manager 3`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-citydeep-0-tx">"Transactions on machine"</label>
+                <label for="dt-citydeep-0-tx">"Transactions"</label>
                 <input id="dt-citydeep-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -1675,7 +1675,7 @@ exports[`empty sheets, as their own cashier/manager 3`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-citydeep-1-tx">"Transactions on machine"</label>
+                <label for="dt-citydeep-1-tx">"Transactions"</label>
                 <input id="dt-citydeep-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -2537,7 +2537,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 1`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <label for="dt-wholesale-0-tx">"Transactions"</label>
                 <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -2872,7 +2872,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-0-tx">"Transactions on machine"</label>
+                <label for="dt-retail-0-tx">"Transactions"</label>
                 <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -2897,7 +2897,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-1-tx">"Transactions on machine"</label>
+                <label for="dt-retail-1-tx">"Transactions"</label>
                 <input id="dt-retail-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -2922,7 +2922,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-2-tx">"Transactions on machine"</label>
+                <label for="dt-retail-2-tx">"Transactions"</label>
                 <input id="dt-retail-2-tx" data-till="2" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -2947,7 +2947,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-3-tx">"Transactions on machine"</label>
+                <label for="dt-retail-3-tx">"Transactions"</label>
                 <input id="dt-retail-3-tx" data-till="3" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -2972,7 +2972,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-4-tx">"Transactions on machine"</label>
+                <label for="dt-retail-4-tx">"Transactions"</label>
                 <input id="dt-retail-4-tx" data-till="4" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -2997,7 +2997,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-5-tx">"Transactions on machine"</label>
+                <label for="dt-retail-5-tx">"Transactions"</label>
                 <input id="dt-retail-5-tx" data-till="5" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -3381,7 +3381,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 3`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-citydeep-0-tx">"Transactions on machine"</label>
+                <label for="dt-citydeep-0-tx">"Transactions"</label>
                 <input id="dt-citydeep-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -3406,7 +3406,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 3`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-citydeep-1-tx">"Transactions on machine"</label>
+                <label for="dt-citydeep-1-tx">"Transactions"</label>
                 <input id="dt-citydeep-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
@@ -3753,7 +3753,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 4`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <label for="dt-wholesale-0-tx">"Transactions"</label>
                 <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -4066,7 +4066,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-0-tx">"Transactions on machine"</label>
+                <label for="dt-retail-0-tx">"Transactions"</label>
                 <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -4091,7 +4091,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-1-tx">"Transactions on machine"</label>
+                <label for="dt-retail-1-tx">"Transactions"</label>
                 <input id="dt-retail-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -4116,7 +4116,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-2-tx">"Transactions on machine"</label>
+                <label for="dt-retail-2-tx">"Transactions"</label>
                 <input id="dt-retail-2-tx" data-till="2" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -4141,7 +4141,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-3-tx">"Transactions on machine"</label>
+                <label for="dt-retail-3-tx">"Transactions"</label>
                 <input id="dt-retail-3-tx" data-till="3" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -4166,7 +4166,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-4-tx">"Transactions on machine"</label>
+                <label for="dt-retail-4-tx">"Transactions"</label>
                 <input id="dt-retail-4-tx" data-till="4" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -4191,7 +4191,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-5-tx">"Transactions on machine"</label>
+                <label for="dt-retail-5-tx">"Transactions"</label>
                 <input id="dt-retail-5-tx" data-till="5" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -4553,7 +4553,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 6`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-citydeep-0-tx">"Transactions on machine"</label>
+                <label for="dt-citydeep-0-tx">"Transactions"</label>
                 <input id="dt-citydeep-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -4578,7 +4578,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 6`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-citydeep-1-tx">"Transactions on machine"</label>
+                <label for="dt-citydeep-1-tx">"Transactions"</label>
                 <input id="dt-citydeep-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -4915,7 +4915,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 7`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <label for="dt-wholesale-0-tx">"Transactions"</label>
                 <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -5199,7 +5199,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-0-tx">"Transactions on machine"</label>
+                <label for="dt-retail-0-tx">"Transactions"</label>
                 <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -5224,7 +5224,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-1-tx">"Transactions on machine"</label>
+                <label for="dt-retail-1-tx">"Transactions"</label>
                 <input id="dt-retail-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -5249,7 +5249,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-2-tx">"Transactions on machine"</label>
+                <label for="dt-retail-2-tx">"Transactions"</label>
                 <input id="dt-retail-2-tx" data-till="2" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -5274,7 +5274,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-3-tx">"Transactions on machine"</label>
+                <label for="dt-retail-3-tx">"Transactions"</label>
                 <input id="dt-retail-3-tx" data-till="3" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -5299,7 +5299,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-4-tx">"Transactions on machine"</label>
+                <label for="dt-retail-4-tx">"Transactions"</label>
                 <input id="dt-retail-4-tx" data-till="4" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -5324,7 +5324,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-5-tx">"Transactions on machine"</label>
+                <label for="dt-retail-5-tx">"Transactions"</label>
                 <input id="dt-retail-5-tx" data-till="5" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -5650,7 +5650,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-0-tx">"Transactions on machine"</label>
+                <label for="dt-retail-0-tx">"Transactions"</label>
                 <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -5675,7 +5675,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-1-tx">"Transactions on machine"</label>
+                <label for="dt-retail-1-tx">"Transactions"</label>
                 <input id="dt-retail-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -5700,7 +5700,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-2-tx">"Transactions on machine"</label>
+                <label for="dt-retail-2-tx">"Transactions"</label>
                 <input id="dt-retail-2-tx" data-till="2" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -5725,7 +5725,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-3-tx">"Transactions on machine"</label>
+                <label for="dt-retail-3-tx">"Transactions"</label>
                 <input id="dt-retail-3-tx" data-till="3" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -5750,7 +5750,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-4-tx">"Transactions on machine"</label>
+                <label for="dt-retail-4-tx">"Transactions"</label>
                 <input id="dt-retail-4-tx" data-till="4" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">
@@ -5775,7 +5775,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-retail-5-tx">"Transactions on machine"</label>
+                <label for="dt-retail-5-tx">"Transactions"</label>
                 <input id="dt-retail-5-tx" data-till="5" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
               </div>
               <div class="field">

@@ -145,42 +145,42 @@ exports[`default tab and visible tabs per role 1`] = `
     "users": true,
     "notBanked": true,
     "header": "bar dept-wholesale",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02d"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02e"
   },
   "wholesale Wanda Wholesale": {
     "tab": "wholesale",
     "users": false,
     "notBanked": false,
     "header": "bar dept-wholesale",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02d"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02e"
   },
   "retail Rita Retail": {
     "tab": "retail",
     "users": false,
     "notBanked": false,
     "header": "bar dept-retail",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02d"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02e"
   },
   "citydeep Cindy Deep": {
     "tab": "citydeep",
     "users": false,
     "notBanked": false,
     "header": "bar dept-citydeep",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02d"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02e"
   },
   "manager Manny Manager": {
     "tab": "combined",
     "users": false,
     "notBanked": true,
     "header": "bar",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02d"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02e"
   },
   "manager Mona Second": {
     "tab": "combined",
     "users": false,
     "notBanked": true,
     "header": "bar",
-    "foot": "Live sync active · shared by all users · App version 2026-11-02d"
+    "foot": "Live sync active · shared by all users · App version 2026-11-02e"
   }
 }
 `;
@@ -527,7 +527,7 @@ exports[`first administrator 6`] = `
             " "
             <div class="dgrid">
               <div class="field">
-                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <label for="dt-wholesale-0-tx">"Transactions"</label>
                 <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
               </div>
               <div class="field">
