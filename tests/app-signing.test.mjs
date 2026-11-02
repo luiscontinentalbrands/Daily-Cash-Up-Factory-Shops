@@ -131,24 +131,33 @@ test("store manager sign-off must be complete before a shop sheet can be signed"
   const tries = [];
   const attempt = async () => { await app.click("#signbtn"); tries.push(app.text("#sign-msg")); };
   await attempt();
-  await app.type("#dt-wholesale-0-till", "2");
   await app.type("#dt-wholesale-0-tx", "5");
-  await app.type("#dt-wholesale-0-slips", "4");
-  await app.type("#dt-wholesale-0-machine", "500");
-  await app.type("#dt-wholesale-0-palladium", "450");
   await attempt();
-  await app.type("#dt-wholesale-0-reason", "One slip lost, R50 refund keyed twice");
+  await app.type("#dt-wholesale-0-slips", "4");
+  await attempt();
+  assert.match(app.text("#dd-wholesale-0"), /Slips \(4\) do not match transactions \(5\)/);
+  await app.type("#dt-wholesale-0-reason", "One slip lost");
   await attempt();
   assert.notEqual(app.text(".sheet.wholesale .chip"), "Signed off");
-  assert.match(app.text("#dd-wholesale-0"), /Difference: \+R 50[.,]00/);
   await app.declare();
   await app.click("#signbtn");
   assert.equal(app.text(".sheet.wholesale .chip"), "Signed off");
   assert.deepEqual(tries, [
-    "Store manager sign-off: enter the till.",
-    "Store manager sign-off: give the reason for the difference.",
+    "Store manager sign-off: enter the transactions and slips counted for at least one till.",
+    "Store manager sign-off: enter the slips counted for till 1.",
+    "Store manager sign-off: give the reason for the difference on till 1.",
     "Store manager sign-off: tick every point of the checklist (6 still to tick).",
   ]);
-  const saved = app.stored(`cashups/${DAY}_wholesale`);
-  assert.match(JSON.stringify(saved), /One slip lost/);
+  assert.match(JSON.stringify(app.stored(`cashups/${DAY}_wholesale`)), /One slip lost/);
+});
+
+test("Aeroton Retail has six tills and City Deep Retail two, each with its own fields", async t => {
+  const app = await boot(t, { me: "u-admin", now: `${DAY}T16:00:00+02:00` });
+  await app.tab("retail");
+  assert.equal(app.all("#decl-retail .dtill").length, 6);
+  for (let i = 0; i < 6; i++) for (const f of ["tx", "slips", "reason"]) assert.ok(app.has(`#dt-retail-${i}-${f}`));
+  await app.tab("citydeep");
+  assert.equal(app.all("#decl-citydeep .dtill").length, 2);
+  await app.tab("wholesale");
+  assert.equal(app.all("#decl-wholesale .dtill").length, 1);
 });

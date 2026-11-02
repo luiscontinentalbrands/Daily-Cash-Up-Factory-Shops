@@ -363,7 +363,7 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before Wholesale can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -371,57 +371,36 @@ exports[`cashier reopens own sheet (tap twice), not after the day is closed 6`] 
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-wholesale">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
+        <div class="msg"></div>
+        " "
+        <div class="dtills">
+          <div class="dtill">
             " "
-            <div class="field">
-              <label for="dt-wholesale-0-till">"Till"</label>
-              <input id="dt-wholesale-0-till" data-till="0" data-f="till" autocomplete="off" value disabled>
+            <div class="dtill-head">
+              <b>"Till 1"</b>
             </div>
             " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Wanda Wholesale"</div>
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-wholesale-0-slips">"Slips counted"</label>
+                <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
             </div>
             " "
-            <div class="field">
-              <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
-              <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
+            <div class="ddiff var-neg" id="dd-wholesale-0"></div>
             " "
             <div class="field">
-              <label for="dt-wholesale-0-slips">"Slips counted"</label>
-              <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-machine">"Machine total (R)"</label>
-              <input id="dt-wholesale-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-wholesale-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
+              <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
+              <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
             </div>
             " "
           </div>
-          " "
-          <div class="ddiff var-zero" id="dd-wholesale-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
-            <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
-          </div>
-          " "
         </div>
         " "
         <div class="eyebrow" id="dcount-wholesale" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
@@ -1096,28 +1075,13 @@ exports[`manager sign-off: waiting for shops, different person, success 5`] = `
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"Aeroton Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"City Deep Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
-          <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
         </div>
       </div>
       " "
@@ -1300,11 +1264,8 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 4`
         },
         "tills": [
           {
-            "till": "1",
             "tx": "3",
             "slips": "3",
-            "machine": "100.00",
-            "palladium": "100.00",
             "reason": ""
           }
         ]
@@ -1379,11 +1340,8 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 4`
         },
         "tills": [
           {
-            "till": "1",
             "tx": "3",
             "slips": "3",
-            "machine": "100.00",
-            "palladium": "100.00",
             "reason": ""
           }
         ]
@@ -1648,7 +1606,7 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before Wholesale can sign"</div>
       </div>
       " "
       <span class="chip signed">"Complete"</span>
@@ -1656,57 +1614,36 @@ exports[`signing a shop sheet: checks, then the signature and the audit entry 5`
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-wholesale">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
+        <div class="msg"></div>
+        " "
+        <div class="dtills">
+          <div class="dtill">
             " "
-            <div class="field">
-              <label for="dt-wholesale-0-till">"Till"</label>
-              <input id="dt-wholesale-0-till" data-till="0" data-f="till" autocomplete="off" value="1" disabled>
+            <div class="dtill-head">
+              <b>"Till 1"</b>
             </div>
             " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Wanda Wholesale"</div>
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value="3" disabled>
+              </div>
+              <div class="field">
+                <label for="dt-wholesale-0-slips">"Slips counted"</label>
+                <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value="3" disabled>
+              </div>
             </div>
             " "
-            <div class="field">
-              <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
-              <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value="3" disabled>
-            </div>
+            <div class="ddiff var-neg" id="dd-wholesale-0"></div>
             " "
             <div class="field">
-              <label for="dt-wholesale-0-slips">"Slips counted"</label>
-              <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value="3" disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-machine">"Machine total (R)"</label>
-              <input id="dt-wholesale-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value="100.00" disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-wholesale-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value="100.00" disabled>
+              <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
+              <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
             </div>
             " "
           </div>
-          " "
-          <div class="ddiff var-zero" id="dd-wholesale-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
-            <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
-          </div>
-          " "
         </div>
         " "
         <div class="eyebrow" id="dcount-wholesale" style="margin-top:6px">"Manager's checklist before signing · 6 of 6 ticked"</div>

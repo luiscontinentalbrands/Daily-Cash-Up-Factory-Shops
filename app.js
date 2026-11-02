@@ -1,4 +1,4 @@
-import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-11-02b";
+import { firebaseConfig, APP_CHECK_SITE_KEY } from "./firebase-config.js?v=2026-11-02c";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import {
   initializeAppCheck,
@@ -58,23 +58,23 @@ import {
   declarationItems,
   declarationMissing,
   declarationProblem,
+  declarationSummary,
   declarationTills,
-  tillDifference,
   blankTill,
   DECL_STATEMENT,
-} from "./cashup-core.js?v=2026-11-02b";
+} from "./cashup-core.js?v=2026-11-02c";
 import {
   explainReaderError,
   parseReaderReply,
   readWithAI,
   readerPrompt,
   readerValues,
-} from "./photo-reader.js?v=2026-11-02b";
+} from "./photo-reader.js?v=2026-11-02c";
 
 /* ---------- constants & helpers ---------- */
 // Version for cache-busting. When releasing, change it everywhere it is written: index.html (twice), the imports
 // above, and the imports in photo-reader.js, report-pdf.js and scripts/daily-check.mjs (search for the value).
-const APP_VERSION = "2026-11-02b";
+const APP_VERSION = "2026-11-02c";
 // Timings and limits (the on-screen texts that mention them, e.g. "7 pm" or "15 minutes", are written out separately)
 const SAVE_DELAY_MS = 700; // save this long after the last change
 const IDLE_LOCK_MS = 15 * 60000; // lock the app after this long without use
@@ -1150,30 +1150,19 @@ function signedBlock(doc, dept) {
 function declarationInner(doc, dept, editable) {
   const items = declarationItems(dept);
   const got = (doc.declaration && doc.declaration.items) || {};
-  const tills = declarationTills(doc);
+  const tills = declarationTills(Object.assign({}, doc, { dept }));
   const dis = editable ? "" : "disabled";
-  const inp = (i, f, label, mode) => `<div class="field"><label for="dt-${dept}-${i}-${f}">${label}</label><input id="dt-${dept}-${i}-${f}" data-till="${i}" data-f="${f}" ${mode === "text" ? "" : `inputmode="${mode}" class="num" style="text-align:right"`} autocomplete="off" value="${esc(tills[i][f] ?? "")}" ${dis}></div>`;
-  const tillBox = (t, i) => {
-    const diff = tillDifference(t), off = num(t.tx) !== num(t.slips) || diff !== 0;
-    return `<div class="dtill">
-      <div class="dtill-head"><b>Till ${tills.length > 1 ? i + 1 : ""}</b>${editable && tills.length > 1 ? `<button class="linkbtn" type="button" data-rmtill="${i}" style="color:var(--bad)">Remove till</button>` : ""}</div>
-      <div class="dgrid">
-        ${inp(i, "till", "Till", "text")}
-        <div class="field"><label>Cashier</label><div class="static">${esc(doc.cashier || (editable ? state.me.name : "") || "—")}</div></div>
-        ${inp(i, "tx", "Transactions on machine", "numeric")}
-        ${inp(i, "slips", "Slips counted", "numeric")}
-        ${inp(i, "machine", "Machine total (R)", "decimal")}
-        ${inp(i, "palladium", "Palladium card total (R)", "decimal")}
-      </div>
-      <div class="ddiff ${vcls(diff)}" id="dd-${dept}-${i}">Difference: ${RV(diff)}${num(t.tx) !== num(t.slips) ? ` · slips (${num(t.slips)}) do not match transactions (${num(t.tx)})` : ""}</div>
-      <div class="field"><label for="dt-${dept}-${i}-reason">Reason for any difference${off ? " (required)" : ""}</label><input id="dt-${dept}-${i}-reason" data-till="${i}" data-f="reason" maxlength="300" autocomplete="off" value="${esc(t.reason || "")}" ${dis}></div>
+  const inp = (i, f, label) => `<div class="field"><label for="dt-${dept}-${i}-${f}">${label}</label><input id="dt-${dept}-${i}-${f}" data-till="${i}" data-f="${f}" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value="${esc(tills[i][f] ?? "")}" ${dis}></div>`;
+  const tillBox = (t, i) => `<div class="dtill">
+      <div class="dtill-head"><b>Till ${i + 1}</b></div>
+      <div class="dgrid">${inp(i, "tx", "Transactions on machine")}${inp(i, "slips", "Slips counted")}</div>
+      <div class="ddiff var-neg" id="dd-${dept}-${i}">${num(t.tx) !== num(t.slips) ? `Slips (${num(t.slips)}) do not match transactions (${num(t.tx)})` : ""}</div>
+      <div class="field"><label for="dt-${dept}-${i}-reason">Reason for any difference</label><input id="dt-${dept}-${i}-reason" data-till="${i}" data-f="reason" maxlength="300" autocomplete="off" value="${esc(t.reason || "")}" ${dis}></div>
     </div>`;
-  };
   const done = items.filter(x => got[x.k] === true).length;
-  return `<div class="eyebrow">Store manager sign-off · card transactions · ${shortDate(state.date)}</div>
-    <blockquote class="dstate">“${esc(DECL_STATEMENT)}”</blockquote>
-    ${tills.map(tillBox).join("")}
-    ${editable ? `<button class="btn" type="button" id="dt-add-${dept}">Add another till</button>` : ""}
+  return `<blockquote class="dstate">“${esc(DECL_STATEMENT)}”</blockquote>
+    <div class="msg">${tills.length > 1 ? `${tills.length} tills. Leave a till blank if it was not used today.` : ""}</div>
+    <div class="dtills">${tills.map(tillBox).join("")}</div>
     <div class="eyebrow" id="dcount-${dept}" style="margin-top:6px">Manager's checklist before signing · ${done} of ${items.length} ticked</div>
     ${items.map(x => `<label class="declitem"><input type="checkbox" data-decl="${x.k}" ${got[x.k] === true ? "checked" : ""} ${dis}><span>${esc(x.t)}</span></label>`).join("")}`;
 }
@@ -1182,7 +1171,7 @@ function declarationSection(doc, dept, editable) {
   if (!declarationItems(dept).length) return "";
   const p = declarationProblem(doc);
   return `<section class="sheet declsec">
-    <div class="declhead"><div class="declicon" aria-hidden="true">✍</div><div><h2>Store manager sign-off</h2><div class="small">Card transactions · one block per till · must be complete before ${DEPTS[dept]} can sign</div></div>
+    <div class="declhead"><div class="declicon" aria-hidden="true">✍</div><div><h2>Store manager sign-off</h2><div class="small">Card transactions · ${shortDate(state.date)} · must be complete before ${DEPTS[dept]} can sign</div></div>
       <span class="chip ${p ? "draft" : "signed"}">${p ? "Not complete" : "Complete"}</span></div>
     <div class="sheet-body">${declarationBlock(doc, dept, editable)}</div></section>`;
 }
@@ -1193,48 +1182,34 @@ function declarationBlock(doc, dept, editable) {
 function bindDeclaration(dept) {
   const box = document.getElementById("decl-" + dept);
   if (!box) return;
-  const D = () => drafts[dept];
   const ensure = () => {
-    const d = D();
+    const d = drafts[dept];
     if (!d.declaration || typeof d.declaration !== "object") d.declaration = {};
     if (!d.declaration.items) d.declaration.items = {};
-    if (!Array.isArray(d.declaration.tills) || !d.declaration.tills.length) d.declaration.tills = [blankTill()];
+    d.declaration.tills = declarationTills(Object.assign({}, d, { dept }));
     return d.declaration;
   };
-  const redraw = () => { box.innerHTML = declarationInner(D(), dept, true); wire(); };
-  const wire = () => {
-    box.querySelectorAll("input[data-decl]").forEach(cb =>
-      cb.addEventListener("change", () => {
-        ensure().items[cb.dataset.decl] = cb.checked;
-        const n = declarationItems(dept).filter(x => ensure().items[x.k] === true).length;
-        $("#dcount-" + dept).textContent = `Manager's checklist before signing · ${n} of ${declarationItems(dept).length} ticked`;
-        scheduleSave(dept);
-      }),
-    );
-    box.querySelectorAll("input[data-till]").forEach(el =>
-      el.addEventListener("input", () => {
-        const i = +el.dataset.till, f = el.dataset.f;
-        let v = el.value;
-        if (f === "tx" || f === "slips") v = v.replace(/[^0-9]/g, "");
-        if (f === "machine" || f === "palladium") v = money(v);
-        if (v !== el.value && (f === "tx" || f === "slips")) el.value = v;
-        ensure().tills[i][f] = v;
-        const t = ensure().tills[i], diff = tillDifference(t), dd = $("#dd-" + dept + "-" + i);
-        if (dd) { dd.className = "ddiff " + vcls(diff); dd.textContent = `Difference: ${RV(diff)}${num(t.tx) !== num(t.slips) ? ` · slips (${num(t.slips)}) do not match transactions (${num(t.tx)})` : ""}`; }
-        scheduleSave(dept);
-      }),
-    );
-    box.querySelectorAll('input[data-f="machine"],input[data-f="palladium"]').forEach(el =>
-      el.addEventListener("blur", () => { if (el.value !== "") { el.value = num(money(el.value)).toFixed(2); ensure().tills[+el.dataset.till][el.dataset.f] = el.value; scheduleSave(dept); } }),
-    );
-    const add = $("#dt-add-" + dept);
-    if (add) add.addEventListener("click", () => { ensure().tills.push(blankTill()); scheduleSave(dept); redraw(); });
-    box.querySelectorAll("button[data-rmtill]").forEach(b =>
-      b.addEventListener("click", () => { ensure().tills.splice(+b.dataset.rmtill, 1); scheduleSave(dept); redraw(); }),
-    );
-  };
-  wire();
+  box.querySelectorAll("input[data-decl]").forEach(cb =>
+    cb.addEventListener("change", () => {
+      ensure().items[cb.dataset.decl] = cb.checked;
+      const n = declarationItems(dept).filter(x => ensure().items[x.k] === true).length;
+      $("#dcount-" + dept).textContent = `Manager's checklist before signing · ${n} of ${declarationItems(dept).length} ticked`;
+      scheduleSave(dept);
+    }),
+  );
+  box.querySelectorAll("input[data-till]").forEach(el =>
+    el.addEventListener("input", () => {
+      const i = +el.dataset.till, f = el.dataset.f;
+      if (f !== "reason" && /[^0-9]/.test(el.value)) el.value = el.value.replace(/[^0-9]/g, "");
+      const dec = ensure();
+      dec.tills[i][f] = el.value;
+      const t = dec.tills[i], dd = $("#dd-" + dept + "-" + i);
+      if (dd) dd.textContent = num(t.tx) !== num(t.slips) ? `Slips (${num(t.slips)}) do not match transactions (${num(t.tx)})` : "";
+      scheduleSave(dept);
+    }),
+  );
 }
+
 function signBlock(doc, dept) {
   return `<div class="sign">
   <div class="pad"><canvas id="pad" data-dept="${dept}" width="900" height="300" aria-label="Signature pad"></canvas><div class="base"></div><div class="hint">Sign above the line with finger or mouse</div></div>
@@ -1747,7 +1722,7 @@ function renderCombined() {
       <div class="field"><label>CashGuard</label><div class="static num" style="font-weight:400">${splitShops.map(([d, doc, t]) => `<b>${DEPTS[d]}:</b> deposited in Nedbank ${R(num(doc.lines.cashguard.deposited))} · counted &amp; retained, not banked <b>${R(t.retained)}</b>`).join("<br>")}</div></div>
       ${tr.petty || Rt.pettyNotes ? `<div class="field"><label>Aeroton Retail petty cash (not banked)</label><div class="static num" style="font-weight:400"><b>${R(tr.petty)}</b>${Rt.pettyNotes ? " · " + esc(Rt.pettyNotes) : ""}</div></div>` : ""}
       ${state.handovers.length ? `<div class="field"><label>Cash handed over (signed for)</label><div class="static num" style="font-weight:400">${state.handovers.map(h => `${R(num(h.amount))} from ${esc(h.givenBy)} to <b>${esc(h.receivedBy)}</b> · ${esc(timeStr(savedAtIso(h)))}`).join("<br>")}</div></div>` : ""}
-      <div class="field"><label>Store manager sign-off (card transactions)</label><div class="static" style="font-weight:400">${shops.map(([d, doc]) => { const p = declarationProblem(Object.assign({}, doc, { dept: d })); return `<b>${DEPTS[d]}:</b> ${p ? `<span class="var-neg">not complete</span>` : `declared${doc.status === "signed" ? " by " + esc(doc.signedBy) : ""}`}<br>${declarationTills(doc).map(t => `<span class="msg">Till ${esc(t.till || "-")}: ${esc(t.tx || "0")} transactions · ${esc(t.slips || "0")} slips · machine ${R(num(t.machine))} · Palladium ${R(num(t.palladium))} · <span class="${vcls(tillDifference(t))}">difference ${RV(tillDifference(t))}</span>${t.reason ? " · " + esc(t.reason) : ""}</span>`).join("<br>")}`; }).join("<br>")}</div></div>
+      <div class="field"><label>Store manager sign-off (card transactions)</label><div class="static" style="font-weight:400">${shops.map(([d, doc]) => { const dd = Object.assign({}, doc, { dept: d }); const p = declarationProblem(dd); return `<b>${DEPTS[d]}:</b> ${p ? `<span class="var-neg">not complete</span>` : `declared${doc.status === "signed" ? " by " + esc(doc.signedBy) : ""}`}${declarationSummary(dd).map(l => `<br><span class="msg">${esc(l)}</span>`).join("")}`; }).join("<br>")}</div></div>
       <div class="field"><label>Damaged bank notes &amp; coins</label><div class="static num" style="font-weight:400">${each(d => R(num(d.damaged)) + (d.damagedNotes ? " (" + esc(d.damagedNotes) + ")" : ""))} · <b>Total ${R(shops.reduce((a, [, d]) => a + num(d.damaged), 0))}</b></div></div>
       <div class="sigs">${signatureBox(W, "wholesale")}${signatureBox(Rt, "retail")}${showCD ? signatureBox(C, "citydeep") : ""}${signatureBox(M, "manager")}</div>
       <div class="actions"><button class="btn primary" id="pdf-mail" type="button">Email PDF report</button><button class="btn" id="pdf-dl" type="button">Download PDF</button><button class="btn" id="csv">Download day as CSV</button><span class="msg" id="csv-msg"></span></div>

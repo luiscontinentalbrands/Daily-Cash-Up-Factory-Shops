@@ -279,28 +279,13 @@ exports[`End of Day screen through the day 1`] = `
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"Aeroton Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"City Deep Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
-          <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
         </div>
       </div>
       " "
@@ -603,28 +588,13 @@ exports[`End of Day screen through the day 2`] = `
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"Aeroton Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"City Deep Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
-          <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
         </div>
       </div>
       " "
@@ -929,28 +899,13 @@ exports[`End of Day screen through the day 3`] = `
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"Aeroton Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"City Deep Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
-          <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
         </div>
       </div>
       " "
@@ -1257,28 +1212,13 @@ exports[`End of Day screen through the day 4`] = `
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"Aeroton Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"City Deep Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
-          <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
         </div>
       </div>
       " "
@@ -1611,28 +1551,13 @@ exports[`End of Day screen through the day 5`] = `
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"Aeroton Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"City Deep Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
-          <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
         </div>
       </div>
       " "
@@ -1934,19 +1859,9 @@ exports[`End of Day screen through the day 6`] = `
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"Aeroton Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
-          <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
         </div>
       </div>
       " "
@@ -2270,28 +2185,13 @@ exports[`End of Day screen through the day 7`] = `
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"Aeroton Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"City Deep Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
-          <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
         </div>
       </div>
       " "
@@ -2594,28 +2494,13 @@ exports[`End of Day screen through the day 8`] = `
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"Aeroton Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
           <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
-          <br>
           <b>"City Deep Retail:"</b>
           " "
           <span class="var-neg">"not complete"</span>
-          <br>
-          <span class="msg">
-            "Till -: 0 transactions · 0 slips · machine R 0,00 · Palladium R 0,00 · "
-            <span class="var-zero">"difference R 0,00"</span>
-          </span>
         </div>
       </div>
       " "
@@ -3014,20 +2899,20 @@ exports[`download the PDF report 2`] = `
 ["setTextColor",31,28,24]
 ["text","Wholesale card sign-off",14,156,null]
 ["setFont","helvetica","normal"]
-["splitTextToSize","NOT COMPLETE.  Till -: 0 transactions, 0 slips, machine R 0.00, Palladium R 0.00, difference R 0.00",211]
-["text",["NOT COMPLETE.  Till -: 0 transactions, 0 slips, machine R 0.00, Palladium R 0.00, difference R 0.00"],72,156]
+["splitTextToSize","NOT COMPLETE.  ",211]
+["text",["NOT COMPLETE.  "],72,156]
 ["setFont","helvetica","bold"]
 ["setTextColor",31,28,24]
 ["text","Aeroton Retail card sign-off",14,162,null]
 ["setFont","helvetica","normal"]
-["splitTextToSize","NOT COMPLETE.  Till -: 0 transactions, 0 slips, machine R 0.00, Palladium R 0.00, difference R 0.00",211]
-["text",["NOT COMPLETE.  Till -: 0 transactions, 0 slips, machine R 0.00, Palladium R 0.00, difference R 0.00"],72,162]
+["splitTextToSize","NOT COMPLETE.  ",211]
+["text",["NOT COMPLETE.  "],72,162]
 ["setFont","helvetica","bold"]
 ["setTextColor",31,28,24]
 ["text","City Deep Retail card sign-off",14,168,null]
 ["setFont","helvetica","normal"]
-["splitTextToSize","NOT COMPLETE.  Till -: 0 transactions, 0 slips, machine R 0.00, Palladium R 0.00, difference R 0.00",211]
-["text",["NOT COMPLETE.  Till -: 0 transactions, 0 slips, machine R 0.00, Palladium R 0.00, difference R 0.00"],72,168]
+["splitTextToSize","NOT COMPLETE.  ",211]
+["text",["NOT COMPLETE.  "],72,168]
 ["setFont","helvetica","bold"]
 ["setTextColor",31,28,24]
 ["text","Damaged notes & coins",14,174,null]

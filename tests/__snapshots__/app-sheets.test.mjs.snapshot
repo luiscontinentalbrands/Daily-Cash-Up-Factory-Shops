@@ -220,7 +220,7 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before Aeroton Retail can sign"</div>
+        <div class="small">"Card transactions · Sat, 17 Oct 2026 · must be complete before Aeroton Retail can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -228,60 +228,162 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-retail">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Sat, 17 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
-            " "
-            <div class="field">
-              <label for="dt-retail-0-till">"Till"</label>
-              <input id="dt-retail-0-till" data-till="0" data-f="till" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Rita Retail"</div>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-tx">"Transactions on machine"</label>
-              <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-slips">"Slips counted"</label>
-              <input id="dt-retail-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-machine">"Machine total (R)"</label>
-              <input id="dt-retail-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-retail-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-          </div>
-          " "
-          <div class="ddiff var-zero" id="dd-retail-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-retail-0-reason">"Reason for any difference"</label>
-            <input id="dt-retail-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
-          </div>
-          " "
-        </div>
+        <div class="msg">"6 tills. Leave a till blank if it was not used today."</div>
         " "
-        <button class="btn" type="button" id="dt-add-retail">"Add another till"</button>
+        <div class="dtills">
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 1"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-0-tx">"Transactions on machine"</label>
+                <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-0-slips">"Slips counted"</label>
+                <input id="dt-retail-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-0"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-0-reason">"Reason for any difference"</label>
+              <input id="dt-retail-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 2"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-1-tx">"Transactions on machine"</label>
+                <input id="dt-retail-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-1-slips">"Slips counted"</label>
+                <input id="dt-retail-1-slips" data-till="1" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-1"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-1-reason">"Reason for any difference"</label>
+              <input id="dt-retail-1-reason" data-till="1" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 3"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-2-tx">"Transactions on machine"</label>
+                <input id="dt-retail-2-tx" data-till="2" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-2-slips">"Slips counted"</label>
+                <input id="dt-retail-2-slips" data-till="2" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-2"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-2-reason">"Reason for any difference"</label>
+              <input id="dt-retail-2-reason" data-till="2" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 4"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-3-tx">"Transactions on machine"</label>
+                <input id="dt-retail-3-tx" data-till="3" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-3-slips">"Slips counted"</label>
+                <input id="dt-retail-3-slips" data-till="3" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-3"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-3-reason">"Reason for any difference"</label>
+              <input id="dt-retail-3-reason" data-till="3" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 5"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-4-tx">"Transactions on machine"</label>
+                <input id="dt-retail-4-tx" data-till="4" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-4-slips">"Slips counted"</label>
+                <input id="dt-retail-4-slips" data-till="4" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-4"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-4-reason">"Reason for any difference"</label>
+              <input id="dt-retail-4-reason" data-till="4" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 6"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-5-tx">"Transactions on machine"</label>
+                <input id="dt-retail-5-tx" data-till="5" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-5-slips">"Slips counted"</label>
+                <input id="dt-retail-5-slips" data-till="5" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-5"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-5-reason">"Reason for any difference"</label>
+              <input id="dt-retail-5-reason" data-till="5" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+        </div>
         " "
         <div class="eyebrow" id="dcount-retail" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
         " "
@@ -693,7 +795,7 @@ exports[`empty sheets, as their own cashier/manager 1`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before Wholesale can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -701,60 +803,37 @@ exports[`empty sheets, as their own cashier/manager 1`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-wholesale">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-till">"Till"</label>
-              <input id="dt-wholesale-0-till" data-till="0" data-f="till" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Wanda Wholesale"</div>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
-              <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-slips">"Slips counted"</label>
-              <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-machine">"Machine total (R)"</label>
-              <input id="dt-wholesale-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-wholesale-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-          </div>
-          " "
-          <div class="ddiff var-zero" id="dd-wholesale-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
-            <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
-          </div>
-          " "
-        </div>
+        <div class="msg"></div>
         " "
-        <button class="btn" type="button" id="dt-add-wholesale">"Add another till"</button>
+        <div class="dtills">
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 1"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-wholesale-0-slips">"Slips counted"</label>
+                <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-wholesale-0"></div>
+            " "
+            <div class="field">
+              <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
+              <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+        </div>
         " "
         <div class="eyebrow" id="dcount-wholesale" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
         " "
@@ -1045,7 +1124,7 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before Aeroton Retail can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before Aeroton Retail can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -1053,60 +1132,162 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-retail">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
-            " "
-            <div class="field">
-              <label for="dt-retail-0-till">"Till"</label>
-              <input id="dt-retail-0-till" data-till="0" data-f="till" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Rita Retail"</div>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-tx">"Transactions on machine"</label>
-              <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-slips">"Slips counted"</label>
-              <input id="dt-retail-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-machine">"Machine total (R)"</label>
-              <input id="dt-retail-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-retail-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-          </div>
-          " "
-          <div class="ddiff var-zero" id="dd-retail-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-retail-0-reason">"Reason for any difference"</label>
-            <input id="dt-retail-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
-          </div>
-          " "
-        </div>
+        <div class="msg">"6 tills. Leave a till blank if it was not used today."</div>
         " "
-        <button class="btn" type="button" id="dt-add-retail">"Add another till"</button>
+        <div class="dtills">
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 1"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-0-tx">"Transactions on machine"</label>
+                <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-0-slips">"Slips counted"</label>
+                <input id="dt-retail-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-0"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-0-reason">"Reason for any difference"</label>
+              <input id="dt-retail-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 2"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-1-tx">"Transactions on machine"</label>
+                <input id="dt-retail-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-1-slips">"Slips counted"</label>
+                <input id="dt-retail-1-slips" data-till="1" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-1"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-1-reason">"Reason for any difference"</label>
+              <input id="dt-retail-1-reason" data-till="1" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 3"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-2-tx">"Transactions on machine"</label>
+                <input id="dt-retail-2-tx" data-till="2" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-2-slips">"Slips counted"</label>
+                <input id="dt-retail-2-slips" data-till="2" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-2"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-2-reason">"Reason for any difference"</label>
+              <input id="dt-retail-2-reason" data-till="2" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 4"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-3-tx">"Transactions on machine"</label>
+                <input id="dt-retail-3-tx" data-till="3" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-3-slips">"Slips counted"</label>
+                <input id="dt-retail-3-slips" data-till="3" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-3"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-3-reason">"Reason for any difference"</label>
+              <input id="dt-retail-3-reason" data-till="3" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 5"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-4-tx">"Transactions on machine"</label>
+                <input id="dt-retail-4-tx" data-till="4" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-4-slips">"Slips counted"</label>
+                <input id="dt-retail-4-slips" data-till="4" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-4"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-4-reason">"Reason for any difference"</label>
+              <input id="dt-retail-4-reason" data-till="4" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 6"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-5-tx">"Transactions on machine"</label>
+                <input id="dt-retail-5-tx" data-till="5" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-5-slips">"Slips counted"</label>
+                <input id="dt-retail-5-slips" data-till="5" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-5"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-5-reason">"Reason for any difference"</label>
+              <input id="dt-retail-5-reason" data-till="5" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+        </div>
         " "
         <div class="eyebrow" id="dcount-retail" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
         " "
@@ -1448,7 +1629,7 @@ exports[`empty sheets, as their own cashier/manager 3`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before City Deep Retail can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before City Deep Retail can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -1456,60 +1637,62 @@ exports[`empty sheets, as their own cashier/manager 3`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-citydeep">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
-            " "
-            <div class="field">
-              <label for="dt-citydeep-0-till">"Till"</label>
-              <input id="dt-citydeep-0-till" data-till="0" data-f="till" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Cindy Deep"</div>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-citydeep-0-tx">"Transactions on machine"</label>
-              <input id="dt-citydeep-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-citydeep-0-slips">"Slips counted"</label>
-              <input id="dt-citydeep-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-citydeep-0-machine">"Machine total (R)"</label>
-              <input id="dt-citydeep-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-citydeep-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-citydeep-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-          </div>
-          " "
-          <div class="ddiff var-zero" id="dd-citydeep-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-citydeep-0-reason">"Reason for any difference"</label>
-            <input id="dt-citydeep-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
-          </div>
-          " "
-        </div>
+        <div class="msg">"2 tills. Leave a till blank if it was not used today."</div>
         " "
-        <button class="btn" type="button" id="dt-add-citydeep">"Add another till"</button>
+        <div class="dtills">
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 1"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-citydeep-0-tx">"Transactions on machine"</label>
+                <input id="dt-citydeep-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-citydeep-0-slips">"Slips counted"</label>
+                <input id="dt-citydeep-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-citydeep-0"></div>
+            " "
+            <div class="field">
+              <label for="dt-citydeep-0-reason">"Reason for any difference"</label>
+              <input id="dt-citydeep-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 2"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-citydeep-1-tx">"Transactions on machine"</label>
+                <input id="dt-citydeep-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-citydeep-1-slips">"Slips counted"</label>
+                <input id="dt-citydeep-1-slips" data-till="1" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-citydeep-1"></div>
+            " "
+            <div class="field">
+              <label for="dt-citydeep-1-reason">"Reason for any difference"</label>
+              <input id="dt-citydeep-1-reason" data-till="1" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+        </div>
         " "
         <div class="eyebrow" id="dcount-citydeep" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
         " "
@@ -2333,7 +2516,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 1`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before Wholesale can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -2341,60 +2524,37 @@ exports[`sheets with figures, draft and signed, seen by different roles 1`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-wholesale">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-till">"Till"</label>
-              <input id="dt-wholesale-0-till" data-till="0" data-f="till" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Wanda Wholesale"</div>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
-              <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-slips">"Slips counted"</label>
-              <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-machine">"Machine total (R)"</label>
-              <input id="dt-wholesale-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-wholesale-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-          </div>
-          " "
-          <div class="ddiff var-zero" id="dd-wholesale-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
-            <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
-          </div>
-          " "
-        </div>
+        <div class="msg"></div>
         " "
-        <button class="btn" type="button" id="dt-add-wholesale">"Add another till"</button>
+        <div class="dtills">
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 1"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-wholesale-0-slips">"Slips counted"</label>
+                <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-wholesale-0"></div>
+            " "
+            <div class="field">
+              <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
+              <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+        </div>
         " "
         <div class="eyebrow" id="dcount-wholesale" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
         " "
@@ -2691,7 +2851,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before Aeroton Retail can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before Aeroton Retail can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -2699,60 +2859,162 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-retail">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
-            " "
-            <div class="field">
-              <label for="dt-retail-0-till">"Till"</label>
-              <input id="dt-retail-0-till" data-till="0" data-f="till" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Rita Retail"</div>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-tx">"Transactions on machine"</label>
-              <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-slips">"Slips counted"</label>
-              <input id="dt-retail-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-machine">"Machine total (R)"</label>
-              <input id="dt-retail-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-retail-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-          </div>
-          " "
-          <div class="ddiff var-zero" id="dd-retail-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-retail-0-reason">"Reason for any difference"</label>
-            <input id="dt-retail-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
-          </div>
-          " "
-        </div>
+        <div class="msg">"6 tills. Leave a till blank if it was not used today."</div>
         " "
-        <button class="btn" type="button" id="dt-add-retail">"Add another till"</button>
+        <div class="dtills">
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 1"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-0-tx">"Transactions on machine"</label>
+                <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-0-slips">"Slips counted"</label>
+                <input id="dt-retail-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-0"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-0-reason">"Reason for any difference"</label>
+              <input id="dt-retail-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 2"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-1-tx">"Transactions on machine"</label>
+                <input id="dt-retail-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-1-slips">"Slips counted"</label>
+                <input id="dt-retail-1-slips" data-till="1" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-1"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-1-reason">"Reason for any difference"</label>
+              <input id="dt-retail-1-reason" data-till="1" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 3"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-2-tx">"Transactions on machine"</label>
+                <input id="dt-retail-2-tx" data-till="2" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-2-slips">"Slips counted"</label>
+                <input id="dt-retail-2-slips" data-till="2" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-2"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-2-reason">"Reason for any difference"</label>
+              <input id="dt-retail-2-reason" data-till="2" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 4"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-3-tx">"Transactions on machine"</label>
+                <input id="dt-retail-3-tx" data-till="3" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-3-slips">"Slips counted"</label>
+                <input id="dt-retail-3-slips" data-till="3" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-3"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-3-reason">"Reason for any difference"</label>
+              <input id="dt-retail-3-reason" data-till="3" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 5"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-4-tx">"Transactions on machine"</label>
+                <input id="dt-retail-4-tx" data-till="4" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-4-slips">"Slips counted"</label>
+                <input id="dt-retail-4-slips" data-till="4" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-4"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-4-reason">"Reason for any difference"</label>
+              <input id="dt-retail-4-reason" data-till="4" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 6"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-5-tx">"Transactions on machine"</label>
+                <input id="dt-retail-5-tx" data-till="5" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-retail-5-slips">"Slips counted"</label>
+                <input id="dt-retail-5-slips" data-till="5" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-5"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-5-reason">"Reason for any difference"</label>
+              <input id="dt-retail-5-reason" data-till="5" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+        </div>
         " "
         <div class="eyebrow" id="dcount-retail" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
         " "
@@ -3098,7 +3360,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 3`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before City Deep Retail can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before City Deep Retail can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -3106,60 +3368,62 @@ exports[`sheets with figures, draft and signed, seen by different roles 3`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-citydeep">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
-            " "
-            <div class="field">
-              <label for="dt-citydeep-0-till">"Till"</label>
-              <input id="dt-citydeep-0-till" data-till="0" data-f="till" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Cindy Deep"</div>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-citydeep-0-tx">"Transactions on machine"</label>
-              <input id="dt-citydeep-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-citydeep-0-slips">"Slips counted"</label>
-              <input id="dt-citydeep-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-citydeep-0-machine">"Machine total (R)"</label>
-              <input id="dt-citydeep-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-citydeep-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-citydeep-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value>
-            </div>
-            " "
-          </div>
-          " "
-          <div class="ddiff var-zero" id="dd-citydeep-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-citydeep-0-reason">"Reason for any difference"</label>
-            <input id="dt-citydeep-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
-          </div>
-          " "
-        </div>
+        <div class="msg">"2 tills. Leave a till blank if it was not used today."</div>
         " "
-        <button class="btn" type="button" id="dt-add-citydeep">"Add another till"</button>
+        <div class="dtills">
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 1"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-citydeep-0-tx">"Transactions on machine"</label>
+                <input id="dt-citydeep-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-citydeep-0-slips">"Slips counted"</label>
+                <input id="dt-citydeep-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-citydeep-0"></div>
+            " "
+            <div class="field">
+              <label for="dt-citydeep-0-reason">"Reason for any difference"</label>
+              <input id="dt-citydeep-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 2"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-citydeep-1-tx">"Transactions on machine"</label>
+                <input id="dt-citydeep-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+              <div class="field">
+                <label for="dt-citydeep-1-slips">"Slips counted"</label>
+                <input id="dt-citydeep-1-slips" data-till="1" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-citydeep-1"></div>
+            " "
+            <div class="field">
+              <label for="dt-citydeep-1-reason">"Reason for any difference"</label>
+              <input id="dt-citydeep-1-reason" data-till="1" data-f="reason" maxlength="300" autocomplete="off" value>
+            </div>
+            " "
+          </div>
+        </div>
         " "
         <div class="eyebrow" id="dcount-citydeep" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
         " "
@@ -3468,7 +3732,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 4`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before Wholesale can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -3476,57 +3740,36 @@ exports[`sheets with figures, draft and signed, seen by different roles 4`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-wholesale">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
+        <div class="msg"></div>
+        " "
+        <div class="dtills">
+          <div class="dtill">
             " "
-            <div class="field">
-              <label for="dt-wholesale-0-till">"Till"</label>
-              <input id="dt-wholesale-0-till" data-till="0" data-f="till" autocomplete="off" value disabled>
+            <div class="dtill-head">
+              <b>"Till 1"</b>
             </div>
             " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Wanda Wholesale"</div>
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-wholesale-0-slips">"Slips counted"</label>
+                <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
             </div>
             " "
-            <div class="field">
-              <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
-              <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
+            <div class="ddiff var-neg" id="dd-wholesale-0"></div>
             " "
             <div class="field">
-              <label for="dt-wholesale-0-slips">"Slips counted"</label>
-              <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-machine">"Machine total (R)"</label>
-              <input id="dt-wholesale-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-wholesale-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
+              <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
+              <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
             </div>
             " "
           </div>
-          " "
-          <div class="ddiff var-zero" id="dd-wholesale-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
-            <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
-          </div>
-          " "
         </div>
         " "
         <div class="eyebrow" id="dcount-wholesale" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
@@ -3802,7 +4045,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before Aeroton Retail can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before Aeroton Retail can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -3810,57 +4053,161 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-retail">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
+        <div class="msg">"6 tills. Leave a till blank if it was not used today."</div>
+        " "
+        <div class="dtills">
+          <div class="dtill">
             " "
-            <div class="field">
-              <label for="dt-retail-0-till">"Till"</label>
-              <input id="dt-retail-0-till" data-till="0" data-f="till" autocomplete="off" value disabled>
+            <div class="dtill-head">
+              <b>"Till 1"</b>
             </div>
             " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Rita Retail"</div>
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-0-tx">"Transactions on machine"</label>
+                <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-0-slips">"Slips counted"</label>
+                <input id="dt-retail-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
             </div>
             " "
-            <div class="field">
-              <label for="dt-retail-0-tx">"Transactions on machine"</label>
-              <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
+            <div class="ddiff var-neg" id="dd-retail-0"></div>
             " "
             <div class="field">
-              <label for="dt-retail-0-slips">"Slips counted"</label>
-              <input id="dt-retail-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-machine">"Machine total (R)"</label>
-              <input id="dt-retail-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-retail-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
+              <label for="dt-retail-0-reason">"Reason for any difference"</label>
+              <input id="dt-retail-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
             </div>
             " "
           </div>
-          " "
-          <div class="ddiff var-zero" id="dd-retail-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-retail-0-reason">"Reason for any difference"</label>
-            <input id="dt-retail-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 2"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-1-tx">"Transactions on machine"</label>
+                <input id="dt-retail-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-1-slips">"Slips counted"</label>
+                <input id="dt-retail-1-slips" data-till="1" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-1"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-1-reason">"Reason for any difference"</label>
+              <input id="dt-retail-1-reason" data-till="1" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
           </div>
-          " "
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 3"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-2-tx">"Transactions on machine"</label>
+                <input id="dt-retail-2-tx" data-till="2" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-2-slips">"Slips counted"</label>
+                <input id="dt-retail-2-slips" data-till="2" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-2"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-2-reason">"Reason for any difference"</label>
+              <input id="dt-retail-2-reason" data-till="2" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 4"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-3-tx">"Transactions on machine"</label>
+                <input id="dt-retail-3-tx" data-till="3" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-3-slips">"Slips counted"</label>
+                <input id="dt-retail-3-slips" data-till="3" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-3"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-3-reason">"Reason for any difference"</label>
+              <input id="dt-retail-3-reason" data-till="3" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 5"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-4-tx">"Transactions on machine"</label>
+                <input id="dt-retail-4-tx" data-till="4" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-4-slips">"Slips counted"</label>
+                <input id="dt-retail-4-slips" data-till="4" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-4"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-4-reason">"Reason for any difference"</label>
+              <input id="dt-retail-4-reason" data-till="4" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 6"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-5-tx">"Transactions on machine"</label>
+                <input id="dt-retail-5-tx" data-till="5" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-5-slips">"Slips counted"</label>
+                <input id="dt-retail-5-slips" data-till="5" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-5"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-5-reason">"Reason for any difference"</label>
+              <input id="dt-retail-5-reason" data-till="5" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
         </div>
         " "
         <div class="eyebrow" id="dcount-retail" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
@@ -4185,7 +4532,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 6`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before City Deep Retail can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before City Deep Retail can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -4193,57 +4540,61 @@ exports[`sheets with figures, draft and signed, seen by different roles 6`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-citydeep">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
+        <div class="msg">"2 tills. Leave a till blank if it was not used today."</div>
+        " "
+        <div class="dtills">
+          <div class="dtill">
             " "
-            <div class="field">
-              <label for="dt-citydeep-0-till">"Till"</label>
-              <input id="dt-citydeep-0-till" data-till="0" data-f="till" autocomplete="off" value disabled>
+            <div class="dtill-head">
+              <b>"Till 1"</b>
             </div>
             " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Cindy Deep"</div>
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-citydeep-0-tx">"Transactions on machine"</label>
+                <input id="dt-citydeep-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-citydeep-0-slips">"Slips counted"</label>
+                <input id="dt-citydeep-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
             </div>
             " "
-            <div class="field">
-              <label for="dt-citydeep-0-tx">"Transactions on machine"</label>
-              <input id="dt-citydeep-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
+            <div class="ddiff var-neg" id="dd-citydeep-0"></div>
             " "
             <div class="field">
-              <label for="dt-citydeep-0-slips">"Slips counted"</label>
-              <input id="dt-citydeep-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-citydeep-0-machine">"Machine total (R)"</label>
-              <input id="dt-citydeep-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-citydeep-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-citydeep-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
+              <label for="dt-citydeep-0-reason">"Reason for any difference"</label>
+              <input id="dt-citydeep-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
             </div>
             " "
           </div>
-          " "
-          <div class="ddiff var-zero" id="dd-citydeep-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-citydeep-0-reason">"Reason for any difference"</label>
-            <input id="dt-citydeep-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 2"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-citydeep-1-tx">"Transactions on machine"</label>
+                <input id="dt-citydeep-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-citydeep-1-slips">"Slips counted"</label>
+                <input id="dt-citydeep-1-slips" data-till="1" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-citydeep-1"></div>
+            " "
+            <div class="field">
+              <label for="dt-citydeep-1-reason">"Reason for any difference"</label>
+              <input id="dt-citydeep-1-reason" data-till="1" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
           </div>
-          " "
         </div>
         " "
         <div class="eyebrow" id="dcount-citydeep" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
@@ -4543,7 +4894,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 7`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before Wholesale can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before Wholesale can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -4551,57 +4902,36 @@ exports[`sheets with figures, draft and signed, seen by different roles 7`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-wholesale">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
+        <div class="msg"></div>
+        " "
+        <div class="dtills">
+          <div class="dtill">
             " "
-            <div class="field">
-              <label for="dt-wholesale-0-till">"Till"</label>
-              <input id="dt-wholesale-0-till" data-till="0" data-f="till" autocomplete="off" value disabled>
+            <div class="dtill-head">
+              <b>"Till 1"</b>
             </div>
             " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Wanda Wholesale"</div>
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
+                <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-wholesale-0-slips">"Slips counted"</label>
+                <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
             </div>
             " "
-            <div class="field">
-              <label for="dt-wholesale-0-tx">"Transactions on machine"</label>
-              <input id="dt-wholesale-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
+            <div class="ddiff var-neg" id="dd-wholesale-0"></div>
             " "
             <div class="field">
-              <label for="dt-wholesale-0-slips">"Slips counted"</label>
-              <input id="dt-wholesale-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-machine">"Machine total (R)"</label>
-              <input id="dt-wholesale-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-wholesale-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-wholesale-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
+              <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
+              <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
             </div>
             " "
           </div>
-          " "
-          <div class="ddiff var-zero" id="dd-wholesale-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-wholesale-0-reason">"Reason for any difference"</label>
-            <input id="dt-wholesale-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
-          </div>
-          " "
         </div>
         " "
         <div class="eyebrow" id="dcount-wholesale" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
@@ -4848,7 +5178,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before Aeroton Retail can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before Aeroton Retail can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -4856,57 +5186,161 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-retail">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
+        <div class="msg">"6 tills. Leave a till blank if it was not used today."</div>
+        " "
+        <div class="dtills">
+          <div class="dtill">
             " "
-            <div class="field">
-              <label for="dt-retail-0-till">"Till"</label>
-              <input id="dt-retail-0-till" data-till="0" data-f="till" autocomplete="off" value disabled>
+            <div class="dtill-head">
+              <b>"Till 1"</b>
             </div>
             " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Rita Retail"</div>
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-0-tx">"Transactions on machine"</label>
+                <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-0-slips">"Slips counted"</label>
+                <input id="dt-retail-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
             </div>
             " "
-            <div class="field">
-              <label for="dt-retail-0-tx">"Transactions on machine"</label>
-              <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
+            <div class="ddiff var-neg" id="dd-retail-0"></div>
             " "
             <div class="field">
-              <label for="dt-retail-0-slips">"Slips counted"</label>
-              <input id="dt-retail-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-machine">"Machine total (R)"</label>
-              <input id="dt-retail-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-retail-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
+              <label for="dt-retail-0-reason">"Reason for any difference"</label>
+              <input id="dt-retail-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
             </div>
             " "
           </div>
-          " "
-          <div class="ddiff var-zero" id="dd-retail-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-retail-0-reason">"Reason for any difference"</label>
-            <input id="dt-retail-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 2"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-1-tx">"Transactions on machine"</label>
+                <input id="dt-retail-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-1-slips">"Slips counted"</label>
+                <input id="dt-retail-1-slips" data-till="1" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-1"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-1-reason">"Reason for any difference"</label>
+              <input id="dt-retail-1-reason" data-till="1" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
           </div>
-          " "
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 3"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-2-tx">"Transactions on machine"</label>
+                <input id="dt-retail-2-tx" data-till="2" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-2-slips">"Slips counted"</label>
+                <input id="dt-retail-2-slips" data-till="2" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-2"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-2-reason">"Reason for any difference"</label>
+              <input id="dt-retail-2-reason" data-till="2" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 4"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-3-tx">"Transactions on machine"</label>
+                <input id="dt-retail-3-tx" data-till="3" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-3-slips">"Slips counted"</label>
+                <input id="dt-retail-3-slips" data-till="3" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-3"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-3-reason">"Reason for any difference"</label>
+              <input id="dt-retail-3-reason" data-till="3" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 5"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-4-tx">"Transactions on machine"</label>
+                <input id="dt-retail-4-tx" data-till="4" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-4-slips">"Slips counted"</label>
+                <input id="dt-retail-4-slips" data-till="4" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-4"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-4-reason">"Reason for any difference"</label>
+              <input id="dt-retail-4-reason" data-till="4" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 6"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-5-tx">"Transactions on machine"</label>
+                <input id="dt-retail-5-tx" data-till="5" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-5-slips">"Slips counted"</label>
+                <input id="dt-retail-5-slips" data-till="5" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-5"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-5-reason">"Reason for any difference"</label>
+              <input id="dt-retail-5-reason" data-till="5" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
         </div>
         " "
         <div class="eyebrow" id="dcount-retail" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>
@@ -5195,7 +5629,7 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
       <div class="declicon" aria-hidden="true">"✍"</div>
       <div>
         <h2>"Store manager sign-off"</h2>
-        <div class="small">"Card transactions · one block per till · must be complete before Aeroton Retail can sign"</div>
+        <div class="small">"Card transactions · Wed, 28 Oct 2026 · must be complete before Aeroton Retail can sign"</div>
       </div>
       " "
       <span class="chip draft">"Not complete"</span>
@@ -5203,57 +5637,161 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
     " "
     <div class="sheet-body">
       <div class="decl" id="decl-retail">
-        <div class="eyebrow">"Store manager sign-off · card transactions · Wed, 28 Oct 2026"</div>
-        " "
         <blockquote class="dstate">"“I have checked every individual card transaction on this report. Every transaction has a card slip with a matching till slip stapled to it, and every split payment has my authorisation.”"</blockquote>
         " "
-        <div class="dtill">
-          " "
-          <div class="dtill-head">
-            <b>"Till "</b>
-          </div>
-          " "
-          <div class="dgrid">
+        <div class="msg">"6 tills. Leave a till blank if it was not used today."</div>
+        " "
+        <div class="dtills">
+          <div class="dtill">
             " "
-            <div class="field">
-              <label for="dt-retail-0-till">"Till"</label>
-              <input id="dt-retail-0-till" data-till="0" data-f="till" autocomplete="off" value disabled>
+            <div class="dtill-head">
+              <b>"Till 1"</b>
             </div>
             " "
-            <div class="field">
-              <label>"Cashier"</label>
-              <div class="static">"Rita Retail"</div>
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-0-tx">"Transactions on machine"</label>
+                <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-0-slips">"Slips counted"</label>
+                <input id="dt-retail-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
             </div>
             " "
-            <div class="field">
-              <label for="dt-retail-0-tx">"Transactions on machine"</label>
-              <input id="dt-retail-0-tx" data-till="0" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
+            <div class="ddiff var-neg" id="dd-retail-0"></div>
             " "
             <div class="field">
-              <label for="dt-retail-0-slips">"Slips counted"</label>
-              <input id="dt-retail-0-slips" data-till="0" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-machine">"Machine total (R)"</label>
-              <input id="dt-retail-0-machine" data-till="0" data-f="machine" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
-            </div>
-            " "
-            <div class="field">
-              <label for="dt-retail-0-palladium">"Palladium card total (R)"</label>
-              <input id="dt-retail-0-palladium" data-till="0" data-f="palladium" inputmode="decimal" class="num" style="text-align:right" autocomplete="off" value disabled>
+              <label for="dt-retail-0-reason">"Reason for any difference"</label>
+              <input id="dt-retail-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
             </div>
             " "
           </div>
-          " "
-          <div class="ddiff var-zero" id="dd-retail-0">"Difference: R 0,00"</div>
-          " "
-          <div class="field">
-            <label for="dt-retail-0-reason">"Reason for any difference"</label>
-            <input id="dt-retail-0-reason" data-till="0" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 2"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-1-tx">"Transactions on machine"</label>
+                <input id="dt-retail-1-tx" data-till="1" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-1-slips">"Slips counted"</label>
+                <input id="dt-retail-1-slips" data-till="1" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-1"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-1-reason">"Reason for any difference"</label>
+              <input id="dt-retail-1-reason" data-till="1" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
           </div>
-          " "
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 3"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-2-tx">"Transactions on machine"</label>
+                <input id="dt-retail-2-tx" data-till="2" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-2-slips">"Slips counted"</label>
+                <input id="dt-retail-2-slips" data-till="2" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-2"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-2-reason">"Reason for any difference"</label>
+              <input id="dt-retail-2-reason" data-till="2" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 4"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-3-tx">"Transactions on machine"</label>
+                <input id="dt-retail-3-tx" data-till="3" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-3-slips">"Slips counted"</label>
+                <input id="dt-retail-3-slips" data-till="3" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-3"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-3-reason">"Reason for any difference"</label>
+              <input id="dt-retail-3-reason" data-till="3" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 5"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-4-tx">"Transactions on machine"</label>
+                <input id="dt-retail-4-tx" data-till="4" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-4-slips">"Slips counted"</label>
+                <input id="dt-retail-4-slips" data-till="4" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-4"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-4-reason">"Reason for any difference"</label>
+              <input id="dt-retail-4-reason" data-till="4" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
+          <div class="dtill">
+            " "
+            <div class="dtill-head">
+              <b>"Till 6"</b>
+            </div>
+            " "
+            <div class="dgrid">
+              <div class="field">
+                <label for="dt-retail-5-tx">"Transactions on machine"</label>
+                <input id="dt-retail-5-tx" data-till="5" data-f="tx" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+              <div class="field">
+                <label for="dt-retail-5-slips">"Slips counted"</label>
+                <input id="dt-retail-5-slips" data-till="5" data-f="slips" inputmode="numeric" class="num" style="text-align:right" autocomplete="off" value disabled>
+              </div>
+            </div>
+            " "
+            <div class="ddiff var-neg" id="dd-retail-5"></div>
+            " "
+            <div class="field">
+              <label for="dt-retail-5-reason">"Reason for any difference"</label>
+              <input id="dt-retail-5-reason" data-till="5" data-f="reason" maxlength="300" autocomplete="off" value disabled>
+            </div>
+            " "
+          </div>
         </div>
         " "
         <div class="eyebrow" id="dcount-retail" style="margin-top:6px">"Manager's checklist before signing · 0 of 6 ticked"</div>

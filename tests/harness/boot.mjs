@@ -50,9 +50,9 @@ function driver(t, env, db) {
     },
     // tick every point of the end-of-day manager declaration on screen
     async declare() {
-      // one till that balances: 3 transactions, 3 slips, machine = Palladium
-      const fill = { till: "1", tx: "3", slips: "3", machine: "100.00", palladium: "100.00" };
-      for (const el of doc.querySelectorAll(".decl input[data-till]")) {
+      // first till used: 3 transactions, 3 slips (other tills left blank, as when not used)
+      const fill = { tx: "3", slips: "3" };
+      for (const el of doc.querySelectorAll('.decl input[data-till="0"]')) {
         if (!el.disabled && el.value === "" && fill[el.dataset.f] != null) { el.value = fill[el.dataset.f]; fire(el, "input"); }
       }
       for (const cb of doc.querySelectorAll(".decl input[data-decl]")) {

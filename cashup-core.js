@@ -302,46 +302,50 @@ const DECL_CHECKS = [
   ["filed", "Slips and signed total are punched and filed together for the day"],
 ];
 const DECL_SHOPS = ["wholesale", "retail", "citydeep"];
+// how many tills each shop has (one sign-off block per till)
+export const TILLS = { wholesale: 1, retail: 6, citydeep: 2 };
 export function declarationItems(dept) {
   return DECL_SHOPS.includes(dept) ? DECL_CHECKS.map(([k, t]) => ({ k, t })) : [];
 }
 export function blankTill() {
-  return { till: "", tx: "", slips: "", machine: "", palladium: "", reason: "" };
+  return { tx: "", slips: "", reason: "" };
 }
-// one till's difference: machine total - Palladium card total
-export function tillDifference(t) {
-  return Math.round((num(t && t.machine) - num(t && t.palladium)) * 100) / 100;
-}
+const filled = v => String(v ?? "").trim() !== "";
+// The shop's tills, always TILLS[dept] of them (older saved sheets are padded or cut to that number)
 export function declarationTills(doc) {
+  const n = TILLS[doc && doc.dept] || 1;
   const t = doc && doc.declaration && Array.isArray(doc.declaration.tills) ? doc.declaration.tills : [];
-  return t.length ? t : [blankTill()];
+  return Array.from({ length: n }, (_, i) => Object.assign(blankTill(), t[i] || {}));
 }
 // Checklist points still to tick
 export function declarationMissing(doc) {
   const d = (doc && doc.declaration && doc.declaration.items) || {};
   return declarationItems(doc && doc.dept).filter(x => d[x.k] !== true);
 }
-// What stops the sheet being signed, or "" when the sign-off is complete
+// What stops the sheet being signed, or "" when the sign-off is complete.
+// A till not used today is left blank; a till in use needs both counts, and a reason when they differ.
 export function declarationProblem(doc) {
   if (!declarationItems(doc && doc.dept).length) return "";
   const tills = declarationTills(doc);
+  let used = 0;
   for (let i = 0; i < tills.length; i++) {
-    const t = tills[i], n = tills.length > 1 ? ` (till ${i + 1})` : "";
-    if (!String(t.till || "").trim()) return `Store manager sign-off: enter the till${n}.`;
-    for (const [f, l] of [["tx", "transactions on machine"], ["slips", "slips counted"], ["machine", "machine total"], ["palladium", "Palladium card total"]])
-      if (String(t[f] ?? "").trim() === "") return `Store manager sign-off: enter the ${l}${n}.`;
-    const off = num(t.tx) !== num(t.slips) || tillDifference(t) !== 0;
-    if (off && String(t.reason || "").trim().length < 3) return `Store manager sign-off: give the reason for the difference${n}.`;
+    const t = tills[i];
+    if (!filled(t.tx) && !filled(t.slips)) continue;
+    used++;
+    if (!filled(t.tx)) return `Store manager sign-off: enter the transactions on machine for till ${i + 1}.`;
+    if (!filled(t.slips)) return `Store manager sign-off: enter the slips counted for till ${i + 1}.`;
+    if (num(t.tx) !== num(t.slips) && String(t.reason || "").trim().length < 3)
+      return `Store manager sign-off: give the reason for the difference on till ${i + 1}.`;
   }
+  if (!used) return "Store manager sign-off: enter the transactions and slips counted for at least one till.";
   const left = declarationMissing(doc);
   if (left.length) return `Store manager sign-off: tick every point of the checklist (${left.length} still to tick).`;
   return "";
 }
-// One line per till for reports
+// One line per till in use, for reports
 export function declarationSummary(doc) {
   if (!declarationItems(doc && doc.dept).length) return [];
-  return declarationTills(doc).map(t => {
-    const d = tillDifference(t);
-    return `Till ${t.till || "-"}: ${t.tx || 0} transactions, ${t.slips || 0} slips, machine R ${num(t.machine).toFixed(2)}, Palladium R ${num(t.palladium).toFixed(2)}, difference R ${d.toFixed(2)}${t.reason ? " - " + t.reason : ""}`;
-  });
+  return declarationTills(doc)
+    .map((t, i) => (filled(t.tx) || filled(t.slips) ? `Till ${i + 1}: ${t.tx || 0} transactions, ${t.slips || 0} slips${t.reason ? " - " + t.reason : ""}` : ""))
+    .filter(Boolean);
 }

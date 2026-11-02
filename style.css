@@ -256,6 +256,8 @@ table.eod{min-width:0}
 .dtill{border:1px dashed var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
 .dtill-head{display:flex;justify-content:space-between;align-items:center}
 .dgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}
+.dtills{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.ddiff:empty{display:none}
 .ddiff{font-weight:600;font-size:.9rem}
 @media (max-width:640px){.dgrid{grid-template-columns:1fr 1fr!important}}
 .declsec{overflow:hidden}
