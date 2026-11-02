@@ -469,6 +469,7 @@ exports[`payment lines and labels per shop 1`] = `
     "cash: Coins",
     "cashguard: CashGuard",
     "card: Credit card",
+    "cardcbm: Credit card CBM",
     "snapscan: SnapScan"
   ],
   "citydeep": [

@@ -1,7 +1,7 @@
 // The photo reader: sends the photo of a till report to Gemini (Firebase AI Logic) and turns its reply
 // into an amount per payment type. app.js shows the messages and fills in the sheet.
-import { AI_MODEL } from "./firebase-config.js?v=2026-11-02e";
-import { DEPTS, METHODS, isRetail } from "./cashup-core.js?v=2026-11-02e";
+import { AI_MODEL } from "./firebase-config.js?v=2026-11-02f";
+import { DEPTS, METHODS, isRetail } from "./cashup-core.js?v=2026-11-02f";
 
 // Model names change over time: try the configured one first, then current fallbacks, and remember what worked.
 const AI_MODELS = [
@@ -79,10 +79,10 @@ Read the TOTAL amount per payment/tender type as printed on the report. Map tend
 - cash: Cash (notes and coins tender)
 - cashguard: CashGuard (cash recycler / CashGuard tender)
 - card: Credit card / debit card / speedpoint / card machine totals combined${isRetail(dept) ? " (in this shop, amounts printed as EFT are card-machine payments: include them here)" : ""}
-${dept === "wholesale" ? "- cardcbm: Credit card CBM (the CBM card machine; keep separate from card)\n- payfast: PayFast card payments (keep these separate from card)\n" : ""}- eft: EFT / bank transfer${isRetail(dept) ? " (always null for this shop: put EFT amounts under card)" : ""}
+${dept === "wholesale" || dept === "retail" ? "- cardcbm: Credit card CBM (the CBM card machine; keep separate from card)\n" : ""}${dept === "wholesale" ? "- payfast: PayFast card payments (keep these separate from card)\n" : ""}- eft: EFT / bank transfer${isRetail(dept) ? " (always null for this shop: put EFT amounts under card)" : ""}
 - shop2shop: Shop2Shop
 - snapscan: SnapScan
-Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,${dept === "wholesale" ? '"cardcbm":number|null,"payfast":number|null,' : ""}"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
+Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,${dept === "wholesale" || dept === "retail" ? '"cardcbm":number|null,' : ""}${dept === "wholesale" ? '"payfast":number|null,' : ""}"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
 Use null when a tender is not on the report. Give amounts as plain JSON numbers with a dot for decimals (e.g. 1234.56), without currency symbols, spaces or thousands separators, even if the slip prints them as "R 1 234,56". Set readable false if the photo is not a cash-up report or too blurry to read.`;
 }
 // The reader's reply as JSON (it sometimes wraps it in ``` fences)

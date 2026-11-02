@@ -6,7 +6,7 @@ export const METHODS = [
   { k: "cash", l: "Cash" },
   { k: "cashguard", l: "CashGuard" },
   { k: "card", l: "Credit card" },
-  { k: "cardcbm", l: "Credit card CBM" }, // Wholesale only
+  { k: "cardcbm", l: "Credit card CBM" }, // Wholesale and Aeroton Retail
   { k: "payfast", l: "PayFast card" }, // Wholesale only
   { k: "eft", l: "EFT" },
   { k: "shop2shop", l: "Shop2Shop" },
@@ -37,8 +37,10 @@ export const hasSplit = d => d === "retail" || d === "citydeep"; // CashGuard: N
 export const isRetail = d => d === "retail" || d === "citydeep";
 export const methodsFor = dept =>
   PAYMENT_METHODS.filter(m =>
-    m.k === "payfast" || m.k === "cardcbm"
+    m.k === "payfast"
       ? dept === "wholesale"
+      : m.k === "cardcbm"
+      ? dept === "wholesale" || dept === "retail"
       : isRetail(dept)
         ? m.k !== "eft" && m.k !== "shop2shop"
         : true,

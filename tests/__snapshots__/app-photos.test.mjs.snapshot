@@ -234,10 +234,11 @@ Read the TOTAL amount per payment/tender type as printed on the report. Map tend
 - cash: Cash (notes and coins tender)
 - cashguard: CashGuard (cash recycler / CashGuard tender)
 - card: Credit card / debit card / speedpoint / card machine totals combined (in this shop, amounts printed as EFT are card-machine payments: include them here)
+- cardcbm: Credit card CBM (the CBM card machine; keep separate from card)
 - eft: EFT / bank transfer (always null for this shop: put EFT amounts under card)
 - shop2shop: Shop2Shop
 - snapscan: SnapScan
-Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
+Return ONLY JSON: {"cash":number|null,"cashguard":number|null,"card":number|null,"cardcbm":number|null,"eft":number|null,"shop2shop":number|null,"snapscan":number|null,"total":number|null,"date":"YYYY-MM-DD"|null,"readable":true|false}
 Use null when a tender is not on the report. Give amounts as plain JSON numbers with a dot for decimals (e.g. 1234.56), without currency symbols, spaces or thousands separators, even if the slip prints them as "R 1 234,56". Set readable false if the photo is not a cash-up report or too blurry to read.
 `;
 

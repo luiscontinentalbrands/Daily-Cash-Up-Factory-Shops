@@ -2624,6 +2624,7 @@ exports[`End of Day table: one view at a time, switched with the shop buttons 2`
     "Coins | R 35,50 | R 35,50 | R 0,00",
     "CashGuard | R 5 400,00 | R 5 000,00 | −R 400,00",
     "Credit card | R 2 750,25 | R 2 750,25 | R 0,00",
+    "Credit card CBM | R 0,00 | R 0,00 | R 0,00",
     "SnapScan | R 60,00 | R 60,00 | R 0,00",
     "Total | R 8 245,75 | R 7 845,75 | −R 400,00"
   ],
@@ -2746,10 +2747,8 @@ exports[`download the PDF report 2`] = `
 ["text","Credit card CBM",16,70,null]
 ["text","R 410,00",77.94444444444444,70,{"align":"right"}]
 ["text","R 410,00",103.38888888888889,70,{"align":"right"}]
-["setTextColor",122,114,104]
-["text","-",128.83333333333331,70,{"align":"right"}]
-["text","-",154.27777777777777,70,{"align":"right"}]
-["setTextColor",31,28,24]
+["text","R 0,00",128.83333333333331,70,{"align":"right"}]
+["text","R 0,00",154.27777777777777,70,{"align":"right"}]
 ["setTextColor",122,114,104]
 ["text","-",179.72222222222223,70,{"align":"right"}]
 ["text","-",205.16666666666666,70,{"align":"right"}]

@@ -148,6 +148,19 @@ exports[`before City Deep started: retail sheet and banner 1`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0,00"</td>
+            </tr>
+            <tr>
               <td>"SnapScan"</td>
               " "
               <td class="inp">
@@ -1056,6 +1069,19 @@ exports[`empty sheets, as their own cashier/manager 2`] = `
               </td>
               " "
               <td class="num var-zero" id="v-card">"R 0,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -1989,6 +2015,19 @@ exports[`notes, damaged notes and coins, petty cash details 3`] = `
             <td class="num var-zero" id="v-card">"R 0,00"</td>
           </tr>
           <tr>
+            <td>"Credit card CBM"</td>
+            " "
+            <td class="inp">
+              <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
+            </td>
+            " "
+            <td class="inp">
+              <input id="retail-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM deposited">
+            </td>
+            " "
+            <td class="num var-zero" id="v-cardcbm">"R 0,00"</td>
+          </tr>
+          <tr>
             <td>"SnapScan"</td>
             " "
             <td class="inp">
@@ -2210,6 +2249,19 @@ exports[`older stored data is tidied on load (Retail EFT into card, no Shop2Shop
     </td>
     " "
     <td class="num var-neg" id="v-card">"−R 10,00"</td>
+  </tr>
+  <tr>
+    <td>"Credit card CBM"</td>
+    " "
+    <td class="inp">
+      <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
+    </td>
+    " "
+    <td class="inp">
+      <input id="retail-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM deposited">
+    </td>
+    " "
+    <td class="num var-zero" id="v-cardcbm">"R 0,00"</td>
   </tr>
   <tr>
     <td>"SnapScan"</td>
@@ -2777,6 +2829,19 @@ exports[`sheets with figures, draft and signed, seen by different roles 2`] = `
               </td>
               " "
               <td class="num var-zero" id="v-card">"R 0,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>
@@ -3973,6 +4038,19 @@ exports[`sheets with figures, draft and signed, seen by different roles 5`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0,00"</td>
+            </tr>
+            <tr>
               <td>"SnapScan"</td>
               " "
               <td class="inp">
@@ -5106,6 +5184,19 @@ exports[`sheets with figures, draft and signed, seen by different roles 8`] = `
               <td class="num var-zero" id="v-card">"R 0,00"</td>
             </tr>
             <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0,00"</td>
+            </tr>
+            <tr>
               <td>"SnapScan"</td>
               " "
               <td class="inp">
@@ -5555,6 +5646,19 @@ exports[`sheets with figures, draft and signed, seen by different roles 9`] = `
               </td>
               " "
               <td class="num var-zero" id="v-card">"R 0,00"</td>
+            </tr>
+            <tr>
+              <td>"Credit card CBM"</td>
+              " "
+              <td class="inp">
+                <input id="retail-cardcbm-report" data-m="cardcbm" data-f="report" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card CBM per report">
+              </td>
+              " "
+              <td class="inp">
+                <input id="retail-cardcbm-deposited" data-m="cardcbm" data-f="deposited" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="0.00" value disabled aria-label="Credit card CBM deposited">
+              </td>
+              " "
+              <td class="num var-zero" id="v-cardcbm">"R 0,00"</td>
             </tr>
             <tr>
               <td>"SnapScan"</td>

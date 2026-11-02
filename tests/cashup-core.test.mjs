@@ -37,7 +37,7 @@ test("payment lines and labels per shop", t => {
 // The PDF report (report-pdf.js) and the email job (scripts/daily-check.mjs) each have their own copy of
 // "which lines each shop uses". This is that copy, word for word, to prove it agrees with methodsFor().
 const SHOP_LINES = { wholesale: null, retail: ["cash", "cashguard", "card", "snapscan"], citydeep: ["cash", "cashguard", "card", "snapscan"] };
-const hasLine = (shop, k) => (k === "payfast" || k === "cardcbm") ? shop === "wholesale" : k === "petty" ? shop === "retail" : (!SHOP_LINES[shop] || SHOP_LINES[shop].includes(k));
+const hasLine = (shop, k) => k === "payfast" ? shop === "wholesale" : k === "cardcbm" ? (shop === "wholesale" || shop === "retail") : k === "petty" ? shop === "retail" : (!SHOP_LINES[shop] || SHOP_LINES[shop].includes(k));
 test("methodsFor: the old per-shop line list, except that petty cash is no longer a line of its own", () => {
   for (const shop of SHOPS)
     for (const m of core.METHODS)
